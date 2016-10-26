@@ -98,7 +98,7 @@ cd /etc/etcd/
 tar xzvf /tmp/master2.certs.tgz
 for i in master2-* ; do mv ${i} ${i##master2-}; done;
 systemctl enable etcd
-<pre>
+</pre>
 
 ### Create etcd.conf
 <pre>
@@ -132,7 +132,7 @@ ETCD_KEY_FILE=/etc/etcd/server.key
 ETCD_PEER_CA_FILE=/etc/etcd/ca.crt
 ETCD_PEER_CERT_FILE=/etc/etcd/peer.crt
 ETCD_PEER_KEY_FILE=/etc/etcd/peer.key
-<pre>
+</pre>
 
 ### Start etcd
 <code>systemctl start etcd</code>
@@ -157,6 +157,7 @@ Added full list of cluster nodes to etcd.conf:
 <pre>
 ETCD_INITIAL_CLUSTER="master1=https://10.132.0.6:2380,master2=https://10.132.0.8:2380,master3=https://10.132.0.9:2380"
 </pre>
+
 and restart etcd.
 
 
