@@ -13,6 +13,30 @@
     },
     "objects": [
         {
+            "kind": "ImageStream",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "redhat-openjdk18-openshift"
+            },
+            "spec": {
+                "dockerImageRepository": "registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift",
+                "tags": [
+                    {
+                        "name": "1.0",
+                        "annotations": {
+                            "description": "OpenJDK S2I images.",
+                            "iconClass": "icon-jboss",
+                            "tags": "builder,java,xpaas",
+                            "supports":"java:8,xpaas:1.0",
+                            "sampleRepo": "https://github.com/jboss-openshift/openshift-quickstarts",
+                            "sampleContextDir": "undertow-servlet",
+                            "version": "1.0"
+                        }
+                    }
+                ]
+            }
+        },
+        {
             "kind": "Service",
             "apiVersion": "v1",
             "spec": {
@@ -90,8 +114,7 @@
                         "forcePull": true,
                         "from": {
                             "kind": "ImageStreamTag",
-                            "namespace": "${IMAGE_STREAM_NAMESPACE}",
-                            "name": "jboss-webserver30-tomcat7-openshift:1.2"
+                            "name": "redhat-openjdk18-openshift:latest"
                         }
                     }
                 },
@@ -267,7 +290,7 @@
         {
             "name": "SOURCE_REPOSITORY_URL",
             "description": "Git source URI for application",
-            "value": "https://gitlab.consol.de/deppisch/chaos-professor.git",
+            "value": "https://github.com/ConSol/chaos-professor.git",
             "required": true
         },
         {
@@ -281,20 +304,6 @@
             "value": ""
         },
         {
-            "name": "JWS_ADMIN_USERNAME",
-            "description": "JWS Admin User",
-            "generate": "expression",
-            "from": "[a-zA-Z0-9]{8}",
-            "required": true
-        },
-        {
-            "name": "JWS_ADMIN_PASSWORD",
-            "description": "JWS Admin Password",
-            "generate": "expression",
-            "from": "[a-zA-Z0-9]{8}",
-            "required": true
-        },
-        {
             "name": "GITHUB_WEBHOOK_SECRET",
             "description": "GitHub trigger secret",
             "generate": "expression",
@@ -306,12 +315,6 @@
             "description": "Generic build trigger secret",
             "generate": "expression",
             "from": "[a-zA-Z0-9]{8}",
-            "required": true
-        },
-        {
-            "name": "IMAGE_STREAM_NAMESPACE",
-            "description": "Namespace in which the ImageStreams for Red Hat Middleware images are installed. These ImageStreams are normally installed in the openshift namespace. You should only need to modify this if you've installed the ImageStreams in a different namespace/project.",
-            "value": "openshift",
             "required": true
         }
     ],
