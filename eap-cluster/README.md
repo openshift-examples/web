@@ -20,6 +20,13 @@ oc process -n openshift eap70-basic-s2i \
 oc scale --replicas=2 dc/eap-app
 ```
 
+### Enforce roundrobin
+```
+oc patch \
+  -p '{"metadata":{"annotations":{"haproxy.router.openshift.io/balance": "roundrobin"}}}' \
+  route/eap-app
+```
+
 ### Check session replication
 ```
 while true; do \
