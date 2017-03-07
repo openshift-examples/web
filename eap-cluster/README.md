@@ -1,59 +1,62 @@
 # EAP Cluster demo
 
+
+### Grant view permission to default service accont.
+This ensures that the EAP can query which PODs are still available.
 ```
 oc policy add-role-to-user view system:serviceaccount:$NAMESPACE$:default -n $NAMESPACE$
-oc process -n openshift eap70-basic-s2i -v SOURCE_REPOSITORY_URL=https://github.com/rbo/openshift-example.git SOURCE_REPOSITORY_REF=master CONTEXT_DIR=eap-cluster/SimpleWebApp | oc create -f -
 ```
 
+### Deploy eap with demo application
 ```
-while true; do  curl -b JSESSIONID=BADC1YHolI-iE2e2ffGyfU8cODN2pDQ8mnPZDM93.eap-app-1-ngu0d http://eap-app-plain-session-test.paas.osp.consol.de/SimpleWebApp/SessionInfoServlet  ; done
+oc process -n openshift eap70-basic-s2i \
+   -v SOURCE_REPOSITORY_URL=https://github.com/rbo/openshift-example.git \
+      SOURCE_REPOSITORY_REF=master \
+      CONTEXT_DIR=eap-cluster/SimpleWebApp | oc create -f -
+```
 
-<pre>
-Hostname: eap-app-1-3na1l
-Served at: /SimpleWebApp
+### Scale up deployment to more then 1 pod
+```
+oc scale --replicas=2 dc/eap-app
+```
 
-request host: eap-app-plain-session-test.paas.osp.consol.de
-request port: 80
+### Check session replication
+```
+while true; do \
+ curl -s -b JSESSIONID=xxxx \
+ http://..../SimpleWebApp/SessionInfoServlet | grep -E '(Hostname|session)' ; done
+```
 
-application server: WildFly 2.1.10.Final-redhat-1 - 1.3.25.Final-redhat-1
+##### Example
+```
+while true; do  curl -s \
+  -b JSESSIONID=BADC1YHolI-iE2e2ffGyfU8cODN2pDQ8mnPZDM93.eap-app-1-ngu0d \
+  http://eap-app-plain-session-test.paas.osp.consol.de/SimpleWebApp/SessionInfoServlet \
+  | grep -E '(Hostname|session)' ; done
 
-session id:             BADC1YHolI-iE2e2ffGyfU8cODN2pDQ8mnPZDM93
-session createTime:     Tue Mar 07 06:58:17 UTC 2017
-session lastAccessTime: Tue Mar 07 07:05:19 UTC 2017
-
-=== cookies ===
-name: JSESSIONID, value: BADC1YHolI-iE2e2ffGyfU8cODN2pDQ8mnPZDM93.eap-app-1-ngu0d, comment: null, MaxAge: -1, Path: null
-
-=== attributes ===
-attribute name:  attr1
-attribute type:  String
-attribute value: sdf
-
-
-</pre>
-<a href="/SimpleWebApp/form.html" target="_blank">set attribute</a>
-<pre>
-Hostname: eap-app-1-ngu0d
-Served at: /SimpleWebApp
-
-request host: eap-app-plain-session-test.paas.osp.consol.de
-request port: 80
-
-application server: WildFly 2.1.10.Final-redhat-1 - 1.3.25.Final-redhat-1
-
-session id:             BADC1YHolI-iE2e2ffGyfU8cODN2pDQ8mnPZDM93
-session createTime:     Tue Mar 07 06:58:17 UTC 2017
-session lastAccessTime: Tue Mar 07 07:05:19 UTC 2017
-
-=== cookies ===
-name: JSESSIONID, value: BADC1YHolI-iE2e2ffGyfU8cODN2pDQ8mnPZDM93.eap-app-1-ngu0d, comment: null, MaxAge: -1, Path: null
-
-=== attributes ===
-attribute name:  attr1
-attribute type:  String
-attribute value: sdf
-
-
-</pre>
-<a href="/SimpleWebApp/form.html" target="_blank">set attribute</a>
+  Hostname: eap-app-1-3na1l
+  request host: eap-app-plain-session-test.paas.osp.consol.de
+  session id:             BADC1YHolI-iE2e2ffGyfU8cODN2pDQ8mnPZDM93
+  session createTime:     Tue Mar 07 06:58:17 UTC 2017
+  session lastAccessTime: Tue Mar 07 07:22:33 UTC 2017
+  Hostname: eap-app-1-ngu0d
+  request host: eap-app-plain-session-test.paas.osp.consol.de
+  session id:             BADC1YHolI-iE2e2ffGyfU8cODN2pDQ8mnPZDM93
+  session createTime:     Tue Mar 07 06:58:17 UTC 2017
+  session lastAccessTime: Tue Mar 07 07:26:16 UTC 2017
+  Hostname: eap-app-1-3na1l
+  request host: eap-app-plain-session-test.paas.osp.consol.de
+  session id:             BADC1YHolI-iE2e2ffGyfU8cODN2pDQ8mnPZDM93
+  session createTime:     Tue Mar 07 06:58:17 UTC 2017
+  session lastAccessTime: Tue Mar 07 07:26:17 UTC 2017
+  Hostname: eap-app-1-ngu0d
+  request host: eap-app-plain-session-test.paas.osp.consol.de
+  session id:             BADC1YHolI-iE2e2ffGyfU8cODN2pDQ8mnPZDM93
+  session createTime:     Tue Mar 07 06:58:17 UTC 2017
+  session lastAccessTime: Tue Mar 07 07:26:17 UTC 2017
+  Hostname: eap-app-1-3na1l
+  request host: eap-app-plain-session-test.paas.osp.consol.de
+  session id:             BADC1YHolI-iE2e2ffGyfU8cODN2pDQ8mnPZDM93
+  session createTime:     Tue Mar 07 06:58:17 UTC 2017
+  session lastAccessTime: Tue Mar 07 07:26:17 UTC 2017
 ```
