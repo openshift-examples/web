@@ -1,6 +1,5 @@
 # EAP Cluster demo
 
-
 ### Grant view permission to default service accont.
 This ensures that the EAP can query which PODs are still available.
 ```
@@ -21,6 +20,8 @@ oc scale --replicas=2 dc/eap-app
 ```
 
 ### Enforce roundrobin
+For more information: [routes.html#route-specific-annotations](https://docs.openshift.com/container-platform/3.4/architecture/core_concepts/routes.html#route-specific-annotations
+)
 ```
 oc patch \
   -p '{"metadata":{"annotations":{"haproxy.router.openshift.io/balance": "roundrobin"}}}' \
@@ -37,9 +38,11 @@ while true; do \
 ##### Example
 ```
 while true; do  curl -s \
-  -b JSESSIONID=BADC1YHolI-iE2e2ffGyfU8cODN2pDQ8mnPZDM93.eap-app-1-ngu0d \
-  http://eap-app-plain-session-test.paas.osp.consol.de/SimpleWebApp/SessionInfoServlet \
+  -b JSESSIONID=71wPiSDNQm3eapYpC78HQWJUDE1ga35JM93ZVnyK.eap-app-1-3c0f8 \
+  http://eap-app-rbo.paas.osp.consol.de/SimpleWebApp/SessionInfoServlet \
   | grep -E '(Hostname|session)' ; done
+
+http://eap-app-rbo.paas.osp.consol.de/
 
   Hostname: eap-app-1-3na1l
   request host: eap-app-plain-session-test.paas.osp.consol.de
@@ -67,3 +70,5 @@ while true; do  curl -s \
   session createTime:     Tue Mar 07 06:58:17 UTC 2017
   session lastAccessTime: Tue Mar 07 07:26:17 UTC 2017
 ```
+
+![Termin](terminal.gif)
