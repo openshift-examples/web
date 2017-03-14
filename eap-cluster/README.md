@@ -1,12 +1,13 @@
 # EAP Cluster demo
+This example demonstrates session replication on JBoss EAP in OpenShift.
 
-### Grant view permission to default service accont.
-This ensures that the EAP can query which PODs are still available.
+### Grant view permission to default service account
+This ensures that the EAP can query which PODs are still available:
 ```
 oc policy add-role-to-user view system:serviceaccount:$NAMESPACE$:default -n $NAMESPACE$
 ```
 
-### Deploy eap with demo application
+### Deploy JBoss EAP with demo application
 ```
 oc process -n openshift eap70-basic-s2i \
    -v SOURCE_REPOSITORY_URL=https://github.com/rbo/openshift-example.git \
@@ -14,13 +15,13 @@ oc process -n openshift eap70-basic-s2i \
       CONTEXT_DIR=eap-cluster/SimpleWebApp | oc create -f -
 ```
 
-### Scale up deployment to more then 1 pod
+### Scale up deployment to more than 1 pod
 ```
 oc scale --replicas=2 dc/eap-app
 ```
 
 ### Enforce roundrobin
-For more information: [routes.html#route-specific-annotations](https://docs.openshift.com/container-platform/3.4/architecture/core_concepts/routes.html#route-specific-annotations
+This should be default, but we will enforce just in case roundrobin to check the session replication. For more information: [routes.html#route-specific-annotations](https://docs.openshift.com/container-platform/3.4/architecture/core_concepts/routes.html#route-specific-annotations
 )
 ```
 oc patch \
@@ -29,46 +30,39 @@ oc patch \
 ```
 
 ### Check session replication
+2017-03-14: since there is a haproxy stickyness bug in OCP 3.4 (disable_cookies is ignored), we have to delete the HttpOnly line in our temporary cookie cache.
 ```
-while true; do \
- curl -s -b JSESSIONID=xxxx \
- http://..../SimpleWebApp/SessionInfoServlet | grep -E '(Hostname|session)' ; done
+$  while true; do  curl -s -b /tmp/mycookies.jar -c /tmp/mycookies.jar \
+     http://<your-application-route>/SimpleWebApp/SessionInfoServlet | \
+     grep -E '(Hostname|session)' ; sleep 1; \
+     sed -i '/HttpOnly/d' /tmp/mycookies.jar; echo ""; done
 ```
 
 ##### Example
 ```
-while true; do  curl -s \
-  -b JSESSIONID=71wPiSDNQm3eapYpC78HQWJUDE1ga35JM93ZVnyK.eap-app-1-3c0f8 \
-  http://eap-app-rbo.paas.osp.consol.de/SimpleWebApp/SessionInfoServlet \
-  | grep -E '(Hostname|session)' ; done
+$  while true; do  curl -s -b /tmp/mycookies.jar -c /tmp/mycookies.jar \
+>    http://eap-app-zisis.paas.osp.consol.de/SimpleWebApp/SessionInfoServlet | \
+>    grep -E '(Hostname|session)' ; sleep 1; \
+>    sed -i '/HttpOnly/d' /tmp/mycookies.jar; echo ""; done
+Hostname: eap-app-1-n52jz
+session id:             NtXAm9gUvpHvYPmAmprjH0JBAUA3wGgfEHk4Tzvw
+session createTime:     Tue Mar 14 13:52:17 UTC 2017
+session lastAccessTime: Tue Mar 14 13:54:18 UTC 2017
 
-http://eap-app-rbo.paas.osp.consol.de/
+Hostname: eap-app-1-m1qz6
+session id:             NtXAm9gUvpHvYPmAmprjH0JBAUA3wGgfEHk4Tzvw
+session createTime:     Tue Mar 14 13:52:17 UTC 2017
+session lastAccessTime: Tue Mar 14 13:55:29 UTC 2017
 
-  Hostname: eap-app-1-3na1l
-  request host: eap-app-plain-session-test.paas.osp.consol.de
-  session id:             BADC1YHolI-iE2e2ffGyfU8cODN2pDQ8mnPZDM93
-  session createTime:     Tue Mar 07 06:58:17 UTC 2017
-  session lastAccessTime: Tue Mar 07 07:22:33 UTC 2017
-  Hostname: eap-app-1-ngu0d
-  request host: eap-app-plain-session-test.paas.osp.consol.de
-  session id:             BADC1YHolI-iE2e2ffGyfU8cODN2pDQ8mnPZDM93
-  session createTime:     Tue Mar 07 06:58:17 UTC 2017
-  session lastAccessTime: Tue Mar 07 07:26:16 UTC 2017
-  Hostname: eap-app-1-3na1l
-  request host: eap-app-plain-session-test.paas.osp.consol.de
-  session id:             BADC1YHolI-iE2e2ffGyfU8cODN2pDQ8mnPZDM93
-  session createTime:     Tue Mar 07 06:58:17 UTC 2017
-  session lastAccessTime: Tue Mar 07 07:26:17 UTC 2017
-  Hostname: eap-app-1-ngu0d
-  request host: eap-app-plain-session-test.paas.osp.consol.de
-  session id:             BADC1YHolI-iE2e2ffGyfU8cODN2pDQ8mnPZDM93
-  session createTime:     Tue Mar 07 06:58:17 UTC 2017
-  session lastAccessTime: Tue Mar 07 07:26:17 UTC 2017
-  Hostname: eap-app-1-3na1l
-  request host: eap-app-plain-session-test.paas.osp.consol.de
-  session id:             BADC1YHolI-iE2e2ffGyfU8cODN2pDQ8mnPZDM93
-  session createTime:     Tue Mar 07 06:58:17 UTC 2017
-  session lastAccessTime: Tue Mar 07 07:26:17 UTC 2017
+Hostname: eap-app-1-n52jz
+session id:             NtXAm9gUvpHvYPmAmprjH0JBAUA3wGgfEHk4Tzvw
+session createTime:     Tue Mar 14 13:52:17 UTC 2017
+session lastAccessTime: Tue Mar 14 13:55:30 UTC 2017
+
+Hostname: eap-app-1-m1qz6
+session id:             NtXAm9gUvpHvYPmAmprjH0JBAUA3wGgfEHk4Tzvw
+session createTime:     Tue Mar 14 13:52:17 UTC 2017
+session lastAccessTime: Tue Mar 14 13:55:31 UTC 2017
+
+...
 ```
-
-![Termin](terminal.gif)
