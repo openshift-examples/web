@@ -32,18 +32,27 @@ oc patch \
 ### Check session replication
 2017-03-14: since there is a haproxy stickyness bug in OCP 3.4 (disable_cookies is ignored), we have to delete the HttpOnly line in our temporary cookie cache.
 ```
-$  while true; do  curl -s -b /tmp/mycookies.jar -c /tmp/mycookies.jar \
+$  while true; do \
+     curl -s -b /tmp/mycookies.jar -c /tmp/mycookies.jar \
      http://<your-application-route>/SimpleWebApp/SessionInfoServlet | \
-     grep -E '(Hostname|session)' ; sleep 1; \
-     sed -i '/HttpOnly/d' /tmp/mycookies.jar; echo ""; done
+     grep -E '(Hostname|session)'; \
+     sleep 1; \
+     sed -i '/HttpOnly/d' /tmp/mycookies.jar; \
+     echo ""; \
+     done
 ```
 
 ##### Example
+Expected behaviour: session ID and creation time remains the same, hostname changes.
 ```
-$  while true; do  curl -s -b /tmp/mycookies.jar -c /tmp/mycookies.jar \
+$  while true; do \
+>    curl -s -b /tmp/mycookies.jar -c /tmp/mycookies.jar \
 >    http://eap-app-zisis.paas.osp.consol.de/SimpleWebApp/SessionInfoServlet | \
->    grep -E '(Hostname|session)' ; sleep 1; \
->    sed -i '/HttpOnly/d' /tmp/mycookies.jar; echo ""; done
+>    grep -E '(Hostname|session)'; \
+>    sleep 1; \
+>    sed -i '/HttpOnly/d' /tmp/mycookies.jar; \
+>    echo ""; \
+>    done
 Hostname: eap-app-1-n52jz
 session id:             NtXAm9gUvpHvYPmAmprjH0JBAUA3wGgfEHk4Tzvw
 session createTime:     Tue Mar 14 13:52:17 UTC 2017
