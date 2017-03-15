@@ -1,0 +1,15 @@
+# Don't forget:  chcon -Rt svirt_sandbox_file_t /pv/hostpath-example
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  creationTimestamp: null
+  name: hostpath-example
+spec:
+  accessModes:
+  - ReadWriteOnce
+  - ReadWriteMany
+  capacity:
+    storage: 100Mi
+  hostPath:
+    path: /pv/hostpath-example
+  persistentVolumeReclaimPolicy: Recycle
