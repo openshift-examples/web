@@ -4,7 +4,7 @@ A quick-n-diry example to put the openshift audit log into elasticsearch.
 
 -  Edit configmap logging-fluentd ```oc edit configmap/logging-fluentd```
   - Adjust ```fluent.conf```, add ```configs.d/user/input-auditlog.conf``` after ```@include configs.d/openshift/input-post-*.conf```
-  - Add ```input-auditlog.conf``` - don't forget to adjust the audit log filename, default: /auditlog/auditlog.log [input-auditlog.conf]() 
+  - Add  [input-auditlog.conf](input-auditlog.conf) to configmap - don't forget to adjust the audit log filename, default: /auditlog/auditlog.log 
 
 ## Screenhosts
 ### Whats happen at namespace rbo?
@@ -38,7 +38,7 @@ oc volume daemonset/logging-fluentd --add --mount-path=/auditlog --name=auditlog
 ```
 oc cluster down
 ```
-#####  Adjust master config, write audit log pv
+#####  Adjust master config, write audit log to audit pv from fluent
 In my case:
 
 ```
