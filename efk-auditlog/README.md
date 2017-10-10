@@ -63,3 +63,6 @@ oc cluster up \
 ![](screenshots/indicies_setup.png)
 
 
+## Better access to elasticsearch with Kopf
+
+[https://blog.openshift.com/managing-elasticsearch-with-kopf-in-openshift-origin-3-6/](https://blog.openshift.com/managing-elasticsearch-with-kopf-in-openshift-origin-3-6/)
