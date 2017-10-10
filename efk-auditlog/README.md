@@ -58,3 +58,8 @@ oc cluster up \
  --logging=true
 ```
 
+##### Adjust kibana to use the new .operations.audit.* indicies
+
+![](screenshots/indicies_setup.png)
+
+
