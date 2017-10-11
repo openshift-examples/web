@@ -5,6 +5,8 @@ A quick-n-diry example to put the openshift audit log into elasticsearch.
 -  Edit configmap logging-fluentd ```oc edit configmap/logging-fluentd```
   - Adjust ```fluent.conf```, add ```configs.d/user/input-auditlog.conf``` after ```@include configs.d/openshift/input-post-*.conf```
   - Add  [input-auditlog.conf](input-auditlog.conf) to configmap - don't forget to adjust the audit log filename, default: /auditlog/auditlog.log 
+- Adjust kibana to use the new .operations.audit.* indicies ![](screenshots/indicies_setup.png)
+
 
 ## Screenhosts
 ### Whats happen at namespace rbo?
@@ -58,9 +60,7 @@ oc cluster up \
  --logging=true
 ```
 
-##### Adjust kibana to use the new .operations.audit.* indicies
 
-![](screenshots/indicies_setup.png)
 
 
 ## Better access to elasticsearch with Kopf
