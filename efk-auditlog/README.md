@@ -1,37 +1,40 @@
 # Put auditlog into elasticsearch
 A quick-n-diry example to put the openshift audit log into elasticsearch.
-## Installation
+## Installation with OpenShift on RHEL
 
--  Edit configmap logging-fluentd ```oc edit configmap/logging-fluentd```
-  - Adjust ```fluent.conf```, add ```@include configs.d/user/input-auditlog.conf``` after ```@include configs.d/openshift/input-post-*.conf```
-  - Add  [input-auditlog.conf](input-auditlog.conf) to configmap - don't forget to adjust the audit log filename, default: /auditlog/auditlog.log
+- Add to ```/etc/origin/master/master-config.yaml```
+    
+    ```
+    auditConfig:
+      auditFilePath: /var/log/audit-ocp.log
+      enabled: true
+    ```
+    
+    For example:
+    
+    ```
+    $ grep -A7 ^auditConfig /etc/origin/master/master-config.yaml
+    auditConfig:
+      auditFilePath: /var/log/audit-ocp.log
+      enabled: true
+      maximumFileRetentionDays: 14
+      maximumFileSizeMegabytes: 500
+      maximumRetainedFiles: 5
+    authConfig:
+      requestHeader:
+    ```
+
+-  Edit configmap logging-fluentd ```oc edit configmap/logging-fluentd -n logging```
+  - Adjust fluent.conf after ```@include configs.d/openshift/input-post-*.conf```, add:
+      
+        ```
+        @include configs.d/user/input-auditlog.conf
+       
+        ```
+
+  - Add  [input-auditlog.conf](input-auditlog.conf) to configmap. Do not forget to adjust the audit log filename, default: /var/log/audit-ocp.log
+  - Restart all fluent pods: ```oc delete pods -l component=fluentd -n logging```
 - Adjust kibana to use the new .operations.audit.* indicies ![](screenshots/indicies_setup.png)
-
-## Example for OpenShift on RHEL
-### master-config.yml
-
-Add to /etc/origin/master/master-config.yaml
-
-```
-auditConfig:
-  auditFilePath: /var/log/audit-ocp.log
-  enabled: true
-```
-
-For example:
-
-```
-$ grep -A7 ^auditConfig /etc/origin/master/master-config.yaml
-auditConfig:
-  auditFilePath: /var/log/audit-ocp.log
-  enabled: true
-  maximumFileRetentionDays: 14
-  maximumFileSizeMegabytes: 500
-  maximumRetainedFiles: 5
-authConfig:
-  requestHeader:
-```
-
 
 
 ## Screenhosts
