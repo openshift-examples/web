@@ -3,9 +3,35 @@ A quick-n-diry example to put the openshift audit log into elasticsearch.
 ## Installation
 
 -  Edit configmap logging-fluentd ```oc edit configmap/logging-fluentd```
-  - Adjust ```fluent.conf```, add ```configs.d/user/input-auditlog.conf``` after ```@include configs.d/openshift/input-post-*.conf```
-  - Add  [input-auditlog.conf](input-auditlog.conf) to configmap - don't forget to adjust the audit log filename, default: /auditlog/auditlog.log 
+  - Adjust ```fluent.conf```, add ```@include configs.d/user/input-auditlog.conf``` after ```@include configs.d/openshift/input-post-*.conf```
+  - Add  [input-auditlog.conf](input-auditlog.conf) to configmap - don't forget to adjust the audit log filename, default: /auditlog/auditlog.log
 - Adjust kibana to use the new .operations.audit.* indicies ![](screenshots/indicies_setup.png)
+
+## Example for OpenShift on RHEL
+### master-config.yml
+
+Add to /etc/origin/master/master-config.yaml
+
+```
+auditConfig:
+  auditFilePath: /var/log/audit-ocp.log
+  enabled: true
+```
+
+For example:
+
+```
+$ grep -A7 ^auditConfig /etc/origin/master/master-config.yaml
+auditConfig:
+  auditFilePath: /var/log/audit-ocp.log
+  enabled: true
+  maximumFileRetentionDays: 14
+  maximumFileSizeMegabytes: 500
+  maximumRetainedFiles: 5
+authConfig:
+  requestHeader:
+```
+
 
 
 ## Screenhosts
@@ -15,11 +41,26 @@ A quick-n-diry example to put the openshift audit log into elasticsearch.
 ### Whats happen with request 604e...
 ![](screenshots/example2.png)
 
+### How may requests gets every master
+![](screenshots/example3.png)
+
 
 ### Info for oc cluster up users
 Start oc cluster up with (mac os)
 
-##### Add Local ip adress 
+## Know issues
+- Ignores timezone in auditlog file (It is recommended to use UTC.)
+    ```
+    UTC timestamp : 2017-10-12T06:55:59.496790107Z
+    CET timestamp : 2017-10-12T08:56:52.795808328+02:00
+    ```
+- Container installation is not tested
+- ~~Missing hostname in document~~ - fixed
+- Adjust & test curator
+- Cluster update?
+
+
+##### Add Local ip adress
 ```sudo ifconfig lo0 alias 192.168.37.1```
 ##### Start OpenShift
 ```
