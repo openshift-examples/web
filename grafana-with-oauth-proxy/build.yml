@@ -1,0 +1,35 @@
+---
+apiVersion: v1
+kind: ImageStream
+metadata:
+  labels:
+    app: grafana
+  name: grafana
+---
+apiVersion: v1
+kind: BuildConfig
+metadata:
+  labels:
+    app: grafana
+  name: grafana
+spec:
+  failedBuildsHistoryLimit: 5
+  nodeSelector: null
+  output:
+    to:
+      kind: ImageStreamTag
+      name: grafana:latest
+  postCommit: {}
+  resources: {}
+  runPolicy: Serial
+  source:
+    git:
+      ref: master
+      uri: https://github.com/rbo/grafana-docker.git
+    type: Git
+  strategy:
+    dockerStrategy: {}
+    type: Docker
+  successfulBuildsHistoryLimit: 5
+  triggers:
+  - type: ConfigChange
