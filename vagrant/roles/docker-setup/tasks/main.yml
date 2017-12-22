@@ -1,0 +1,39 @@
+---
+- name: install docker
+  yum:
+    name: docker
+    state: latest
+
+- name: configure docker 
+  template: 
+    src: sysconfig-docker.j2 
+    dest: /etc/sysconfig/docker
+  notify: "restart docker"
+
+- name: configure docker storage device
+  template: src=docker-storage-setup.j2 dest=/etc/sysconfig/docker-storage-setup
+  when: ( extra_docker_device is defined )
+
+- name: setup docker storage device
+  shell: docker-storage-setup && touch /.docker-storage-cfg
+  args:
+    creates: /.docker-storage-cfg
+  when: ( extra_docker_device is defined )
+
+- name: reset and start docker
+  shell: systemctl stop docker && rm -rf /var/lib/docker/* && systemctl restart docker && touch /.docker-cfg
+  args:
+    creates: /.docker-cfg
+
+- name: enable docker
+  service:
+    name: docker
+    enabled: yes
+
+- name: resize docker lv
+  lvol:
+    vg: docker-vg
+    lv: docker-pool
+    size: +100%FREE
+  when: ( extra_docker_device is defined )
+

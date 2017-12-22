@@ -1,0 +1,66 @@
+---
+- hosts: all
+  become: true
+  gather_facts: false
+  pre_tasks:
+  - name: yum clean all
+    command: "yum clean all"
+
+  - name: enable epel & openshift-release
+    yum:
+      name: "{{ item }}"
+      state: installed
+    with_items:
+      - https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+      - centos-release-openshift-origin37
+
+  - name: disable epel by default
+    shell: 'sed -i -e "s/^enabled=1/enabled=0/" /etc/yum.repos.d/epel.repo'
+
+  - name: install needed packages from epel
+    yum:
+      name: "{{ item }}"
+      enablerepo: epel
+      state: latest
+    with_items:
+      - ansible
+      - pyOpenSSL
+      - python-click
+
+  - name: install needed packages
+    yum:
+      name: "{{ item }}"
+      state: latest
+    with_items:
+      - wget
+      - git
+      - net-tools
+      - bind-utils
+      - iptables-services
+      - bridge-utils
+      - bash-completion
+      - kexec-tools
+      - sos
+      - psacct
+      - atomic-openshift-utils
+      - ansible
+      - nmap-ncat
+      - strace
+      - telnet
+      - lsof
+      - vim
+      - tmux
+      - patch
+      - yum-utils
+      # - atomic-openshift-excluder
+      # - atomic-openshift-docker-excluder
+      - sysstat
+    tags: install_pkg
+
+  - name: update all packages
+    yum:
+      name: '*'
+      state: latest
+
+  roles:
+    - { role: docker-setup, extra_docker_device: "/dev/sdb" }
