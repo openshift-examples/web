@@ -4,7 +4,8 @@
 | ------------- | ------------- |
 | EAP / JBoss Clustering (Session replication)  | See [eap-cluster/README.md](eap-cluster/README.md)  |
 | Autoscaling & SpringBoot | See [autoscaling/README.md](autoscaling/README.md)  |
-| initContainers - DNS & TCP Check | [initContainers.md.md](initContainers.md)  |
+| initContainers - DNS & TCP Check | [initContainers.md](initContainers.md)  |
+| Build (chaining build...) | [build/README.md](build/README.md)  |
 
 # Run OCP on your laptop
 ```
