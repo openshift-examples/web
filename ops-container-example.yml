@@ -1,0 +1,61 @@
+# 
+# oc new-project ops-container
+# oc adm policy add-scc-to-user privileged system:serviceaccount:ops-container:default
+# oc patch namespace ops-container -p '{"metadata":{"annotations":{"openshift.io/node-selector":""}}}'
+# 
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: ops-container
+spec:
+  selector:
+    matchLabels:
+      name: ops-container
+  template:
+    metadata:
+      labels:
+        name: ops-container
+    spec:
+      hostPID: true
+      hostIPC: true
+      hostNetwork: true
+      hostname: ops
+      # nodeSelector:
+      #   kubernetes.io/hostname: node3.novalocal
+      # nodeName: node3.novalocal
+      volumes:
+        - name: host
+          hostPath:
+            path: /
+        - name: run
+          hostPath:
+            path: /run
+        - name: log
+          hostPath:
+            path: /var/log
+        - name: localtime
+          hostPath:
+            path: /etc/localtime
+      containers:
+        - name: rhel
+          image: rhel7/rhel-tools
+          command: [ "/bin/sh", "-c", "while true ; do date; sleep 1; done;" ]
+          securityContext:
+            privileged: true
+          env:
+            - name: HOST
+              value: "/host"
+            - name: NAME
+              value: "ops"
+            - name: IMAGE
+              value: "rhel/rhel-tools"
+          volumeMounts:
+            - name: host
+              mountPath: /host
+            - name: run
+              mountPath: /run
+            - name: log
+              mountPath: /var/log
+            - name: localtime
+              mountPath: /etc/localtime
