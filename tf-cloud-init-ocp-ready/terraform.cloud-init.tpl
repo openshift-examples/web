@@ -8,6 +8,17 @@ rh_subscription:
   disable-repo: [ '*' ]
   enable-repo: [ 'rhel-7-server-extras-rpms', 'rhel-7-server-rpms', 'rhel-7-server-extras-rpms', 'rhel-7-server-ose-3.11-rpms', 'rhel-7-fast-datapath-rpms', 'rhel-7-server-ansible-2.6-rpms' ]
 
+# set the locale
+locale: en_US.UTF-8
+ 
+# timezone: set the timezone for this instance
+timezone: UTC
+
+# Override ntp with chrony configuration on Ubuntu
+ntp:
+  enabled: true
+  ntp_client: chrony  # Uses cloud-init default chrony configuration
+
 packages:
    - wget
    - git
