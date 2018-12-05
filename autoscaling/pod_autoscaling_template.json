@@ -198,13 +198,16 @@
                                 "image": "${APPLICATION_NAME}",
                                 "imagePullPolicy": "Always",
                                 "readinessProbe": {
-                                    "exec": {
-                                        "command": [
-                                            "/bin/bash",
-                                            "-c",
-                                            "curl -s -u ${JWS_ADMIN_USERNAME}:${JWS_ADMIN_PASSWORD} 'http://localhost:8080/manager/jmxproxy/?get=Catalina%3Atype%3DServer\u0026att=stateName' |grep -iq 'stateName *= *STARTED'"
-                                        ]
-                                    }
+                                    "failureThreshold": 3,
+                                    "httpGet": {
+                                        "path": "/",
+                                        "port": 8080,
+                                        "scheme": "HTTP"
+                                    },
+                                    "initialDelaySeconds": 25,
+                                    "periodSeconds": 10,
+                                    "successThreshold": 1,
+                                    "timeoutSeconds": 1
                                 },
                                 "ports": [
                                     {
@@ -236,7 +239,7 @@
         },
         {
           "kind": "HorizontalPodAutoscaler",
-          "apiVersion": "extensions/v1beta1",
+          "apiVersion": "autoscaling/v1",
           "metadata": {
               "name": "${APPLICATION_NAME}",
               "labels": {
@@ -244,7 +247,7 @@
               }
           },
           "spec": {
-              "scaleRef": {
+              "scaleTargetRef": {
                   "kind": "DeploymentConfig",
                   "name": "${APPLICATION_NAME}",
                   "apiVersion": "v1",
@@ -253,7 +256,7 @@
               "minReplicas": "${HorizontalPodAutoscaler_MIN_REPLICAS}",
               "maxReplicas": "${HorizontalPodAutoscaler_MAX_REPLICAS}",
               "cpuUtilization": {
-                  "targetPercentage": "${HorizontalPodAutoscaler_CPU_TARGET_PERCENTAGE}"
+                  "targetCPUUtilizationPercentage": "${HorizontalPodAutoscaler_CPU_TARGET_PERCENTAGE}"
               }
           }
       }
