@@ -52,7 +52,7 @@ output "cloud-init" {
 
 resource "openstack_compute_instance_v2" "cloud-init" {
   name = "cloud-init-example"
-  user_data     = "${data.template_file.script.rendered}"
+  user_data     = "${data.template_file.script.rendered}\nhostname: cloud-init-example\nfqdn: cloud-init-example"
   flavor_name = "m1.small"
   key_pair = "default"
   security_groups = ["default"]
