@@ -28,3 +28,9 @@ oc get secret -n openshift-web-console webconsole-serving-cert -o json | jq -r '
 # Can't use openssl x509, x509 do not support bundles
 openssl crl2pkcs7 -nocrl -certfile foo.pem | openssl pkcs7 -print_certs  -noout
 ```
+
+## Check certificate from master-api
+
+```
+echo -n | openssl s_client -connect q.bohne.io:8443 -servername q.bohne.io 2>/dev/null | openssl x509 -noout -subject -issuer
+```
