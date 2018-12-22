@@ -5,8 +5,9 @@ alias etcdctl="etcdctl --cert-file /etc/etcd/peer.crt  --key-file /etc/etcd/peer
 alias curl="curl --cacert /etc/etcd/ca.crt --cert /etc/etcd/peer.crt   --key /etc/etcd/peer.key"
 </pre>
 
-Usefull etcd stats: <code>curl https://$IP$:2379/v2/stats/self |  python -m json.tool<code>
-
+Usefull etcd stats: 
+ - cluster state ```curl https://$IP$:2379/v2/stats/self | python -m json.tool```
+ - health check: ```curl -L https://$IP$:2379/health | python -m json.tool```
 
 ## On etcd ca server (first etcd node)
 ### Prepare first etcd node
