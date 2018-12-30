@@ -1,0 +1,23 @@
+# 
+#   oc create serviceaccount hostaccess
+#   oc adm policy add-scc-to-user hostaccess -z hostaccess
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: rhel-tools
+spec:
+#  serviceAccountName: hostaccess
+  containers:
+    - name: rhel-tools
+      image: rhel7/rhel-tools
+      command: [ "/bin/sh", "-c", "while true ; do date; sleep 1; done;" ]
+      volumeMounts:
+        - name: host
+          mountPath: /host
+  restartPolicy: Never
+  volumes:
+    - name: host
+      hostPath:
+        path: /
+  
