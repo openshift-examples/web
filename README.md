@@ -39,3 +39,7 @@ echo -n | openssl s_client -connect q.bohne.io:8443 -servername q.bohne.io 2>/de
 ```
 find /etc/origin/master/ /etc/origin/node -name "*.crt" -printf '%p - ' -exec openssl x509 -noout -subject -in {} \;
 ```
+
+# Stargazers over time
+
+[![Stargazers over time](https://starcharts.herokuapp.com/rbo/openshift-examples.svg)](https://starcharts.herokuapp.com/rbo/openshift-examples)
