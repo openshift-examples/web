@@ -1,6 +1,7 @@
 #!/bin/sh
 echo -e "HTTP/1.1 200 OK\r"
 echo -e "Content-Type: text/plain\r"
+echo -e "X-ENV-HOSTNAME: $HOSTNAME\r"
 echo -e "\r"
 
 echo "# Basic POD Informations"
