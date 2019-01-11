@@ -21,6 +21,11 @@ curl -O -L https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64
 chmod +x jq-linux64
 sudo mv jq-linux64 /usr/local/bin/
 ```
+### jq examples
+#### PVC CSV
+```
+oc get pvc --all-namespaces -o json | jq -r  ' .items[] |  [.metadata.namespace,.metadata.name,.status.capacity.storage|tostring]|@csv'
+```
 
 ## Print certificate from secret
 ```
