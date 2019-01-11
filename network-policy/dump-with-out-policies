@@ -1,0 +1,112 @@
+ priority=400,ip,in_port=tun0,nw_src=10.30.3.1 actions=goto_table:30
+ priority=300,ct_state=-trk,ip actions=ct(table=0)
+ priority=300,ip,in_port=tun0,nw_src=10.30.3.0/24,nw_dst=10.30.0.0/16 actions=goto_table:25
+ priority=250,ip,in_port=tun0,nw_dst=224.0.0.0/4 actions=drop
+ priority=200,arp,in_port=vxlan0,arp_spa=10.30.0.0/16,arp_tpa=10.30.3.0/24 actions=move:NXM_NX_TUN_ID[0..31]->NXM_NX_REG0[],goto_table:10
+ priority=200,ip,in_port=vxlan0,nw_src=10.30.0.0/16 actions=move:NXM_NX_TUN_ID[0..31]->NXM_NX_REG0[],goto_table:10
+ priority=200,ip,in_port=vxlan0,nw_dst=10.30.0.0/16 actions=move:NXM_NX_TUN_ID[0..31]->NXM_NX_REG0[],goto_table:10
+ priority=200,arp,in_port=tun0,arp_spa=10.30.3.1,arp_tpa=10.30.0.0/16 actions=goto_table:30
+ priority=200,ip,in_port=tun0 actions=goto_table:30
+ priority=150,in_port=vxlan0 actions=drop
+ priority=150,in_port=tun0 actions=drop
+ priority=100,arp actions=goto_table:20
+ priority=100,ip actions=goto_table:20
+ priority=0 actions=drop
+ cookie=0xd685fff4, table=10, priority=100,tun_src=192.168.1.104 actions=goto_table:30
+ cookie=0x22f1ebcf, table=10, priority=100,tun_src=192.168.1.111 actions=goto_table:30
+ cookie=0x64a1a6c, table=10, priority=100,tun_src=192.168.1.122 actions=goto_table:30
+ table=10, priority=0 actions=drop
+ table=20, priority=100,arp,in_port=vethc4230d4b,arp_spa=10.30.3.4,arp_sha=00:00:0a:1e:03:04/00:00:ff:ff:ff:ff actions=load:0->NXM_NX_REG0[],goto_table:21
+ table=20, priority=100,arp,in_port=vethfeb2be9c,arp_spa=10.30.3.5,arp_sha=00:00:0a:1e:03:05/00:00:ff:ff:ff:ff actions=load:0x8e7a3c->NXM_NX_REG0[],goto_table:21
+ table=20, priority=100,arp,in_port=vethcf170fc3,arp_spa=10.30.3.25,arp_sha=00:00:0a:1e:03:19/00:00:ff:ff:ff:ff actions=load:0x96e47d->NXM_NX_REG0[],goto_table:21
+ table=20, priority=100,arp,in_port=veth8e4679da,arp_spa=10.30.3.53,arp_sha=00:00:0a:1e:03:35/00:00:ff:ff:ff:ff actions=load:0x3e7d28->NXM_NX_REG0[],goto_table:21
+ table=20, priority=100,arp,in_port=veth4a4368bf,arp_spa=10.30.3.54,arp_sha=00:00:0a:1e:03:36/00:00:ff:ff:ff:ff actions=load:0x3e7d28->NXM_NX_REG0[],goto_table:21
+ table=20, priority=100,arp,in_port=veth33b9b3bb,arp_spa=10.30.3.55,arp_sha=00:00:0a:1e:03:37/00:00:ff:ff:ff:ff actions=load:0xeb5fcb->NXM_NX_REG0[],goto_table:21
+ table=20, priority=100,arp,in_port=vethd6c18669,arp_spa=10.30.3.56,arp_sha=00:00:0a:1e:03:38/00:00:ff:ff:ff:ff actions=load:0xeb5fcb->NXM_NX_REG0[],goto_table:21
+ table=20, priority=100,ip,in_port=vethc4230d4b,nw_src=10.30.3.4 actions=load:0->NXM_NX_REG0[],goto_table:21
+ table=20, priority=100,ip,in_port=vethfeb2be9c,nw_src=10.30.3.5 actions=load:0x8e7a3c->NXM_NX_REG0[],goto_table:21
+ table=20, priority=100,ip,in_port=vethcf170fc3,nw_src=10.30.3.25 actions=load:0x96e47d->NXM_NX_REG0[],goto_table:21
+ table=20, priority=100,ip,in_port=veth8e4679da,nw_src=10.30.3.53 actions=load:0x3e7d28->NXM_NX_REG0[],goto_table:21
+ table=20, priority=100,ip,in_port=veth4a4368bf,nw_src=10.30.3.54 actions=load:0x3e7d28->NXM_NX_REG0[],goto_table:21
+ table=20, priority=100,ip,in_port=veth33b9b3bb,nw_src=10.30.3.55 actions=load:0xeb5fcb->NXM_NX_REG0[],goto_table:21
+ table=20, priority=100,ip,in_port=vethd6c18669,nw_src=10.30.3.56 actions=load:0xeb5fcb->NXM_NX_REG0[],goto_table:21
+ table=20, priority=0 actions=drop
+ table=21, priority=200,ip,nw_dst=10.30.0.0/16 actions=ct(commit,table=30)
+ table=21, priority=0 actions=goto_table:30
+ table=25, priority=100,ip,nw_src=10.30.3.4 actions=load:0->NXM_NX_REG0[],goto_table:30
+ table=25, priority=100,ip,nw_src=10.30.3.5 actions=load:0x8e7a3c->NXM_NX_REG0[],goto_table:30
+ table=25, priority=100,ip,nw_src=10.30.3.25 actions=load:0x96e47d->NXM_NX_REG0[],goto_table:30
+ table=25, priority=100,ip,nw_src=10.30.3.53 actions=load:0x3e7d28->NXM_NX_REG0[],goto_table:30
+ table=25, priority=100,ip,nw_src=10.30.3.54 actions=load:0x3e7d28->NXM_NX_REG0[],goto_table:30
+ table=25, priority=100,ip,nw_src=10.30.3.55 actions=load:0xeb5fcb->NXM_NX_REG0[],goto_table:30
+ table=25, priority=100,ip,nw_src=10.30.3.56 actions=load:0xeb5fcb->NXM_NX_REG0[],goto_table:30
+ table=25, priority=0 actions=drop
+ table=30, priority=300,arp,arp_tpa=10.30.3.1 actions=output:tun0
+ table=30, priority=300,ip,nw_dst=10.30.3.1 actions=output:tun0
+ table=30, priority=300,ct_state=+rpl,ip,nw_dst=10.30.3.0/24 actions=ct(table=70,nat)
+ table=30, priority=200,arp,arp_tpa=10.30.3.0/24 actions=goto_table:40
+ table=30, priority=200,ip,nw_dst=10.30.3.0/24 actions=goto_table:70
+ table=30, priority=100,arp,arp_tpa=10.30.0.0/16 actions=goto_table:50
+ table=30, priority=100,ip,nw_dst=172.30.0.0/16 actions=goto_table:60
+ table=30, priority=100,ip,nw_dst=10.30.0.0/16 actions=goto_table:90
+ table=30, priority=50,ip,in_port=vxlan0,nw_dst=224.0.0.0/4 actions=goto_table:120
+ table=30, priority=25,ip,nw_dst=224.0.0.0/4 actions=goto_table:110
+ table=30, priority=0,ip actions=goto_table:100
+ table=30, priority=0,arp actions=drop
+ table=40, priority=100,arp,arp_tpa=10.30.3.4 actions=output:vethc4230d4b
+ table=40, priority=100,arp,arp_tpa=10.30.3.5 actions=output:vethfeb2be9c
+ table=40, priority=100,arp,arp_tpa=10.30.3.25 actions=output:vethcf170fc3
+ table=40, priority=100,arp,arp_tpa=10.30.3.53 actions=output:veth8e4679da
+ table=40, priority=100,arp,arp_tpa=10.30.3.54 actions=output:veth4a4368bf
+ table=40, priority=100,arp,arp_tpa=10.30.3.55 actions=output:veth33b9b3bb
+ table=40, priority=100,arp,arp_tpa=10.30.3.56 actions=output:vethd6c18669
+ table=40, priority=0 actions=drop
+ cookie=0xd685fff4, table=50, priority=100,arp,arp_tpa=10.30.2.0/24 actions=move:NXM_NX_REG0[]->NXM_NX_TUN_ID[0..31],set_field:192.168.1.104->tun_dst,output:vxlan0
+ cookie=0x22f1ebcf, table=50, priority=100,arp,arp_tpa=10.30.1.0/24 actions=move:NXM_NX_REG0[]->NXM_NX_TUN_ID[0..31],set_field:192.168.1.111->tun_dst,output:vxlan0
+ cookie=0x64a1a6c, table=50, priority=100,arp,arp_tpa=10.30.0.0/24 actions=move:NXM_NX_REG0[]->NXM_NX_TUN_ID[0..31],set_field:192.168.1.122->tun_dst,output:vxlan0
+ table=50, priority=0 actions=drop
+ table=60, priority=200 actions=output:tun0
+ table=60, priority=0 actions=drop
+ table=70, priority=100,ip,nw_dst=10.30.3.4 actions=load:0->NXM_NX_REG1[],load:0x3->NXM_NX_REG2[],goto_table:80
+ table=70, priority=100,ip,nw_dst=10.30.3.5 actions=load:0x8e7a3c->NXM_NX_REG1[],load:0x4->NXM_NX_REG2[],goto_table:80
+ table=70, priority=100,ip,nw_dst=10.30.3.25 actions=load:0x96e47d->NXM_NX_REG1[],load:0x18->NXM_NX_REG2[],goto_table:80
+ table=70, priority=100,ip,nw_dst=10.30.3.53 actions=load:0x3e7d28->NXM_NX_REG1[],load:0x34->NXM_NX_REG2[],goto_table:80
+ table=70, priority=100,ip,nw_dst=10.30.3.54 actions=load:0x3e7d28->NXM_NX_REG1[],load:0x35->NXM_NX_REG2[],goto_table:80
+ table=70, priority=100,ip,nw_dst=10.30.3.55 actions=load:0xeb5fcb->NXM_NX_REG1[],load:0x36->NXM_NX_REG2[],goto_table:80
+ table=70, priority=100,ip,nw_dst=10.30.3.56 actions=load:0xeb5fcb->NXM_NX_REG1[],load:0x37->NXM_NX_REG2[],goto_table:80
+ table=70, priority=0 actions=drop
+ table=80, priority=300,ip,nw_src=10.30.3.1 actions=output:NXM_NX_REG2[]
+ table=80, priority=200,ct_state=+rpl,ip actions=output:NXM_NX_REG2[]
+ table=80, priority=50,reg1=0 actions=output:NXM_NX_REG2[]
+ table=80, priority=50,reg1=9337404 actions=output:NXM_NX_REG2[]
+ table=80, priority=50,reg1=10389750 actions=output:NXM_NX_REG2[]
+ table=80, priority=50,reg1=5199436 actions=output:NXM_NX_REG2[]
+ table=80, priority=50,reg1=1678492 actions=output:NXM_NX_REG2[]
+ table=80, priority=50,reg1=928986 actions=output:NXM_NX_REG2[]
+ table=80, priority=50,reg1=9888893 actions=output:NXM_NX_REG2[]
+ table=80, priority=50,reg1=1238434 actions=output:NXM_NX_REG2[]
+ table=80, priority=50,reg1=15469667 actions=output:NXM_NX_REG2[]
+ table=80, priority=50,reg1=14470730 actions=output:NXM_NX_REG2[]
+ table=80, priority=50,reg1=12812048 actions=output:NXM_NX_REG2[]
+ table=80, priority=50,reg1=10497171 actions=output:NXM_NX_REG2[]
+ table=80, priority=50,reg1=12273895 actions=output:NXM_NX_REG2[]
+ table=80, priority=50,reg1=13758422 actions=output:NXM_NX_REG2[]
+ table=80, priority=50,reg1=13388721 actions=output:NXM_NX_REG2[]
+ table=80, priority=50,reg1=3437376 actions=output:NXM_NX_REG2[]
+ table=80, priority=50,reg1=14269033 actions=output:NXM_NX_REG2[]
+ table=80, priority=50,reg1=4095272 actions=output:NXM_NX_REG2[]
+ table=80, priority=50,reg1=15425483 actions=output:NXM_NX_REG2[]
+ table=80, priority=0 actions=drop
+ cookie=0xd685fff4, table=90, priority=100,ip,nw_dst=10.30.2.0/24 actions=move:NXM_NX_REG0[]->NXM_NX_TUN_ID[0..31],set_field:192.168.1.104->tun_dst,output:vxlan0
+ cookie=0x22f1ebcf, table=90, priority=100,ip,nw_dst=10.30.1.0/24 actions=move:NXM_NX_REG0[]->NXM_NX_TUN_ID[0..31],set_field:192.168.1.111->tun_dst,output:vxlan0
+ cookie=0x64a1a6c, table=90, priority=100,ip,nw_dst=10.30.0.0/24 actions=move:NXM_NX_REG0[]->NXM_NX_TUN_ID[0..31],set_field:192.168.1.122->tun_dst,output:vxlan0
+ table=90, priority=0 actions=drop
+ table=100, priority=300,udp,tp_dst=4789 actions=drop
+ table=100, priority=200,tcp,nw_dst=192.168.1.114,tp_dst=53 actions=output:tun0
+ table=100, priority=200,udp,nw_dst=192.168.1.114,tp_dst=53 actions=output:tun0
+ table=100, priority=0 actions=goto_table:101
+ table=101, priority=0 actions=output:tun0
+ table=110, priority=0 actions=drop
+ table=111, priority=100 actions=move:NXM_NX_REG0[]->NXM_NX_TUN_ID[0..31],set_field:192.168.1.104->tun_dst,output:vxlan0,set_field:192.168.1.111->tun_dst,output:vxlan0,set_field:192.168.1.122->tun_dst,output:vxlan0,goto_table:120
+ table=120, priority=0 actions=drop
+ table=253, actions=note:02.07.00.00.00.00
