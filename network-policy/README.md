@@ -78,7 +78,7 @@ $ diff -Nuar node1.case0.OpenFlow13 node1.case1.OpenFlow13
 
 
 
-### 2) Simpon allow from default namespaces, because of router
+### 2) Simpson allow from default namespaces, because of router
 
 ```
 $ oc create -f allow-from-default-namespace.yml -n simpson
