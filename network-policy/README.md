@@ -25,7 +25,7 @@ oc expose svc/marge
 ## Run connection overview
 
 `./run-tmux <domain>`
-![demo overview](images/web/without-policies.png)
+![demo overview](images/without-policies.png)
 
 
 ## Play arround..
