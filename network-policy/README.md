@@ -53,6 +53,7 @@ patty-1-vxbfk   1/1       Running   0          2h        10.30.2.85   node0     
 selma-1-929sj   1/1       Running   0          2h        10.30.3.59   node1     <none>
 selma-1-h4hh2   1/1       Running   0          2h        10.30.2.89   node0     <none>
 ```
+![Clean](images/without-policies.png)
 
 ### 1) Simpson deny all
 
@@ -118,7 +119,7 @@ $ diff -Nuar node1.case2.OpenFlow13 node1.case3.OpenFlow13
 
 ![Case 3](images/case3.png)
 
-### 4) Selma and petty wants to talk with marge!
+### 4) Selma and Patty want's to talk with Marge!
 
 ```
 $ oc label namespace/bouvier name=bouvier
@@ -154,8 +155,8 @@ oc delete project simpson bouvier
 | Convert DEC -> HEX        | `printf "0x%x\n" 13388721` |
 | Dump OpenFlow rules       | `oc rsh -n openshift-sdn PODNAME ovs-ofctl -O OpenFlow13 --no-stats dump-flows br0` |
 | List bridges and ports    | `oc rsh -n openshift-sdn PODNAME ovs-vsctl show` |
-| Convert HEX to DEC in OpenFlow dump | `perl -pe 's/(reg0|reg1)=([^ ,]+)/sprintf("%s=%d",$1, hex($2))/eg'`
-| Clean stats in OpenFlow dump | `sed -E 's!(duration|n_packets|n_bytes)=[^ ]+!\1=CLEANED!g'` <br> please consider: `--no-stats` |
+| Convert HEX to DEC in OpenFlow dump | `perl -pe 's/(reg0\|reg1)=([^ ,]+)/sprintf("%s=%d",$1, hex($2))/eg'`
+| Clean stats in OpenFlow dump | `sed -E 's!(duration\|n_packets\|n_bytes)=[^ ]+!\1=CLEANED!g'` <br> please consider: `--no-stats` |
 | List contract table | `conntrack -L` |
 | List iptables | `iptables-save` |
 | List NETID's | `oc get netnamespaces`| 
