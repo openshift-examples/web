@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-from-bouviers-to-marge-only-6379
+spec:
+  podSelector:
+    matchLabels:
+      app: marge
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: bouvier
+    ports:
+    - protocol: TCP
+      port: 6379
