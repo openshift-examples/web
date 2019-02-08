@@ -19,7 +19,7 @@ oc cluster up --image=registry.access.redhat.com/openshift3/ose --version=v3.5.5
 ```
 curl -O -L https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64
 chmod +x jq-linux64
-sudo mv jq-linux64 /usr/local/bin/
+sudo mv jq-linux64 /usr/local/bin/jq
 ```
 ### jq examples
 #### PVC CSV
