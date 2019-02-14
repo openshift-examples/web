@@ -58,7 +58,7 @@ yum install -y skopeo openssl docker-distribution tmux lsof telnet yum-utils cre
 Fetch & execute download script:
 
 ```
-curl -o https://raw.githubusercontent.com/rbo/openshift-examples/disconnected/disconnected/fetch-data.sh
+curl -o https://raw.githubusercontent.com/rbo/openshift-examples/master/disconnected/fetch-data.sh
 chmod +x fetch-data.sh
 ./fetch-data.sh sync
 ```
