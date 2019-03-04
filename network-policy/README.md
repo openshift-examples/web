@@ -1,4 +1,19 @@
 # Network policy
+
+## Nice to know
+
+1) Based on labeling
+    * project / namespaces seldom have labels
+2) Empty label selector match all
+3) rules for allowing
+    * Ingress -> who can connect to this POD?
+    * Engress -> where can this POD connect to?
+4) **Rules**
+    * traffic is allowed unless a Network Policy selecting the POD
+    * traffic is denied if pod is selected in policie but none of them have any rules allowing it
+    * = You can only write rules that allow traffic!
+    * Scope: Namespace
+
 ## Deploy demo env.
 Install openshift with redhat/openshift-ovs-networkpolicy
 
