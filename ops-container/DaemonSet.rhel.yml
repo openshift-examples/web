@@ -1,7 +1,7 @@
 # 
-# oc new-project ops-container
-# oc adm policy add-scc-to-user privileged system:serviceaccount:ops-container:default
-# oc patch namespace ops-container -p '{"metadata":{"annotations":{"openshift.io/node-selector":""}}}'
+# oc adm new-project --node-selector="" ops-container
+# oc project ops-container
+# oc adm policy add-scc-to-user privileged -z default
 # 
 ---
 apiVersion: apps/v1
