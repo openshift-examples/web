@@ -8,21 +8,23 @@ toc::[]
 
 ## Install ElasticSearch & Kibana
 
-* https://opendistro.github.io/for-elasticsearch-docs/docs/install/rpm/
-* https://opendistro.github.io/for-elasticsearch-docs/docs/kibana/
+* https://opendistro.github.io/for-elasticsearch-docs/docs/install/rpm/[Install ElasticSearch]
+* *Optional* https://opendistro.github.io/for-elasticsearch-docs/docs/kibana/[Install Kibana]
 
-kibana: server.host: 192.168.1.106
-elastic: network.host: 192.168.1.106
+Don't forget to adjust listen to IP, default ElasticSearch & Kibana listen von 127.0.0.1
+
+## Adjust fluentd logging
+
+Basis is an default logging installation with fluendt: https://docs.openshift.com/container-platform/3.11/install_config/aggregate_logging.html#deploying-the-efk-stack[Deploying the EFK Stack]
+
+Usefull links:
+
+* https://docs.openshift.com/container-platform/3.11/install_config/aggregate_logging.html#sending-logs-to-an-external-elasticsearch-instance[OpenShift Documentation]
+
+* https://access.redhat.com/solutions/2771291 - very old but interesting.
 
 
-## DaemonSet anpassen
-
-https://docs.openshift.com/container-platform/3.11/install_config/aggregate_logging.html#sending-logs-to-an-external-elasticsearch-instance
-
-https://access.redhat.com/solutions/2771291
-
-
-### 1) Greate your own elastic seatch storage output.
+### 1) Greate your own elastic search storage output.
 
 * Create basis custom output config 
 ** `oc rsh $(oc get pods -l component=fluentd -o name | head -1) cat /etc/fluent/configs.d/openshift/output-es-config.conf > output-custom-es-config.conf`
@@ -33,8 +35,8 @@ https://access.redhat.com/solutions/2771291
 [source,diff]
 ----
 $ diff -Nuar output-custom-es-config.conf.ORG output-custom-es-config.conf
---- output-custom-es-config.conf.ORG	2019-04-01 15:11:06.000000000 +0200
-+++ output-custom-es-config.conf	2019-04-01 15:56:11.000000000 +0200
+--- output-custom-es-config.conf.ORG    2019-04-01 15:11:06.000000000 +0200
++++ output-custom-es-config.conf    2019-04-01 15:56:11.000000000 +0200
 @@ -8,12 +8,12 @@
        target_index_key viaq_index_name
        id_key viaq_msg_id
@@ -98,11 +100,13 @@ $ oc rsh $(oc get pods -l component=fluentd -o name | head -1) grep -ri '<match'
 
 ### 2) Adjust daemonset/logging-fluentd enviroment variable ES_HOST & OPS_HOST
 
+```oc edit daemonset/logging-fluentd```
+
 If you like to restart all pods at once: ```oc delete pods -l component=fluentd```
 
 
 
-## Usefull ElasticSearch API/Curl commands
+## Useful ElasticSearch API/Curl commands
 
 ### Create an indice
 ```
