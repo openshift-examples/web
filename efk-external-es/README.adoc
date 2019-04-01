@@ -100,7 +100,9 @@ $ oc rsh $(oc get pods -l component=fluentd -o name | head -1) grep -ri '<match'
 
 ### 2) Adjust daemonset/logging-fluentd enviroment variable ES_HOST & OPS_HOST
 
-```oc edit daemonset/logging-fluentd```
+```
+oc edit daemonset/logging-fluentd
+```
 
 If you like to restart all pods at once: ```oc delete pods -l component=fluentd```
 
