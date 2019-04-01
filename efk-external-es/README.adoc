@@ -1,5 +1,9 @@
+:toc:
+:toc-placement!:
+
 # External ElasticSearch & Kibana with OpenShift
 
+toc::[]
 
 
 ## Install ElasticSearch & Kibana
