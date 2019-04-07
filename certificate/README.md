@@ -36,7 +36,9 @@
 ## Own root ca and certificate
 
 1) Adjust openssl configurations:
+   
    Root CA informations at file `openssl.root-ca.conf`
+   
    Certificate informations at file `openssl.certificate.conf`
 
 2) Generate the root (GIVE IT A PASSWORD IF YOU'RE NOT AUTOMATING SIGNING!):
