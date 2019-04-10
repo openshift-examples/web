@@ -34,7 +34,11 @@ oc scale dc/homer --replicas=2
 oc new-app quay.io/rbo/demo-http:master --name marge
 oc scale dc/marge --replicas=2
 oc expose svc/marge
+```
 
+## Label project where router is located
+```
+oc label namespace/openshift-ingress name=openshift-ingress
 ```
 
 ## Run connection overview
@@ -93,10 +97,10 @@ $ diff -Nuar node1.case0.OpenFlow13 node1.case1.OpenFlow13
 
 
 
-### 2) Simpson allow from default namespaces, because of router
+### 2) Simpson allow from openshift-ingress namespaces, because of router
 
 ```
-$ oc create -f allow-from-default-namespace.yml -n simpson
+$ oc create -f allow-from-openshift-ingress-namespace.yml -n simpson
 $ ./dump-net.sh node1 node1.case2
 $ $ diff -Nuar node1.case1.OpenFlow13 node1.case2.OpenFlow13
 --- node1.case1.OpenFlow13	2019-01-11 16:27:15.000000000 +0100

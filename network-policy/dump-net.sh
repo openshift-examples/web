@@ -10,7 +10,7 @@ if [ "$1" == "--all" ] ; then
   DUMP_FILE=${DUMP_FILE}.$(date +%Y-%m-%d-%H-%M-%S.%s)
   PODS=$(oc get pods -n openshift-sdn  -l app=sdn -o go-template='{{range .items}}{{.spec.nodeName}};{{.metadata.name}}{{"\n"}}{{end}}');
 else
-  PODS=$(oc get pods -n openshift-sdn  -l app=sdn -o go-template='{{range .items}}{{.spec.nodeName}};{{.metadata.name}}{{"\n"}}{{end}}' | grep ^${NODE});
+  PODS=$(oc get pods -n openshift-sdn  -l app=sdn -o go-template='{{range .items}}{{.spec.nodeName}};{{.metadata.name}}{{"\n"}}{{end}}' | grep ^${1});
 fi
 
 echo -e "Run dump at \n$PODS";
