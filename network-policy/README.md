@@ -160,6 +160,32 @@ $ diff -Nuar node1.case3.OpenFlow13 node1.case4.OpenFlow13
 
 ![Case 4](images/case4.png)
 
+## Bonus, one EgressNetworkPolicy
+
+```
+$ ./dump-net.sh ip-10-0-137-107.us-east-2.compute.internal bevore-egress
+$ oc create -f EgressNetworkPolicy.yml
+$ ./dump-net.sh ip-10-0-137-107.us-east-2.compute.internal after-egress
+$ diff -Nuar bevore-egress*OpenFlow13  after-egress*OpenFlow13
+--- bevore-egress.ip-10-0-137-107.us-east-2.compute.internal.OpenFlow13	2019-04-10 15:37:26.000000000 +0200
++++ after-egress.ip-10-0-137-107.us-east-2.compute.internal.OpenFlow13	2019-04-10 15:38:28.000000000 +0200
+@@ -187,7 +187,11 @@
+  table=100, priority=200,tcp,nw_dst=10.0.137.107,tp_dst=53 actions=output:tun0
+  table=100, priority=200,udp,nw_dst=10.0.137.107,tp_dst=53 actions=output:tun0
+  table=100, priority=0 actions=goto_table:101
++ table=101, priority=3,ip,reg0=12517435,nw_dst=1.2.3.0/24 actions=output:tun0
++ table=101, priority=2,ip,reg0=12517435,nw_dst=52.73.176.251 actions=output:tun0
++ table=101, priority=2,ip,reg0=12517435,nw_dst=54.165.87.12 actions=output:tun0
+  table=101, priority=1,reg0=598050 actions=drop
++ table=101, priority=1,ip,reg0=12517435 actions=drop
+  table=101, priority=0 actions=output:tun0
+  table=110, priority=0 actions=drop
+  table=111, priority=100 actions=move:NXM_NX_REG0[]->NXM_NX_TUN_ID[0..31],set_field:10.0.132.241->tun_dst,output:vxlan0,set_field:10.0.153.82->tun_dst,output:vxlan0,set_field:10.0.170.239->tun_dst,output:vxlan0,goto_table:120
+
+
+
+```
+
 ## Destroy demo env
 
 ```
