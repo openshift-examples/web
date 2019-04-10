@@ -1,0 +1,15 @@
+apiVersion: network.openshift.io/v1
+kind: EgressNetworkPolicy
+metadata:
+  name: default
+spec:
+  egress:
+  - to:
+      cidrSelector: 1.2.3.0/24
+    type: Allow
+  - to:
+      dnsName: www.foo.com
+    type: Allow
+  - to:
+      cidrSelector: 0.0.0.0/0
+    type: Deny
