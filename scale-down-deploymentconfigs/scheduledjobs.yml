@@ -1,0 +1,18 @@
+apiVersion: batch/v2alpha1
+kind: ScheduledJob
+metadata:
+  name: auto-scale-down
+spec:
+  schedule: 10 22 * * 5
+  successfulJobsHistoryLimit: 10
+  failedJobsHistoryLimit: 10
+  jobTemplate:             
+    spec:
+      template:
+        spec:
+          serviceAccount: cluster-admin
+          serviceAccountName: cluster-admin
+          containers:
+          - name: auto-scale-down
+            image: auto-scale-down	
+          restartPolicy: Never
