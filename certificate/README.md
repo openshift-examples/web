@@ -98,9 +98,79 @@
 Inventory file
 ```ini
 openshift_master_overwrite_named_certificates=true
-
 # cat isrgrootx1.pem intermediate.crt >> ca-bundle.pem"
 openshift_master_named_certificates=[{"certfile": "/root/certificates/cert.crt", "keyfile": "/root/certificates/cert.key", "cafile": "/root/certificates/ca-bundle.pem"}]
 openshift_hosted_router_certificate={"certfile": "/root/certificates/cert.crt", "keyfile": "/root/certificates/cert.key", "cafile": "/root/certificates/ca-bundle.pem
 
 ```
+
+### OpenShift rollout named certificate and new root-ca *NOT RECOMMEND*!
+
+1) Adjust inventory file, details above
+    ```
+    openshift_master_overwrite_named_certificates=true
+    # cat isrgrootx1.pem intermediate.crt >> ca-bundle.pem"
+    openshift_master_named_certificates=[{"certfile": "/root/certificates/cert.crt", "keyfile": "/root/certificates/cert.key", "cafile": "/root/certificates/ca-bundle.pem"}]
+    openshift_hosted_router_certificate={"certfile": "/root/certificates/cert.crt", "keyfile": "/root/certificates/cert.key", "cafile": "/root/certificates/ca-bundle.pem
+    ```
+2) [Redeploying router certificates only
+](https://docs.openshift.com/container-platform/3.11/install_config/redeploying_certificates.html#redeploying-router-certificates)
+
+
+3) The chaos begins: [Redeploying Master Certificates Only](https://docs.openshift.com/container-platform/3.11/install_config/redeploying_certificates.html#redeploying-master-certificates)
+
+    1) Adjust master-config.yml on any master
+        ```
+          namedCertificates:
+            - certFile:  /etc/origin/master/named_certificates/stormshift.crt
+            keyFile:  /etc/origin/master/named_certificates/stormshift.key
+            names:
+                - "master.ocp1..."
+        ```
+        Restart master api and controllers
+        ```
+        master-restart api
+        master-restart controllers
+        ```
+    2) Rollout new kubeconfig to all nodes, because of [Issuer 1635251](https://bugzilla.redhat.com/show_bug.cgi?id=1635251):
+
+        [Manually recreate OpenShift Node TLS bootstrapped certificates and kubeconfig files.](https://access.redhat.com/solutions/3782361)
+
+        Some usefull ansible commands:
+        ```
+        ansible -i /root/stc/inventory -m copy -a 'src=/root/bootstrap.kubeconfig dest=/etc/origin/node/bootstrap.kubeconfig' nodes
+        ansible -i /root/stc/inventory -m shell -a 'cp /etc/origin/master/admin.kubeconfig /etc/origin/node/bootstrap.kubeconfig' masters
+        ```
+    3) Regenerate any service signing certificate
+        Create a list oc delete commands to delete all secrets with tls certificates create via an service:
+        ```
+        oc get svc --all-namespaces  -o=custom-columns="tls:.metadata.annotations.service\.alpha\.openshift\.io/serving-cert-secret-name,namespace:.metadata.namespace"  | grep -v '^<none>' | awk '{ print "oc delete secret/" $1 " -n " $2}'
+        ```
+        Don't forget to restart all pods!
+
+    4) CA Bunle update ansible-service-broker
+        Check CSB: `oc get ClusterServiceBroker`
+        [Update caBundle](https://github.com/openshift/ansible-service-broker/blob/master/docs/troubleshooting.md#resolution-provide-cabundle-to-service-catalog)
+
+    5) In case you still have problems with the OpenShift Web Console: Redeploy OpenShift Web ConSole
+        ```
+        oc delete secret webconsole-serving-cert
+        oc delete svc/webconsole
+        and finally running the ansible playbook for the webconsole
+        ansible-playbook -i inventory/hosts.localhost playbooks/openshift-web-console/config.yml
+        ```
+        Source: https://github.com/openshift/origin/issues/20005
+
+## Some usefull openssl commands
+```
+openssl crl2pkcs7 -nocrl -certfile <(oc get secret/router-certs -o yaml --export | grep tls.crt | cut -f2 -d ':' | tr -d ' ' |base64 -D ) | openssl pkcs7 -print_certs  -noout
+
+openssl crl2pkcs7 -nocrl -certfile <(oc get secret/grafana-tls -o json --export | jq -r '.data."tls.crt"'  | base64 -D ) | openssl pkcs7 -print_certs  -noout
+
+oc get svc --all-namespaces  -o=custom-columns="tls:.metadata.annotations.service\.alpha\.openshift\.io/serving-cert-secret-name,namespace:.metadata.namespace"  | grep -v '^<none>' | awk '{ print "oc delete secret/" $1 " -n " $2}'
+```
+
+
+
+
+
