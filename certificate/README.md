@@ -89,3 +89,18 @@
     cp ca.crt /etc/pki/ca-trust/source/anchors/
     update-ca-trust extract
     ```
+
+
+## Notes: OpenShift SSL stuff
+
+
+
+Inventory file
+```ini
+openshift_master_overwrite_named_certificates=true
+
+# cat isrgrootx1.pem intermediate.crt >> ca-bundle.pem"
+openshift_master_named_certificates=[{"certfile": "/root/certificates/cert.crt", "keyfile": "/root/certificates/cert.key", "cafile": "/root/certificates/ca-bundle.pem"}]
+openshift_hosted_router_certificate={"certfile": "/root/certificates/cert.crt", "keyfile": "/root/certificates/cert.key", "cafile": "/root/certificates/ca-bundle.pem
+
+```
