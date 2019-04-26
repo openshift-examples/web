@@ -25,3 +25,12 @@ https://github.com/kubevirt/containerized-data-importer
 
 https://github.com/kubevirt/kubevirt/issues/1646
 
+## Build RHEL VM image
+```
+oc create secret generic builder \
+    --from-file=ssh-privatekey=~/.ssh/github_rsa \
+    --type=kubernetes.io/ssh-auth
+
+oc new-build git@gitlab.com:robertbohne/kubevirt-rhel-server-7.git --source-secret=builder --strategy=docker  --name=kubevirt-rhel7
+
+```
