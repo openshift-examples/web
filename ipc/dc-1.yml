@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: DeploymentConfig
+metadata:
+  name: busybox-tty-1
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        deploymentconfig:  busybox-tty-1
+    spec:
+      shareProcessNamespace: true
+      containers:
+      - name: webserver
+        image: jboss-webserver-3/webserver31-tomcat8-openshift
+      - image: busybox
+        name:  shell
+        # command: [ "/bin/sh", "-c", "while true ; do date; sleep 1; done;" ]
+        stdin: true
+        tty: true
+  triggers:
+  - type: ConfigChange

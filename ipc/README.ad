@@ -1,0 +1,15 @@
+# Some things around inter process communication
+
+[NOTE]
+====
+I'm not an expert - that is dangerous superficial knowledge.
+====
+
+# Infos for OpenShift 3.11
+ * https://docs.openshift.com/container-platform/3.11/dev_guide/shared_memory.html[Shared Memory and OpenShift]
+ * https://docs.openshift.com/container-platform/3.11/release_notes/ocp_3_11_release_notes.html#ocp-311-control-sharing-pid-namespace-between-containers[CONTROL SHARING THE PID NAMESPACE BETWEEN CONTAINERS (TECHNOLOGY PREVIEW)
+]
+    ** https://kubernetes.io/docs/tasks/configure-pod-container/share-process-namespace/[K8s docs]
+ 
+
+ 
