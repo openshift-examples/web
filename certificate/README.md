@@ -80,4 +80,12 @@
     Cache-control: private
     ```
 
+7) Rollout own root ca
 
+    https://access.redhat.com/solutions/1519813
+
+    ```
+    update-ca-trust enable
+    cp ca.crt /etc/pki/ca-trust/source/anchors/
+    update-ca-trust extract
+    ```
