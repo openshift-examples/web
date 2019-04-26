@@ -1,0 +1,48 @@
+# oc create secret generic rbo-demo-demo-auth \
+#    --from-file=.dockerconfigjson=rbo-demo-demo-auth.json \
+#    --type=kubernetes.io/dockerconfigjson
+# oc secrets link builder rbo-demo-demo-auth
+# or push secret 
+---
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  labels:
+    build: simple-http-server
+  name: simple-http-server
+spec:
+  failedBuildsHistoryLimit: 5
+  nodeSelector: null
+  output:
+    to:
+      kind: DockerImage
+      name: quay.io/rbo-demo/simple-http-server:latest
+    pushSecret:
+      name: "rbo-demo-demo-auth"
+    imageLabels:
+    - name: "author"
+      value: "robert.bohne@redhat.com"
+  postCommit: {}
+  resources: {}
+  runPolicy: Serial
+  source:
+    contextDir: simple-http-server
+    git:
+      uri: https://github.com/rbo/openshift-examples.git
+    type: Git
+  strategy:
+    dockerStrategy:
+      from:
+        kind: ImageStreamTag
+        name: alpine:latest
+    type: Docker
+  successfulBuildsHistoryLimit: 5
+  triggers:
+  - github:
+      secret: LS3w3ffQQnfo1wHppGNb
+    type: GitHub
+  - generic:
+      secret: DwLQHkv6rINSHRpukF-Y
+    type: Generic
+  - type: ConfigChange
+  - type: ImageChange
