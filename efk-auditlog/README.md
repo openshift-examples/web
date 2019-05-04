@@ -1,5 +1,10 @@
 # Put auditlog into elasticsearch
 A quick-n-diry example to put the openshift audit log into elasticsearch.
+
+How to do it with Advanced Audit: 
+[Integrating Advanced Audit with Aggregated Logging in OpenShift 3.11](https://austindewey.com/2018/10/17/integrating-advanced-audit-with-aggregated-logging-in-openshift-3-11/)
+
+
 ## Installation with OpenShift on RHEL
 
 - Add to ```/etc/origin/master/master-config.yaml```
