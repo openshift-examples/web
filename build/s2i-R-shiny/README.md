@@ -2,8 +2,9 @@
 
 ## Build builder image
 ```
-oc create -f https://raw.githubusercontent.com/rbo/openshift-examples/master/build/s2i-R-shiny/builder.yaml
-oc start-build r-shiny-s2i [--follow]
+oc create -f https://raw.githubusercontent.com/rbo/openshift-examples/master/build/s2i-R-shiny/builder.yaml -n openshift
+oc start-build r-shiny-s2i [--follow] -n openshift
+oc create -f https://raw.githubusercontent.com/rbo/openshift-examples/master/build/s2i-R-shiny/template.yaml -n openshift
 ```
 ### Insides from the builder
 
