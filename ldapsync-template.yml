@@ -1,0 +1,116 @@
+apiVersion: v1
+kind: Template
+labels:
+  template: "ldapsync"
+  cronjob: "ldapsync"
+metadata:
+  creationTimestamp: null
+  name: ldapsync-config
+  annotations:
+    openshift.io/display-name: "ldapsync cronjob template"
+    description: >-
+      Creates hourly cronjob which runs ldapsync
+      ldapconfig is attached ad secret, whitelist as configmap
+      ldap bind user and password must be specified when processing the template
+objects:
+- apiVersion: v1
+  kind: Secret
+  metadata:
+    name: ldapsync-config
+  stringData:
+    ldap_sync.yml: |
+      kind: LDAPSyncConfig
+      apiVersion: v1
+      url:  "ldaps://dc.bohne.io/DC=bohne,DC=lan"
+      bindDN: "${LDAP_BIND_USER}"
+      bindPassword: "${LDAP_BIND_PASSWORD}"
+      insecure: false
+      rfc2307:
+          groupsQuery:
+              baseDN: "OU=Gruppen,DC=bohne,DC=lan"
+              scope: sub
+              derefAliases: never
+              pageSize: 0
+              filter: (objectClass=group)
+          groupUIDAttribute: dn
+          groupNameAttributes: [ sAMAccountName ]
+          groupMembershipAttributes: [ member ]
+          usersQuery:
+              baseDN: "DC=bohne,DC=lan"
+              scope: sub
+              derefAliases: never
+              pageSize: 0
+          userUIDAttribute: dn
+          userNameAttributes: [ sAMAccountName ]
+- apiVersion: batch/v2alpha1
+  kind: CronJob
+  metadata:
+    creationTimestamp: null
+    labels:
+      run: ldapsync
+    name: ldapsync
+  spec:
+    concurrencyPolicy: Forbid
+    jobTemplate:
+      metadata:
+        creationTimestamp: null
+      spec:
+        template:
+          metadata:
+            creationTimestamp: null
+            labels:
+              run: ldapsync
+          spec:
+            containers:
+            - command:
+              - /bin/oc
+              - adm
+              - groups
+              - sync
+              - --whitelist=/etc/ldapsync/whitelist/whitelist.conf
+              - --sync-config=/etc/ldapsync/config/ldap_sync.yml
+              - --confirm
+              image: docker-registry.default.svc:5000/openshift/openshift-client
+              imagePullPolicy: Always
+              name: ldapsync
+              resources: {}
+              terminationMessagePath: /dev/termination-log
+              volumeMounts:
+              - mountPath: /etc/ldapsync/config
+                name: config
+                readOnly: true
+              - mountPath: /etc/ldapsync/whitelist
+                name: whitelist
+                readOnly: true
+            dnsPolicy: ClusterFirst
+            restartPolicy: Never
+            securityContext: {}
+            serviceAccountName: cluster-admin
+            terminationGracePeriodSeconds: 30
+            volumes:
+            - configMap:
+                defaultMode: 420
+                items:
+                - key: whitelist
+                  path: whitelist.conf
+                name: ldapsync-whitelist
+              name: whitelist
+            - name: config
+              secret:
+                defaultMode: 420
+                secretName: ldapsync-config
+    schedule: '0 * * * *'
+    suspend: false
+- apiVersion: v1
+  data:
+    whitelist: |
+      CN=OpenShift Betrieb,OU=Gruppen,DC=bohne,DC=lan
+  kind: ConfigMap
+  metadata:
+    creationTimestamp: null
+    name: ldapsync-whitelist
+parameters:
+- description: LDAP bind user
+  name: LDAP_BIND_USER
+- description: LDAP bind password
+  name: LDAP_BIND_PASSWORD
