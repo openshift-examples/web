@@ -1,12 +1,9 @@
 # Source to image example for R shiny
 
 ## Build builder image
-
 ```
-oc new-build  https://github.com/rbo/openshift-examples.git \
-    --name=r-shiny-s2i \
-    --strategy=docker \
-    --context-dir=build/s2i-R-shiny/builder
+oc create -f https://raw.githubusercontent.com/rbo/openshift-examples/master/build/s2i-R-shiny/builder.yaml
+oc start-build r-shiny-s2i [--follow]
 ```
 ### Insides from the builder
 
@@ -26,15 +23,9 @@ $ R -s -e 'library("shiny"); runApp()'
 ```
 oc new-app r-shiny-s2i~https://github.com/rstudio/shiny-examples \
     --context-dir=082-word-cloud \
-    --name=goobio9u \
+    --name=word-cloud \
     --strategy=source
-oc expose svc/goobio9u
-```
-
-## Add app
-
-```
-oc new-app word-cloud
+oc expose svc/word-cloud
 ```
 
 ## Resources 
