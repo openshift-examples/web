@@ -1,0 +1,34 @@
+---
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: r-shiny-s2i
+---
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  labels:
+    build: r-shiny-s2i
+  name: r-shiny-s2i
+spec:
+  failedBuildsHistoryLimit: 5
+  nodeSelector: null
+  output:
+    to:
+      kind: ImageStreamTag
+      name: r-shiny-s2i:latest
+  postCommit: {}
+  resources: {}
+  runPolicy: Serial
+  source:
+    contextDir: build/s2i-R-shiny/builder
+    git:
+      uri: 'https://github.com/rbo/openshift-examples.git'
+    type: Git
+  strategy:
+    dockerStrategy:
+      from:
+        kind: DockerImage
+        name: 'rhscl/s2i-base-rhel7:latest'
+    type: Docker
+  successfulBuildsHistoryLimit: 5
