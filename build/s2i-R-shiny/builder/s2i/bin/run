@@ -1,0 +1,13 @@
+#!/bin/bash
+set -e
+
+# The run script executes the server that runs your application.
+#
+# For more information see the documentation:
+#	https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md
+#
+
+# We will turn off daemonizing for the nginx process so that the container
+# doesn't exit after the process runs.
+
+exec R -s -e 'library("shiny"); runApp(host="0.0.0.0", port=8080)'
