@@ -127,7 +127,7 @@ objects:
     - imageChangeParams:
         automatic: true
         containerNames:
-        - es2i-r-shiny
+        - s2i-r-shiny
         from:
           kind: ImageStreamTag
           name: ${NAME}:latest

@@ -33,10 +33,6 @@ fi
 echo "---> Building and installing application from source..."
 cp -vpr /tmp/src/* /opt/app-root/src/.
 
-echo "---> Install R: library(deplearning); depl_check()"
-R -s -e "install.packages('remotes', repos = 'http://cran.rstudio.com/' )"
-R -s -e "remotes::install_github('MilesMcBain/deplearning')"
-
 echo "---> Install R dependencies"
 echo 'options(repos = c(CRAN = "http://cran.rstudio.com"))' >> /opt/app-root/src/.Rprofile
 R -s -e "menu = function(choices, graphics = FALSE, title = NULL) { return(1) };  library(deplearning); depl_check()"
