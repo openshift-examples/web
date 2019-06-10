@@ -39,7 +39,7 @@ oc expose svc/word-cloud
 
 Dockerfile.playground:
 ```Dockerfile
-FROM docker-registry-default.ocp3.bohne.io/shiny/r-shiny-s2i:latest
+FROM docker-registry-default.ocp3.bohne.io/openshift/r-shiny-s2i:latest 
 COPY ./s2i/bin/ /usr/libexec/s2i
 
 USER 1001
@@ -53,10 +53,13 @@ CMD ["/usr/libexec/s2i/usage"]
 
 And build and run:
 ```
-docker pull docker-registry-default.ocp3.bohne.io/shiny/r-shiny-s2i:latest 
+docker pull docker-registry-default.ocp3.bohne.io/openshift/r-shiny-s2i:latest 
 docker build -t b -f Dockerfile.playground .
-s2i build https://github.com/rstudio/shiny-examples b word-cloud --context-dir=082-word-cloud --loglevel=99
+s2i build https://github.com/rstudio/shiny-examples b b-app --context-dir=027-absolutely-positioned-panels --loglevel=99
+# Or by hand: docker run -ti --entrypoint bash -v $(pwd):/tmp/src b
+
 
 docker run word-cloud
 ```
+
 
