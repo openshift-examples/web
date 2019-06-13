@@ -1,5 +1,5 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
 metadata:
   name: {{ include "chaosprofessor.fullname" . }}
   labels:
@@ -10,42 +10,50 @@ metadata:
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
-    matchLabels:
-      app.kubernetes.io/name: {{ include "chaosprofessor.name" . }}
-      app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/name: {{ include "chaosprofessor.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+  triggers:
+  - type: ImageChange
+    imageChangeParams:
+      automatic: true
+      containerNames:
+      - {{ .Chart.Name }}
+      from:
+        kind: ImageStreamTag
+        name: "{{ include "chaosprofessor.fullname" . }}:latest"
+  - type: ConfigChange
   template:
     metadata:
       labels:
         app.kubernetes.io/name: {{ include "chaosprofessor.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
+      terminationGracePeriodSeconds: 60
+      strategy:
+        type: Rolling
       containers:
         - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          image: "{{ include "chaosprofessor.fullname" . }}"
+          imagePullPolicy: Always
+          env:
+          - name: JWS_ADMIN_USERNAME
+            value: {{ .Values.admin_user | default ("admin") | quote }}
+          - name: JWS_ADMIN_PASSWORD
+            value: {{ .Values.admin_password | default (randAlphaNum 40) | quote }}
           ports:
-            - name: http
-              containerPort: 80
-              protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /
-              port: http
+          - containerPort: 8778
+            name: jolokia
+            protocol: TCP
+          - containerPort: 8080
+            name: http
+            protocol: TCP
           readinessProbe:
+            failureThreshold: 3
             httpGet:
               path: /
-              port: http
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}
-      {{- with .Values.nodeSelector }}
-      nodeSelector:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-    {{- with .Values.affinity }}
-      affinity:
-        {{- toYaml . | nindent 8 }}
-    {{- end }}
-    {{- with .Values.tolerations }}
-      tolerations:
-        {{- toYaml . | nindent 8 }}
-    {{- end }}
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 25
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1

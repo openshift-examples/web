@@ -1,13 +1,13 @@
-# Default values for chaosprofessor.
+# Default values for hpa-demo.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
 
-image:
-  repository: nginx
-  tag: stable
-  pullPolicy: IfNotPresent
+source_repository:
+  ref: "master"
+  uri: "https://github.com/ConSol/chaos-professor.git"
+  context_dir: ""
 
 nameOverride: ""
 fullnameOverride: ""

@@ -1,14 +1,11 @@
 {{- if .Values.ingress.enabled -}}
-{{- $fullName := include "chaosprofessor.fullname" . -}}
+{{- $fullName := include "hpa-demo.fullname" . -}}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: {{ $fullName }}
   labels:
-    app.kubernetes.io/name: {{ include "chaosprofessor.name" . }}
-    helm.sh/chart: {{ include "chaosprofessor.chart" . }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{ include "hpa-demo.labels" . | indent 4 }}
   {{- with .Values.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
