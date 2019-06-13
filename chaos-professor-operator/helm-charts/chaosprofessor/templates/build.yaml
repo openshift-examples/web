@@ -1,0 +1,38 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: {{ include "chaosprofessor.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "chaosprofessor.name" . }}
+    helm.sh/chart: {{ include "chaosprofessor.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: "{{ include "chaosprofessor.fullname" . }}:latest"
+  source:
+    contextDir: "{{ .Values.source_repository.context_dir }}"
+    git:
+      ref: "{{ .Values.source_repository.ref }}"
+      uri: "{{ .Values.source_repository.uri }}"
+    type: Git
+  strategy:
+    sourceStrategy:
+      forcePull: true
+      from:
+        kind: ImageStreamTag
+        namespace: openshift
+        name: redhat-openjdk18-openshift:1.4
+    type: Source
+  triggers:
+  - imageChange:
+      type: ImageChange
+  - type: ConfigChange
+  - type: GitHub
+    github:
+      secret: {{ .Values.github_webhook_secret | default (randAlphaNum 40) | quote }}
+  - type: Generic
+    generic:
+      secret: {{ .Values.generic_webhook_secret | default (randAlphaNum 40) | quote }}
