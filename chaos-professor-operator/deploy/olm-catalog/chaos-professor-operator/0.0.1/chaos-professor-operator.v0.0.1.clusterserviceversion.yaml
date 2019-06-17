@@ -1,0 +1,127 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: ClusterServiceVersion
+metadata:
+  annotations:
+    alm-examples: '[{"apiVersion":"bohne.io/v1alpha1","kind":"ChaosProfessor","metadata":{"name":"example-chaosprofessor"},"spec":{"affinity":{},"fullnameOverride":"","image":{"pullPolicy":"IfNotPresent","repository":"nginx","tag":"stable"},"ingress":{"annotations":{},"enabled":false,"hosts":[{"host":"chart-example.local","paths":[]}],"tls":[]},"nameOverride":"","nodeSelector":{},"replicaCount":1,"resources":{},"service":{"port":80,"type":"ClusterIP"},"tolerations":[]}}]'
+    capabilities: Basic Install
+  name: chaos-professor-operator.v0.0.1
+  namespace: placeholder
+spec:
+  apiservicedefinitions: {}
+  customresourcedefinitions:
+    owned:
+    - kind: ChaosProfessor
+      name: chaosprofessors.bohne.io
+      version: v1alpha1
+  description: Placeholder description
+  displayName: Chaos Professor Operator
+  install:
+    spec:
+      deployments:
+      - name: chaos-professor-operator
+        spec:
+          replicas: 1
+          selector:
+            matchLabels:
+              name: chaos-professor-operator
+          strategy: {}
+          template:
+            metadata:
+              labels:
+                name: chaos-professor-operator
+            spec:
+              containers:
+              - env:
+                - name: WATCH_NAMESPACE
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: metadata.namespace
+                - name: POD_NAME
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: metadata.name
+                - name: OPERATOR_NAME
+                  value: chaos-professor-operator
+                image: quay.io/rbo/chaos-professor-operator:v0.0.1
+                imagePullPolicy: Always
+                name: chaos-professor-operator
+                resources: {}
+              serviceAccountName: chaos-professor-operator
+      permissions:
+      - rules:
+        - apiGroups:
+          - ""
+          resources:
+          - namespaces
+          verbs:
+          - get
+        - apiGroups:
+          - ""
+          resources:
+          - configmaps
+          - secrets
+          verbs:
+          - '*'
+        - apiGroups:
+          - ""
+          resources:
+          - pods
+          - services
+          verbs:
+          - '*'
+        - apiGroups:
+          - apps
+          resources:
+          - deployments
+          verbs:
+          - '*'
+        - apiGroups:
+          - apps.openshift.io
+          resources:
+          - deploymentconfigs
+          verbs:
+          - '*'
+        - apiGroups:
+          - build.openshift.io
+          resources:
+          - buildconfigs
+          verbs:
+          - '*'
+        - apiGroups:
+          - route.openshift.io
+          resources:
+          - routes
+          verbs:
+          - '*'
+        - apiGroups:
+          - image.openshift.io
+          resources:
+          - images
+          - imagesignatures
+          - imagestreamimages
+          - imagestreamimports
+          - imagestreammappings
+          - imagestreams
+          - imagestreamtags
+          verbs:
+          - '*'
+        - apiGroups:
+          - bohne.io
+          resources:
+          - '*'
+          verbs:
+          - '*'
+        serviceAccountName: chaos-professor-operator
+    strategy: deployment
+  installModes:
+  - supported: true
+    type: OwnNamespace
+  - supported: true
+    type: SingleNamespace
+  - supported: false
+    type: MultiNamespace
+  - supported: true
+    type: AllNamespaces
+  maturity: alpha
+  provider: {}
+  version: 0.0.1

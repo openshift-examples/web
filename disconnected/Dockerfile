@@ -1,10 +1,10 @@
 FROM registry.redhat.io/rhel7
 # docker build . --build-arg RH_ORG_ID=...
-# ***REMOVED***
+***REMOVED***
 ARG RH_ORG_ID 
 ***REMOVED***
 ARG RH_ACTIVATIONKEY
-# ***REMOVED***
+***REMOVED***
 ARG RH_POOL_ID
 
 RUN subscription-manager register --org=$RH_ORG_ID --activationkey=$RH_ACTIVATIONKEY  && \
