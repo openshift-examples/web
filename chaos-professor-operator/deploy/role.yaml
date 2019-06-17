@@ -31,6 +31,36 @@ rules:
   verbs:
   - '*'
 - apiGroups:
+  - apps.openshift.io
+  resources:
+  - deploymentconfigs
+  verbs:
+  - '*'
+- apiGroups:
+  - build.openshift.io
+  resources:
+  - buildconfigs
+  verbs:
+  - '*'
+- apiGroups:
+  - route.openshift.io
+  resources:
+  - routes
+  verbs:
+  - '*'
+- apiGroups:
+  - image.openshift.io
+  resources:
+  - images
+  - imagesignatures
+  - imagestreamimages
+  - imagestreamimports
+  - imagestreammappings
+  - imagestreams
+  - imagestreamtags
+  verbs:
+  - '*'
+- apiGroups:
   - bohne.io
   resources:
   - '*'
