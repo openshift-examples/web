@@ -5,7 +5,7 @@ metadata:
     alm-examples: '[{"apiVersion":"bohne.io/v1alpha1","kind":"ChaosProfessor","metadata":{"name":"example-chaosprofessor"},"spec":{"affinity":{},"fullnameOverride":"","image":{"pullPolicy":"IfNotPresent","repository":"nginx","tag":"stable"},"ingress":{"annotations":{},"enabled":false,"hosts":[{"host":"chart-example.local","paths":[]}],"tls":[]},"nameOverride":"","nodeSelector":{},"replicaCount":1,"resources":{},"service":{"port":80,"type":"ClusterIP"},"tolerations":[]}}]'
     capabilities: Basic Install
   name: chaos-professor-operator.v0.0.1
-  namespace: placeholder
+  namespace: openshift-operator-lifecycle-manager
 spec:
   apiservicedefinitions: {}
   customresourcedefinitions:
