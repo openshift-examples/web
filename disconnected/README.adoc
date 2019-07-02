@@ -27,8 +27,8 @@ fqdn: instance
 
 Build the Image:
 ```
-docker build --build-arg RH_ORG_ID=xxx --build-arg RH_ACTIVATIONKEY=xxx --build-arg RH_POOL_ID=xxx .
-docker run -ti -v $(pwd):/work 92876f32316d
+docker build -t ocp3-disconnected-fetcher --build-arg RH_ORG_ID=xxx --build-arg RH_ACTIVATIONKEY=xxx --build-arg RH_POOL_ID=xxx .
+docker run -ti -v $(pwd):/work ocp3-disconnected-fetcher
 ./fetch-data.sh sync
 ```
 
@@ -66,8 +66,7 @@ chmod +x fetch-data.sh
 Prepare package `tar cf ocp-3.11-data.tar registry/ repos/`
 
 Go to the customer ;-)
- `tar cf ocp-3.11-data.tar registry/ repos/
-`
+
 ## Prepare bastion at customer
 
 Extract repos into /var/www/html
