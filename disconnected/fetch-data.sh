@@ -3,7 +3,8 @@
 ###### Variables ######
 
 SELF=$(basename $0)
-VERSION=v3.11.69
+VERSION=v3.11.117
+MAJOR_VERSION_TAG=v3.11
 declare -a IMAGES
 IMAGES=(
     # Basis images
@@ -15,15 +16,16 @@ IMAGES=(
     "openshift3/csi-livenessprobe:${VERSION}"
     "openshift3/csi-provisioner:${VERSION}"
     "openshift3/grafana:${VERSION}"
-    # openshift3/image-inspector:v3.11.69, is missing!
-    "openshift3/image-inspector:v3.11"
+    # Missing openshift3/image-inspector:${VERSION}
+    "openshift3/image-inspector:${MAJOR_VERSION_TAG}"
     "openshift3/local-storage-provisioner:${VERSION}"
     "openshift3/manila-provisioner:${VERSION}"
     "openshift3/mariadb-apb:${VERSION}"
     "openshift3/mediawiki:${VERSION}"
     "openshift3/mediawiki-apb:${VERSION}"
     "openshift3/mysql-apb:${VERSION}"
-    "openshift3/ose-ansible:${VERSION}"
+    # Missing openshift3/ose-ansible:${VERSION}
+    "openshift3/ose-ansible:${MAJOR_VERSION_TAG}"
     "openshift3/ose-ansible-service-broker:${VERSION}"
     "openshift3/ose-cli:${VERSION}"
     "openshift3/ose-cluster-autoscaler:${VERSION}"
@@ -78,8 +80,8 @@ IMAGES=(
     "openshift3/ose-logging-fluentd:${VERSION}"
     "openshift3/ose-logging-kibana5:${VERSION}"
     "openshift3/prometheus:${VERSION}"
-    # MISSING IN REGISTRY: openshift3/prometheus-alert-buffer:v3.11.69
-    "openshift3/prometheus-alert-buffer:v3.11"
+    # Missing openshift3/prometheus-alert-buffer:${VERSION}
+    "openshift3/prometheus-alert-buffer:${MAJOR_VERSION_TAG}"
     "openshift3/prometheus-alertmanager:${VERSION}"
     "openshift3/prometheus-node-exporter:${VERSION}"
     "cloudforms46/cfme-openshift-postgresql"
@@ -185,11 +187,18 @@ function sync-images {
         IFS=':'; arrIN=($i); unset IFS;
         IMAGE=${arrIN[0]}
         TAG=${arrIN[1]:-latest}
-        #echo "$i -> ${IMAGE}:${TAG}";continue;
+        echo "# registry.redhat.io/$i -> localhost:5000/${IMAGE}:${TAG}";
+        #continue;
         skopeo copy --dest-tls-verify=false \
           --authfile=auth.json \
           docker://registry.redhat.io/${IMAGE}:${TAG} \
           docker://localhost:5000/${IMAGE}:${TAG}
+
+        echo "# localhost:5000/${IMAGE}:${TAG} -> localhost:5000/${IMAGE}:${MAJOR_VERSION_TAG}";
+        skopeo copy --dest-tls-verify=false --src-tls-verify=false \
+          --authfile=auth.json \
+          docker://localhost:5000/${IMAGE}:${TAG} \
+          docker://localhost:5000/${IMAGE}:${MAJOR_VERSION_TAG}
     done;
     echo "Check images in registry:"
     check-images
