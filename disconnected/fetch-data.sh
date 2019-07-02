@@ -220,7 +220,7 @@ function sync-rpms {
     do
         # ToDo: Please check maybe --newest-only is enough
         $SUDO reposync --gpgcheck -lm --repoid=${repo} --download_path=repos/ 
-        $SUDO createrepo -v repos/{repo} -o repos/${repo} 
+        $SUDO createrepo -v repos/${repo} -o repos/${repo} 
     done
     exit;
 }

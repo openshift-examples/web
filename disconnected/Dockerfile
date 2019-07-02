@@ -11,9 +11,9 @@ RUN subscription-manager register --org=$RH_ORG_ID --activationkey=$RH_ACTIVATIO
         --enable="rhel-7-server-rpms" \
         --enable="rhel-7-server-extras-rpms" \
         --enable="rhel-7-server-ose-3.11-rpms" \
-        --enable="rhel-7-server-ansible-2.6-rpms"
-
-RUN yum install -y skopeo openssl docker-distribution tmux lsof telnet createrepo
+        --enable="rhel-7-server-ansible-2.6-rpms" && \
+    yum install -y skopeo openssl docker-distribution tmux lsof telnet yum-utils createrepo git && \
+    subscription-manager unregister
 
 VOLUME /work
 WORKDIR /work
