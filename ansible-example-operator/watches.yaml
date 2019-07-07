@@ -1,0 +1,5 @@
+---
+- version: v1
+  group: bohne.io
+  kind: AnsibleExampleOperator
+  role: /opt/ansible/roles/ansibleexampleoperator
