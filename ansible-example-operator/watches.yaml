@@ -1,5 +1,10 @@
 ---
+# - version: v1
+#   group: bohne.io
+#   kind: AnsibleExampleOperator
+#   role: /opt/ansible/roles/ansibleexampleoperator
+
 - version: v1
-  group: bohne.io
-  kind: AnsibleExampleOperator
+  group: route.openshift.io
+  kind: Route
   role: /opt/ansible/roles/ansibleexampleoperator
