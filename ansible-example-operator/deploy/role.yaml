@@ -46,3 +46,10 @@ rules:
   - '*'
   verbs:
   - '*'
+- apiGroups:
+  - "route.openshift.io"
+  resources:
+  - 'routes'
+  - 'routes/status'
+  verbs:
+  - '*'
