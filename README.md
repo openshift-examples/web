@@ -6,6 +6,7 @@
  * [initContainers - DNS & TCP Check](initContainers.md)  |
  * [Build (chaining build...)](build/README.md)  |
  * OpsContainer DaemonSet `oc create -f ops-container-example.yml`
+ * [Certificates & OpenShift 3/4](certificate/README.adoc)
 
 # Run OCP on your laptop
 ## OpenShift 3
