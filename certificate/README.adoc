@@ -1,11 +1,11 @@
-:toc:
-:toc-placement!:
+:sectnums:
+:toc: left
+:toclevels: 3
 
-Here is my preamble paragraph, but I could really place the TOC anywhere! Lorem ipsum foo bar baz.
+:toc!:
 
 # Certificates & OpenShift
 
-toc::[]
 
 ## Create a self signed certificate 
 
@@ -149,16 +149,6 @@ https://github.com/openshift/ansible-service-broker/blob/master/docs/troubleshoo
 +
 Source: https://github.com/openshift/origin/issues/20005
 
-## Some usefull openssl commands
-
-    openssl crl2pkcs7 -nocrl -certfile <(oc get secret/router-certs -o yaml --export | grep tls.crt | cut -f2 -d ':' | tr -d ' ' |base64 -D ) | openssl pkcs7 -print_certs  -noout
-
-    openssl crl2pkcs7 -nocrl -certfile <(oc get secret/grafana-tls -o json --export | jq -r '.data."tls.crt"'  | base64 -D ) | openssl pkcs7 -print_certs  -noout
-
-    oc get svc --all-namespaces  -o=custom-columns="tls:.metadata.annotations.service\.alpha\.openshift\.io/serving-cert-secret-name,namespace:.metadata.namespace"  | grep -v '^<none>' | awk '{ print "oc delete secret/" $1 " -n " $2}'
-
-
-
 ## OpenShift 4 setup own router/ingress certifcate
 
 . Create secret with certificates
@@ -174,6 +164,15 @@ Source: https://github.com/openshift/origin/issues/20005
       -n openshift-ingress-operator \
       --type=merge \
       --patch='{"spec": { "defaultCertificate": { "name": "router-certs" }}}'
+
+## Some usefull openssl commands
+
+    openssl crl2pkcs7 -nocrl -certfile <(oc get secret/router-certs -o yaml --export | grep tls.crt | cut -f2 -d ':' | tr -d ' ' |base64 -D ) | openssl pkcs7 -print_certs  -noout
+
+    openssl crl2pkcs7 -nocrl -certfile <(oc get secret/grafana-tls -o json --export | jq -r '.data."tls.crt"'  | base64 -D ) | openssl pkcs7 -print_certs  -noout
+
+    oc get svc --all-namespaces  -o=custom-columns="tls:.metadata.annotations.service\.alpha\.openshift\.io/serving-cert-secret-name,namespace:.metadata.namespace"  | grep -v '^<none>' | awk '{ print "oc delete secret/" $1 " -n " $2}'
+
 
 
 
