@@ -1,11 +1,12 @@
-kind: RoleBinding
+kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: cluster-configurator
 subjects:
 - kind: ServiceAccount
   name: cluster-configurator
+  namespace: openshift-rbo-configurator
 roleRef:
-  kind: Role
-  name: cluster-configurator
-  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+  
