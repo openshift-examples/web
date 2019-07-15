@@ -120,8 +120,8 @@ But it is not supported to pass certificates from CVO to router pods via opemshi
 
 . Build & Push container
 
-  operator-sdk build quay.io/rbo/cluster-configurator
-  docker push quay.io/rbo/cluster-configurator
+  operator-sdk build quay.io/rbo/cluster-configurator:latest
+  docker push quay.io/rbo/cluster-configurator:latest
 
 . Build yaml to deploy 
 
@@ -138,4 +138,5 @@ Details how to use:
 . `--cluster-scoped` is removed, https://github.com/operator-framework/operator-sdk/blob/master/doc/operator-scope.md
 
 . https://github.com/openshift/cluster-ingress-operator
-
+. https://github.com/operator-framework/operator-sdk/issues/1366
+. https://github.com/operator-framework/operator-sdk/blob/master/doc/ansible/dev/developer_guide.md#extra-vars-sent-to-ansible
