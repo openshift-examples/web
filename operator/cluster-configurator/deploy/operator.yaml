@@ -19,17 +19,15 @@ spec:
           - /usr/local/bin/ao-logs
           - /tmp/ansible-operator/runner
           - stdout
-          # Replace this with the built image name
-          image: "{{ REPLACE_IMAGE }}"
-          imagePullPolicy: "{{ pull_policy|default('Always') }}"
+          image: "quay.io/rbo/cluster-configurator:latest"
+          imagePullPolicy: "Always"
           volumeMounts:
           - mountPath: /tmp/ansible-operator/runner
             name: runner
             readOnly: true
         - name: operator
-          # Replace this with the built image name
-          image: "{{ REPLACE_IMAGE }}"
-          imagePullPolicy: "{{ pull_policy|default('Always') }}"
+          image: "quay.io/rbo/cluster-configurator:latest"
+          imagePullPolicy: "Always"
           volumeMounts:
           - mountPath: /tmp/ansible-operator/runner
             name: runner
