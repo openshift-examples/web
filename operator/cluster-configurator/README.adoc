@@ -137,3 +137,5 @@ Details how to use:
 
 . `--cluster-scoped` is removed, https://github.com/operator-framework/operator-sdk/blob/master/doc/operator-scope.md
 
+. https://github.com/openshift/cluster-ingress-operator
+
