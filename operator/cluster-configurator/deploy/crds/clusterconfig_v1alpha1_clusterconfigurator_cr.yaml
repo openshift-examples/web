@@ -1,0 +1,7 @@
+apiVersion: clusterconfig.bohne.io/v1alpha1
+kind: ClusterConfigurator
+metadata:
+  name: example-clusterconfigurator
+spec:
+  # Add fields here
+  size: 3

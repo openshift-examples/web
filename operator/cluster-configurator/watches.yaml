@@ -1,0 +1,5 @@
+---
+- version: v1alpha1
+  group: clusterconfig.bohne.io
+  kind: ClusterConfigurator
+  playbook: /opt/ansible/playbook.yml
