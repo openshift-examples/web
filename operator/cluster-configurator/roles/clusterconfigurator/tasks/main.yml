@@ -1,7 +1,6 @@
 ---
 # tasks file for ansibleexampleoperator
 
-
 - name: "Copy secrets"
   vars:
     source_namespace: "{{lookup('env','WATCH_NAMESPACE')}}"
@@ -16,6 +15,8 @@
         namespace:  "{{ item.target_namespace }}"
   with_items: "{{ secrets }}"
 
+- debug: msg="Oauth spec {{ _clusterconfig_bohne_io_clusterconfigurator.spec.oauth }}"
+
 - name: Setup oauth
   k8s: 
     state: present
@@ -24,7 +25,9 @@
       kind: OAuth
       metadata:
         name: cluster
-      spec: "{{ oauth }}"
+      spec: "{{ _clusterconfig_bohne_io_clusterconfigurator.spec.oauth }}"
+
+- debug: msg="Ingress spec {{ _clusterconfig_bohne_io_clusterconfigurator.spec.ingress }}"
 
 - name: Patch router
   k8s:
@@ -36,5 +39,21 @@
       metadata:
         name: default
         namespace: openshift-ingress-operator
-      spec: "{{ ingress }}"
-            
+      spec: "{{ _clusterconfig_bohne_io_clusterconfigurator.spec.ingress }}"
+
+- name: Cluster admins
+  k8s:
+    state: present
+    definition:
+      kind: ClusterRoleBinding
+      apiVersion: rbac.authorization.k8s.io/v1
+      metadata:
+        name: "cluster-configurator-cluster-admin-{{ item }}"
+      subjects:
+      - apiGroup: rbac.authorization.k8s.io
+        kind: User
+        name: "{{ item }}"
+      roleRef:
+        kind: ClusterRole
+        name: cluster-admin
+  with_items: "{{ cluster_admins }}"
