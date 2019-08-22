@@ -1,5 +1,12 @@
 # Build examples
 
+## Simple pipeline Demo
+```
+oc new-project pipeline
+oc new-app jenkins-ephemeral
+oc create -f https://raw.githubusercontent.com/openshift/origin/master/examples/jenkins/pipeline/nodejs-sample-pipeline.yaml
+```
+
 ## Builder -> Runner image
 
 ```
