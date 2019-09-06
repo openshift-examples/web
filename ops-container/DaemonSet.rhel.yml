@@ -3,6 +3,8 @@
 # oc project ops-container
 # oc adm policy add-scc-to-user privileged -z default
 # 
+# How to do on K8s: https://itnext.io/get-a-shell-to-a-kubernetes-node-9b720a15a4fe
+# Or use "oc debug node/..." 
 ---
 apiVersion: apps/v1
 kind: DaemonSet
