@@ -3,7 +3,8 @@
 [Documentation](https://docs.openshift.com/container-platform/3.11/dev_guide/secrets.html#service-serving-certificate-secrets)
 
 ## Example Service
-```
+
+```text
 apiVersion: v1
 kind: Service
 metadata:
@@ -20,15 +21,16 @@ spec:
 ```
 
 ## Check certificate
-```
+
+```text
 oc get secret service-serving-cert -o json | jq -r '.data."tls.crt"' | base64 --decode > service-serving-cert.pem
 
 openssl crl2pkcs7 -nocrl -certfile service-serving-cert.pem | openssl pkcs7 -print_certs  -noout
-
 ```
 
 ## Example commands
-```
+
+```text
 $ echo "apiVersion: v1
 kind: Service
 metadata:
@@ -50,6 +52,5 @@ issuer=/CN=openshift-service-serving-signer@1545507973
 
 subject=/CN=openshift-service-serving-signer@1545507973
 issuer=/CN=openshift-service-serving-signer@1545507973
-
 ```
 

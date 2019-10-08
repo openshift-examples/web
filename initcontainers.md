@@ -1,10 +1,11 @@
 # initContainers example
 
-Example for 
- - DNS Check
- - TCP Check
+Example for
 
-```yml
+* DNS Check
+* TCP Check
+
+```text
 apiVersion: v1
 kind: Pod
 metadata:
@@ -23,5 +24,5 @@ spec:
   - name: check-nslookup
     image: busybox
     command: ['sh', '-c', 'while true; do nslookup mydb || break ; sleep 2 ; echo "waiting for mydb"; done;']
-
 ```
+

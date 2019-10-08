@@ -1,27 +1,31 @@
 # Source to image example for R shiny
 
 ## Build builder image
-```
+
+```text
 oc create -f https://raw.githubusercontent.com/rbo/openshift-examples/master/build/s2i-R-shiny/builder.yaml -n openshift
 oc start-build r-shiny-s2i [--follow] -n openshift
 oc create -f https://raw.githubusercontent.com/rbo/openshift-examples/master/build/s2i-R-shiny/template.yaml -n openshift
 ```
+
 ### Insides from the builder
 
 Install app lication and dependencies with
-```
+
+```text
 $ R -s -e "library(deplearning); depl_check()"
 $ R -s -e "menu = function(choices, graphics = FALSE, title = NULL) { return(1) };  library(deplearning); depl_check()"
 ```
 
 Run app with
-```
+
+```text
 $ R -s -e 'library("shiny"); runApp()'
 ```
 
-
 ## Build app with builder image
-```
+
+```text
 oc new-app r-shiny-s2i~https://github.com/rstudio/shiny-examples \
     --context-dir=082-word-cloud \
     --name=word-cloud \
@@ -29,16 +33,16 @@ oc new-app r-shiny-s2i~https://github.com/rstudio/shiny-examples \
 oc expose svc/word-cloud
 ```
 
-## Resources 
+## Resources
 
-- https://www.r-bloggers.com/permanently-setting-the-cran-repository/
-- https://rdrr.io/github/MilesMcBain/deplearning/
-
+* [https://www.r-bloggers.com/permanently-setting-the-cran-repository/](https://www.r-bloggers.com/permanently-setting-the-cran-repository/)
+* [https://rdrr.io/github/MilesMcBain/deplearning/](https://rdrr.io/github/MilesMcBain/deplearning/)
 
 ## Playground
 
 Dockerfile.playground:
-```Dockerfile
+
+```text
 FROM docker-registry-default.ocp3.bohne.io/openshift/r-shiny-s2i:latest 
 COPY ./s2i/bin/ /usr/libexec/s2i
 
@@ -48,11 +52,11 @@ USER 1001
 EXPOSE 8080
 
 CMD ["/usr/libexec/s2i/usage"]
-
 ```
 
 And build and run:
-```
+
+```text
 docker pull docker-registry-default.ocp3.bohne.io/openshift/r-shiny-s2i:latest 
 docker build -t b -f Dockerfile.playground .
 s2i build https://github.com/rstudio/shiny-examples b b-app --context-dir=027-absolutely-positioned-panels --loglevel=99
@@ -61,5 +65,4 @@ s2i build https://github.com/rstudio/shiny-examples b b-app --context-dir=027-ab
 
 docker run word-cloud
 ```
-
 
