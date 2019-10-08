@@ -2,6 +2,7 @@
 
 * [README](README.md)
 * [OpenShift 3 installation](openshift-3-installation.md)
+  * [Disconnected](disconnected/README.adoc)
 * [OpenShift 4 installation](openshift-4-installation/README.md)
   * [Disconnected / air-gapped OpenShift installation](openshift-4-installation/disconnected-openshift4.md)
 * [POD Autoscaling](autoscaling.md)
