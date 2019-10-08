@@ -1,4 +1,5 @@
 # Example for simple pods
+
 ## Anyuid Example
 
 ```yaml
@@ -57,7 +58,7 @@ EOF
 
 ### Check SCC
 
-```sh
+```bash
 $ oc get pods -o "custom-columns=NAME:.metadata.name,SCC:.metadata.annotations.openshift\.io/scc,SERVICEACCOUNT:.spec.serviceAccountName"
 NAME                             SCC          SERVICEACCOUNT
 busybox-with-anyuid-1-m98pb      anyuid       anyuid
@@ -160,3 +161,4 @@ spec:
     type: ImageChange
 EOF
 ```
+

@@ -1,15 +1,16 @@
 # Build examples
 
 ## Simple pipeline Demo
-```
+
+```text
 oc new-project pipeline
 oc new-app jenkins-ephemeral
 oc create -f https://raw.githubusercontent.com/openshift/origin/master/examples/jenkins/pipeline/nodejs-sample-pipeline.yaml
 ```
 
-## Builder -> Runner image
+## Builder -&gt; Runner image
 
-```
+```text
 # Important to build with an older tag
 
 oc import-image openjdk18-openshift:latest --from=registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift --confirm
@@ -29,15 +30,13 @@ oc new-app build-with-1 && oc expose svc/build-with-1
 oc new-app run-with-latest-1 && oc expose svc/run-with-latest-1
 ```
 
-## Add git config 
-
+## Add git config
 
 [OpenShift 3.11 documenation](https://docs.openshift.com/container-platform/3.11/dev_guide/builds/build_inputs.html#source-secrets-gitconfig-file-secured)
 
+Create `/tmp/gitconfig`
 
-Create ```/tmp/gitconfig```
-
-```ini
+```text
 [http]
     sslVerify = false
 # Just for information:
@@ -45,8 +44,9 @@ Create ```/tmp/gitconfig```
     sshCommand = "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
 ```
 
-Run commands: ( Create secret & add ```--source-secret=build``` to new-build )
-```sh
+Run commands: \( Create secret & add `--source-secret=build` to new-build \)
+
+```bash
 oc create secret generic build --from-file=.gitconfig=/tmp/gitconfig \
     --from-file=ssh-privatekey=/tmp/github_rsa \
     --type=kubernetes.io/ssh-auth
@@ -55,38 +55,31 @@ oc new-build registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift~gi
 
 # If you like, create app
 oc new-app chaos-professor
-
 ```
-
 
 ## Build and push image into many registries
 
 Based on [Promoting container images between registries with skopeo](https://blog.openshift.com/promoting-container-images-between-registries-with-skopeo/)
 
-
 Two different ways to get Skopoe "into" Jenkins
 
-1) Custom Jenkins Slave
-    
-    https://github.com/siamaksade/openshift-cd-demo/blob/ocp-3.11/cicd-template.yaml#L229
-    
-    Source for the slave image https://github.com/siamaksade/jenkins-slave-skopeo
+1\) Custom Jenkins Slave
 
-    Based on https://docs.openshift.com/container-platform/3.11/dev_guide/dev_tutorials/openshift_pipeline.html
+```text
+https://github.com/siamaksade/openshift-cd-demo/blob/ocp-3.11/cicd-template.yaml#L229
 
-    https://github.com/redhat-cop/containers-quickstarts/tree/master/jenkins-slaves/jenkins-slave-image-mgmt
+Source for the slave image https://github.com/siamaksade/jenkins-slave-skopeo
 
-2) Custom Jenkins Agent, was the differents?
+Based on https://docs.openshift.com/container-platform/3.11/dev_guide/dev_tutorials/openshift_pipeline.html
 
-
-
-
-
-
-https://github.com/jenkinsci/kubernetes-plugin
-https://github.com/openshift/jenkins-client-plugin
-
+https://github.com/redhat-cop/containers-quickstarts/tree/master/jenkins-slaves/jenkins-slave-image-mgmt
 ```
+
+2\) Custom Jenkins Agent, was the differents?
+
+[https://github.com/jenkinsci/kubernetes-plugin](https://github.com/jenkinsci/kubernetes-plugin) [https://github.com/openshift/jenkins-client-plugin](https://github.com/openshift/jenkins-client-plugin)
+
+```text
 podTemplate(
   label: "scopeo", 
   cloud: "openshift", 
@@ -101,9 +94,10 @@ podTemplate(
   ]
 )
 ```
+
 Dockerfile
 
-```
+```text
 FROM openshift/jenkins-slave-base-centos7
 MAINTAINER Tero Ahonen <tero@redhat.com>
 USER root
@@ -111,10 +105,9 @@ RUN yum -y install skopeo
 USER 1001
 ```
 
+## Build & Deploy namespace one -&gt; deploy namespace 2
 
-## Build & Deploy namespace one -> deploy namespace 2
-
-```
+```text
 oc new-project prod
 
 oc new-project dev
