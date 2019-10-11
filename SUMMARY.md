@@ -1,13 +1,13 @@
 # Table of contents
 
-* [README](README.md)
-* [OpenShift 3 installation](openshift-3-installation.md)
-  * [Disconnected](disconnected/README.adoc)
+* [OpenShift examples](README.md)
+* [OpenShift 3 installation](openshift-3-installation/README.md)
+  * [Disconnected](openshift-3-installation/disconnected.md)
 * [OpenShift 4 installation](openshift-4-installation/README.md)
   * [Disconnected / air-gapped OpenShift installation](openshift-4-installation/disconnected-openshift4.md)
+* [Storage](storage.md)
 * [POD Autoscaling](autoscaling.md)
 * [initContainers example](initcontainers.md)
-* [OpenShift 3.2](storage.md)
 * [ansible-example-operator](ansible-example-operator/README.md)
   * [roles](ansible-example-operator/roles/README.md)
     * [Role Name](ansible-example-operator/roles/ansibleexampleoperator.md)

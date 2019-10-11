@@ -1,4 +1,4 @@
-# README
+# OpenShift examples
 
 ## Content
 
