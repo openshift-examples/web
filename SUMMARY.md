@@ -6,6 +6,8 @@
 * [OpenShift 4 installation](openshift-4-installation/README.md)
   * [Disconnected / air-gapped OpenShift installation](openshift-4-installation/disconnected-openshift4.md)
 * [Storage](storage.md)
+* [Deployment](deployment/README.md)
+  * [ImageStreams](deployment/imagestreams.md)
 * [POD Autoscaling](autoscaling.md)
 * [initContainers example](initcontainers.md)
 * [ansible-example-operator](ansible-example-operator/README.md)
