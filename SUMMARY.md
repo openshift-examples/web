@@ -6,6 +6,7 @@
 * [OpenShift 4 installation](openshift-4-installation/README.md)
   * [Disconnected / air-gapped OpenShift installation](openshift-4-installation/disconnected-openshift4.md)
 * [Storage](storage.md)
+* [Custom Resource Definition (CRD)](custom-ressource-definition.md)
 * [Deployment](deployment/README.md)
   * [ImageStreams](deployment/imagestreams.md)
 * [POD Autoscaling](autoscaling.md)
