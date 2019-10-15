@@ -1,6 +1,9 @@
-# Custom Resource Definition (CRD)
+# Custom Resource Definition \(CRD\)
 
-## Simple example
+## Custom Resource Definition \(CRD\)
+
+### Simple example
+
 ```yaml
 apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
@@ -29,7 +32,7 @@ spec:
   engine: N57D30
 ```
 
-# Advanced example
+## Advanced example
 
 ```yaml
 apiVersion: apiextensions.k8s.io/v1beta1
@@ -65,3 +68,4 @@ spec:
     type: string
     priority: 1
 ```
+
