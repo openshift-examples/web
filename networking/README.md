@@ -33,7 +33,7 @@
 
 ## NetFilter / IPTables Package flow
 
-![package flow](.gitbook/assets/packet_flow10.png)
+![package flow](../.gitbook/assets/packet_flow10.png)
 
 Source: [http://xkr47.outerspace.dyndns.org/netfilter/packet\_flow/](http://xkr47.outerspace.dyndns.org/netfilter/packet_flow/)
 
