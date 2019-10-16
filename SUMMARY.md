@@ -13,6 +13,7 @@
   * [cluster-configurator](operator/cluster-configurator/README.md)
     * [roles](operator/cluster-configurator/roles/README.md)
       * [Role Name](operator/cluster-configurator/roles/clusterconfigurator.md)
+* [Authentication](authentication.md)
 * [POD Autoscaling](autoscaling.md)
 * [initContainers example](initcontainers.md)
 * [ansible-example-operator](ansible-example-operator/README.md)
