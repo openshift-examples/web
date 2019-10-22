@@ -10,11 +10,11 @@ Official documentation:
 
 #### Visit: [https://console.developers.google.com/apis/credentials](https://console.developers.google.com/apis/credentials)
 
-![](.gitbook/assets/google-oauth-screenshot1.png)
+![](../.gitbook/assets/google-oauth-screenshot1.png)
 
 #### Create OAuth client ID
 
-![](.gitbook/assets/google-oauth-screenshot2.png)
+![](../.gitbook/assets/google-oauth-screenshot2.png)
 
 #### Copy Client ID and Client secret
 
