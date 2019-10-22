@@ -1,13 +1,17 @@
-# EAP Cluster demo
+---
+description: >-
+  This example demonstrates session replication on JBoss EAP in OpenShift.
+  (Tested with OpenShift 3.4)
+---
 
-This example demonstrates session replication on JBoss EAP in OpenShift.
+# EAP Cluster demo
 
 ## Grant view permission to default service account
 
 This ensures that the EAP can query which PODs are still available:
 
-```text
-oc policy add-role-to-user view system:serviceaccount:$NAMESPACE$:default -n $NAMESPACE$
+```bash
+oc policy add-role-to-user view -z default
 ```
 
 ## Deploy JBoss EAP with demo application
@@ -25,7 +29,7 @@ oc process -n openshift eap70-basic-s2i \
 oc scale --replicas=2 dc/eap-app
 ```
 
-## Enforce roundrobin
+## Enforce round robin
 
 This should be default, but we will enforce just in case roundrobin to check the session replication. For more information: [routes.html\#route-specific-annotations](https://docs.openshift.com/container-platform/3.4/architecture/core_concepts/routes.html#route-specific-annotations%20)
 

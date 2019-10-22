@@ -1,11 +1,11 @@
-# initContainers example
+# Init containers
 
 Example for
 
 * DNS Check
 * TCP Check
 
-```text
+```yaml
 apiVersion: v1
 kind: Pod
 metadata:

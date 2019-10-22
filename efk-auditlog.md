@@ -1,4 +1,4 @@
-# Put auditlog into elasticsearch
+# EFK - Auditlogs \(OpenShift 3\)
 
 A quick-n-diry example to put the openshift audit log into elasticsearch.
 
