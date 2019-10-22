@@ -3,9 +3,9 @@
 ## Content
 
 * [Simple pods](simple-pods.md)
-* [EAP / JBoss Clustering / Session replication](eap-cluster.md)
+* [EAP / JBoss Clustering / Session replication](deployment/eap-cluster.md)
 * [Autoscaling & SpringBoot](autoscaling.md)
-* [initContainers - DNS & TCP Check](initcontainers.md)  \|
+* [initContainers - DNS & TCP Check](deployment/initcontainers.md)  \|
 * [Build \(chaining build...\)](build/)  \|
 * OpsContainer DaemonSet `oc create -f ops-container-example.yml`
 * [Certificates & OpenShift 3/4](https://github.com/rbo/openshift-examples/tree/43511bbb16abaf8280889de74ea12f3649972693/certificate/README.adoc)
