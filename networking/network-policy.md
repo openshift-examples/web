@@ -1,4 +1,4 @@
-# README
+# Network Policy
 
 ## Network policy
 
@@ -26,7 +26,7 @@
 
 Install openshift with redhat/openshift-ovs-networkpolicy
 
-![demo overview](.gitbook/assets/demo-overview.png)
+![demo overview](../.gitbook/assets/demo-overview.png)
 
 ```text
 oc new-project bouvier
@@ -54,7 +54,7 @@ oc label namespace/openshift-ingress name=openshift-ingress
 
 ### Run connection overview
 
-`./run-tmux <domain>` ![demo overview](.gitbook/assets/without-policies.png)
+`./run-tmux <domain>` ![demo overview](../.gitbook/assets/without-policies.png)
 
 ### Play arround..
 
@@ -82,7 +82,7 @@ selma-1-929sj   1/1       Running   0          2h        10.30.3.59   node1     
 selma-1-h4hh2   1/1       Running   0          2h        10.30.2.89   node0     <none>
 ```
 
-![Clean](.gitbook/assets/without-policies%20%281%29.png)
+![Clean](../.gitbook/assets/without-policies%20%281%29.png)
 
 #### 1\) Simpson deny all
 
@@ -103,7 +103,7 @@ $ diff -Nuar node1.case0.OpenFlow13 node1.case1.OpenFlow13
   cookie=0x22f1ebcf, table=90, priority=100,ip,nw_dst=10.30.1.0/24 actions=move:NXM_NX_REG0[]->NXM_NX_TUN_ID[0..31],set_field:192.168.1.111->tun_dst,output:vxlan0
 ```
 
-![Case 1](.gitbook/assets/case1.png)
+![Case 1](../.gitbook/assets/case1.png)
 
 #### 2\) Simpson allow from openshift-ingress namespaces, because of router
 
@@ -123,7 +123,7 @@ $ $ diff -Nuar node1.case1.OpenFlow13 node1.case2.OpenFlow13
   table=80, priority=50,reg1=10389750 actions=output:NXM_NX_REG2[]
 ```
 
-![Case 2](.gitbook/assets/case2.png)
+![Case 2](../.gitbook/assets/case2.png)
 
 #### 3\) Simpson allow internal communcation
 
@@ -143,7 +143,7 @@ $ diff -Nuar node1.case2.OpenFlow13 node1.case3.OpenFlow13
   table=80, priority=50,reg1=10389750 actions=output:NXM_NX_REG2[]
 ```
 
-![Case 3](.gitbook/assets/case3.png)
+![Case 3](../.gitbook/assets/case3.png)
 
 #### 4\) Selma and Patty want's to talk with Marge!
 
@@ -165,7 +165,7 @@ $ diff -Nuar node1.case3.OpenFlow13 node1.case4.OpenFlow13
   table=80, priority=50,reg1=10389750 actions=output:NXM_NX_REG2[]
 ```
 
-![Case 4](.gitbook/assets/case4.png)
+![Case 4](../.gitbook/assets/case4.png)
 
 ### Bonus, one EgressNetworkPolicy
 

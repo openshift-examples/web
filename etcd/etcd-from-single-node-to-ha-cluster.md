@@ -1,8 +1,10 @@
-# etcd-from-single-node-to-ha-cluster
+---
+description: etcd Version 2.3.7 - from single node to ha cluster
+---
 
-## etcd Version 2.3.7 - from single node to ha cluster
+# Single node etcd to cluster \(OpenShift 3\)
 
-## Usefull aliases:
+## Useful aliases:
 
 ```text
 
@@ -176,7 +178,7 @@ $ etcdctl -C https://10.132.0.8:2379 member list
 38cd9e653a9061b1: name=master2 peerURLs=https://10.132.0.8:2380 clientURLs=https://10.132.0.8:2379 isLeader=true
 ```
 
-If it is healty add more nodes :-\)
+If it is healthy add more nodes :-\)
 
 #### After all nodes added and cluster is healty
 
