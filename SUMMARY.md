@@ -25,6 +25,7 @@
 * [Networking](networking/README.md)
   * [Network Policy](networking/network-policy.md)
   * [NSX-T](networking/nsx-t.md)
+  * [Untitled](networking/untitled.md)
 * [POD Autoscaling](autoscaling.md)
 * [ansible-example-operator](ansible-example-operator/README.md)
   * [roles](ansible-example-operator/roles/README.md)
@@ -38,4 +39,5 @@
 * [Etcd](etcd/README.md)
   * [Single node etcd to cluster \(OpenShift 3\)](etcd/etcd-from-single-node-to-ha-cluster.md)
 * [Usefull commands](service-catalog-demo.md)
+* [Machine Config](machine-config.md)
 
