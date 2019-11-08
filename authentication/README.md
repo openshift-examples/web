@@ -32,8 +32,8 @@ oc create secret generic google-secret \
 
 #### Update OAuth Config
 
-{% code-tabs %}
-{% code-tabs-item title="oauth.yaml" %}
+{% tabs %}
+{% tab title="oauth.yaml" %}
 ```yaml
 apiVersion: config.openshift.io/v1
 kind: OAuth
@@ -50,8 +50,8 @@ identityProviders:
         name: google-secret
     hostedDomain: "redhat.com"
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 Apply: `oc apply -f oauth.yaml`  
 
