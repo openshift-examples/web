@@ -21,6 +21,7 @@
     * [roles](operator/cluster-configurator/roles/README.md)
       * [Role Name](operator/cluster-configurator/roles/clusterconfigurator.md)
 * [Authentication](authentication/README.md)
+  * [ActiveDirectory \(LDAP\)](authentication/activedirectory-ldap.md)
   * [Basic Authentication \(Remote\)](authentication/auth-basic-authentication.md)
 * [Networking](networking/README.md)
   * [Network Policy](networking/network-policy.md)
