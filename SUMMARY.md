@@ -23,7 +23,7 @@
 * [Authentication](authentication/README.md)
   * [ActiveDirectory \(LDAP\)](authentication/activedirectory-ldap.md)
   * [Basic Authentication \(Remote\)](authentication/auth-basic-authentication.md)
-  * [Red Hat SSO - via Google](authentication/untitled.md)
+  * [Red Hat SSO - via Google](authentication/redhat-sso.md)
 * [Networking](networking/README.md)
   * [Network Policy - DRAFT](networking/network-policy.md)
   * [NSX-T](networking/nsx-t.md)
