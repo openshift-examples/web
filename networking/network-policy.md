@@ -1,30 +1,30 @@
-# Network Policy
+# Network Policy - DRAFT
 
-## Network policy
+## ToDo
 
-### Nice to know
+* [ ] Provide helper scripts
+* [ ] Add node labels to ensure to run only on one or two nodes
 
-1\) Based on labeling
+## Nice to know / Basics
 
-* project / namespaces seldom have labels
+1. Based on labeling or annotations
+2. Empty label selector match all
+3. Rules for allowing
+4. Ingress -&gt; who can connect to this POD
+5. Egress -&gt; where can this POD connect to
+6. **Rules**
+   1. traffic is allowed unless a Network Policy selecting the POD
+   2. traffic is denied if pod is selected in policie but none of them have any rules allowing it
+   3. =  You can only write rules that allow traffic!
+   4. Scope: Namespace
 
-  2\) Empty label selector match all
+## Tutorial / Deme - OpenShift v4!
 
-  3\) rules for allowing
+### Deploy demo environment 
 
-* Ingress -&gt; who can connect to this POD?
-* Engress -&gt; where can this POD connect to?
-
-  4\) **Rules**
-
-* traffic is allowed unless a Network Policy selecting the POD
-* traffic is denied if pod is selected in policie but none of them have any rules allowing it
-* = You can only write rules that allow traffic!
-* Scope: Namespace
-
-### Deploy demo env.
-
-Install openshift with redhat/openshift-ovs-networkpolicy
+Install openshift  
+OpenShift 3 with redhat/openshift-ovs-networkpolicy  
+OpenShift 4 network policy is the default
 
 ![demo overview](../.gitbook/assets/demo-overview.png)
 
@@ -46,25 +46,31 @@ oc scale dc/marge --replicas=2
 oc expose svc/marge
 ```
 
-### Label project where router is located
+### Download some helper scripts
 
-```text
-oc label namespace/openshift-ingress name=openshift-ingress
-```
+{% hint style="danger" %}
+ToDo provide helper scripts
+{% endhint %}
 
 ### Run connection overview
 
 `./run-tmux <domain>` ![demo overview](../.gitbook/assets/without-policies.png)
 
-### Play arround..
+### Discover the environment
 
-Some enviroment info's:
+#### List network namespaces
 
-| Namespace | NETID |
-| :--- | :--- |
-| default | 0 |
-| bouvier | 3770897 |
-| simpson | 13787457 |
+```bash
+$ oc get netnamespaces | grep -E '(NAME|simpson|bouvier|default|openshift-ingress)'
+NAME                                                    NETID      EGRESS IPS
+bouvier                                                 11758537
+default                                                 0
+openshift-ingress                                       16110902
+openshift-ingress-operator                              9037087
+simpson                                                 8829068
+```
+
+#### List POD's
 
 ```text
 $ oc get pods -o wide -n simpson
@@ -82,15 +88,46 @@ selma-1-929sj   1/1       Running   0          2h        10.30.3.59   node1     
 selma-1-h4hh2   1/1       Running   0          2h        10.30.2.89   node0     <none>
 ```
 
+### Let's start with the Network Policy demonstration
+
+Every one can connect to each other
+
 ![Clean](../.gitbook/assets/without-policies%20%281%29.png)
 
-#### 1\) Simpson deny all
+```bash
+./dump-net.sh compute-0 compute-0.case0
+```
+
+### Case 1 - Simpson - default-deny
 
 ```text
-$ ./dump-net.sh node1 node1.case0
-$ oc create -f default-deny.yml -n simpson
-$ ./dump-net.sh node1 node1.case1
-$ diff -Nuar node1.case0.OpenFlow13 node1.case1.OpenFlow13
+oc create -n simpson  -f - <<EOF
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: default-deny
+spec:
+  podSelector: {}
+EOF
+```
+
+{% hint style="danger" %}
+Screenshot - Passt nicht zu OpenShift 4
+
+![Case 1](../.gitbook/assets/case1.png)
+{% endhint %}
+
+{% hint style="danger" %}
+Screenshot - Passt nicht zu OpenShift 4
+
+![Case 1](../.gitbook/assets/case1.png)
+{% endhint %}
+
+![Case 1](../.gitbook/assets/case1.png)
+
+```text
+$ ./dump-net.sh compute-0 compute-0.case1
+$ diff -Nuar compute-0.case0.OpenFlow13 compute-0.case1.OpenFlow13
 --- node1.case0.OpenFlow13    2019-01-11 16:26:55.000000000 +0100
 +++ node1.case1.OpenFlow13    2019-01-11 16:27:15.000000000 +0100
 @@ -97,7 +97,6 @@
@@ -101,9 +138,8 @@ $ diff -Nuar node1.case0.OpenFlow13 node1.case1.OpenFlow13
   table=80, priority=0 actions=drop
   cookie=0xd685fff4, table=90, priority=100,ip,nw_dst=10.30.2.0/24 actions=move:NXM_NX_REG0[]->NXM_NX_TUN_ID[0..31],set_field:192.168.1.104->tun_dst,output:vxlan0
   cookie=0x22f1ebcf, table=90, priority=100,ip,nw_dst=10.30.1.0/24 actions=move:NXM_NX_REG0[]->NXM_NX_TUN_ID[0..31],set_field:192.168.1.111->tun_dst,output:vxlan0
-```
 
-![Case 1](../.gitbook/assets/case1.png)
+```
 
 #### 2\) Simpson allow from openshift-ingress namespaces, because of router
 
