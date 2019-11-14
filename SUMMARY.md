@@ -24,7 +24,7 @@
   * [ActiveDirectory \(LDAP\)](authentication/activedirectory-ldap.md)
   * [Basic Authentication \(Remote\)](authentication/auth-basic-authentication.md)
 * [Networking](networking/README.md)
-  * [Network Policy](networking/network-policy.md)
+  * [Network Policy - DRAFT](networking/network-policy.md)
   * [NSX-T](networking/nsx-t.md)
   * [Untitled](networking/untitled.md)
 * [POD Autoscaling](autoscaling.md)
