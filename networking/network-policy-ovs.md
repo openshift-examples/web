@@ -4,6 +4,7 @@
 
 * [x] Provide helper scripts
 * [ ] Add node labels to ensure to run only on one or two nodes
+* [ ] Know Issue: [Bug 1768608](https://bugzilla.redhat.com/show_bug.cgi?id=1768608) - NetworkPolicy not applied to router
 
 ## Nice to know / Basics
 
@@ -66,7 +67,13 @@ cd openshift-examples/networking/network-policy-ovs/
 
 ### Run connection overview
 
-`./run-tmux <domain>` ![demo overview](../.gitbook/assets/without-policies.png)
+```
+./run-tmux <domain>
+```
+
+![demo overview](../.gitbook/assets/without-policies.png)
+
+Connection's to yourself \(eg. homer.simpson -&gt; homer.simpson\) is flapping if you have more than one pod. Because of:  [https://gist.github.com/rbo/4aa7840ebabf11aad3bf7961619e18e3](https://gist.github.com/rbo/4aa7840ebabf11aad3bf7961619e18e3)
 
 ### Discover the environment
 
@@ -107,7 +114,7 @@ Every one can connect to each other
 ![Clean](../.gitbook/assets/without-policies%20%281%29.png)
 
 ```bash
-./dump-net.sh compute-0 compute-0.case0
+./dump-net.sh --all case0
 ```
 
 ### Case 1 - Simpson - default-deny
