@@ -56,7 +56,7 @@ curl -L -O https://raw.githubusercontent.com/rbo/openshift-examples/master/netwo
 ```
 {% endtab %}
 
-{% tab title="" %}
+{% tab title="Git clone" %}
 ```
 git clone https://github.com/rbo/openshift-examples.git
 cd openshift-examples/networking/network-policy-ovs/
