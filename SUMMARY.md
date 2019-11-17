@@ -33,6 +33,7 @@
     * [Role Name](ansible-example-operator/roles/ansibleexampleoperator.md)
 * [Build examples](build/README.md)
   * [Source to image example for R shiny](build/s2i-r-shiny.md)
+* [Commands inside a POD](commands-inside-a-pod.md)
 * [KubeVirt](kubevirt.md)
 * [Auto scale down of deployment configs](scale-down-deploymentconfigs.md)
 * [Example for simple pods](simple-pods.md)
