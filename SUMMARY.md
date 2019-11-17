@@ -25,7 +25,7 @@
   * [Basic Authentication \(Remote\)](authentication/auth-basic-authentication.md)
   * [Red Hat SSO - via Google](authentication/redhat-sso.md)
 * [Networking](networking/README.md)
-  * [Network Policy - DRAFT](networking/network-policy.md)
+  * [Network Policy with OVS - DRAFT](networking/network-policy-ovs.md)
   * [NSX-T](networking/nsx-t.md)
 * [POD Autoscaling](autoscaling.md)
 * [ansible-example-operator](ansible-example-operator/README.md)

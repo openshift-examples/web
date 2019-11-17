@@ -1,4 +1,4 @@
-# Network Policy - DRAFT
+# Network Policy with OVS - DRAFT
 
 ## ToDo
 
@@ -18,7 +18,7 @@
    3. =  You can only write rules that allow traffic!
    4. Scope: Namespace
 
-## Tutorial / Deme - OpenShift v4!
+## Tutorial / Demo - OpenShift v4!
 
 ### Deploy demo environment 
 
@@ -117,12 +117,6 @@ Screenshot - Passt nicht zu OpenShift 4
 ![Case 1](../.gitbook/assets/case1.png)
 {% endhint %}
 
-{% hint style="danger" %}
-Screenshot - Passt nicht zu OpenShift 4
-
-![Case 1](../.gitbook/assets/case1.png)
-{% endhint %}
-
 ![Case 1](../.gitbook/assets/case1.png)
 
 ```text
@@ -144,7 +138,19 @@ $ diff -Nuar compute-0.case0.OpenFlow13 compute-0.case1.OpenFlow13
 #### 2\) Simpson allow from openshift-ingress namespaces, because of router
 
 ```text
-$ oc create -f allow-from-openshift-ingress-namespace.yml -n simpson
+$ oc create -n simpson -f - <<EOF
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-from-openshift-ingress-namespace
+spec:
+  podSelector:
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: openshift-ingress
+EOF
 $ ./dump-net.sh node1 node1.case2
 $ $ diff -Nuar node1.case1.OpenFlow13 node1.case2.OpenFlow13
 --- node1.case1.OpenFlow13    2019-01-11 16:27:15.000000000 +0100
@@ -164,7 +170,17 @@ $ $ diff -Nuar node1.case1.OpenFlow13 node1.case2.OpenFlow13
 #### 3\) Simpson allow internal communcation
 
 ```text
-$ oc create -f allow-from-same-namespace.yml -n simpson
+$ oc create -n simpson -f - <<EOF
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-from-same-namespace
+spec:
+  podSelector:
+  ingress:
+  - from:
+    - podSelector: {}
+EOF
 $ ./dump-net.sh node1 node1.case3
 $ diff -Nuar node1.case2.OpenFlow13 node1.case3.OpenFlow13
 --- node1.case2.OpenFlow13    2019-01-11 16:28:32.000000000 +0100
@@ -185,7 +201,21 @@ $ diff -Nuar node1.case2.OpenFlow13 node1.case3.OpenFlow13
 
 ```text
 $ oc label namespace/bouvier name=bouvier
-$ oc create -f allow-from-bouviers-to-marge.yml -n simpson
+$ oc create -n simpson -f - <<EOF
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-from-bouviers-to-marge
+spec:
+  podSelector:
+    matchLabels:
+      app: marge
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: bouvier
+EOF
 $ ./dump-net.sh node1 node1.case4
 $ diff -Nuar node1.case3.OpenFlow13 node1.case4.OpenFlow13
 --- node1.case3.OpenFlow13    2019-01-11 16:29:46.000000000 +0100
@@ -205,9 +235,29 @@ $ diff -Nuar node1.case3.OpenFlow13 node1.case4.OpenFlow13
 
 ### Bonus, one EgressNetworkPolicy
 
+{% hint style="warning" %}
+Not supported in OpenShift 4.2
+{% endhint %}
+
 ```text
 $ ./dump-net.sh ip-10-0-137-107.us-east-2.compute.internal bevore-egress
-$ oc create -f EgressNetworkPolicy.yml
+$ oc create -f - <<EOF
+apiVersion: network.openshift.io/v1
+kind: EgressNetworkPolicy
+metadata:
+  name: default
+spec:
+  egress:
+  - to:
+      cidrSelector: 1.2.3.0/24
+    type: Allow
+  - to:
+      dnsName: www.foo.com
+    type: Allow
+  - to:
+      cidrSelector: 0.0.0.0/0
+    type: Deny
+EOF
 $ ./dump-net.sh ip-10-0-137-107.us-east-2.compute.internal after-egress
 $ diff -Nuar bevore-egress*OpenFlow13  after-egress*OpenFlow13
 --- bevore-egress.ip-10-0-137-107.us-east-2.compute.internal.OpenFlow13    2019-04-10 15:37:26.000000000 +0200
