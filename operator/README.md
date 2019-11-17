@@ -8,8 +8,7 @@
 
 #### Create first ansible operator
 
-{% tabs %}
-{% tab title="" %}
+{% code title="" %}
 ```bash
 operator-sdk new ansible-operator \
     --api-version=ansible-operator.openshift.pub/v1  \
@@ -38,8 +37,7 @@ oc create -f deploy/operator.yaml
 # The default controller will watch for AppService objects and create a pod for each CR
 oc create -f deploy/crds/ansibleoperator_v1_config_cr.yaml
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 #### Adjust `roles/config/tasks/main.yml`
 
@@ -75,15 +73,13 @@ oc create -f deploy/crds/ansibleoperator_v1_config_cr.yaml
 
 #### Rebuild and redeploy
 
-{% tabs %}
-{% tab title="" %}
+{% code title="" %}
 ```bash
 operator-sdk build quay.io/openshift-examples/ansible-example-operator:latest
 docker push quay.io/openshift-examples/ansible-example-operator:latest
 oc delete pods -l name=ansible-operator
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 #### Cleanup
 
