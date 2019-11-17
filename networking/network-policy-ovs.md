@@ -2,7 +2,7 @@
 
 ## ToDo
 
-* [ ] Provide helper scripts
+* [x] Provide helper scripts
 * [ ] Add node labels to ensure to run only on one or two nodes
 
 ## Nice to know / Basics
@@ -48,9 +48,21 @@ oc expose svc/marge
 
 ### Download some helper scripts
 
-{% hint style="danger" %}
-ToDo provide helper scripts
-{% endhint %}
+{% tabs %}
+{% tab title="Download" %}
+```text
+curl -L -O https://raw.githubusercontent.com/rbo/openshift-examples/master/networking/network-policy-ovs/run-tmux
+curl -L -O https://raw.githubusercontent.com/rbo/openshift-examples/master/networking/network-policy-ovs/dump-net.sh
+```
+{% endtab %}
+
+{% tab title="" %}
+```
+git clone https://github.com/rbo/openshift-examples.git
+cd openshift-examples/networking/network-policy-ovs/
+```
+{% endtab %}
+{% endtabs %}
 
 ### Run connection overview
 
