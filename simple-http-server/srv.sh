@@ -13,7 +13,9 @@ echo -e "\r"
 if [ "$query" == "/demo" ] ; then
   echo "# Connection test from $HOSTNAME"
   DEMO_FROM="$(hostname | cut -f1 -d'-').$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)"
-  for i in marge.simpson homer.simpson selma.bouvier patty.bouvier ; do 
+  # Skip connection to yourself, because of https://gist.github.com/rbo/4aa7840ebabf11aad3bf7961619e18e3
+  # for i in marge.simpson homer.simpson selma.bouvier patty.bouvier ; do 
+  echo "marge.simpson homer.simpson selma.bouvier patty.bouvier" | tr " " "\n" | grep -v "$(echo $HOSTNAME | cut -f1 -d'-')" | while read i ; do
     echo -n "$DEMO_FROM -> $i : " 
     curl -I -s --connect-timeout 1 $i:8080  >/dev/null && echo "OK" || echo "FAIL";
   done;
