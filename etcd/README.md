@@ -46,3 +46,13 @@ member status
 cluster-health
 ```
 
+### cURL commands
+
+```text
+alias curl="curl --cacert /etc/etcd/ca.crt --cert /etc/etcd/peer.crt   --key /etc/etcd/peer.key"
+
+curl -s https://${ETCD_IP}:2379/v2/stats/self | python -m json.tool
+curl -s https://${ETCD_IP}:2379/health | python -m json.tool
+
+```
+
