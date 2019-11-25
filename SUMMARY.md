@@ -38,7 +38,7 @@
 * [Auto scale down of deployment configs](scale-down-deploymentconfigs.md)
 * [Example for simple pods](simple-pods.md)
 * [EFK - Auditlogs \(OpenShift 3\)](efk-auditlog.md)
-* [Etcd](etcd/README.md)
+* [ETCD](etcd/README.md)
   * [Single node etcd to cluster \(OpenShift 3\)](etcd/etcd-from-single-node-to-ha-cluster.md)
 * [Usefull commands](service-catalog-demo.md)
 * [Machine Config](machine-config.md)
