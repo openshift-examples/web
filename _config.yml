@@ -43,6 +43,6 @@ header_pages:
 - about.md
 
 # Build settings
-theme: minima
+theme: jekyll-theme-hacker
 
 # remote_theme: dyutibarma/monochrome
