@@ -1,6 +1,6 @@
 # Table of contents
 
-* [OpenShift examples](README.md)
+* [OpenShift Examples](README.md)
 * [OpenShift 3 installation](openshift-3-installation/README.md)
   * [Disconnected](openshift-3-installation/disconnected.md)
   * [Terraform example](openshift-3-installation/tf-cloud-init-ocp-ready.md)
@@ -27,8 +27,7 @@
 * [Networking](networking/README.md)
   * [Network Policy with OVS - DRAFT](networking/network-policy-ovs.md)
   * [NSX-T](networking/nsx-t.md)
-* [Certificates](certificate/README.md)
-
+* [Certificates](certificate.md)
 * [POD Autoscaling](autoscaling.md)
 * [ansible-example-operator](ansible-example-operator/README.md)
   * [roles](ansible-example-operator/roles/README.md)
