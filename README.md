@@ -1,29 +1,31 @@
-# OpenShift examples
+# OpenShift Examples
 
-## Content
 
->
 
-* [Simple pods](simple-pods.md)
-* [EAP / JBoss Clustering / Session replication](deployment/eap-cluster.md)
-* [Autoscaling & SpringBoot](autoscaling.md)
-* [initContainers - DNS & TCP Check](deployment/initcontainers.md)  \|
-* [Build \(chaining build...\)](build/)  \|
-* OpsContainer DaemonSet `oc create -f ops-container-example.yml`
-* [Certificates & OpenShift 3/4](https://github.com/rbo/openshift-examples/tree/43511bbb16abaf8280889de74ea12f3649972693/certificate/README.adoc)
+{% hint style="info" %}
+Work-in-progress: I'm playing with gitbook, it can be a bit broken...
+{% endhint %}
+
+![](.gitbook/assets/d6161780-e9e7-11e9-9865-0678be38bf7f.png)
+
+## Run OpenShift on your Hetzer Server
+
+{% embed url="https://github.com/RedHat-EMEA-SSA-Team/hetzner-ocp4" %}
 
 ## Run OCP on your laptop
 
 ### OpenShift 3
+
+{% embed url="https://github.com/code-ready/crc" %}
+
+### OpenShift 4
 
 ```text
 oc cluster up --image=registry.access.redhat.com/openshift3/ose \
   --public-hostname=localhost
 ```
 
-### OpenShift 4
-
-Use [CodeReady Containers](https://github.com/code-ready/crc)
+{% embed url="https://developers.redhat.com/products/cdk/overview" %}
 
 ## Usefull commands
 
