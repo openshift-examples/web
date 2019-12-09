@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/rhel7/rhel:7.6
+FROM centos:7
 # docker run -ti registry.redhat.io/rhel7:7.6 bash
 # https://github.com/sclorg/httpd-container
 
@@ -10,8 +10,7 @@ ENV HTTPD_CONTAINER_SCRIPTS_PATH=/container-scripts/ \
     HTTPD_MAIN_CONF_D_PATH=/etc/httpd/conf.d \
     HTTPD_VAR_RUN=/run/httpd
 
-RUN yum install -y yum-utils && \
-    yum-config-manager --enable rhel-server-rhscl-7-rpms && \
+RUN yum install -y yum-utils epel-release && \
     INSTALL_PKGS="httpd nss_wrapper gettext" && \
     yum install -y --setopt=tsflags=nodocs $INSTALL_PKGS && \
     rpm -V $INSTALL_PKGS && \
@@ -40,6 +39,6 @@ RUN sed -i -e 's/^Listen 80/Listen 0.0.0.0:8080/' ${HTTPD_MAIN_CONF_PATH}/httpd.
 EXPOSE 8080
 
 VOLUME [ "/var/www/html/" ]
-
+USER 1984
 # https://docs.docker.com/engine/reference/builder/#understand-how-cmd-and-entrypoint-interact
 ENTRYPOINT ["/container-scripts/entrypoint.sh"]
