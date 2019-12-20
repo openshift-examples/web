@@ -28,6 +28,8 @@
   * [Network Policy with OVS - DRAFT](networking/network-policy-ovs.md)
   * [NSX-T](networking/nsx-t.md)
 * [Certificates](certificate.md)
+* [Workload examples](workload/README.md)
+  * [Gitlab runner](workload/gitlab-runner/README.md)
 * [POD Autoscaling](autoscaling.md)
 * [ansible-example-operator](ansible-example-operator/README.md)
   * [roles](ansible-example-operator/roles/README.md)
