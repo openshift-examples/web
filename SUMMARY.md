@@ -1,6 +1,8 @@
 # Table of contents
 
 * [OpenShift Examples](README.md)
+* [Basics](basics/README.md)
+  * [Liveness probe](basics/liveness-probe.md)
 * [OpenShift 3 installation](openshift-3-installation/README.md)
   * [Disconnected](openshift-3-installation/disconnected.md)
   * [Terraform example](openshift-3-installation/tf-cloud-init-ocp-ready.md)
@@ -29,7 +31,7 @@
   * [NSX-T](networking/nsx-t.md)
 * [Certificates](certificate.md)
 * [Workload examples](workload/README.md)
-  * [Gitlab runner](workload/gitlab-runner/README.md)
+  * [Gitlab runner](workload/gitlab-runner.md)
 * [POD Autoscaling](autoscaling.md)
 * [ansible-example-operator](ansible-example-operator/README.md)
   * [roles](ansible-example-operator/roles/README.md)

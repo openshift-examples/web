@@ -1,13 +1,12 @@
-# gitlab runner on openshift
+# Gitlab runner
 
-Gitlab runner image based on ubi: https://quay.io/repository/openshift-examples/gitlab-runner
+Gitlab runner image based on ubi: [https://quay.io/repository/openshift-examples/gitlab-runner](https://quay.io/repository/openshift-examples/gitlab-runner)
 
-[![Docker Repository on Quay](https://quay.io/repository/openshift-examples/gitlab-runner/status "Docker Repository on Quay")](https://quay.io/repository/openshift-examples/gitlab-runner)
+[![Docker Repository on Quay](https://quay.io/repository/openshift-examples/gitlab-runner/status)](https://quay.io/repository/openshift-examples/gitlab-runner)
 
 ## Deploy the runner
 
-
-```shell
+```text
 oc new-project gitlab-runner
 
 oc create sa gitlab-runner
@@ -23,10 +22,10 @@ oc create secret generic gitlab-runner-register \
     --from-literal=CI_SERVER_URL=https://gitlab.com/ \
     --from-literal=RUNNER_EXECUTOR=kubernetes \
     --from-literal=RUNNER_TAG_LIST=ocp
-
 ```
 
 Apply deployment config
+
 ```yaml
 apiVersion: v1
 kind: DeploymentConfig
@@ -101,17 +100,17 @@ spec:
 
 ## Build gitlab-runner image
 
-```
+```text
 git clone https://github.com/rbo/openshift-examples.git
 cd openshift-examples/workload/gitlab-runner/
-podman build -t gitlab-runer . 
+podman build -t gitlab-runer .
 ```
 
-Checkout the [Dockerfile](Dockerfile) for more details.
+Checkout the [Dockerfile](https://github.com/rbo/openshift-examples/tree/1384518e965b493d78c8052dc6a8b38bd7300505/workload/gitlab-runner/Dockerfile/README.md) for more details.
 
 ## Notes
 
-* `gitlab-runner verify` don't work with env variable `CI_SERVER_URL`, know issue: https://gitlab.com/gitlab-org/gitlab-runner/issues/3904
+* `gitlab-runner verify` don't work with env variable `CI_SERVER_URL`, know issue: [https://gitlab.com/gitlab-org/gitlab-runner/issues/3904](https://gitlab.com/gitlab-org/gitlab-runner/issues/3904)
 * `gitlab-runner run` won't die in case of errors 
 * Overall it looks like gitlab-runner is not build to run inside a container, but it work.
 
