@@ -31,7 +31,7 @@
   * [NSX-T](networking/nsx-t.md)
 * [Certificates](certificate.md)
 * [Workload examples](workload/README.md)
-  * [Gitlab runner](workload/gitlab-runner.md)
+  * [Gitlab Runner](workload/gitlab-runner.md)
 * [POD Autoscaling](autoscaling.md)
 * [ansible-example-operator](ansible-example-operator/README.md)
   * [roles](ansible-example-operator/roles/README.md)
