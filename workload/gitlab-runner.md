@@ -1,4 +1,4 @@
-# Gitlab runner
+# Gitlab Runner
 
 Gitlab runner image based on ubi: [https://quay.io/repository/openshift-examples/gitlab-runner](https://quay.io/repository/openshift-examples/gitlab-runner)
 
@@ -27,6 +27,7 @@ oc create secret generic gitlab-runner-register \
 Apply deployment config
 
 ```yaml
+oc create -f - <<EOF
 apiVersion: v1
 kind: DeploymentConfig
 metadata:
@@ -96,6 +97,7 @@ spec:
           secretName: gitlab-runner-config
   triggers:
   - type: ConfigChange
+EOF
 ```
 
 ## Build gitlab-runner image
