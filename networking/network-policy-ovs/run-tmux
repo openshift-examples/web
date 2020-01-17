@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -x 
+set -x
 if [ "$1" == "" ] ; then
   echo "Please run $0 <domain>"
   exit 1;
@@ -8,8 +8,16 @@ fi
 
 SERVER=$1
 
-tmux new-session -d -s 'demo' "watch curl -s -k http://homer-simpson.${SERVER}/demo"
+if [ -z $TMUX ] ; then
+  echo "Start new tmux session"
+  tmux new-session -d -s 'demo' "watch curl -s -k http://homer-simpson.${SERVER}/demo"
+fi
 tmux split-window -d -t 0 -v  "watch curl -s -k http://marge-simpson.${SERVER}/demo"
 tmux split-window -d -t 0 -h  "watch curl -s -k http://selma-bouvier.${SERVER}/demo"
 tmux split-window -d -t 2 -h  "watch curl -s -k http://patty-bouvier.${SERVER}/demo"
-tmux attach-session -t 'demo'
+if [ -z $TMUX ] ; then
+  echo "Attach to session"
+  tmux attach-session -t 'demo'
+else
+  watch curl -s -k http://homer-simpson.${SERVER}/demo
+fi
