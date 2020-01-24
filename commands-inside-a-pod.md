@@ -102,9 +102,29 @@ $ cat /proc/net/fib_trie | grep "|--"   | egrep -v "0.0.0.0| 127."
 {% endtab %}
 {% endtabs %}
 
-## Have you had a chance to answer the previous question?
+## cURL & Kubernetes/OpenShift API examples
 
-Yes, after a few months we finally found the answer. Sadly, Mike is on vacations right now so I'm afraid we are not able to provide the answer at this point.
+```text
+
+
+$ curl --cacert /run/secrets/kubernetes.io/serviceaccount/ca.crt \
+  --header "Authorization: Bearer $(cat /run/secrets/kubernetes.io/serviceaccount/token)" \
+  https://kubernetes.default.svc.cluster.local/version
+
+{
+  "major": "1",
+  "minor": "16+",
+  "gitVersion": "v1.16.2",
+  "gitCommit": "4320e48",
+  "gitTreeState": "clean",
+  "buildDate": "2020-01-21T19:50:59Z",
+  "goVersion": "go1.12.12",
+  "compiler": "gc",
+  "platform": "linux/amd64"
+}
+
+
+```
 
 
 
