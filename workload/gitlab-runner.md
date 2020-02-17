@@ -108,7 +108,7 @@ cd openshift-examples/workload/gitlab-runner/
 podman build -t gitlab-runer .
 ```
 
-Checkout the [Dockerfile](https://github.com/rbo/openshift-examples/tree/1384518e965b493d78c8052dc6a8b38bd7300505/workload/gitlab-runner/Dockerfile/README.md) for more details.
+Checkout the [Dockerfile](https://github.com/rbo/openshift-examples/blob/master/workload/gitlab-runner/Dockerfile) for more details.
 
 ## Notes
 
