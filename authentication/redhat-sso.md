@@ -38,15 +38,15 @@ kind: OAuth
 metadata:
 name: cluster
 spec:
-identityProviders:
-- name: RedHatSSO
+  identityProviders:
+  - name: RedHatSSO
     mappingMethod: claim
     type: Google
     google:
-    clientID: "1079862778375-60es8d8ugvg3e54csnesgf94p6r4rc6s.apps.googleusercontent.com"
-    clientSecret:
+      clientID: "1079862778375-60es8d8ugvg3e54csnesgf94p6r4rc6s.apps.googleusercontent.com"
+      clientSecret:
         name: google-secret
-    hostedDomain: "redhat.com"
+      hostedDomain: "redhat.com"
 ```
 {% endtab %}
 {% endtabs %}
