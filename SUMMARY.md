@@ -20,7 +20,7 @@
   * [Service Serving Certificate Secrets Example](deployment/service-serving-certificate-secrets.md)
 * [Operator](operator/README.md)
   * [Add to private marketplace](operator/add-to-private-marketplace.md)
-  * [WIP: Install Operator as a User](operator/wip-install-operator-as-a-user.md)
+  * [WIP: Install Operator as a User](operator/install-operator-as-a-user.md)
   * [cluster-configurator](operator/cluster-configurator/README.md)
     * [roles](operator/cluster-configurator/roles/README.md)
       * [Role Name](operator/cluster-configurator/roles/clusterconfigurator.md)
