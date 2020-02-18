@@ -36,7 +36,7 @@ oc create secret generic google-secret \
 apiVersion: config.openshift.io/v1
 kind: OAuth
 metadata:
-name: cluster
+  name: cluster
 spec:
   identityProviders:
   - name: RedHatSSO
