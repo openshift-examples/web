@@ -1,0 +1,7 @@
+apiVersion: simple.application.openshift.pub/v1
+kind: SimpleApp
+metadata:
+  name: example-simpleapp
+spec:
+  # Add fields here
+  size: 3

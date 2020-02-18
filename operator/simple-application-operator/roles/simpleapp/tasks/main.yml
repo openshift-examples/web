@@ -1,0 +1,61 @@
+---
+# tasks file for simpleapp
+- name: Print name
+  debug: 
+    var: _simple_application_openshift_pub_simpleapp.metadata.name
+
+- name: Create DeploymentConfig
+  k8s:
+    state: present
+    definition:
+      apiVersion: apps.openshift.io/v1
+      kind: DeploymentConfig
+      metadata:
+        labels:
+          app: "{{ _simple_application_openshift_pub_simpleapp.metadata.name }}"
+        name: "{{ _simple_application_openshift_pub_simpleapp.metadata.name }}"
+        namespace: "{{ _simple_application_openshift_pub_simpleapp.metadata.namespace }}"
+      spec:
+        replicas: 1
+        selector:
+          app: "{{ _simple_application_openshift_pub_simpleapp.metadata.name }}"
+          deploymentconfig: "{{ _simple_application_openshift_pub_simpleapp.metadata.name }}"
+        strategy:
+          resources: {}
+        template:
+          metadata:
+            labels:
+              app: "{{ _simple_application_openshift_pub_simpleapp.metadata.name }}"
+              deploymentconfig: "{{ _simple_application_openshift_pub_simpleapp.metadata.name }}"
+          spec:
+            containers:
+            - image: quay.io/rbo/demo-http:master
+              name: "{{ _simple_application_openshift_pub_simpleapp.metadata.name }}"
+              ports:
+              - containerPort: 8080
+                protocol: TCP
+              resources: {}
+        test: false
+        triggers:
+        - type: ConfigChange
+
+- name: Create Service
+  k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: Service
+      metadata:
+        labels:
+          app: "{{ _simple_application_openshift_pub_simpleapp.metadata.name }}"
+        name: "{{ _simple_application_openshift_pub_simpleapp.metadata.name }}"
+        namespace: "{{ _simple_application_openshift_pub_simpleapp.metadata.namespace }}"
+      spec:
+        ports:
+        - name: 8080-tcp
+          port: 8080
+          protocol: TCP
+          targetPort: 8080
+        selector:
+          app: "{{ _simple_application_openshift_pub_simpleapp.metadata.name }}"
+          deploymentconfig: "{{ _simple_application_openshift_pub_simpleapp.metadata.name }}"
