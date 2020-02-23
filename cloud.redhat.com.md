@@ -13,7 +13,7 @@ Usefull CLI to manage cloud.redhat.com openshift clusters: [https://github.com/o
 
 Store bearer token in `$TOKEN`:
 
-```text
+```bash
 OFFLINE_ACCESS_TOKEN="\
 [..snipped..]
 "
@@ -28,25 +28,41 @@ jq -r .access_token)
 
 ### List clusters
 
-```text
+```bash
 curl -X GET "https://api.openshift.com/api/clusters_mgmt/v1/clusters" -H "accept: application/json"  -H "Authorization: Bearer $TOKEN"
 ```
 
 CSV:
 
-```text
-curl -s -X GET "https://api.openshift.com/api/clusters_mgmt/v1/clusters" -H "accept: application/json"  -H "Authorization: Bearer $TOKEN"  | jq -r ' .items[] | [.creation_timestamp,.name,.id]|@csv'
+```bash
+curl -s -X GET \
+  "https://api.openshift.com/api/clusters_mgmt/v1/clusters" \
+  -H "accept: application/json"  \
+  -H "Authorization: Bearer $TOKEN"  \
+  | jq -r ' .items[] | [.creation_timestamp,.name,.id,.state] |@csv'
 ```
 
 ### Delete a cluster
 
-```text
+```bash
 curl -X DELETE "https://api.openshift.com/api/clusters_mgmt/v1/clusters/$CLUSTER-ID$?deprovision=false" -H "accept: application/json" -H "Authorization: Bearer $TOKEN"
+```
+
+### Delete all clusters:
+
+```bash
+curl -s -X GET "https://api.openshift.com/api/clusters_mgmt/v1/clusters" \
+    -H "accept: application/json" \
+    -H "Authorization: Bearer $TOKEN" \
+    | jq -r ' .items[] | .id' \
+    | xargs -n1 -I{} curl -X DELETE "https://api.openshift.com/api/clusters_mgmt/v1/clusters/{}?deprovision=false" \
+    -H "accept: application/json" \
+    -H "Authorization: Bearer $TOKEN"
 ```
 
 ### Delete several clusters:
 
-```text
+```bash
 curl -s -X GET "https://api.openshift.com/api/clusters_mgmt/v1/clusters" -H "accept: application/json"  -H "Authorization: Bearer $TOKEN"  | jq -r ' .items[] | [.creation_timestamp,.id]|@csv' | grep '"2019-07-'| tr -d '"' | while read line ; do curl -v -X DELETE "https://api.openshift.com/api/clusters_mgmt/v1/clusters/${line#*,}?deprovision=false" -H "accept: application/json" -H "Authorization: Bearer $TOKEN" ; done
 ```
 
