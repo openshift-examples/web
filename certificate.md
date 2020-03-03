@@ -68,9 +68,10 @@ openssl x509 -in cert.pem -noout -text
 
 ## General: Own root ca and certificate
 
-#### Root CA informations
+### Create OpenSSL Configuration 
 
-{% code title="openssl.root-ca.conf" %}
+{% tabs %}
+{% tab title="openssl.root-ca.conf" %}
 ```text
 # OpenSSL root CA configuration file.
 
@@ -147,90 +148,98 @@ extendedKeyUsage = serverAuth
 # Extension for CRLs (`man x509v3_config`).
 authorityKeyIdentifier=keyid:always
 ```
-{% endcode %}
+{% endtab %}
 
-#### Certificate informations
+{% tab title="openssl.certificate.conf" %}
+    # OpenSSL root CA configuration file.
 
-{% code title="openssl.certificate.conf" %}
-```text
-# OpenSSL root CA configuration file.
+    [ req ]
+    # Options for the `req` tool (`man req`).
+    default_bits        = 2048
+    distinguished_name  = req_distinguished_name
+    string_mask         = utf8only
 
-[ req ]
-# Options for the `req` tool (`man req`).
-default_bits        = 2048
-distinguished_name  = req_distinguished_name
-string_mask         = utf8only
+    # SHA-1 is deprecated, so use SHA-2 instead.
+    default_md          = sha256
 
-# SHA-1 is deprecated, so use SHA-2 instead.
-default_md          = sha256
+    # Extension to add when the -x509 option is used.
+    x509_extensions     = v3_ca
+    req_extensions      = v3_req
 
-# Extension to add when the -x509 option is used.
-x509_extensions     = v3_ca
-req_extensions      = v3_req
+    [ v3_req ]
+    # Extensions to add to a certificate request
+    basicConstraints = CA:FALSE
+    keyUsage = nonRepudiation, digitalSignature, keyEncipherment
+    subjectAltName = @alt_names
 
-[ v3_req ]
-# Extensions to add to a certificate request
-basicConstraints = CA:FALSE
-keyUsage = nonRepudiation, digitalSignature, keyEncipherment
-subjectAltName = @alt_names
-
-[alt_names]
-DNS.1 = api.example.com
-DNS.2 = *.pass.example.com
-DNS.3 = nginx-ex-ssl-stc-pipeline.6923.rh-us-east-1.openshiftapps.com
-# DNS.4 = ...
+    [alt_names]
+    DNS.1 = api.example.com
+    DNS.2 = *.pass.example.com
+    DNS.3 = nginx-ex-ssl-stc-pipeline.6923.rh-us-east-1.openshiftapps.com
+    # DNS.4 = ...
 
 
-[ req_distinguished_name ]
-# See <https://en.wikipedia.org/wiki/Certificate_signing_request>.
-countryName                     = Country Name (2 letter code)
-stateOrProvinceName             = State or Province Name
-localityName                    = Locality Name
-0.organizationName              = Organization Name
-organizationalUnitName          = Organizational Unit Name
-commonName                      = Common Name
-emailAddress                    = Email Address
+    [ req_distinguished_name ]
+    # See <https://en.wikipedia.org/wiki/Certificate_signing_request>.
+    countryName                     = Country Name (2 letter code)
+    stateOrProvinceName             = State or Province Name
+    localityName                    = Locality Name
+    0.organizationName              = Organization Name
+    organizationalUnitName          = Organizational Unit Name
+    commonName                      = Common Name
+    emailAddress                    = Email Address
 
-# Optionally, specify some defaults.
-countryName_default             = DE
-stateOrProvinceName_default     = Bavaria
-localityName_default            = Munich
-0.organizationName_default      = Private
-organizationalUnitName_default  = Private
-emailAddress_default            = email@domain.tld
-commonName_default              = api.example.com
+    # Optionally, specify some defaults.
+    countryName_default             = DE
+    stateOrProvinceName_default     = Bavaria
+    localityName_default            = Munich
+    0.organizationName_default      = Private
+    organizationalUnitName_default  = Private
+    emailAddress_default            = email@domain.tld
+    commonName_default              = api.example.com
 
-[ v3_ca ]
-# Extensions for a typical CA (`man x509v3_config`).
-subjectKeyIdentifier = hash
-authorityKeyIdentifier = keyid:always,issuer
-basicConstraints = critical, CA:true
-keyUsage = critical, digitalSignature, cRLSign, keyCertSign
+    [ v3_ca ]
+    # Extensions for a typical CA (`man x509v3_config`).
+    subjectKeyIdentifier = hash
+    authorityKeyIdentifier = keyid:always,issuer
+    basicConstraints = critical, CA:true
+    keyUsage = critical, digitalSignature, cRLSign, keyCertSign
 
-[ v3_intermediate_ca ]
-# Extensions for a typical intermediate CA (`man x509v3_config`).
-subjectKeyIdentifier = hash
-authorityKeyIdentifier = keyid:always,issuer
-basicConstraints = critical, CA:true, pathlen:0
-keyUsage = critical, digitalSignature, cRLSign, keyCertSign
+    [ v3_intermediate_ca ]
+    # Extensions for a typical intermediate CA (`man x509v3_config`).
+    subjectKeyIdentifier = hash
+    authorityKeyIdentifier = keyid:always,issuer
+    basicConstraints = critical, CA:true, pathlen:0
+    keyUsage = critical, digitalSignature, cRLSign, keyCertSign
 
-[ server_cert ]
-# Extensions for server certificates (`man x509v3_config`).
-basicConstraints = CA:FALSE
-nsCertType = server
-nsComment = "OpenSSL Generated Server Certificate"
-subjectKeyIdentifier = hash
-authorityKeyIdentifier = keyid,issuer:always
-keyUsage = critical, digitalSignature, keyEncipherment
-extendedKeyUsage = serverAuth
+    [ server_cert ]
+    # Extensions for server certificates (`man x509v3_config`).
+    basicConstraints = CA:FALSE
+    nsCertType = server
+    nsComment = "OpenSSL Generated Server Certificate"
+    subjectKeyIdentifier = hash
+    authorityKeyIdentifier = keyid,issuer:always
+    keyUsage = critical, digitalSignature, keyEncipherment
+    extendedKeyUsage = serverAuth
 
-[ crl_ext ]
-# Extension for CRLs (`man x509v3_config`).
-authorityKeyIdentifier=keyid:always
+    [ crl_ext ]
+    # Extension for CRLs (`man x509v3_config`).
+    authorityKeyIdentifier=keyid:always
+{% endtab %}
+
+{% tab title="Download it" %}
 ```
-{% endcode %}
+curl -L -O https://raw.githubusercontent.com/rbo/openshift-examples/master/certificate/openssl.root-ca.conf
+curl -L -O https://raw.githubusercontent.com/rbo/openshift-examples/master/certificate/openssl.certificate.conf
+```
+{% endtab %}
+{% endtabs %}
 
-#### 2\) Generate the root \(GIVE IT A PASSWORD IF YOU'RE NOT AUTOMATING SIGNING!\):
+### Adjust openssl.certificate.conf
+
+Change commonName, DNS...
+
+### Generate the root
 
 ```text
 openssl genrsa -aes256 -out ca.key 2048
@@ -240,20 +249,20 @@ openssl req -config openssl.root-ca.conf \
   -extensions v3_ca -out ca.crt
 ```
 
-#### 3\) Generate the domain key:
+### Generate the domain key:
 
 ```text
 openssl genrsa -out yoursite.org.key 2048
 ```
 
-#### 4\) Generate the certificate signing request
+### Generate the certificate signing request
 
 ```text
 openssl req -config openssl.certificate.conf \
   -sha256 -new -key yoursite.org.key -out yoursite.org.csr
 ```
 
-#### 5\) Sign the request with your root key
+### Sign the request with your root key
 
 ```text
 openssl x509 -sha256 -req -in yoursite.org.csr \
@@ -263,7 +272,7 @@ openssl x509 -sha256 -req -in yoursite.org.csr \
   -extensions v3_req
 ```
 
-#### 6\) Checking certificate
+### Checking certificate
 
 ```text
     # Check your homework:
@@ -283,15 +292,14 @@ openssl x509 -sha256 -req -in yoursite.org.csr \
     Cache-control: private
 ```
 
-7\) Rollout own root ca
+### Trust own root CA on your Linux box
 
-```text
-https://access.redhat.com/solutions/1519813
-```
+{% embed url="https://access.redhat.com/solutions/1519813" %}
+
+```bash
 update-ca-trust enable
-cp ca.crt /etc/pki/ca-trust/source/anchors/
+cp -v ca.crt /etc/pki/ca-trust/source/anchors/
 update-ca-trust extract
-```
 ```
 
 ## OpenShift 4 setup own router/ingress certifcate
