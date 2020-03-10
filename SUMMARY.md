@@ -51,4 +51,5 @@
   * [Single node etcd to cluster \(OpenShift 3\)](etcd/etcd-from-single-node-to-ha-cluster.md)
 * [Usefull commands](service-catalog-demo.md)
 * [Machine Config](machine-config.md)
+* [Quay & Clair](clair.md)
 
