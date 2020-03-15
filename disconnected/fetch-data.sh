@@ -228,7 +228,7 @@ function sync-rpms {
         rhel-7-server-ose-3.11-rpms
     do
         # ToDo: Please check maybe --newest-only is enough
-        $SUDO reposync --gpgcheck -lm --repoid=${repo} --download_path=repos/ 
+        $SUDO reposync --gpgcheck -lm --newest-only --repoid=${repo} --download_path=repos/ 
         $SUDO createrepo -v repos/${repo} -o repos/${repo} 
     done
     exit;
