@@ -8,7 +8,28 @@ description: Some stuff about the OpenShift 4 image registry
 
 {% embed url="https://docs.openshift.com/container-platform/4.3/registry/securing-exposing-registry.html" %}
 
+### Discover exposed registry
 
+```bash
+export REGISTRY=$(oc get route default-route -n openshift-image-registry --template='{{ .spec.host }}')
+export REGISTRY_TOKEN=$(oc whoami -t)
+
+podman login -u $(oc whoami) -p $REGISTRY_TOKEN --tls-verify=false $HOST
+
+# List all images
+curl -s -H "Authorization: Bearer $REGISTRY_TOKEN" \
+    https://$REGISTRY/v2/_catalog
+
+# List tages of an image
+export IMAGE=openshift/python
+curl -s -H "Authorization: Bearer $REGISTRY_TOKEN" \
+    https://$REGISTRY/v2/$IMAGE/tags/list
+
+# Get sha/digest
+export TAG=latest
+curl -s -H "Authorization: Bearer $REGISTRY_TOKEN"  \
+    https://$REGISTRY/v2/$IMAGE/manifests/$TAG
+```
 
 ## Setup non AWS S3 storage backend
 
