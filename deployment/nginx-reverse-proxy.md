@@ -1,6 +1,8 @@
 # Nginx reverse proxy
 
-Based on [http://keyangxiang.com/2018/06/01/Openshift/how-to-run-nginx-as-reverse-proxy/](http://keyangxiang.com/2018/06/01/Openshift/how-to-run-nginx-as-reverse-proxy/)
+Based on 
+
+{% embed url="http://keyangxiang.com/2018/06/01/Openshift/how-to-run-nginx-as-reverse-proxy/" %}
 
 #### Build
 
@@ -16,7 +18,7 @@ oc new-build openshift/nginx~https://github.com/rbo/openshift-examples.git#nginx
 ```bash
 oc new-app https://github.com/rbo/openshift-examples.git#nginx \
   --context-dir=nginx-reverse-proxy \
-  --strategy=docker
+  --strategy=docker \
   --name=reverse-proxy
 oc expose svc/reverse-proxy
 ```
