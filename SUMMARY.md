@@ -3,9 +3,6 @@
 * [OpenShift Examples](README.md)
 * [Basics](basics/README.md)
   * [Liveness probe](basics/liveness-probe.md)
-* [OpenShift 3 installation](openshift-3-installation/README.md)
-  * [Disconnected](openshift-3-installation/disconnected.md)
-  * [Terraform example](openshift-3-installation/tf-cloud-init-ocp-ready.md)
 * [OpenShift 4 installation](openshift-4-installation/README.md)
   * [Disconnected / air-gapped OpenShift installation](openshift-4-installation/disconnected-openshift4.md)
 * [Storage](storage.md)
@@ -33,6 +30,8 @@
 * [Networking](networking/README.md)
   * [Network Policy with OVS - DRAFT](networking/network-policy-ovs.md)
   * [NSX-T](networking/nsx-t.md)
+* [Monitoring](monitoring/README.md)
+  * [Alertmanager](monitoring/alertmanager.md)
 * [Certificates](certificate.md)
 * [Workload examples](workload/README.md)
   * [Gitlab Runner](workload/gitlab-runner.md)
@@ -52,4 +51,10 @@
 * [Usefull commands](service-catalog-demo.md)
 * [Machine Config](machine-config.md)
 * [Quay & Clair](quay.md)
+
+## OpenShift 3
+
+* [Installation](openshift-3/openshift-3-installation/README.md)
+  * [Disconnected](openshift-3/openshift-3-installation/disconnected.md)
+  * [Terraform example](openshift-3/openshift-3-installation/tf-cloud-init-ocp-ready.md)
 
