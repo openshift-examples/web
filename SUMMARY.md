@@ -30,6 +30,7 @@
 * [Networking](networking/README.md)
   * [Network Policy with OVS - DRAFT](networking/network-policy-ovs.md)
   * [NSX-T](networking/nsx-t.md)
+  * [Egress IP testing](networking/egress-ip.md)
 * [Monitoring](monitoring/README.md)
   * [Alertmanager](monitoring/alertmanager.md)
 * [Certificates](certificate.md)
