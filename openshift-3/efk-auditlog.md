@@ -37,21 +37,21 @@ How to do it with Advanced Audit: [Integrating Advanced Audit with Aggregated Lo
 
   * Add [input-auditlog.conf](https://github.com/rbo/openshift-examples/tree/43511bbb16abaf8280889de74ea12f3649972693/efk-auditlog/input-auditlog.conf) to configmap. Do not forget to adjust the audit log filename, default: /var/log/audit-ocp.log
   * Restart all fluent pods: `oc delete pods -l component=fluentd -n logging`
-* Adjust kibana to use the new .operations.audit.\* indicies ![](.gitbook/assets/indicies_setup.png)
+* Adjust kibana to use the new .operations.audit.\* indicies ![](../.gitbook/assets/indicies_setup.png)
 
 ## Screenhosts
 
 ### Whats happen at namespace rbo?
 
-![](.gitbook/assets/example1.png)
+![](../.gitbook/assets/example1.png)
 
 ### Whats happen with request 604e...
 
-![](.gitbook/assets/example2.png)
+![](../.gitbook/assets/example2.png)
 
 ### How may requests gets every master
 
-![](.gitbook/assets/example3.png)
+![](../.gitbook/assets/example3.png)
 
 ### Info for oc cluster up users
 

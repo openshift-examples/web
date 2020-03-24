@@ -46,16 +46,17 @@
 * [KubeVirt](kubevirt.md)
 * [Auto scale down of deployment configs](scale-down-deploymentconfigs.md)
 * [Example for simple pods](simple-pods.md)
-* [EFK - Auditlogs \(OpenShift 3\)](efk-auditlog.md)
 * [ETCD](etcd/README.md)
   * [Single node etcd to cluster \(OpenShift 3\)](etcd/etcd-from-single-node-to-ha-cluster.md)
 * [Usefull commands](service-catalog-demo.md)
 * [Machine Config](machine-config.md)
 * [Quay & Clair](quay.md)
+* [Velero](velero.md)
 
 ## OpenShift 3
 
 * [Installation](openshift-3/openshift-3-installation/README.md)
   * [Disconnected](openshift-3/openshift-3-installation/disconnected.md)
   * [Terraform example](openshift-3/openshift-3-installation/tf-cloud-init-ocp-ready.md)
+* [EFK - Auditlogs \(OpenShift 3\)](openshift-3/efk-auditlog.md)
 
