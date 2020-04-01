@@ -1,14 +1,14 @@
+---
+description: "This is my (Robert Bohne) personal OpenShift Examples and Notice collection. ( Including a lot of typos \U0001F609)"
+---
+
 # OpenShift Examples
 
 
 
-{% hint style="info" %}
-Work-in-progress: I'm playing with gitbook, it can be a bit broken...
-{% endhint %}
-
 ![](.gitbook/assets/d6161780-e9e7-11e9-9865-0678be38bf7f.png)
 
-## Run OpenShift on your Hetzer Server
+## Run OpenShift on your Hetzner Server
 
 {% embed url="https://github.com/RedHat-EMEA-SSA-Team/hetzner-ocp4" %}
 
