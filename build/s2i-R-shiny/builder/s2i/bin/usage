@@ -1,4 +1,0 @@
-#!/bin/bash -e
-cat <<EOF
-R Shiny example source to image based on nginx example.
-EOF

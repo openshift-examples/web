@@ -1,9 +1,0 @@
-apiVersion: metering.openshift.io/v1alpha1
-kind: Report
-metadata:
-  name: namespace-cpu-request
-spec:
-  reportingStart: '2019-03-02T00:00:00Z'
-  reportingEnd: '2019-03-03T09:37:00Z'
-  generationQuery: "namespace-cpu-request"
-  runImmediately: true

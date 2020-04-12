@@ -1,4 +1,0 @@
----
-# handlers file for nfsv4
-- name: restart docker
-  service: name=docker state=restarted

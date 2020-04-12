@@ -1,5 +1,0 @@
----
-- version: v1
-  group: simple.application.openshift.pub
-  kind: SimpleApp
-  role: /opt/ansible/roles/simpleapp
