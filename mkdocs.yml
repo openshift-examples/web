@@ -1,0 +1,128 @@
+site_name: OpenShift Examples
+# Project information
+# site_description: My personal openshift examples
+site_author: Robert Bohne
+site_url: https://examples.openshift.pub
+
+# Repository
+repo_name: rbo/openshift-examples
+repo_url: https://github.com/rbo/openshift-examples
+edit_uri: edit/master/
+# Copyright
+# copyright: <img src='images/powered_by_openshift.png'     > Copyright &copy; 2016 - 2020 Martin Donath
+
+# Configuration
+theme:
+  name: material
+  language: en
+  custom_dir: overrides
+  logo: images/favicon.png
+  favicon: images/favicon.png
+  palette:
+    primary: black
+    accent: red
+  font:
+    text: Overpass
+    code: Overpass Mono
+  icon:
+    logo: material/library
+    repo: fontawesome/brands/github
+  features:
+    - tabs
+
+# Extras
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/rbo
+    - icon: fontawesome/brands/twitter
+      link: https://twitter.com/robertbohne
+    - icon: fontawesome/brands/linkedin
+      link: https://linkedin.com/in/robertbohne
+
+# Extensions
+markdown_extensions:
+  - admonition
+  - codehilite:
+      guess_lang: true
+      linenums: true
+  - toc:
+      permalink: true
+  - pymdownx.tasklist
+
+#  gsed -E "s/\* \[(.+)\]\((.+)\)/- \'\1\': '\2'/" docs/SUMMARY.md
+nav:
+  - "OpenShift 4":
+    - 'Intro': 'README.md'
+    - 'Usefull commands': 'usefull-commands.md'
+    - 'Installation': 
+      - 'Disconnected / air-gapped': 'openshift-4-installation/disconnected-openshift4.md'
+    - 'Basics': 
+      - 'Pod deployment': 'basics/pod-deployment.md'
+      # ToDo: Order
+      - 'Liveness probe': 'basics/liveness-probe.md'
+      - 'Storage': 'basics/storage.md'
+      - 'Service Serving Certificate Secrets Example': 'basics/service-serving-certificate-secrets.md'
+      - 'ImageStreams': 'basics/imagestreams.md'
+      - 'StatefulSet': 'basics/statefulset.md'
+      - 'Init containers': 'basics/initcontainers.md'
+    # Maybe cluster managment/infrastructur
+    - 'Image Registry': 'image-registry.md'
+    - 'Custom Resource Definition (CRD)': 'custom-ressource-definition/README.md'
+    - 'cloud.redhat.com': 'cloud-redhat-com/README.md'
+    - 'Deployment': 
+      - 'Nginx reverse proxy': 'deployment/nginx-reverse-proxy.md'
+      - 'EAP Cluster demo': 'deployment/eap-cluster.md'
+      - 'Pod Autoscaling': 'deployment/autoscaling.md'
+      - 'OMD on OpenShift': 'deployment/omd.md'
+      - 'Scale down DC': 'deployment/scale-down-deploymentconfigs.md'
+      - 'Ops Container': 'deployment/ops-container.md'  
+    - 'Operator':
+      - 'Ansible Operator': 'operator/ansible-operator.md'
+      - 'WIP: Install Operator as a User': 'operator/install-operator-as-a-user.md'
+      - 'Cluster Configurator': 'operator/cluster-configurator.md'
+      - 'WIP Simple Application Operator': 'operator/simple-application-operator.md'
+    # Maybe cluster managment/infrastructur
+    - 'Authentication': 
+      - 'ActiveDirectory / LDAP': 'authentication/activedirectory-ldap.md'
+      - 'Red Hat SSO - via Google': 'authentication/redhat-sso.md'
+      # ToDo: 3x:
+      - 'Basic Authentication': 'authentication/auth-basic-authentication.md'
+    - 'Networking': 
+      - 'Network Policy with OVS - DRAFT': 'networking/network-policy-ovs.md'
+      - 'NSX-T': 'networking/nsx-t.md'
+      - 'Egress IP testing': 'networking/egress-ip.md'
+      - 'Kubernetes iptables chains': 'networking/k8s-iptables-chains.md'
+    - 'Monitoring': 
+      - 'Alertmanager': 'monitoring/alertmanager.md'
+    # ToDo: Cleanup
+    - 'Certificates': 'certificate.md'
+    - 'Workload examples': 
+      - 'Own apache': 'workload/own-apache-container.md'
+      - 'Gitlab Runner': 'workload/gitlab-runner.md'
+      - 'Grafana with OAuth Proxy': 'workload/grafana-oauth.md'
+    - 'Builds': 
+      - Examples: 'build/README.md'
+      - 'R shiny': build/s2i-r-shiny.md
+    - 'KubeVirt': 'kubevirt/README.md'
+    - 'Machine Config':
+      - 'Machine Config Server': 'machine-config/machine-config-server.md'
+    - 'Quay & Clair': 'quay.md'
+    - 'Velero': 'velero.md'
+  - "OpenShift 3":
+    - 'Installation': 
+      - 'openshift-3/installation.md'
+      - 'Disconnected': 'openshift-3/disconnected.md'
+      - 'Terraform example': 'openshift-3/tf-cloud-init-ocp-ready.md'
+      - 'Inventories': openshift-3/inventories.md
+    - 'EFK - Auditlogs': 'openshift-3/efk-auditlog.md'
+    # ToDo Convert
+    - 'External ElasticSearch': 'openshift-3/efk-external-es/README.adoc'
+    - 'etcd':
+        - 'Usefull etcd stuff': 'openshift-3/etcd-usefull.md'
+        - 'Single to Cluster': 'openshift-3/etcd-from-single-node-to-ha-cluster.md'
+  - Misc:
+      - CloudFlare: misc/cloudflare.md
+      - Terraform: misc/terraform.md
+      - 'ConSol Meetup Notes': misc/meetup-notes.md
+docs_dir: content/

@@ -1,7 +1,0 @@
-apiVersion: bohne.io/v1
-kind: AnsibleExampleOperator
-metadata:
-  name: example-ansibleexampleoperator
-spec:
-  # Add fields here
-  size: 3

@@ -1,2 +1,0 @@
-# ansible-example-operator
-

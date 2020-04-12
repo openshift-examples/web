@@ -1,6 +1,0 @@
-#!/usr/bin/env ansible-playbook
----
-- hosts: localhost
-  gather_facts: false
-  roles: 
-    - ansibleexampleoperator

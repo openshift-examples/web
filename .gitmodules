@@ -1,3 +1,0 @@
-[submodule "build/s2i-R-shiny/builder/shiny-examples"]
-	path = build/s2i-R-shiny/builder/shiny-examples
-	url = https://github.com/rstudio/shiny-examples
