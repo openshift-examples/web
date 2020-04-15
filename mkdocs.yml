@@ -50,6 +50,12 @@ markdown_extensions:
       permalink: true
   - pymdownx.tasklist
 
+
+plugins:
+  - search # necessary for search to work
+  - git-revision-date-localized:
+      type: date
+
 extra_css:
   - assets/stylesheets/powered-by.css
 
