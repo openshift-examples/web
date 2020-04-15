@@ -75,10 +75,9 @@ nav:
       - 'ImageStreams': 'basics/imagestreams.md'
       - 'StatefulSet': 'basics/statefulset.md'
       - 'Init containers': 'basics/initcontainers.md'
-    # Maybe cluster managment/infrastructur
-    - 'Image Registry': 'image-registry.md'
-    - 'Custom Resource Definition (CRD)': 'custom-ressource-definition/README.md'
-    - 'cloud.redhat.com': 'cloud-redhat-com/README.md'
+    - 'Builds': 
+      - Examples: 'build/README.md'
+      - 'R shiny': build/s2i-r-shiny.md
     - 'Deployment': 
       - 'Nginx reverse proxy': 'deployment/nginx-reverse-proxy.md'
       - 'EAP Cluster demo': 'deployment/eap-cluster.md'
@@ -86,17 +85,21 @@ nav:
       - 'OMD on OpenShift': 'deployment/omd.md'
       - 'Scale down DC': 'deployment/scale-down-deploymentconfigs.md'
       - 'Ops Container': 'deployment/ops-container.md'  
+    - 'Workload examples': 
+      - 'Own apache': 'workload/own-apache-container.md'
+      - 'Gitlab Runner': 'workload/gitlab-runner.md'
+      - 'Grafana with OAuth Proxy': 'workload/grafana-oauth.md'
+
+    - 'Custom Resource Definition (CRD)': 'custom-ressource-definition/README.md'
     - 'Operator':
       - 'Ansible Operator': 'operator/ansible-operator.md'
       - 'WIP: Install Operator as a User': 'operator/install-operator-as-a-user.md'
       - 'Cluster Configurator': 'operator/cluster-configurator.md'
       - 'WIP Simple Application Operator': 'operator/simple-application-operator.md'
-    # Maybe cluster managment/infrastructur
-    - 'Authentication': 
-      - 'ActiveDirectory / LDAP': 'authentication/activedirectory-ldap.md'
-      - 'Red Hat SSO - via Google': 'authentication/redhat-sso.md'
-      # ToDo: 3x:
-      - 'Basic Authentication': 'authentication/auth-basic-authentication.md'
+
+    - 'KubeVirt': 'kubevirt/README.md'
+
+
     - 'Networking': 
       - 'Network Policy (OVS)': 'networking/network-policy-ovs.md'
       - 'NSX-T': 'networking/nsx-t.md'
@@ -105,20 +108,27 @@ nav:
       - 'Multus': 'networking/multus.md'
     - 'Monitoring': 
       - 'Alertmanager': 'monitoring/alertmanager.md'
+
+    # Maybe cluster managment/infrastructur
+    - 'Image Registry': 'image-registry.md'
+    - 'cloud.redhat.com': 'cloud-redhat-com/README.md'
+
+    # Maybe cluster managment/infrastructur
+    - 'Authentication': 
+      - 'ActiveDirectory / LDAP': 'authentication/activedirectory-ldap.md'
+      - 'Red Hat SSO - via Google': 'authentication/redhat-sso.md'
+      # ToDo: 3x:
+      - 'Basic Authentication': 'authentication/auth-basic-authentication.md'
     # ToDo: Cleanup
-    - 'Certificates': 'certificate.md'
-    - 'Workload examples': 
-      - 'Own apache': 'workload/own-apache-container.md'
-      - 'Gitlab Runner': 'workload/gitlab-runner.md'
-      - 'Grafana with OAuth Proxy': 'workload/grafana-oauth.md'
-    - 'Builds': 
-      - Examples: 'build/README.md'
-      - 'R shiny': build/s2i-r-shiny.md
-    - 'KubeVirt': 'kubevirt/README.md'
     - 'Machine Config':
       - 'Machine Config Server': 'machine-config/machine-config-server.md'
+
     - 'Quay & Clair': 'quay.md'
     - 'Velero': 'velero.md'
+
+    - 'Certificates': 'certificate.md'
+
+
   - "OpenShift 3":
     - 'Installation': 
       - 'openshift-3/installation.md'
@@ -131,6 +141,7 @@ nav:
     - 'etcd':
         - 'Usefull etcd stuff': 'openshift-3/etcd-usefull.md'
         - 'Single to Cluster': 'openshift-3/etcd-from-single-node-to-ha-cluster.md'
+
   - Misc:
       - CloudFlare: misc/cloudflare.md
       - Terraform: misc/terraform.md
