@@ -93,6 +93,7 @@ nav:
       - 'NSX-T': 'networking/nsx-t.md'
       - 'Egress IP testing': 'networking/egress-ip.md'
       - 'Kubernetes iptables chains': 'networking/k8s-iptables-chains.md'
+      - 'Multus': 'networking/multus.md'
     - 'Monitoring': 
       - 'Alertmanager': 'monitoring/alertmanager.md'
     # ToDo: Cleanup
