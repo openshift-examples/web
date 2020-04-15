@@ -1,4 +1,4 @@
-# Content of [examples.openshift.pub](examples.openshift.pub) 
+# Content of [examples.openshift.pub](https://examples.openshift.pub/) 
 
 ![](content/images/logo-black.png)
 
