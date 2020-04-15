@@ -1,0 +1,6 @@
+.md-footer-powered-by {
+    margin: auto .6rem;
+    padding: .4rem 0;
+    color: var(--md-default-bg-color--lighter);
+    font-size: .64rem;
+}

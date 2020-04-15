@@ -5,8 +5,8 @@ site_author: Robert Bohne
 site_url: https://examples.openshift.pub
 
 # Repository
-repo_name: rbo/openshift-examples
-repo_url: https://github.com/rbo/openshift-examples
+repo_name: openshift-examples/web
+repo_url: https://github.com/openshift-examples/web
 edit_uri: edit/master/
 # Copyright
 # copyright: <img src='images/powered_by_openshift.png'     > Copyright &copy; 2016 - 2020 Martin Donath
@@ -49,6 +49,9 @@ markdown_extensions:
   - toc:
       permalink: true
   - pymdownx.tasklist
+
+extra_css:
+  - assets/stylesheets/powered-by.css
 
 #  gsed -E "s/\* \[(.+)\]\((.+)\)/- \'\1\': '\2'/" docs/SUMMARY.md
 nav:
