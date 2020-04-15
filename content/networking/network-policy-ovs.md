@@ -1,4 +1,4 @@
-# Network Policy with OVS - DRAFT
+# Network Policy with OVS
 
 ## ToDo
 
@@ -9,15 +9,16 @@
 ## Nice to know / Basics
 
 1. Based on labeling or annotations
+    * project / namespaces seldom have labels :-/
 2. Empty label selector match all
-3. Rules for allowing
-4. Ingress -&gt; who can connect to this POD
-5. Egress -&gt; where can this POD connect to
-6. **Rules**
-   1. traffic is allowed unless a Network Policy selecting the POD
-   2. traffic is denied if pod is selected in policie but none of them have any rules allowing it
-   3. =  You can only write rules that allow traffic!
-   4. Scope: Namespace
+2. Rules for allowing
+    * Ingress -&gt; who can connect to this POD
+    * Egress -&gt; where can this POD connect to
+4. **Rules**
+    * traffic is allowed unless a Network Policy selecting the POD
+    * traffic is denied if pod is selected in policie but none of them have any rules allowing it
+    * =  You can only write rules that allow traffic!
+    * Scope: Namespace
 
 ## Tutorial / Demo - OpenShift v4!
 

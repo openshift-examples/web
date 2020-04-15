@@ -89,7 +89,7 @@ nav:
       # ToDo: 3x:
       - 'Basic Authentication': 'authentication/auth-basic-authentication.md'
     - 'Networking': 
-      - 'Network Policy with OVS - DRAFT': 'networking/network-policy-ovs.md'
+      - 'Network Policy (OVS)': 'networking/network-policy-ovs.md'
       - 'NSX-T': 'networking/nsx-t.md'
       - 'Egress IP testing': 'networking/egress-ip.md'
       - 'Kubernetes iptables chains': 'networking/k8s-iptables-chains.md'
