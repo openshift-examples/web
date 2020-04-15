@@ -14,14 +14,13 @@ hero: "This is my (Robert Bohne) personal OpenShift Examples and Notice collecti
 
 ### OpenShift 3
 
-[https://github.com/code-ready/crc](https://github.com/code-ready/crc)
-
-### OpenShift 4
-
 ```text
 oc cluster up --image=registry.access.redhat.com/openshift3/ose \
   --public-hostname=localhost
 ```
+### OpenShift 4
+
+[https://github.com/code-ready/crc](https://github.com/code-ready/crc)
 
 {% embed url="https://developers.redhat.com/products/cdk/overview" %}
 
