@@ -12,17 +12,18 @@ hero: "This is my (Robert Bohne) personal OpenShift Examples and Notice collecti
 
 ## Run OCP on your laptop
 
+### OpenShift 4
+
+[Code Ready Containers](https://github.com/code-ready/crc)
+
 ### OpenShift 3
 
+- [Container Development Kit](https://developers.redhat.com/products/cdk/overview)
+- Or simple `oc cluster up`
 ```text
 oc cluster up --image=registry.access.redhat.com/openshift3/ose \
   --public-hostname=localhost
 ```
-### OpenShift 4
-
-[https://github.com/code-ready/crc](https://github.com/code-ready/crc)
-
-{% embed url="https://developers.redhat.com/products/cdk/overview" %}
 
 ## Usefull commands
 

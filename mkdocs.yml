@@ -67,6 +67,7 @@ nav:
     - 'Installation': 
       - 'Disconnected / air-gapped': 'openshift-4-installation/disconnected-openshift4.md'
       - 'VMware': openshift-4-installation/vmware.md
+    - 'Over-the-Air Upgrades': oat-upgrades.md
     - 'Basics': 
       - 'Pod deployment': 'basics/pod-deployment.md'
       # ToDo: Order
