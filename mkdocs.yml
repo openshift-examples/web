@@ -91,7 +91,8 @@ nav:
       - 'Own apache': 'workload/own-apache-container.md'
       - 'Gitlab Runner': 'workload/gitlab-runner.md'
       - 'Grafana with OAuth Proxy': 'workload/grafana-oauth.md'
-
+    - Security:
+        "SCC anyuid example": 'security/scc-anyuid.md'
     - 'Custom Resource Definition (CRD)': 'custom-ressource-definition/README.md'
     - 'Operator':
       - 'Ansible Operator': 'operator/ansible-operator.md'
