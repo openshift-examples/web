@@ -139,7 +139,10 @@ spec:
               fieldPath: metadata.namespace
 EOF
 
-oc annotate route/examples-stage-openshift-pub kubernetes.io/tls-acme=true
+oc annotate route/examples-openshift-pub kubernetes.io/tls-acme=true
+
+# Disable cookies
+oc annotate route/examples-openshift-pub haproxy.router.openshift.io/disable_cookies=true
 
 
 ```
