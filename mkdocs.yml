@@ -1,6 +1,6 @@
 site_name: OpenShift Examples
 # Project information
-# site_description: My personal openshift examples
+# site_description: My /
 site_author: Robert Bohne
 site_url: https://examples.openshift.pub
 
@@ -9,7 +9,7 @@ repo_name: openshift-examples/web
 repo_url: https://github.com/openshift-examples/web
 edit_uri: edit/master/
 # Copyright
-# copyright: <img src='images/powered_by_openshift.png'     > Copyright &copy; 2016 - 2020 Martin Donath
+copyright: <a href="/impressum/">Impressum</a>
 
 # Configuration
 theme:

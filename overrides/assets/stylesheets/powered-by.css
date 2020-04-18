@@ -4,3 +4,7 @@
     color: var(--md-default-bg-color--lighter);
     font-size: .64rem;
 }
+
+.md-footer-copyright {
+    text-align: center
+}
