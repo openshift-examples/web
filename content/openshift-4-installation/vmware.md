@@ -10,12 +10,11 @@
 
 ## How you deploy OpenShift 4 VM's on VMware
 
-### Terraform
+### iPXE, static ip addresses and govc
 
-!!! warning
-    Terraform use static IP via ignition config - since OCP 4.3 not supported anymore!
+[https://github.com/openshift-examples/ipxe](https://github.com/openshift-examples/ipxe)
 
-[https://github.com/openshift/installer/tree/master/upi/vsphere](https://github.com/openshift/installer/tree/master/upi/vspherer)
+Kudos to my colleague [Rodrigo Alvares](https://github.com/ralvares/ipxe)
 
 ### govc
 
@@ -96,6 +95,13 @@ Create VM direct from OVA:
     /var/www/html/rhcos-4.1.0-x86_64-vmware.ova \
     "vi://${GOVC_USERNAME}:${GOVC_PASSWORD}@xxx.vcenter.example.com/DC/host/foo/Resources"
 ```
+
+### Terraform
+
+!!! warning
+    Terraform use static IP via ignition config - since OCP 4.3 not supported anymore!
+
+[https://github.com/openshift/installer/tree/master/upi/vsphere](https://github.com/openshift/installer/tree/master/upi/vspherer)
 
 
 ## Resources
