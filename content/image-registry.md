@@ -4,6 +4,53 @@ description: Some stuff about the OpenShift 4 image registry
 
 # Image Registry
 
+## Use ReadWriteOnce volumes (since OCP 4.4.0)
+
+!!! note
+    Only available since OpenShift version 4.4.0
+
+!!! warning
+    By using a ReadWriteOnce volume you have to
+
+     * Change the Rollout Strategy from rolling to recreate and
+
+     * its only supported to have exactly one replica.
+
+    **That means, during an cluster or image-registry upgrade, your internal registry as an downtime between stopping the old pod and starting the new pod! **
+
+#### On vSphere with cloud provider integration:
+##### Create PVC
+
+```bash
+oc create -f - <<EOF
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: image-registry-pvc
+  namespace: openshift-image-registry
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi
+  storageClassName: thin
+EOF
+```
+
+##### Patch registry operator crd
+
+```bash
+oc patch configs.imageregistry.operator.openshift.io/cluster \
+    --type='json' \
+    --patch='[
+        {"op": "replace", "path": "/spec/managementState", "value": "Managed"},
+        {"op": "replace", "path": "/spec/rolloutStrategy", "value": "Recreate"},
+        {"op": "replace", "path": "/spec/storage", "value": {"pvc":{"claim": "image-registry-pvc" }}}
+    ]'
+
+```
+
 ## Exposing the registry
 
 Documentation: [Exposing the registry
