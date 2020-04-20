@@ -1,5 +1,26 @@
 # Usefull commands
 
+## kubectl/oc patch
+
+For example:
+```
+oc patch configs.imageregistry.operator.openshift.io/cluster \
+    --type='json' \
+    --patch='[
+        {"op": "replace", "path": "/spec/managementState", "value": "Managed"},
+        {"op": "replace", "path": "/spec/rolloutStrategy", "value": "Recreate"},
+        {"op": "replace", "path": "/spec/storage", "value": {"pvc":{"claim": "image-registry-pvc" }}}
+    ]'
+```
+
+**patch definition:**
+
+ * JSON Merge Patch RFC 7386: [https://tools.ietf.org/html/rfc7386](https://tools.ietf.org/html/rfc7386)
+ * JSON Patch RFC 6902: [https://tools.ietf.org/html/rfc6902](https://tools.ietf.org/html/rfc6902)
+ * The JSONPath websites offers a good description which operation can be used an how: [http://jsonpatch.com/](http://jsonpatch.com/)
+
+Blog post: [https://labs.consol.de/development/2019/04/08/oc-patch-unleashed.html](https://labs.consol.de/development/2019/04/08/oc-patch-unleashed.html)
+
 ## Commands inside a POD
 
 ### Get IP Addresses without ip or ifconfig?
