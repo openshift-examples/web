@@ -201,3 +201,89 @@ spec:
         namespace: anyuid
     type: ImageChange
 ```
+
+## Deployment with limit and request:
+
+```
+apiVersion: v1
+kind: DeploymentConfig
+metadata:
+  name: ubi8
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        deploymentconfig: ubi8
+    spec:
+      containers:
+      - image: ubi8
+        name: container-1
+        command: 
+        - /bin/sh 
+        - "-c"
+        - | 
+          while true ;
+            do date;
+            sleep 1;
+          done;
+        resources:
+          limits:
+            memory: 10Gi
+          requests:
+            memory: 10Gi
+  triggers:
+  - type: ConfigChange
+```
+
+##### Example
+
+List of allocatable memory:
+```bash
+$ oc get nodes -o custom-columns=NAME:.metadata.name,MEM-allocatable:.status.allocatable.memory  -l node-role.kubernetes.io/worker
+NAME                                 MEM-allocatable
+worker-1.rbohne.e2e.bos.redhat.com   15270340Ki
+worker-2.rbohne.e2e.bos.redhat.com   15270356Ki
+worker-3.rbohne.e2e.bos.redhat.com   15270356Ki
+```
+
+!!! note 
+    This is allocatable memory on the whole host for Pods. 
+    The amount of allocatable memory do **NOT** include allocated memory of running Pods!
+    
+
+**Request & limit:**
+
+```
+resources:
+  limits:
+    memory: 32Gi
+  requests:
+    memory: 32Gi 
+```
+
+**Result:** `0/6 nodes are available: 6 Insufficient memory.`
+
+**Request & limit:**
+
+```
+resources:
+  limits:
+    memory: 10Gi
+  requests:
+    memory: 10Gi
+```
+
+**Result:**
+
+Scale up to 3 Pods: `oc scale --replicas=3 dc/ubi8`
+
+```bash 
+$ oc get pods -o wide -l deploymentconfig=ubi8
+NAME           READY   STATUS    RESTARTS   AGE   IP            NODE                                 NOMINATED NODE   READINESS GATES
+ubi8-7-56bqv   1/1     Running   0          19m   10.131.0.18   worker-3.rbohne.e2e.bos.redhat.com   <none>           <none>
+ubi8-7-5wlhm   1/1     Running   0          19m   10.128.2.65   worker-2.rbohne.e2e.bos.redhat.com   <none>           <none>
+ubi8-7-gdtf2   1/1     Running   0          19m   10.129.2.28   worker-1.rbohne.e2e.bos.redhat.com   <none>           <none>
+```
