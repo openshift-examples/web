@@ -102,7 +102,10 @@ nav:
       - 'Cluster Configurator': 'operator/cluster-configurator.md'
       - 'WIP Simple Application Operator': 'operator/simple-application-operator.md'
 
-    - 'KubeVirt': 'kubevirt/README.md'
+    - 'CNV/KubeVirt':
+        'Basics': 'kubevirt/README.md'
+        'Networking': kubevirt/networking.md
+        'Local storage': kubevirt/local-storage.md
 
 
     - 'Networking': 
