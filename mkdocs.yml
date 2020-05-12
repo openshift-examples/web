@@ -79,8 +79,10 @@ nav:
       - 'ImageStreams': 'basics/imagestreams.md'
       - 'StatefulSet': 'basics/statefulset.md'
       - 'Init containers': 'basics/initcontainers.md'
+
     - 'Builds': 
       - Examples: 'build/README.md'
+      - 'Entitled': build/entitled.md
       - 'R shiny': build/s2i-r-shiny.md
     - 'Deployment': 
       - 'Nginx reverse proxy': 'deployment/nginx-reverse-proxy.md'
