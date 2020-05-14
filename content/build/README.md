@@ -8,7 +8,7 @@ oc new-app jenkins-ephemeral
 oc create -f https://raw.githubusercontent.com/openshift/origin/master/examples/jenkins/pipeline/nodejs-sample-pipeline.yaml
 ```
 
-## Builder -&gt; Runner image
+## Builder & runner image
 
 ```text
 # Important to build with an older tag
@@ -29,6 +29,32 @@ echo -e "FROM openjdk18-openshift \nCOPY chaos-professor-0.0.1.jar /deployments/
 oc new-app build-with-1 && oc expose svc/build-with-1
 oc new-app run-with-latest-1 && oc expose svc/run-with-latest-1
 ```
+## Build and push to quay
+
+#### Create push-secret
+
+```yaml
+oc create -f - <<EOF
+apiVersion: v1
+kind: Secret
+metadata:
+  name: openshift-examples-openshift-push-demo-pull-secret
+data:
+  .dockerconfigjson: xxxxx
+type: kubernetes.io/dockerconfigjson
+EOF
+```
+
+#### Create build config
+
+```bash
+oc new-build --name=simple-http-server \
+  --push-secret='openshift-examples-openshift-push-demo-pull-secret' \
+  --to-docker=true \
+  --to="quay.io/openshift-examples/simple-http-server:dev" \
+  https://github.com/openshift-examples/simple-http-server.git
+```
+
 
 ## Add git config
 
