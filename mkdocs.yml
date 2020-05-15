@@ -84,6 +84,9 @@ nav:
       - Examples: 'build/README.md'
       - 'Entitled': build/entitled.md
       - 'R shiny': build/s2i-r-shiny.md
+
+    - 'Universal Base Images': 'universal-base-image/README.md'
+
     - 'Deployment': 
       - 'Nginx reverse proxy': 'deployment/nginx-reverse-proxy.md'
       - 'EAP Cluster demo': 'deployment/eap-cluster.md'
