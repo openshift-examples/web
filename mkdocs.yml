@@ -125,6 +125,7 @@ nav:
 
     # Maybe cluster managment/infrastructur
     - 'Authentication': 
+      - 'Token': 'authentication/token.md'
       - 'ActiveDirectory / LDAP': 'authentication/activedirectory-ldap.md'
       - 'Red Hat SSO - via Google': 'authentication/redhat-sso.md'
       # ToDo: 3x:
