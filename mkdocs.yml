@@ -50,7 +50,6 @@ markdown_extensions:
       permalink: true
   - pymdownx.tasklist
 
-
 plugins:
   - search # necessary for search to work
   - git-revision-date-localized:
@@ -112,6 +111,7 @@ nav:
         'Networking': kubevirt/networking.md
         'Local storage': kubevirt/local-storage.md
 
+    - 'Windows Container': windows-container/installation.md
 
     - 'Networking': 
       - 'Network Policy (OVS)': 'networking/network-policy-ovs.md'
