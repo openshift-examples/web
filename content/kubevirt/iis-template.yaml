@@ -1,0 +1,125 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  annotations:
+    defaults.template.kubevirt.io/disk: rootdisk
+    defaults.template.kubevirt.io/network: default
+    description: IIS demo env.
+    iconClass: icon-windows
+    name.os.template.kubevirt.io/win10: Microsoft Windows 10
+    openshift.io/display-name: IIS Demo Application
+    openshift.io/documentation-url: https://examples.openshift.pub/kubevirt/
+    openshift.io/provider-display-name: examples.openshift.pub
+    openshift.io/support-url: https://github.com/openshift-examples/web/issues
+    tags: kubevirt,virtualmachine,windows
+    template.kubevirt.io/editable: |
+      /objects[0].spec.template.spec.domain.cpu.cores
+      /objects[0].spec.template.spec.domain.resources.requests.memory
+      /objects[0].spec.template.spec.domain.devices.disks
+      /objects[0].spec.template.spec.volumes
+      /objects[0].spec.template.spec.networks
+    template.kubevirt.io/version: v1alpha1
+    template.openshift.io/bindable: "false"
+    validations: |
+      [
+        {
+          "name": "minimal-required-memory",
+          "path": "jsonpath::.spec.domain.resources.requests.memory",
+          "rule": "integer",
+          "message": "This VM requires more memory.",
+          "min": 2147483648
+        }, {
+          "name": "windows-virtio-bus",
+          "path": "jsonpath::.spec.domain.devices.disks[*].disk.bus",
+          "rule": "enum",
+          "message": "virto disk bus type has better performance, install virtio drivers in VM and change bus type",
+          "values": ["virtio"],
+          "justWarning": true
+        }, {
+          "name": "windows-disk-bus",
+          "path": "jsonpath::.spec.domain.devices.disks[*].disk.bus",
+          "rule": "enum",
+          "message": "disk bus has to be either virtio or sata",
+          "values": ["virtio", "sata"]
+        }
+      ]
+  labels:
+    flavor.template.kubevirt.io/medium: "true"
+    os.template.kubevirt.io/win10: "true"
+    template.kubevirt.io/type: vm
+    template.kubevirt.io/version: v0.9.1
+    workload.template.kubevirt.io/desktop: "true"
+  name: iis-demo-env
+objects:
+
+- kind: Route
+  apiVersion: route.openshift.io/v1
+  metadata:
+    name: ${NAME}
+  spec:
+    to:
+      kind: Service
+      name: ${NAME}
+      weight: 100
+    port:
+      targetPort: 80
+    wildcardPolicy: None
+
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: ${NAME}
+  spec:
+    ports:
+      - protocol: TCP
+        port: 80
+        targetPort: 80
+    selector:
+      vm.kubevirt.io/name: ${NAME}
+    type: ClusterIP
+    sessionAffinity: None
+
+- apiVersion: kubevirt.io/v1alpha3
+  kind: VirtualMachine
+  metadata:
+    name: ${NAME}
+  spec:
+    running: true
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          os.template.kubevirt.io/win2k19: 'true'
+          vm.kubevirt.io/name: ${NAME}
+      spec:
+        domain:
+          cpu:
+            cores: 1
+            sockets: 2
+            threads: 1
+          devices:
+            disks:
+              - disk:
+                  bus: virtio
+                name: containerdisk
+            interfaces:
+              - masquerade: {}
+                model: virtio
+                name: default
+          machine:
+            type: q35
+          resources:
+            requests:
+              memory: 8Gi
+        networks:
+          - name: default
+            pod: {}
+        volumes:
+          - containerDisk:
+              image: 'image-registry.openshift-image-registry.svc:5000/cnv/iis:latest'
+            name: containerdisk
+parameters:
+- description: VM name
+  from: windows-[a-z0-9]{6}
+  generate: expression
+  name: NAME
