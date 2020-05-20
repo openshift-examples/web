@@ -74,7 +74,9 @@ nav:
       # ToDo: Order
       - 'Liveness probe': 'basics/liveness-probe.md'
       - 'Storage': 'basics/storage.md'
-      - 'Service Serving Certificate Secrets Example': 'basics/service-serving-certificate-secrets.md'
+      - 'Services & Routes':
+        - 'Routes encryption': 'basics/route-encryption.md'
+        - 'Service Certificate': 'basics/service-serving-certificate-secrets.md'
       - 'ImageStreams': 'basics/imagestreams.md'
       - 'StatefulSet': 'basics/statefulset.md'
       - 'Init containers': 'basics/initcontainers.md'
@@ -160,4 +162,5 @@ nav:
       - CloudFlare: misc/cloudflare.md
       - Terraform: misc/terraform.md
       - 'ConSol Meetup Notes': misc/meetup-notes.md
+
 docs_dir: content/
