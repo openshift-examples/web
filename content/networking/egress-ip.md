@@ -223,4 +223,4 @@ $ ssh core@192.168.50.15 ip a show dev ens3
 
 Egress IP management can be automated with Operator based approach. Here is a blog post about implementing that.
 
-https://www.openshift.com/blog/fully-automated-management-of-egress-ips-with-the-egressip-ipam-operator/
+[Fully Automated Management of Egress IPs with the egressip-ipam-operator](https://www.openshift.com/blog/fully-automated-management-of-egress-ips-with-the-egressip-ipam-operator/)
