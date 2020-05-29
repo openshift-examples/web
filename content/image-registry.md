@@ -88,54 +88,20 @@ curl -s -H "Authorization: Bearer $REGISTRY_TOKEN"  \
 
 ## Setup non AWS S3 storage backend
 
-### Deploy min.io
+### Deploy min.io via helm3
 
 ```bash
-oc new-project minio
-oc create -f https://github.com/minio/minio/blob/master/docs/orchestration/kubernetes/minio-standalone-pvc.yaml?raw=true
-oc create -f https://github.com/minio/minio/blob/master/docs/orchestration/kubernetes/minio-standalone-deployment.yaml?raw=true
-# Create non SSL service
-oc create -f - <<EOF
-apiVersion: v1
-kind: Service
-metadata:
-  name: minio-service
-spec:
-  type: ClusterIP
-  ports:
-    - port: 9000
-      targetPort: 9000
-      protocol: TCP
-  selector:
-    app: minio
-EOF
-```
 
-### Upgrade to SSL
+helm repo add stable https://kubernetes-charts.storage.googleapis.com
+# https://github.com/helm/charts/tree/master/stable/minio#configuration
+helm install minio stable/minio \
+  --set persistence.storageClass=managed-premium \
+  --set securityContext.runAsUser=$( oc get project $(oc project  -q) -ojsonpath='{.metadata.annotations.openshift\.io/sa\.scc\.uid-range}' | cut -f1 -d '/' ) \
+  --set securityContext.fsGroup=$( oc get project $(oc project  -q) -ojsonpath='{.metadata.annotations.openshift\.io/sa\.scc\.supplemental-groups}' | cut -f1 -d '/' ) \
+  --set ingress.enabled=true \
+  --set ingress.hosts={minio-$(oc project  -q).$( oc get ingresses.config.openshift.io/cluster -o jsonpath="{.spec.domain}" )}
 
-```bash
-# Create service cert
-oc annotate service minio-service \
-    service.beta.openshift.io/serving-cert-secret-name=minio-service-cert
-
-# Create confimap with service ca 
-oc create -f - <<EOF
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: signing-cabundle
-  annotations:
-    service.beta.openshift.io/inject-cabundle: "true"
-EOF
-
-# Add certificates to minio deployment
-oc patch deployment/minio --type='json' --patch='[
-  {"op": "add", "path": "/spec/template/spec/volumes/-", "value":  { "name": "certificate", "secret": { "defaultMode": 420, "items": [ { "key": "tls.crt", "path": "public.crt" }, { "key": "tls.key", "path": "private.key" } ], "secretName": "minio-service-cert" }}},
-  {"op": "add", "path": "/spec/template/spec/volumes/-", "value":   { "name": "ca","configMap": { "defaultMode": 420, "items": [ { "key": "service-ca.crt", "path": "public.crt" } ], "name": "signing-cabundle" }}},
-  {"op": "add", "path": "/spec/template/spec/containers/0/volumeMounts/-", "value": {"mountPath": "/.minio/certs","name": "certificate"}},
-  {"op": "add", "path": "/spec/template/spec/containers/0/volumeMounts/-", "value": {"mountPath": "/.minio/certs/CAs","name": "ca"}}
-]'
-
+# helm uninstall minio
 
 ```
 
