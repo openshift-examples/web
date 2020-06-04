@@ -108,6 +108,9 @@ nav:
       - 'Cluster Configurator': 'operator/cluster-configurator.md'
       - 'WIP Simple Application Operator': 'operator/simple-application-operator.md'
 
+    - 'GPU':
+        'Use GPU on AWS': 'gpu/on-aws.md'
+
     - 'CNV/KubeVirt':
         'Basics': 'kubevirt/README.md'
         'Networking': kubevirt/networking.md
