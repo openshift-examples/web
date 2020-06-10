@@ -84,7 +84,8 @@ nav:
     - 'Builds': 
       - Examples: 'build/README.md'
       - 'Entitled': build/entitled.md
-      - 'R shiny': build/s2i-r-shiny.md
+      - 'Jenkins Pipeline': build/jenkins.md
+      - 'S2I - R shiny': build/s2i-r-shiny.md
 
     - 'Universal Base Images': 'universal-base-image/README.md'
 
