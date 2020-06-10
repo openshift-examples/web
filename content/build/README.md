@@ -1,34 +1,179 @@
 # Build examples
 
-## Simple pipeline Demo
+## Simple Docker build
 
-```text
-oc new-project pipeline
-oc new-app jenkins-ephemeral
-oc create -f https://raw.githubusercontent.com/openshift/origin/master/examples/jenkins/pipeline/nodejs-sample-pipeline.yaml
+```yaml
+oc create is simple-docker-build
+
+oc apply -f - <<EOF
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: simple-docker-build
+  labels:
+    name: simple-docker-build
+spec:
+  triggers:
+    - type: ConfigChange
+  source:
+    contextDir: "simple-docker-build/"
+    type: Git
+    git:
+      uri: 'https://github.com/openshift-examples/container-build.git'
+  strategy:
+    type: Docker
+  output:
+    to:
+      kind: ImageStreamTag
+      name: 'simple-docker-build:latest'
+EOF
 ```
 
-## Builder & runner image
+## Simple Container build
 
-```text
-# Important to build with an older tag
+```yaml hl_lines="20 21" 
+oc create is simple-container-build
 
-oc import-image openjdk18-openshift:latest --from=registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift --confirm
-oc import-image openjdk18-openshift:1.0 --from=registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift:1.0 --confirm
-
-oc new-build --name=build-with-1 --image-stream=openjdk18-openshift:1.0 https://github.com/rbo/chaos-professor.git
-
-
-echo -e "FROM openjdk18-openshift \nCOPY chaos-professor-0.0.1.jar /deployments/" | oc new-build --name=run-with-latest-1 \
-    --image-stream=openjdk18-openshift:latest \
-    --source-image=build-with-1 \
-    --source-image-path=/tmp/src/target/chaos-professor-0.0.1.jar:. \
-    --strategy=docker \
-    --dockerfile -
-
-oc new-app build-with-1 && oc expose svc/build-with-1
-oc new-app run-with-latest-1 && oc expose svc/run-with-latest-1
+oc apply -f - <<EOF
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: simple-container-build
+  labels:
+    name: simple-container-build
+spec:
+  triggers:
+    - type: ConfigChange
+  source:
+    contextDir: "simple-container-build/"
+    type: Git
+    git:
+      uri: 'https://github.com/openshift-examples/container-build.git'
+  strategy:
+    type: Docker
+    dockerStrategy:
+      dockerfilePath: "Containerfile"
+  output:
+    to:
+      kind: ImageStreamTag
+      name: 'simple-container-build:latest'
+EOF
 ```
+
+## Simple context dir
+
+```yaml hl_lines="14" 
+oc create is simple-context-dir
+
+oc apply -f - <<EOF
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: simple-context-dir
+  labels:
+    name: simple-context-dir
+spec:
+  triggers:
+    - type: ConfigChange
+  source:
+    contextDir: "simple-context-dir/"
+    type: Git
+    git:
+      uri: 'https://github.com/openshift-examples/container-build.git'
+  strategy:
+    type: Docker
+    dockerStrategy:
+      dockerfilePath: "Containerfile"
+  output:
+    to:
+      kind: ImageStreamTag
+      name: 'simple-context-dir:latest'
+EOF
+```
+
+
+## Complex context dir
+
+```yaml hl_lines="14 20 21" 
+oc create is complex-context-dir
+
+oc apply -f - <<EOF
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: complex-context-dir
+  labels:
+    name: complex-context-dir
+spec:
+  triggers:
+    - type: ConfigChange
+  source:
+    contextDir: "complex-context-dir/"
+    type: Git
+    git:
+      uri: 'https://github.com/openshift-examples/container-build.git'
+  strategy:
+    type: Docker
+    dockerStrategy:
+      dockerfilePath: "containerfiles/Containerfile"
+  output:
+    to:
+      kind: ImageStreamTag
+      name: 'complex-context-dir:latest'
+EOF
+```
+
+## Multi-stage - builder & runner
+
+** Nothing special at BuildConfig, checkout the Containerfile: **
+
+```Dockerfile hl_lines="1 12" 
+FROM centos:8 AS builder
+
+RUN yum groupinstall -y 'Development Tools'
+
+RUN curl -L -O https://bird.network.cz/download/bird-1.6.8.tar.gz && \
+    tar xzf bird-1.6.8.tar.gz && \
+    cd bird-1.6.8 && \
+    ./configure --disable-client --prefix=/opt/bird-1.6.8 && \
+    make install
+
+
+FROM registry.access.redhat.com/ubi8/ubi-minimal AS runner
+COPY --from=builder /opt/bird-1.6.8 /opt/bird-1.6.8
+ENTRYPOINT ["/opt/bird-1.6.8/sbin/bird", "-f"]
+```
+
+**BuildConfig**
+```yaml
+oc create is multi-stage
+
+oc apply -f - <<EOF
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: multi-stage
+  labels:
+    name: multi-stage
+spec:
+  triggers:
+    - type: ConfigChange
+  source:
+    contextDir: "multi-stage/"
+    type: Git
+    git:
+      uri: 'https://github.com/openshift-examples/container-build.git'
+  strategy:
+    type: Docker
+    dockerStrategy:
+      dockerfilePath: "Containerfile"
+  output:
+    to:
+      kind: ImageStreamTag
+      name: 'multi-stage:latest'
+EOF
+```
+
 ## Build and push to quay
 
 #### Create push-secret
@@ -82,74 +227,3 @@ oc new-build registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift~gi
 # If you like, create app
 oc new-app chaos-professor
 ```
-
-## Build and push image into many registries
-
-Based on [Promoting container images between registries with skopeo](https://blog.openshift.com/promoting-container-images-between-registries-with-skopeo/)
-
-Two different ways to get Skopoe "into" Jenkins
-
-1\) Custom Jenkins Slave
-
-```text
-https://github.com/siamaksade/openshift-cd-demo/blob/ocp-3.11/cicd-template.yaml#L229
-
-Source for the slave image https://github.com/siamaksade/jenkins-slave-skopeo
-
-Based on https://docs.openshift.com/container-platform/3.11/dev_guide/dev_tutorials/openshift_pipeline.html
-
-https://github.com/redhat-cop/containers-quickstarts/tree/master/jenkins-slaves/jenkins-slave-image-mgmt
-```
-
-2\) Custom Jenkins Agent, was the differents?
-
-[https://github.com/jenkinsci/kubernetes-plugin](https://github.com/jenkinsci/kubernetes-plugin) [https://github.com/openshift/jenkins-client-plugin](https://github.com/openshift/jenkins-client-plugin)
-
-```text
-podTemplate(
-  label: "scopeo", 
-  cloud: "openshift", 
-  inheritFrom: "maven", 
-  containers: [
-    containerTemplate(
-      name: "jnlp", 
-      image: "quay.io/your_repo/jenkins-slave-skopeo-centos:master", 
-      resourceRequestMemory: "512Mi", 
-      resourceLimitMemory: "1Gi"
-    )
-  ]
-)
-```
-
-Dockerfile
-
-```text
-FROM openshift/jenkins-slave-base-centos7
-MAINTAINER Tero Ahonen <tero@redhat.com>
-USER root
-RUN yum -y install skopeo
-USER 1001
-```
-
-## Build & Deploy namespace one -&gt; deploy namespace 2
-
-```text
-oc new-project prod
-
-oc new-project dev
-
-oc process -f https://raw.githubusercontent.com/rbo/openshift-tasks/master/app-template.yaml -p SOURCE_URL=https://github.com/rbo/openshift-tasks | oc create -f -
-
-oc policy add-role-to-group edit system:serviceaccounts:default -n prod
-
-TRIGER: OpenShift ONLY
-
-oc tag dev/tasks:latest prod/tasks:latest
-oc project prod
-oc new-app tasks
-oc expose svc/tasks
-
-# Rollback - OPENSHIFT ONLY!
-oc rollback dc/tasks
-```
-
