@@ -50,21 +50,14 @@ oc expose svc/marge
 
 ### Download some helper scripts
 
-{% tabs %}
-{% tab title="Download" %}
 ```text
 curl -L -O https://raw.githubusercontent.com/rbo/openshift-examples/master/networking/network-policy-ovs/run-tmux
 curl -L -O https://raw.githubusercontent.com/rbo/openshift-examples/master/networking/network-policy-ovs/dump-net.sh
 ```
-{% endtab %}
-
-{% tab title="Git clone" %}
 ```
 git clone https://github.com/rbo/openshift-examples.git
 cd openshift-examples/networking/network-policy-ovs/
 ```
-{% endtab %}
-{% endtabs %}
 
 ### Run connection overview
 
