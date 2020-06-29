@@ -233,10 +233,10 @@ spec:
     name: nvidia-smi
     command: [ nvidia-smi ]
     resources:
-    limits:
-      nvidia.com/gpu: 1
-    requests:
-      nvidia.com/gpu: 1
+      limits:
+        nvidia.com/gpu: 1
+      requests:
+        nvidia.com/gpu: 1
 EOF
 
 $ oc logs nvidia-smi
