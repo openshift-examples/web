@@ -54,3 +54,23 @@ subject=/CN=openshift-service-serving-signer@1545507973
 issuer=/CN=openshift-service-serving-signer@1545507973
 ```
 
+## Create config map with service serving root ca
+
+```bash
+$ oc create -f - <<EOF
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: service-trustbundle-ca
+  annotations:
+    service.beta.openshift.io/inject-cabundle: "true"
+data: {}
+EOF
+
+$ oc get configmap/service-trustbundle-ca -o jsonpath="{.data.service-ca\.crt}"  | openssl x509 -noout -subject -issuer -dates
+subject= /CN=openshift-service-serving-signer@1593524307
+issuer= /CN=openshift-service-serving-signer@1593524307
+notBefore=Jun 30 13:38:26 2020 GMT
+notAfter=Aug 29 13:38:27 2022 GMT
+
+```
