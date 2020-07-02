@@ -76,6 +76,7 @@ nav:
       - 'Storage': 'basics/storage.md'
       - 'Services & Routes':
         - 'Routes encryption': 'basics/route-encryption.md'
+        - 'Router sharding': 'basics/router-sharding.md'
         - 'Service Certificate': 'basics/service-serving-certificate-secrets.md'
       - 'ImageStreams': 'basics/imagestreams.md'
       - 'StatefulSet': 'basics/statefulset.md'
