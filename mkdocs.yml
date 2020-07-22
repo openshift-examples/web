@@ -111,7 +111,9 @@ nav:
       - 'WIP Simple Application Operator': 'operator/simple-application-operator.md'
 
     - 'GPU':
-        'Use GPU on AWS': 'gpu/on-aws.md'
+        'General notes': 'gpu/general-nvidia-gpu.md'
+        'on AWS': 'gpu/on-aws.md'
+        'on-Prem': 'gpu/on-prem.md'
 
     - 'CNV/KubeVirt':
         'Basics': 'kubevirt/README.md'
