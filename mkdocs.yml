@@ -84,6 +84,7 @@ nav:
 
     - 'Builds': 
       - Examples: 'build/README.md'
+      - 'Cluster Entitlement': 'full-cluster-entitlement.md'
       - 'Entitled': build/entitled.md
       - 'Jenkins Pipeline': build/jenkins.md
       - 'S2I - R shiny': build/s2i-r-shiny.md
@@ -112,6 +113,7 @@ nav:
 
     - 'GPU':
         'General notes': 'gpu/general-nvidia-gpu.md'
+        'Cluster Entitlement': 'full-cluster-entitlement.md'
         'on AWS': 'gpu/on-aws.md'
         'on-Prem': 'gpu/on-prem.md'
 
