@@ -118,8 +118,9 @@ nav:
         'Networking': kubevirt/networking.md
         'Local storage': kubevirt/local-storage.md
 
-    - 'Windows Container': windows-container/installation.md
-
+    - 'Windows Container':
+        'Dev-Preview (AWS/Azure)': windows-container/installation.md
+        'On-Prem installation': windows-container/on-prem-installation.md
     - 'Networking': 
       - 'Network Policy (OVS)': 'networking/network-policy-ovs.md'
       - 'NSX-T': 'networking/nsx-t.md'
