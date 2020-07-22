@@ -142,8 +142,11 @@ nav:
       # ToDo: 3x:
       - 'Basic Authentication': 'authentication/auth-basic-authentication.md'
     # ToDo: Cleanup
-    - 'Machine Config':
+    - 'MachineConfig':
       - 'Machine Config Server': 'machine-config/machine-config-server.md'
+
+    - 'MachineSets':
+      - 'VMware & UPI': 'openshift-4-installation/vmware/machineset-with-upi.md'
 
     - 'Quay & Clair': 'quay.md'
     - 'Velero': 'velero.md'
