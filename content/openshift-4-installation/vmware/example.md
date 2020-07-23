@@ -251,7 +251,7 @@ set -euo pipefail
 set -x
 
 # Moved into ~/.basrc ;-)
-# export GOVC_URL='vcetner'
+# export GOVC_URL='vcenter'
 # export GOVC_USERNAME='user'
 # export GOVC_PASSWORD='pwd'
 # export GOVC_INSECURE=1
@@ -357,7 +357,7 @@ Make it executable
 chmod +x openshift-deploy.sh
 ```
 
-## Install openshift 
+## Install openshift
 
 ### Create install-config.yaml
 
@@ -392,6 +392,18 @@ EOF
 ```
 mkdir rbohne
 cp -v install-config.yaml rbohne/
+```
+Create Manifest files
+To avoid issues with machines and machineset
+see https://access.redhat.com/solutions/5086271
+We need to create the manifest files and delete the specific machines and
+machineset files. Without deleting this file you might get alerts
+like "Machine is in phase".
+```
+openshift-install create manifests --dir=rbohne/
+rm -rf rbohne/openshift/99_openshift-cluster-api_master-machines-*.yaml
+rm -rf rbohne/openshift/99_openshift-cluster-api_worker-machineset-0.yaml
+
 openshift-install create ignition-configs --dir=rbohne/
 cp -v rbohne/*ign /var/www/html
 chmod o+r /var/www/html/*.ign
