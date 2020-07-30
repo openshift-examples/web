@@ -1,4 +1,4 @@
-# Content of [examples.openshift.pub](https://examples.openshift.pub/) 
+# Content of [examples.openshift.pub](https://examples.openshift.pub/)
 
 ![](content/images/logo-black.png)
 
@@ -25,7 +25,7 @@ podman build -t my-openshift-example:latest -f my-openshift-example .
 podman run -p 8080:8080 my-openshift-example:latest
 ```
 
-### OpenShift 
+### OpenShift
 
 ```
 oc new-build --name=stage-1-build-static-content \
@@ -33,7 +33,7 @@ oc new-build --name=stage-1-build-static-content \
 
 oc create imagestream stage-2-nginx
 
-# Create pull secret 
+# Create pull secret
 #  https://access.redhat.com/terms-based-registry/
 
 oc create -f - <<EOF
@@ -80,7 +80,7 @@ spec:
   successfulBuildsHistoryLimit: 5
   triggers:
   - type: ConfigChange
-  - type: "imageChange" 
+  - type: "imageChange"
     imageChange:
       from:
         kind: "ImageStreamTag"
@@ -88,14 +88,14 @@ spec:
 EOF
 
 
-oc new-app --name web stage-2-nginx 
+oc new-app --name web stage-2-nginx
 
 # ToDo Route with realdomain:
 oc expose svc/web
 
 oc expose svc/web \
   --hostname="examples.openshift.pub" \
-  --name="examples-openshift-pub" 
+  --name="examples-openshift-pub"
 
 # create cname elb.6923.rh-us-east-1.openshiftapps.com.
 
