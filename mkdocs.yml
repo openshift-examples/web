@@ -63,13 +63,13 @@ nav:
   - "OpenShift 4":
     - 'Intro': 'README.md'
     - 'Usefull commands': 'usefull-commands.md'
-    - 'Installation': 
+    - 'Installation':
       - 'Disconnected / air-gapped': 'openshift-4-installation/disconnected-openshift4.md'
-      - 'VMware': 
+      - 'VMware':
         - "Basic": openshift-4-installation/vmware.md
         - "Example installation": openshift-4-installation/vmware/example.md
     - 'Over-the-Air Upgrades': oat-upgrades.md
-    - 'Basics': 
+    - 'Basics':
       - 'Pod deployment': 'basics/pod-deployment.md'
       # ToDo: Order
       - 'Liveness probe': 'basics/liveness-probe.md'
@@ -82,7 +82,7 @@ nav:
       - 'StatefulSet': 'basics/statefulset.md'
       - 'Init containers': 'basics/initcontainers.md'
 
-    - 'Builds': 
+    - 'Builds':
       - Examples: 'build/README.md'
       - 'Cluster Entitlement': 'full-cluster-entitlement.md'
       - 'Entitled': build/entitled.md
@@ -91,14 +91,14 @@ nav:
 
     - 'Universal Base Images': 'universal-base-image/README.md'
 
-    - 'Deployment': 
+    - 'Deployment':
       - 'Nginx reverse proxy': 'deployment/nginx-reverse-proxy.md'
       - 'EAP Cluster demo': 'deployment/eap-cluster.md'
       - 'Pod Autoscaling': 'deployment/autoscaling.md'
       - 'OMD on OpenShift': 'deployment/omd.md'
       - 'Scale down DC': 'deployment/scale-down-deploymentconfigs.md'
-      - 'Ops Container': 'deployment/ops-container.md'  
-    - 'Workload examples': 
+      - 'Ops Container': 'deployment/ops-container.md'
+    - 'Workload examples':
       - 'Own apache': 'workload/own-apache-container.md'
       - 'Gitlab Runner': 'workload/gitlab-runner.md'
       - 'Grafana with OAuth Proxy': 'workload/grafana-oauth.md'
@@ -106,6 +106,7 @@ nav:
         "SCC anyuid example": 'security/scc-anyuid.md'
     - 'Custom Resource Definition (CRD)': 'custom-ressource-definition/README.md'
     - 'Operator':
+      - 'OperatorHub' : 'operator/operatorhub.md'
       - 'Ansible Operator': 'operator/ansible-operator.md'
       - 'WIP: Install Operator as a User': 'operator/install-operator-as-a-user.md'
       - 'Cluster Configurator': 'operator/cluster-configurator.md'
@@ -125,21 +126,22 @@ nav:
     - 'Windows Container':
         'Dev-Preview (AWS/Azure)': windows-container/installation.md
         'On-Prem installation': windows-container/on-prem-installation.md
-    - 'Networking': 
+    - 'Networking':
       - 'Network Policy (OVS)': 'networking/network-policy-ovs.md'
       - 'NSX-T': 'networking/nsx-t.md'
       - 'Egress IP testing': 'networking/egress-ip.md'
       - 'Kubernetes iptables chains': 'networking/k8s-iptables-chains.md'
       - 'Multus': 'networking/multus.md'
-    - 'Monitoring': 
+    - 'Monitoring':
       - 'Alertmanager': 'monitoring/alertmanager.md'
+      - Workload: 'monitoring/workload.md'
 
     # Maybe cluster managment/infrastructur
     - 'Image Registry': 'image-registry.md'
     - 'cloud.redhat.com': 'cloud-redhat-com/README.md'
 
     # Maybe cluster managment/infrastructur
-    - 'Authentication': 
+    - 'Authentication':
       - 'Token': 'authentication/token.md'
       - 'ActiveDirectory / LDAP': 'authentication/activedirectory-ldap.md'
       - 'Red Hat SSO - via Google': 'authentication/redhat-sso.md'
@@ -151,7 +153,7 @@ nav:
 
     - 'MachineSets':
       - 'VMware & UPI': 'openshift-4-installation/vmware/machineset-with-upi.md'
-
+      - 'Debugging': MachineSets/debugging.md
     - 'Quay & Clair': 'quay.md'
     - 'Velero': 'velero.md'
 
@@ -159,7 +161,7 @@ nav:
 
 
   - "OpenShift 3":
-    - 'Installation': 
+    - 'Installation':
       - 'openshift-3/installation.md'
       - 'Disconnected': 'openshift-3/disconnected.md'
       - 'Terraform example': 'openshift-3/tf-cloud-init-ocp-ready.md'
