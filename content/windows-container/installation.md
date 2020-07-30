@@ -37,6 +37,9 @@ aws-create-cluster.sh
     the image size is 2GB! It take some time to pull the image
 
 ```bash
+oc new-project windows-container
+oc label namespace windows-container "openshift.io/run-level=1"
+
 oc create -f https://gist.githubusercontent.com/suhanime/683ee7b5a2f55c11e3a26a4223170582/raw/d893db98944bf615fccfe73e6e4fb19549a362a5/WinWebServer.yaml
 ```
 
