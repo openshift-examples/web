@@ -135,6 +135,7 @@ nav:
     - 'Monitoring':
       - 'Alertmanager': 'monitoring/alertmanager.md'
       - Workload: 'monitoring/workload.md'
+      - Metrics: monitoring/metrics.md
 
     # Maybe cluster managment/infrastructur
     - 'Image Registry': 'image-registry.md'
