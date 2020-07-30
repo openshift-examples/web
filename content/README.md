@@ -25,6 +25,13 @@ oc cluster up --image=registry.access.redhat.com/openshift3/ose \
   --public-hostname=localhost
 ```
 
+## Usefull Red Hat Solutions article
+
+|Article|Note|
+|---|---|
+|[How can a user update OpenShift 4 console route](https://access.redhat.com/solutions/4539491)||
+|[Red Hat Operators Supported in Disconnected Mode](https://access.redhat.com/articles/4740011)||
+
 ## Usefull commands
 
 ### Easy install jq on RHEL
