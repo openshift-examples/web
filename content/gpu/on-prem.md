@@ -1,5 +1,7 @@
 # Install & use GPU on-prem
 
+Official solution: [How to install the NVIDIA GPU Operator with OpenShift](https://access.redhat.com/solutions/4908611)
+
 ## Entitle your openshift cluster
 
 If not you run into: [Bug 1835446 - Special resource operator gpu-driver-container pod error related to elfutils-libelf-devel](https://bugzilla.redhat.com/show_bug.cgi?id=1835446)
