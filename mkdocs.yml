@@ -178,5 +178,6 @@ nav:
       - CloudFlare: misc/cloudflare.md
       - Terraform: misc/terraform.md
       - 'ConSol Meetup Notes': misc/meetup-notes.md
+      - Hetzner Lab: misc/hetzner-lab.md
 
 docs_dir: content/
