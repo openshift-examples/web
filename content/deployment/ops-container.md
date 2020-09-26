@@ -3,19 +3,21 @@
 ## DaemonSet
 
 ```bash
-# 
+#
 # oc adm new-project --node-selector="" ops-container
 # oc project ops-container
 # oc adm policy add-scc-to-user privileged -z default
-# 
+#
 # How to do on K8s: https://itnext.io/get-a-shell-to-a-kubernetes-node-9b720a15a4fe
-# Or use "oc debug node/..." 
-oc create -f - <<EOF
+# Or use "oc debug node/..."
+oc apply -f - <<EOF
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: ops-container
 spec:
+  updateStrategy:
+    type: OnDelete
   selector:
     matchLabels:
       name: ops-container
@@ -24,6 +26,8 @@ spec:
       labels:
         name: ops-container
     spec:
+      tolerations:
+        - operator: Exists
       hostPID: true
       hostIPC: true
       hostNetwork: true
@@ -46,17 +50,18 @@ spec:
             path: /etc/localtime
       containers:
         - name: rhel
-          image: rhel7/rhel-tools
-          command: [ "/bin/sh", "-c", "while true ; do date; sleep 1; done;" ]
+          image: registry.access.redhat.com/rhel7/support-tools
+          command: [ "/bin/sh", "-c", "sleep infinity" ]
           securityContext:
             privileged: true
+            runAsUser: 0
           env:
             - name: HOST
               value: "/host"
             - name: NAME
               value: "ops"
             - name: IMAGE
-              value: "rhel/rhel-tools"
+              value: "registry.access.redhat.com/rhel7/support-tools"
           volumeMounts:
             - name: host
               mountPath: /host
