@@ -66,7 +66,8 @@ nav:
     - 'Installation':
       - 'Disconnected / air-gapped': 'openshift-4-installation/disconnected-openshift4.md'
       - 'VMware':
-        - "Basic": openshift-4-installation/vmware.md
+        - "Basic (UPI)": openshift-4-installation/vmware.md
+        - "IPI & Proxy": openshift-4-installation/vmware/ipi-proxy.md
         - "Example installation": openshift-4-installation/vmware/example.md
     - 'Over-the-Air Upgrades': oat-upgrades.md
     - 'Basics':
