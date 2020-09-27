@@ -110,6 +110,7 @@ publish: External
 proxy:                                            <===== Added
   httpProxy: http://172.16.0.1:3128/              <===== Added
   httpsProxy: http://172.16.0.1:3128/             <===== Added
+  noProxy: 172.16.0.0/24,apps.vde.openshift.pub   <===== Added
 sshKey: "....."                                   <===== Added
 pullSecret: '{"auths":{"cloud.openshift.com":....'
 ```
