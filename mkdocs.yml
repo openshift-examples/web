@@ -29,6 +29,7 @@ theme:
     repo: fontawesome/brands/github
   features:
     - tabs
+    - navigation.tabs
 
 # Extras
 extra:
