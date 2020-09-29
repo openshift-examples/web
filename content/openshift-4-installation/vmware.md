@@ -4,7 +4,9 @@
 !!! warning
     Since OpenShift 4.3 it is not supported anymore to setup static IP address via Ignition configuration. You have to use the kernel boot args: [Creating Red Hat Enterprise Linux CoreOS \(RHCOS\) machines](https://docs.openshift.com/container-platform/4.3/installing/installing_bare_metal/installing-bare-metal.html#creating-machines-bare-metal)
 
-    **OVA do not support static ip's yet!** - target 4.5 - [BZ 1785122](https://bugzilla.redhat.com/show_bug.cgi?id=1785122 )
+    **OVA do not support static ip's yet!** - target 4.6 - [BZ 1785122]( https://bugzilla.redhat.com/show_bug.cgi?id=1785122 )
+
+    Guestinfo property: `guestinfo.afterburn.initrd.network-kargs`
 
 
 
@@ -23,7 +25,7 @@ Go CLI for vSphere/VMware - [https://github.com/vmware/govmomi/releases](https:/
 Create a VM Template via the OVA and copy via `govc`
 
 !!! note
-    Use static DHCP via mac address 
+    Use static DHCP via mac address
 
 ```bash
 
@@ -72,7 +74,7 @@ govc vm.power -on=true \
 
 Create VM direct from OVA:
 
-!!! note 
+!!! note
     The example use static IP via ignition config - since OCP 4.3 not supported anymore!
 
 ```bash
