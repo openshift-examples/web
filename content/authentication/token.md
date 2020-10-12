@@ -1,6 +1,8 @@
 # Service Account authentication via Token
 
-Official solution: [How to get the authentication token for an OpenShift Service account](https://access.redhat.com/solutions/2972601)
+Official solutions (KCS):
+ * [How to get the authentication token for an OpenShift Service account](https://access.redhat.com/solutions/2972601)
+ * [What are the automatically generated secrets for every service account?](https://access.redhat.com/solutions/4995781)
 
 ## Create service account (sa)
 ```bash
@@ -74,6 +76,8 @@ contains a valid token.
 The only differents is an annotation `kubernetes.io/created-by: openshift.io/create-dockercfg-secrets`.
 
 Token with the annotation is made for container image registry during the dockercfg secret creation. For details please check the [source code of create_dockercfg_secrets.go](https://github.com/openshift/openshift-controller-manager/blob/master/pkg/serviceaccounts/controllers/create_dockercfg_secrets.go).
+
+
 
 ```bash
 $ oc describe secrets/external-pipeline-user-token-sdxck
