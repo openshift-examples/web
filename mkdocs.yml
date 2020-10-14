@@ -106,6 +106,10 @@ nav:
       - 'Grafana with OAuth Proxy': 'workload/grafana-oauth.md'
     - Security:
         "SCC anyuid example": 'security/scc-anyuid.md'
+
+    - 'Storage':
+      - 'NFS': storage/nfs.md
+
     - 'Custom Resource Definition (CRD)': 'custom-ressource-definition/README.md'
     - 'Operator':
       - 'OperatorHub' : 'operator/operatorhub.md'
