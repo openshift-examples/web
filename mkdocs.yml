@@ -65,7 +65,7 @@ nav:
     - 'Intro': 'README.md'
     - 'Usefull commands': 'usefull-commands.md'
     - 'Installation':
-      - 'Disconnected / air-gapped': 'openshift-4-installation/disconnected-openshift4.md'
+      - 'Air-gapped': 'openshift-4-installation/air-gapped.md'
       - 'VMware':
         - "Basic (UPI)": openshift-4-installation/vmware.md
         - "IPI & Proxy": openshift-4-installation/vmware/ipi-proxy.md
