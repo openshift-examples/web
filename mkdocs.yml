@@ -70,6 +70,7 @@ nav:
         - "Basic (UPI)": openshift-4-installation/vmware.md
         - "IPI & Proxy": openshift-4-installation/vmware/ipi-proxy.md
         - "Example installation": openshift-4-installation/vmware/example.md
+      - 'Adjust RHCOS.ISO': openshift-4-installation/adjust-rhcos.iso.md
     - 'Over-the-Air Upgrades': oat-upgrades.md
     - 'Basics':
       - 'Pod deployment': 'basics/pod-deployment.md'
