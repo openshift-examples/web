@@ -19,18 +19,21 @@ export PRODUCT_REPO='openshift-release-dev'
 export LOCAL_SECRET_JSON='/root/hetzner-ocp4/pullsecret.json'
 export RELEASE_NAME="ocp-release"
 export ARCHITECTURE=x86_64
+# Additional to create uniq names
+export SERIAL=$(date +%s)
+# optional but usefull, export KUBECONFIG or run oc login
+export KUBECONFIG='/root/hetzner-ocp4/air-gapped/auth/kubeconfig'
 ```
 
 ## Red Hat Operators
 
 ```bash
-SERIAL=$(date +%s)
 
 oc adm catalog build \
   --appregistry-org redhat-operators \
   --to=${LOCAL_REGISTRY}/olm/redhat-operators:${SERIAL} \
   --from=registry.redhat.io/openshift4/ose-operator-registry:v4.5 \
-  -a pullsecret.json | tee redhat-operators.build.${SERIAL}.log
+  -a ${LOCAL_SECRET_JSON} 2>&1 | tee redhat-operators.build.${SERIAL}.log
 
 oc apply -f - <<EOF
 apiVersion: operators.coreos.com/v1alpha1
@@ -49,19 +52,18 @@ oc adm catalog mirror \
   ${LOCAL_REGISTRY}/olm/redhat-operators:${SERIAL} \
   ${LOCAL_REGISTRY} \
   --to-manifests=redhat-operators-${SERIAL} \
-  -a pullsecret.json | tee redhat-operators.mirror.${SERIAL}.log
+  -a ${LOCAL_SECRET_JSON} 2>&1 | tee redhat-operators.mirror.${SERIAL}.log
 
 ```
 
 ## Certified Operators
 
 ```bash
-SERIAL=$(date +%s)
 oc adm catalog build \
   --appregistry-org certified-operators \
   --from=registry.redhat.io/openshift4/ose-operator-registry:v4.5 \
   --to=${LOCAL_REGISTRY}/olm/certified-operators:${SERIAL} \
-  -a pullsecret.json | tee certified-operators.build.${SERIAL}.log
+  -a ${LOCAL_SECRET_JSON} 2>&1 | tee certified-operators.build.${SERIAL}.log
 
 oc apply -f - <<EOF
 apiVersion: operators.coreos.com/v1alpha1
@@ -80,7 +82,7 @@ oc adm catalog mirror \
   ${LOCAL_REGISTRY}/olm/certified-operators:${SERIAL} \
   ${LOCAL_REGISTRY} \
   --to-manifests=certified-operators-${SERIAL} \
-  -a pullsecret.json | tee certified-operators.mirror.${SERIAL}.log
+  -a ${LOCAL_SECRET_JSON} 2>&1 | tee certified-operators.mirror.${SERIAL}.log
 
 ```
 
@@ -119,7 +121,7 @@ No resources found in openshift-marketplace namespace.
 oc image mirror \
   quay.io/openshift-examples/toolbox:latest \
   ${LOCAL_REGISTRY}/openshift-examples/toolbox:latest \
-  -a=pullsecret.json
+  -a=${LOCAL_SECRET_JSON}
 ```
 ##### Start grpcurl pod:
 ```bash
