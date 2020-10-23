@@ -112,9 +112,11 @@ nav:
       - 'NFS': storage/nfs.md
 
     - 'Custom Resource Definition (CRD)': 'custom-ressource-definition/README.md'
+
     - 'Operator':
-      - 'OperatorHub' : 'operator/operatorhub.md'
+      - 'Air-gapped - pre 4.6': 'operator/air-gapped-pre-4.6.md'
       - 'Ansible Operator': 'operator/ansible-operator.md'
+      - 'OperatorHub' : 'operator/operatorhub.md'
       - 'WIP: Install Operator as a User': 'operator/install-operator-as-a-user.md'
       - 'Cluster Configurator': 'operator/cluster-configurator.md'
       - 'WIP Simple Application Operator': 'operator/simple-application-operator.md'
