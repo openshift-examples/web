@@ -2,8 +2,7 @@
 
 ## Start fluentd to file logging
 
-```bash
-
+```yaml
 oc new-project fluentd
 
 oc create -f -<<EOF
@@ -65,10 +64,9 @@ spec:
       port: 24224
       targetPort: 24224
 EOF
-
 ```
 
-### Test fluent
+### Test fluentd
 
 ```bash
 $ oc get pods
@@ -80,4 +78,59 @@ $ grep fooobar /fluentd/log/data.log
 2020-10-28T10:42:24+00:00	debug.log	{"message":"fooobar"}
 ```
 
+## Deploy Cluster Logging
+
+ * Deploy OpenShift Logging Operator
+ * Deploy Elastic Search Operator from Red Hat.
+
+```yaml
+oc create -f - <<EOF
+apiVersion: logging.openshift.io/v1
+kind: ClusterLogging
+metadata:
+  annotations:
+    clusterlogging.openshift.io/logforwardingtechpreview: enabled
+  name: instance
+  namespace: openshift-logging
+spec:
+  collection:
+    logs:
+      fluentd: {}
+      type: fluentd
+  managementState: Managed
+EOF
+```
+
+
+## Deploy Log forwarding api - OpenShift 4.5
+
+
+```yaml
+oc create -f - <<EOF
+apiVersion: logging.openshift.io/v1alpha1
+kind: LogForwarding
+metadata:
+  name: instance
+  namespace: openshift-logging
+spec:
+  disableDefaultForwarding: true
+  outputs:
+    - name: fluentd-created-by-user
+      type: forward
+      endpoint: 'fluentd.fluentd.svc.cluster.local:24224'
+  pipelines:
+    - name: app-pipeline
+      inputSource: logs.app
+      outputRefs:
+        - fluentd-created-by-user
+    - name: infra-pipeline
+      inputSource: logs.infra
+      outputRefs:
+        - fluentd-created-by-user
+    - name: clo-default-audit-pipeline
+      inputSource: logs.audit
+      outputRefs:
+        - fluentd-created-by-user
+EOF
+```
 
