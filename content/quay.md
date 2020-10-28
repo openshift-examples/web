@@ -46,17 +46,37 @@ export MYSQL_PASSWORD=JzxCTamgFBmHRhcGFtoPHFkrx1BH2vwQ
 export MYSQL_USER=quayuser
 export MYSQL_ROOT_PASSWORD=L36PrivxRB02bqOB9jtZtWiCcMsApOGn
 
-podman run \
-    --detach \
-    --restart=always \
-    --env MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} \
-    --env MYSQL_USER=${MYSQL_USER} \
-    --env MYSQL_PASSWORD=${MYSQL_PASSWORD} \
-    --env MYSQL_DATABASE=${MYSQL_DATABASE} \
-    --name ${MYSQL_CONTAINER_NAME} \
-    --privileged=true \
-    -v /var/lib/mysql:/var/lib/mysql/data:Z \
-    registry.access.redhat.com/rhscl/mysql-57-rhel7
+cat - > /etc/systemd/system/mysql.service <<EOF
+[Unit]
+Description=MySQL Pod
+After=network.target
+
+[Service]
+Type=simple
+TimeoutStartSec=5m
+
+ExecStartPre=-/usr/bin/podman rm ${MYSQL_CONTAINER_NAME}
+ExecStartPre=/usr/bin/podman pull registry.access.redhat.com/rhscl/mysql-57-rhel7
+ExecStart=/usr/bin/podman run --name ${MYSQL_CONTAINER_NAME} --net host \
+  --env MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} \
+  --env MYSQL_USER=${MYSQL_USER} \
+  --env MYSQL_PASSWORD=${MYSQL_PASSWORD} \
+  --env MYSQL_DATABASE=${MYSQL_DATABASE} \
+  -v /var/lib/mysql:/var/lib/mysql/data:Z \
+  --privileged=true \
+  registry.access.redhat.com/rhscl/mysql-57-rhel7
+
+ExecReload=-/usr/bin/podman stop ${MYSQL_CONTAINER_NAME}
+ExecReload=-/usr/bin/podman rm ${MYSQL_CONTAINER_NAME}
+ExecStop=-/usr/bin/podman stop ${MYSQL_CONTAINER_NAME}
+Restart=always
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+
 ```
 
 ### Setup redis
@@ -64,25 +84,53 @@ podman run \
 ```bash
 mkdir -p /var/lib/redis
 chmod 777 /var/lib/redis
-podman run -d --restart=always \
-    --privileged=true \
-    --name redis \
-    -v /var/lib/redis:/var/lib/redis/data:Z \
-    registry.access.redhat.com/rhscl/redis-32-rhel7
+
+cat - > /etc/systemd/system/redis.service <<EOF
+[Unit]
+Description=MySQL Pod
+After=network.target
+
+[Service]
+Type=simple
+TimeoutStartSec=5m
+
+ExecStartPre=-/usr/bin/podman rm redis
+ExecStartPre=/usr/bin/podman pull registry.access.redhat.com/rhscl/redis-32-rhel7
+ExecStart=/usr/bin/podman run --name redis --net host \
+  -v /var/lib/redis:/var/lib/redis/data:Z \
+  --privileged=true \
+  registry.access.redhat.com/rhscl/redis-32-rhel7
+
+ExecReload=-/usr/bin/podman stop redis
+ExecReload=-/usr/bin/podman rm redis
+ExecStop=-/usr/bin/podman stop redis
+Restart=always
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+
+systemctl enable --now redis
+systemctl status redis
 ```
+
 
 ### Create auth.json
 
+https://access.redhat.com/solutions/3533201
+
 Create `auth.json` with credentials to pull quay & clair images
 
-### Run quay configurator 
+### Run quay configurator
 
 ```bash
-podman pull  --authfile=auth.json quay.io/redhat/quay:v3.2.1
-podman run --privileged=true -p 8443:8443 -d quay.io/redhat/quay:v3.2.1 config my-secret-password
+podman pull  --authfile=auth.json quay.io/redhat/quay:v3.3.1
+podman run --privileged=true -p 8443:8443 -d quay.io/redhat/quay:v3.3.1 config eemiTh0see3Iegoh
 ```
 
-Configure quay ;-\) 
+Configure quay ;-\)
 
 !!! info
     ToDo: Add a screenshot
@@ -90,21 +138,43 @@ Configure quay ;-\)
 ### Run quay
 
 ```bash
-mkdir -p /var/lib/quay-config
-chmod 777 /var/lib/quay-config
-mkdir -p /var/lib/quay-storage
-chmod 777 /var/lib/quay-storage
+mkdir /var/lib/libvirt/images/quay/{config,storage}
+chmod 777 /var/lib/libvirt/images/quay/{config,storage}
+
 
 # Put the quay configuration bundle into /var/lib/quay-config
 echo "TODO - Put the quay configuration bundle into /var/lib/quay-config"
 
-podman run --restart=always -p 443:8443 -p 80:8080 \
-  --name quay \
-  --sysctl net.core.somaxconn=4096 \
+tar xzvf quay-config.tar.gz -C /var/lib/libvirt/images/quay/config/
+
+cat - > /etc/systemd/system/quay.service <<EOF
+[Unit]
+Description=Quay
+After=network.target
+
+[Service]
+Type=simple
+TimeoutStartSec=5m
+
+ExecStartPre=-/usr/bin/podman rm quay
+ExecStartPre=/usr/bin/podman pull --authfile=/var/lib/libvirt/images/quay/config/auth.json quay.io/redhat/quay:v3.3.1
+ExecStart=/usr/bin/podman run --name quay -p 443:8443 -p 80:8080 \
+  -v /var/lib/libvirt/images/quay/config:/conf/stack:Z \
+  -v /var/lib/libvirt/images/quay/storage:/datastorage:Z \
   --privileged=true \
-  -v /var/lib/quay-config:/conf/stack:Z \
-  -v /var/lib/quay-storage:/datastorage:Z \
-  -d quay.io/redhat/quay:v3.2.1
+  quay.io/redhat/quay:v3.3.1
+
+ExecReload=-/usr/bin/podman stop quay
+ExecReload=-/usr/bin/podman rm quay
+ExecStop=-/usr/bin/podman stop quay
+Restart=always
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+systemctl enable --now quay
 
 ```
 
@@ -304,14 +374,14 @@ curl -L -O https://github.com/arminc/clair-scanner/releases/download/v12/clair-s
 chmod +x clair-scanner_linux_amd64
 
 
-  
+
 ```
 
 #### Run clair
 
-Follow the [instructions.](https://github.com/quay/clair/blob/master/Documentation/running-clair.md#docker) 
+Follow the [instructions.](https://github.com/quay/clair/blob/master/Documentation/running-clair.md#docker)
 
-Run Clair health check 
+Run Clair health check
 
 ```text
 $ curl -I -X GET  http://localhost:6061/health
@@ -351,9 +421,9 @@ chmod +x clair-scanner_linux_amd64
 ```
 
 !!! warning
-    Empty vulnerability database! It takes several minutes to fetch vulnerability data.  
-      
-    During the first run, Clair will bootstrap its database with vulnerability data from the configured data sources. It can take several minutes before the database has been fully populated, but once this data is stored in the database, subsequent updates will take far less time.  
+    Empty vulnerability database! It takes several minutes to fetch vulnerability data.
+
+    During the first run, Clair will bootstrap its database with vulnerability data from the configured data sources. It can take several minutes before the database has been fully populated, but once this data is stored in the database, subsequent updates will take far less time.
     [Source](https://github.com/quay/clair/blob/master/Documentation/running-clair.md#troubleshooting)
 
 
