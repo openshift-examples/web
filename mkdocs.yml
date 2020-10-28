@@ -146,6 +146,9 @@ nav:
       - Workload: 'monitoring/workload.md'
       - Metrics: monitoring/metrics.md
 
+    - 'Logging':
+        'Log Forwarding API': logging/forwarding-demo.md
+
     # Maybe cluster managment/infrastructur
     - 'Image Registry': 'image-registry.md'
     - 'cloud.redhat.com': 'cloud-redhat-com/README.md'
