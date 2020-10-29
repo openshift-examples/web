@@ -73,7 +73,7 @@ nav:
       - 'Adjust RHCOS.ISO': openshift-4-installation/adjust-rhcos.iso.md
     - 'Over-the-Air Upgrades': oat-upgrades.md
     - 'Basics':
-      - 'Pod deployment': 'basics/pod-deployment.md'
+      - 'Deployment': 'basics/deployment.md'
       # ToDo: Order
       - 'Liveness probe': 'basics/liveness-probe.md'
       - 'Storage': 'basics/storage.md'
