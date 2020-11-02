@@ -136,7 +136,12 @@ nav:
         'Dev-Preview (AWS/Azure)': windows-container/installation.md
         'On-Prem installation': windows-container/on-prem-installation.md
     - 'Networking':
-      - 'Network Policy (OVS)': 'networking/network-policy-ovs.md'
+      - 'Network Policy':
+          General: 'networking/network-policy/general.md'
+          OpenShiftSDN: 'networking/network-policy/OpenShiftSDN.md'
+          OVNKubernetes: 'networking/network-policy/OVNKubernetes.md'
+
+
       - 'NSX-T': 'networking/nsx-t.md'
       - 'Egress IP testing': 'networking/egress-ip.md'
       - 'Kubernetes iptables chains': 'networking/k8s-iptables-chains.md'
