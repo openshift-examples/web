@@ -102,6 +102,7 @@ nav:
       - 'Scale down DC': 'deployment/scale-down-deploymentconfigs.md'
       - 'Ops Container': 'deployment/ops-container.md'
     - 'Workload examples':
+      - 'JFrog Artifactory': workload/jfrog-artifactory-enterprise-operator-air-gapped.md
       - 'Own apache': 'workload/own-apache-container.md'
       - 'Gitlab Runner': 'workload/gitlab-runner.md'
       - 'Grafana with OAuth Proxy': 'workload/grafana-oauth.md'
