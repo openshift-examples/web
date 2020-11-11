@@ -89,5 +89,5 @@ oc image mirror -a ${LOCAL_SECRET_JSON} \
 oc process -f https://raw.githubusercontent.com/openshift-examples/external-storage-nfs-client/main/openshift-template-nfs-client-provisioner.yaml \
   -p NFS_SERVER=192.168.51.1 \
   -p NFS_PATH=/var/lib/libvirt/images/air-gapped-pv-user-pvs \
-  -p PROVISIONER_IMAGE=host.compute.local:5000/ocp4/openshift4:nfs-client-provisioner-latest | oc apply -f -
+  -p PROVISIONER_IMAGE=${LOCAL_REGISTRY}/${LOCAL_REPOSITORY}:nfs-client-provisioner-latest | oc apply -f -
 ```
