@@ -22,5 +22,13 @@ label linux
 
 ## Build ISO
 ```bash
-mkisofs -U -A "RHCOS-x86_64" -V "RHCOS-x86_64" -volset "RHCOS-x86_64" -J -joliet-long -r -v -T -x ./lost+found -o /tmp/rhcos-4.5.6-x86_64-installer-custom.x86_64.iso -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -eltorito-alt-boot -e images/efiboot.img -no-emul-boot .
+genisoimage -U -A "RHCOS-x86_64" -V "RHCOS-x86_64" \
+  -volset "RHCOS-x86_64" \
+  -J -joliet-long -r -v -T -x ./lost+found \
+  -o /tmp/rhcos-4.5.6-x86_64-installer-custom.x86_64.iso \
+  -b isolinux/isolinux.bin \
+  -c isolinux/boot.cat \
+  -no-emul-boot -boot-load-size 4 \
+  -boot-info-table -eltorito-alt-boot \
+  -e images/efiboot.img -no-emul-boot .
 ```
