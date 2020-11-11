@@ -1,5 +1,10 @@
 # Air-gapped OperatorHub - pre 4.6
 
+!!! warning
+    Please mirror with `--filter-by-os='.*'` because of
+    [BZ 1890951](https://bugzilla.redhat.com/show_bug.cgi?id=1890951)
+
+
 ## Resources
 
  * [Using Operator Lifecycle Manager on restricted networks](https://docs.openshift.com/container-platform/4.5/operators/admin/olm-restricted-networks.html)
