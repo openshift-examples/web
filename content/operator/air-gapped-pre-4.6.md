@@ -5,7 +5,7 @@
     [BZ 1890951](https://bugzilla.redhat.com/show_bug.cgi?id=1890951)
 
 
-## Resources
+## Resource
 
  * [Using Operator Lifecycle Manager on restricted networks](https://docs.openshift.com/container-platform/4.5/operators/admin/olm-restricted-networks.html)
 
