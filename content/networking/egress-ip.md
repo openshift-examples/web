@@ -1,3 +1,9 @@
+---
+title: Egress IP testing
+linktitle: Egress IP testing
+weight: 16400
+description: TBD
+---
 # Egress IP testing
 
 Namespace egress IP is a good way to fine tune access to services external to OpenShift, like databases. By default containers running on OpenShift will get IP from underlying node when they connect external services. This means that you without feature like egress IP you have to open firewall to external services from all OpenShift cluster nodes....this is not a good and security solution for production use.
@@ -180,11 +186,11 @@ Check that all nods are running and Ready and check that all computes nodes have
 ```text
 $ oc get hostsubnet
 NAME        HOST        HOST IP         SUBNET          EGRESS CIDRS          EGRESS IPS
-compute-0   compute-0   192.168.50.13   10.129.2.0/23   [192.168.50.128/25]   
+compute-0   compute-0   192.168.50.13   10.129.2.0/23   [192.168.50.128/25]
 compute-1   compute-1   192.168.50.14   10.128.2.0/23   [192.168.50.128/25]   [192.168.50.128]
-compute-2   compute-2   192.168.50.15   10.131.0.0/23   [192.168.50.128/25]   
-master-0    master-0    192.168.50.10   10.130.0.0/23                         
-master-1    master-1    192.168.50.11   10.128.0.0/23                         
+compute-2   compute-2   192.168.50.15   10.131.0.0/23   [192.168.50.128/25]
+master-0    master-0    192.168.50.10   10.130.0.0/23
+master-1    master-1    192.168.50.11   10.128.0.0/23
 master-2    master-2    192.168.50.12   10.129.0.0/23
 ```
 
@@ -201,11 +207,11 @@ Once OpenShift notices that node with egress IP is down, IP will be moved to new
 ```text
 $ oc get hostsubnet
 NAME        HOST        HOST IP         SUBNET          EGRESS CIDRS          EGRESS IPS
-compute-0   compute-0   192.168.50.13   10.129.2.0/23   [192.168.50.128/25]   
-compute-1   compute-1   192.168.50.14   10.128.2.0/23   [192.168.50.128/25]   
+compute-0   compute-0   192.168.50.13   10.129.2.0/23   [192.168.50.128/25]
+compute-1   compute-1   192.168.50.14   10.128.2.0/23   [192.168.50.128/25]
 compute-2   compute-2   192.168.50.15   10.131.0.0/23   [192.168.50.128/25]   [192.168.50.128]
-master-0    master-0    192.168.50.10   10.130.0.0/23                         
-master-1    master-1    192.168.50.11   10.128.0.0/23                         
+master-0    master-0    192.168.50.10   10.130.0.0/23
+master-1    master-1    192.168.50.11   10.128.0.0/23
 master-2    master-2    192.168.50.12   10.129.0.0/23
 
 $ ssh core@192.168.50.15 ip a show dev ens3

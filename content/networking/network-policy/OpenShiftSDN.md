@@ -1,4 +1,10 @@
-# Network Policy with OVS
+---
+title: Network Policy with OpenShiftSDN
+linktitle: OpenShiftSDN
+weight: 16200
+description: TBD
+---
+# Network Policy with OpenShiftSDN
 
 ## ToDo
 
@@ -22,10 +28,10 @@
 
 ## Tutorial / Demo - OpenShift v4!
 
-### Deploy demo environment 
+### Deploy demo environment
 
-Install openshift  
-OpenShift 3 with redhat/openshift-ovs-networkpolicy  
+Install openshift
+OpenShift 3 with redhat/openshift-ovs-networkpolicy
 OpenShift 4 network policy is the default
 
 ![demo overview](demo-overview.png)

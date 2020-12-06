@@ -1,8 +1,14 @@
+---
+title: ConSol Meetup Notes
+linktitle: ConSol Meetup Notes
+weight: 99300
+description: TBD
+---
 # My OpenShift 4 Meetup @ConSol Notes
 
 
-- Red Hat intern 
-    - [https://docs.google.com/presentation/d/1us-bvx92JCO9eyF2QirPOkdwSjH0KCCAW0vTP9wHnlg](https://docs.google.com/presentation/d/1us-bvx92JCO9eyF2QirPOkdwSjH0KCCAW0vTP9wHnlg) 
+- Red Hat intern
+    - [https://docs.google.com/presentation/d/1us-bvx92JCO9eyF2QirPOkdwSjH0KCCAW0vTP9wHnlg](https://docs.google.com/presentation/d/1us-bvx92JCO9eyF2QirPOkdwSjH0KCCAW0vTP9wHnlg)
     - [Kubernetes Operators and OpenShift - Red Hat intern](https://docs.google.com/presentation/d/1edNmcy1jRLk6EAKH6lHhn6msqE0ODqKhOV4x9iKTeGU)
     - [What's new OpenShift 4.1 - Red Hat intern](https://docs.google.com/presentation/d/1as3eDtRPPTQigwhOptbnZoc4yL2mN21Nj18cd0wJocI)
 
@@ -61,12 +67,12 @@ spec:
 EOF
 # Taks a while
 oc adm policy add-cluster-role-to-user cluster-admin admin
-# Remove kube-admin 
+# Remove kube-admin
 oc delete secret kubeadmin -n kube-system
 ```
 
 
-#### Update Cluster 
+#### Update Cluster
 
 ```
 oc adm upgrade --to-latest
@@ -126,11 +132,11 @@ spec:
   registryNamespace: johndoe
 ```
 
-### Bash History 
+### Bash History
 
 ```
 20646  2019-06-13 14:43:37 curl -OJL https://github.com/operator-framework/operator-sdk/releases/download/v0.8.1/operator-sdk-v0.8.1-x86_64-apple-darwin
-20647  2019-06-13 14:44:03 mv operator-sdk-v0.8.1-x86_64-apple-darwin /usr/local/bin/operator-sdk 
+20647  2019-06-13 14:44:03 mv operator-sdk-v0.8.1-x86_64-apple-darwin /usr/local/bin/operator-sdk
 20648  2019-06-13 14:44:09 chmod +x /usr/local/bin/operator-sdk
 20649  2019-06-13 14:44:12 operator-sdk new chaos-professor-operator   --api-version=bohne.io/v1alpha1   --kind=chaos-professor   --type=helm
 20650  2019-06-13 14:44:28 operator-sdk new --help

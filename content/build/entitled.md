@@ -1,3 +1,11 @@
+---
+title: Entitled builds on OpenShift 4
+linktitle: Entitled
+weight: 5200
+description: TBD
+tags:
+  - entitlement
+---
 # Entitled builds on OpenShift 4
 
 **Resources**
@@ -59,12 +67,12 @@ The entitlement contains the information which repos are available for the entit
 ```bash
 oc create secret generic etc-pki-entitlement \
     --from-file /etc/pki/entitlement/xxxxxx.pem \
-    --from-file /etc/pki/entitlement/xxxxxx-key.pem 
+    --from-file /etc/pki/entitlement/xxxxxx-key.pem
 ```
 
 ### Create image streams
 
-Not all images are easily accessible, in many cases you need access to registry.redhat.io. 
+Not all images are easily accessible, in many cases you need access to registry.redhat.io.
 You can provide the access to registry.redhat.io in the namespace or use the available access in the openshift namespace.
 
 **Used in my dockerfile of my own-apache-container:**
@@ -77,8 +85,8 @@ oc import-image rhel7:7.6 \
 
 ### Build config
 
-```bash hl_lines="26 27 28 29 30 33 34" 
-# Create imagestream own-apache-container-rhel7 
+```bash hl_lines="26 27 28 29 30 33 34"
+# Create imagestream own-apache-container-rhel7
 oc create is own-apache-container-rhel7
 
 oc apply -f - <<EOF
@@ -142,7 +150,7 @@ oc import-image rhel7:7.6 \
 # Create entitlement secret
 oc create secret generic etc-pki-entitlement \
     --from-file /etc/pki/entitlement/3331047254240145326.pem \
-    --from-file /etc/pki/entitlement/3331047254240145326-key.pem 
+    --from-file /etc/pki/entitlement/3331047254240145326-key.pem
 
 # Service account
 oc create sa anyuid
@@ -155,12 +163,12 @@ metadata:
   name: scc-anyuid
 rules:
 - apiGroups:
-  - security.openshift.io 
+  - security.openshift.io
   resourceNames:
   - anyuid
   resources:
-  - securitycontextconstraints 
-  verbs: 
+  - securitycontextconstraints
+  verbs:
   - use
 EOF
 
@@ -187,7 +195,7 @@ The entitlement contains the information which repos are available for the entit
 ```bash
 oc create secret generic etc-pki-entitlement \
     --from-file /etc/pki/entitlement/3551555797900109932.pem \
-    --from-file /etc/pki/entitlement/3551555797900109932-key.pem 
+    --from-file /etc/pki/entitlement/3551555797900109932-key.pem
 ```
 
 #### Deploy rhel7
@@ -223,9 +231,9 @@ repolist: 0
 sh-4.2#
 ```
 
-!!! info 
+!!! info
     **Problem:**
-    Delete the `rm /etc/rhsm-host` first, rhel 7 can not handle an `/etc/rhsm-host/` without an `rhsm.conf`. 
+    Delete the `rm /etc/rhsm-host` first, rhel 7 can not handle an `/etc/rhsm-host/` without an `rhsm.conf`.
     Deleting of `/etc/rhsm-host` force the package managment to use `/etc/rhsm` provided by the container image together with entitlement mount.
 
 ```bash
