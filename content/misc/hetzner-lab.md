@@ -1,3 +1,9 @@
+---
+title: Hetzner Lab notes
+linktitle: Hetzner Lab notes
+weight: 99400
+description: TBD
+---
 # Hetzner Lab notes
 
 

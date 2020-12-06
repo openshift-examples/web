@@ -1,3 +1,9 @@
+---
+title: Local-storage
+linktitle: Local-storage
+weight: 14200
+description: TBD
+---
 # Configuring local storage for virtual machines
 
 Official documentation: [Configuring local storage for virtual machines
@@ -112,21 +118,21 @@ metadata:
 spec:
   imagePullPolicy: IfNotPresent
   pathConfig:
-    path: "/var/srv/storage" 
-    useNamingPrefix: "false" 
+    path: "/var/srv/storage"
+    useNamingPrefix: "false"
 EOF
 ```
 
-## Create StorageClass 
+## Create StorageClass
 
 ```yaml
 oc apply -f - <<EOF
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
-  name: hostpath-provisioner 
+  name: hostpath-provisioner
 provisioner: kubevirt.io/hostpath-provisioner
-reclaimPolicy: Delete 
-volumeBindingMode: WaitForFirstConsumer 
+reclaimPolicy: Delete
+volumeBindingMode: WaitForFirstConsumer
 EOF
 ```

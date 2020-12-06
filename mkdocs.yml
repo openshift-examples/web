@@ -27,9 +27,6 @@ theme:
   icon:
     logo: material/library
     repo: fontawesome/brands/github
-  features:
-    - tabs
-    - navigation.tabs
 
 # Extras
 extra:
@@ -61,141 +58,112 @@ extra_css:
 
 #  gsed -E "s/\* \[(.+)\]\((.+)\)/- \'\1\': '\2'/" docs/SUMMARY.md
 nav:
-  - "OpenShift 4":
-    - 'Intro': 'README.md'
-    - 'Usefull commands': 'usefull-commands.md'
-    - 'Installation':
-      - 'Air-gapped': 'openshift-4-installation/air-gapped.md'
-      - 'VMware':
-        - "Basic (UPI)": openshift-4-installation/vmware.md
-        - "IPI & Proxy": openshift-4-installation/vmware/ipi-proxy.md
-        - "Example installation": openshift-4-installation/vmware/example.md
-      - 'Adjust RHCOS.ISO': openshift-4-installation/adjust-rhcos.iso.md
-    - 'Over-the-Air Upgrades': oat-upgrades.md
-    - 'Basics':
-      - 'Deployment': 'basics/deployment.md'
-      # ToDo: Order
-      - 'Liveness probe': 'basics/liveness-probe.md'
-      - 'Storage': 'basics/storage.md'
-      - 'Services & Routes':
-        - 'Routes encryption': 'basics/route-encryption.md'
-        - 'Router sharding': 'basics/router-sharding.md'
-        - 'Service Certificate': 'basics/service-serving-certificate-secrets.md'
-      - 'ImageStreams': 'basics/imagestreams.md'
-      - 'StatefulSet': 'basics/statefulset.md'
-      - 'Init containers': 'basics/initcontainers.md'
+  - Cluster installation:
+    - Air-gapped: cluster-installation/air-gapped.md
+    - VMware/vSphere:
+      - Basic (UPI): cluster-installation/vmware/upi/index.md
+      - Example installation: cluster-installation/vmware/example/index.md
+      - IPI & Proxy: cluster-installation/vmware/ipi-proxy/index.md
+      - MachineSet & UPI: cluster-installation/vmware/machineset-with-upi/index.md
+    - Nvidia GPU:
+      - GPU on-prem: cluster-installation/gpu/gpu-on-prem.md
+      - GPU on AWS: cluster-installation/gpu/gpu-on-aws.md
+      - GPU debugging: cluster-installation/gpu/gpu-debuging.md
+    - Windows Container:
+        - DevPreview: cluster-installation/windows-container/dev-prev/_index.md
+        - On-Prem - WiP: cluster-installation/windows-container/on-prem/_index.md
+    - Adjust RHCOS.ISO: cluster-installation/adjust-rhcos.iso.md
 
-    - 'Builds':
-      - Examples: 'build/README.md'
-      - 'Cluster Entitlement': 'full-cluster-entitlement.md'
-      - 'Entitled': build/entitled.md
-      - 'Jenkins Pipeline': build/jenkins.md
-      - 'S2I - R shiny': build/s2i-r-shiny.md
+  - Cluster configuration:
+    - Authentication:
+      - ActiveDirectory / LDAP: cluster-configuration/authentication/activedirectory-ldap/_index.md
+      - Red Hat SSO - via Google: cluster-configuration/authentication/redhat-sso/index.md
+      - Basic Authentication (Remote): cluster-configuration/authentication/auth-basic-authentication.md
+    - Cluster entitlement: cluster-configuration/full-cluster-entitlement/_index.md
+    - Cluster entitlement debugging: cluster-configuration/full-cluster-entitlement/debugging.md
+    - Storage:
+      - NFS Client provisioner: cluster-configuration/storage/nfs.md
+    - NTP: cluster-configuration/ntp.md
+    - Alertmanager: cluster-configuration/alertmanager.md
+    - Logging: cluster-configuration/logging/_index.md
+    - Log Forwarding API: cluster-configuration/logging/forwarding-demo.md
+    - Image Registry: cluster-configuration/image-registry/_index.md
+    - MachineConfig:
+      - Machine Config Server: cluster-configuration/machine-config/machine-config-server.md
+    - MachineSets:
+      - Debugging: cluster-configuration/MachineSets/debugging.md
 
-    - 'Universal Base Images': 'universal-base-image/README.md'
+  - Cluster lifecycle:
+    - Over-the-Air Upgrades: cluster-lifecycle/oat-upgrades/_index.md
+    - Monitoring:
+      - Metrics: cluster-lifecycle/monitoring/metrics.md
+    - cloud.redhat.com: cluster-lifecycle/cloud-redhat-com/_index.md
 
-    - 'Deployment':
-      - 'Nginx reverse proxy': 'deployment/nginx-reverse-proxy.md'
-      - 'EAP Cluster demo': 'deployment/eap-cluster.md'
-      - 'Pod Autoscaling': 'deployment/autoscaling.md'
-      - 'OMD on OpenShift': 'deployment/omd.md'
-      - 'Scale down DC': 'deployment/scale-down-deploymentconfigs.md'
-      - 'Ops Container': 'deployment/ops-container.md'
-    - 'Workload examples':
-      - 'JFrog Artifactory': workload/jfrog-artifactory-enterprise-operator-air-gapped.md
-      - 'Own apache': 'workload/own-apache-container.md'
-      - 'Gitlab Runner': 'workload/gitlab-runner.md'
-      - 'Grafana with OAuth Proxy': 'workload/grafana-oauth.md'
-    - Security:
-        "SCC anyuid example": 'security/scc-anyuid.md'
+  - Build:
+    - Examples: build/examples.md
+    - Entitled: build/entitled.md
+    - Jenkins Pipeline: build/jenkins.md
+    - S2I - R shiny: build/s2i-r-shiny.md
+    - Universal Base Images: build/universal-base-image/_index.md
 
-    - 'Storage':
-      - 'NFS': storage/nfs.md
+  - Deploy:
+    - Deployments: deploy/deployment.md
+    - Liveness probe - WiP: deploy/liveness-probe.md
+    - Storage: deploy/storage.md
+    - ImageStreams: deploy/imagestreams.md
+    - StatefulSet: deploy/statefulset.md
+    - Quota - WiP: deploy/quota/index.md
+    - SCC anyuid example": deploy/scc-anyuid.md
+    - Init containers: deploy/initcontainers.md
+    - Nginx reverse proxy: deploy/nginx-reverse-proxy.md
+    - EAP Cluster demo: deploy/eap-cluster.md
+    - POD Autoscaling: deploy/autoscaling.md
+    - Scale down DC: deploy/scale-down-deploymentconfigs.md
+    - Ops Container: deploy/ops-container.md
+    - Token: cluster-configuration/authentication/token.md
+    - Workload examples:
+      - JFrog Artifactory: deploy/workload/jfrog-artifactory-enterprise-operator-air-gapped.md
+      - Own apache: deploy/workload/own-apache-container.md
+      - Gitlab Runner: deploy/workload/gitlab-runner.md
+      - Grafana with OAuth Proxy: deploy/workload/grafana-oauth.md
+      - Monitoring: deploy/monitoring/_index.md
+      - Workload: deploy/monitoring/workload.md
 
-    - 'Custom Resource Definition (CRD)': 'custom-ressource-definition/README.md'
+  - Networking:
+    - Services & Routes:
+      - Service Certificate: networking/services-routes/service-serving-certificate-secrets/_index.md
+      - Route encryption: networking/services-routes/route-encryption/_index.md
+    - Multus: networking/multus.md
+    - Network Policy:
+      - General: networking/network-policy/_index.md
+      - OVNKubernetes: networking/network-policy/OVNKubernetes.md
+      - OpenShiftSDN: networking/network-policy/OpenShiftSDN.md
+    - Router sharding: networking/services-routes/router-sharding/_index.md
+    - Egress IP testing: networking/egress-ip.md
+    - Kubernetes iptables chains: networking/k8s-iptables-chains.md
 
-    - 'Operator':
-      - 'Air-gapped - pre 4.6': 'operator/air-gapped-pre-4.6.md'
-      - 'Ansible Operator': 'operator/ansible-operator.md'
-      - 'OperatorHub' : 'operator/operatorhub.md'
-      - 'WIP: Install Operator as a User': 'operator/install-operator-as-a-user.md'
-      - 'Cluster Configurator': 'operator/cluster-configurator.md'
-      - 'WIP Simple Application Operator': 'operator/simple-application-operator.md'
+  - Operators:
+    - Custom Resource Definition (CRD): operators/custom-ressource-definition/_index.md
+    - Air-gapped OLM >= 4.6: operators/air-gapped-4.6.md
+    - Air-gapped OperatorHub - pre 4.6: operators/air-gapped-pre-4.6.md
+    - Ansible Operator: operators/ansible-operator.md
+    - OperatorHub: operators/operatorhub.md
+    - Install Operator as a User - WiP: operators/install-operator-as-a-user.md
+    - Cluster Configurator: operators/cluster-configurator.md
+    - Simple Application Operator - WiP: operators/simple-application-operator.md
 
-    - 'GPU':
-        'General notes': 'gpu/general-nvidia-gpu.md'
-        'Cluster Entitlement': 'full-cluster-entitlement.md'
-        'on AWS': 'gpu/on-aws.md'
-        'on-Prem': 'gpu/on-prem.md'
+  - OpenShift Virtualization:
+    - General: kubevirt/_index.md
+    - Networking: kubevirt/networking.md
+    - Local-storage: kubevirt/local-storage.md
 
-    - 'CNV/KubeVirt':
-        'Basics': 'kubevirt/README.md'
-        'Networking': kubevirt/networking.md
-        'Local storage': kubevirt/local-storage.md
-
-    - 'Windows Container':
-        'Dev-Preview (AWS/Azure)': windows-container/installation.md
-        'On-Prem installation': windows-container/on-prem-installation.md
-    - 'Networking':
-      - 'Network Policy':
-          General: 'networking/network-policy/general.md'
-          OpenShiftSDN: 'networking/network-policy/OpenShiftSDN.md'
-          OVNKubernetes: 'networking/network-policy/OVNKubernetes.md'
-
-
-      - 'NSX-T': 'networking/nsx-t.md'
-      - 'Egress IP testing': 'networking/egress-ip.md'
-      - 'Kubernetes iptables chains': 'networking/k8s-iptables-chains.md'
-      - 'Multus': 'networking/multus.md'
-    - 'Monitoring':
-      - 'Alertmanager': 'monitoring/alertmanager.md'
-      - Workload: 'monitoring/workload.md'
-      - Metrics: monitoring/metrics.md
-
-    - 'Logging':
-        'Log Forwarding API': logging/forwarding-demo.md
-
-    # Maybe cluster managment/infrastructur
-    - 'Image Registry': 'image-registry.md'
-    - 'cloud.redhat.com': 'cloud-redhat-com/README.md'
-
-    # Maybe cluster managment/infrastructur
-    - 'Authentication':
-      - 'Token': 'authentication/token.md'
-      - 'ActiveDirectory / LDAP': 'authentication/activedirectory-ldap.md'
-      - 'Red Hat SSO - via Google': 'authentication/redhat-sso.md'
-      # ToDo: 3x:
-      - 'Basic Authentication': 'authentication/auth-basic-authentication.md'
-    # ToDo: Cleanup
-    - 'MachineConfig':
-      - 'Machine Config Server': 'machine-config/machine-config-server.md'
-
-    - 'MachineSets':
-      - 'VMware & UPI': 'openshift-4-installation/vmware/machineset-with-upi.md'
-      - 'Debugging': MachineSets/debugging.md
-    - 'Quay & Clair': 'quay.md'
-    - 'Velero': 'velero.md'
-
-    - 'Certificates': 'certificate.md'
-
-
-  - "OpenShift 3":
-    - 'Installation':
-      - 'openshift-3/installation.md'
-      - 'Disconnected': 'openshift-3/disconnected.md'
-      - 'Terraform example': 'openshift-3/tf-cloud-init-ocp-ready.md'
-      - 'Inventories': openshift-3/inventories.md
-    - 'EFK - Auditlogs': 'openshift-3/efk-auditlog.md'
-    # ToDo Convert
-    - 'External ElasticSearch': 'openshift-3/efk-external-es/README.adoc'
-    - 'etcd':
-        - 'Usefull etcd stuff': 'openshift-3/etcd-usefull.md'
-        - 'Single to Cluster': 'openshift-3/etcd-from-single-node-to-ha-cluster.md'
-
+  - Quay & Clair: quay/_index.md
+  - Certificates: certificate/_index.md
   - Misc:
-      - CloudFlare: misc/cloudflare.md
-      - Terraform: misc/terraform.md
-      - 'ConSol Meetup Notes': misc/meetup-notes.md
-      - Hetzner Lab: misc/hetzner-lab.md
+    - Velero: misc/velero/_index.md
+    - CloudFlare: misc/cloudflare.md
+    - Terraform: misc/terraform.md
+    - ConSol Meetup Notes: misc/meetup-notes.md
+    - Hetzner Lab notes: misc/hetzner-lab.md
 
 docs_dir: content/

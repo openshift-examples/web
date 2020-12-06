@@ -1,3 +1,10 @@
+---
+title: Jenkins Pipeline
+linktitle: Jenkins Pipeline
+weight: 5400
+description: TBD
+---
+# Jenkins Pipeline
 
 !!! note
     Deprecated in OpenShift 4
@@ -35,14 +42,14 @@ https://github.com/redhat-cop/containers-quickstarts/tree/master/jenkins-slaves/
 
 ```text
 podTemplate(
-  label: "scopeo", 
-  cloud: "openshift", 
-  inheritFrom: "maven", 
+  label: "scopeo",
+  cloud: "openshift",
+  inheritFrom: "maven",
   containers: [
     containerTemplate(
-      name: "jnlp", 
-      image: "quay.io/your_repo/jenkins-slave-skopeo-centos:master", 
-      resourceRequestMemory: "512Mi", 
+      name: "jnlp",
+      image: "quay.io/your_repo/jenkins-slave-skopeo-centos:master",
+      resourceRequestMemory: "512Mi",
       resourceLimitMemory: "1Gi"
     )
   ]

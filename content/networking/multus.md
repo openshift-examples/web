@@ -1,3 +1,9 @@
+---
+title: Multus
+linktitle: Multus
+weight: 16090
+description: TBD
+---
 # Multus
 
 !!! notice
@@ -15,7 +21,7 @@ Example based on my lab build with [hetzner-ocp4](https://github.com/RedHat-EMEA
 oc edit networks.operator.openshift.io cluster
 ```
 
-Add `additionalNetworks`: 
+Add `additionalNetworks`:
 ```
   additionalNetworks:
   - name: extra-network-1
@@ -33,7 +39,7 @@ NAME              AGE
 extra-network-1   14h
 ```
 
-### Create a pod 
+### Create a pod
 
 
 ```

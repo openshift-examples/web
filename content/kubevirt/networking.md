@@ -1,3 +1,9 @@
+---
+title: Networking
+linktitle: Networking
+weight: 14100
+description: TBD
+---
 # Networking
 
 ## Create bridge on main interface
@@ -6,27 +12,27 @@ All nodes on which the configuration is executed are restarted.
 
 ```yaml
 oc apply -f - <<EOF
-apiVersion: nmstate.io/v1alpha1 
-kind: NodeNetworkConfigurationPolicy 
-metadata: 
-  name: br1-ens3-policy-workers 
-spec: 
-  nodeSelector: 
-    node-role.kubernetes.io/worker: "" 
-  desiredState: 
-    interfaces: 
-      - name: br1 
-        description: Linux bridge with ens3 as a port 
-        type: linux-bridge 
-        state: up 
-        ipv4: 
+apiVersion: nmstate.io/v1alpha1
+kind: NodeNetworkConfigurationPolicy
+metadata:
+  name: br1-ens3-policy-workers
+spec:
+  nodeSelector:
+    node-role.kubernetes.io/worker: ""
+  desiredState:
+    interfaces:
+      - name: br1
+        description: Linux bridge with ens3 as a port
+        type: linux-bridge
+        state: up
+        ipv4:
           enabled: true
           dhcp: true
-        bridge: 
-          options: 
-            stp: 
-              enabled: false 
-          port: 
+        bridge:
+          options:
+            stp:
+              enabled: false
+          port:
             - name: ens3
 EOF
 ```
