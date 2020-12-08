@@ -35,10 +35,6 @@ oc cluster up --image=registry.access.redhat.com/openshift3/ose \
 |[Red Hat Operators Supported in Disconnected Mode](https://access.redhat.com/articles/4740011)||
 |[Support Policies for Red Hat OpenShift Container Platform Clusters - Deployments Spanning Multiple Sites(Data Centers/Regions)](https://access.redhat.com/articles/3220991)||
 
-## Table of content
-
-{{% children style="li" depth="6" description="true"  /%}}
-
 ## Usefull commands
 
 ### Easy install jq on RHEL
