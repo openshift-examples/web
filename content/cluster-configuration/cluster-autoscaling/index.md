@@ -119,4 +119,33 @@ vmw-mbqt7-worker-tmx82   Provisioning                          21s
 $ oc get pods -n nginx | wc -l
      104
 
+
+# Some coffees later:
+
+$ oc get machines,nodes,machineset
+NAME                                                  PHASE     TYPE   REGION   ZONE   AGE
+machine.machine.openshift.io/vmw-mbqt7-master-0       Running                          25d
+machine.machine.openshift.io/vmw-mbqt7-master-1       Running                          25d
+machine.machine.openshift.io/vmw-mbqt7-master-2       Running                          25d
+machine.machine.openshift.io/vmw-mbqt7-worker-dsstf   Running                          25d
+machine.machine.openshift.io/vmw-mbqt7-worker-plvzh   Running                          25d
+machine.machine.openshift.io/vmw-mbqt7-worker-s8p6t   Running                          25d
+machine.machine.openshift.io/vmw-mbqt7-worker-sxr6m   Running                          8m42s
+machine.machine.openshift.io/vmw-mbqt7-worker-t7tk8   Running                          8m43s
+machine.machine.openshift.io/vmw-mbqt7-worker-xj65l   Running                          8m50s
+
+NAME                          STATUS   ROLES    AGE    VERSION
+node/vmw-mbqt7-master-0       Ready    master   25d    v1.19.0+9f84db3
+node/vmw-mbqt7-master-1       Ready    master   25d    v1.19.0+9f84db3
+node/vmw-mbqt7-master-2       Ready    master   25d    v1.19.0+9f84db3
+node/vmw-mbqt7-worker-dsstf   Ready    worker   25d    v1.19.0+9f84db3
+node/vmw-mbqt7-worker-plvzh   Ready    worker   25d    v1.19.0+9f84db3
+node/vmw-mbqt7-worker-s8p6t   Ready    worker   25d    v1.19.0+9f84db3
+node/vmw-mbqt7-worker-sxr6m   Ready    worker   102s   v1.19.0+9f84db3
+node/vmw-mbqt7-worker-t7tk8   Ready    worker   94s    v1.19.0+9f84db3
+node/vmw-mbqt7-worker-xj65l   Ready    worker   85s    v1.19.0+9f84db3
+
+NAME                                               DESIRED   CURRENT   READY   AVAILABLE   AGE
+machineset.machine.openshift.io/vmw-mbqt7-worker   6         6         6       6           25d
+
 ```
