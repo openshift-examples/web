@@ -73,16 +73,16 @@ nav:
       - GPU on AWS: cluster-installation/gpu/gpu-on-aws.md
       - GPU debugging: cluster-installation/gpu/gpu-debuging.md
     - Windows Container:
-        - DevPreview: cluster-installation/windows-container/dev-prev/_index.md
-        - On-Prem - WiP: cluster-installation/windows-container/on-prem/_index.md
+        - DevPreview: cluster-installation/windows-container/dev-prev/index.md
+        - On-Prem - WiP: cluster-installation/windows-container/on-prem/index.md
     - Adjust RHCOS.ISO: cluster-installation/adjust-rhcos.iso.md
 
   - Cluster configuration:
     - Authentication:
-      - ActiveDirectory / LDAP: cluster-configuration/authentication/activedirectory-ldap/_index.md
+      - ActiveDirectory / LDAP: cluster-configuration/authentication/activedirectory-ldap/index.md
       - Red Hat SSO - via Google: cluster-configuration/authentication/redhat-sso/index.md
       - Basic Authentication (Remote): cluster-configuration/authentication/auth-basic-authentication.md
-    - Cluster entitlement: cluster-configuration/full-cluster-entitlement/_index.md
+    - Cluster entitlement: cluster-configuration/full-cluster-entitlement/index.md
     - Cluster entitlement debugging: cluster-configuration/full-cluster-entitlement/debugging.md
     - Storage:
       - NFS Client provisioner: cluster-configuration/storage/nfs.md
@@ -90,24 +90,24 @@ nav:
     - Alertmanager: cluster-configuration/alertmanager.md
     - Logging:
       - Log Forwarding API: cluster-configuration/logging/forwarding-demo.md
-    - Image Registry: cluster-configuration/image-registry/_index.md
+    - Image Registry: cluster-configuration/image-registry/index.md
     - MachineConfig:
       - Machine Config Server: cluster-configuration/machine-config/machine-config-server.md
     - MachineSets:
       - Debugging: cluster-configuration/MachineSets/debugging.md
 
   - Cluster lifecycle:
-    - Over-the-Air Upgrades: cluster-lifecycle/oat-upgrades/_index.md
+    - Over-the-Air Upgrades: cluster-lifecycle/oat-upgrades/index.md
     - Monitoring:
       - Metrics: cluster-lifecycle/monitoring/metrics.md
-    - cloud.redhat.com: cluster-lifecycle/cloud-redhat-com/_index.md
+    - cloud.redhat.com: cluster-lifecycle/cloud-redhat-com/index.md
 
   - Build:
     - Examples: build/examples.md
     - Entitled: build/entitled.md
     - Jenkins Pipeline: build/jenkins.md
     - S2I - R shiny: build/s2i-r-shiny.md
-    - Universal Base Images: build/universal-base-image/_index.md
+    - Universal Base Images: build/universal-base-image/index.md
 
   - Deploy:
     - Deployments: deploy/deployment.md
@@ -135,19 +135,19 @@ nav:
 
   - Networking:
     - Services & Routes:
-      - Service Certificate: networking/services-routes/service-serving-certificate-secrets/_index.md
-      - Route encryption: networking/services-routes/route-encryption/_index.md
+      - Service Certificate: networking/services-routes/service-serving-certificate-secrets/index.md
+      - Route encryption: networking/services-routes/route-encryption/index.md
     - Multus: networking/multus.md
     - Network Policy:
-      - General: networking/network-policy/_index.md
+      - General: networking/network-policy/index.md
       - OVNKubernetes: networking/network-policy/OVNKubernetes.md
       - OpenShiftSDN: networking/network-policy/OpenShiftSDN.md
-    - Router sharding: networking/services-routes/router-sharding/_index.md
+    - Router sharding: networking/services-routes/router-sharding/index.md
     - Egress IP testing: networking/egress-ip.md
     - Kubernetes iptables chains: networking/k8s-iptables-chains.md
 
   - Operators:
-    - Custom Resource Definition (CRD): operators/custom-ressource-definition/_index.md
+    - Custom Resource Definition (CRD): operators/custom-ressource-definition/index.md
     - Air-gapped OLM >= 4.6: operators/air-gapped-4.6.md
     - Air-gapped OperatorHub - pre 4.6: operators/air-gapped-pre-4.6.md
     - Ansible Operator: operators/ansible-operator.md
@@ -157,14 +157,14 @@ nav:
     - Simple Application Operator - WiP: operators/simple-application-operator.md
 
   - OpenShift Virtualization:
-    - General: kubevirt/_index.md
+    - General: kubevirt/index.md
     - Networking: kubevirt/networking.md
     - Local-storage: kubevirt/local-storage.md
 
-  - Quay & Clair: quay/_index.md
-  - Certificates: certificate/_index.md
+  - Quay & Clair: quay/index.md
+  - Certificates: certificate/index.md
   - Misc:
-    - Velero: misc/velero/_index.md
+    - Velero: misc/velero/index.md
     - CloudFlare: misc/cloudflare.md
     - Terraform: misc/terraform.md
     - ConSol Meetup Notes: misc/meetup-notes.md
