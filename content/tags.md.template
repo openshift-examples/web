@@ -2,7 +2,7 @@
 title: Tags
 ---
 # Contents grouped by tags
-{% set reserved = ['VMware','vSphere','UPI','RCOS','SCC'] %}
+{% set reserved = ['VMware','vSphere','UPI','RHCOS','SCC','S2I','OTA','GPU'] %}
 {% for tag, pages in tags %}
 {% if tag in reserved %}
 ## <span class="tag">{{tag}}</span>
