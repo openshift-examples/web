@@ -1,0 +1,35 @@
+{% import "partials/language.html" as lang with context %}
+<nav class="md-nav md-nav--secondary" aria-label="{{ lang.t('toc.title') }}">
+  {% set toc = page.toc %}
+  {% if toc | first is defined and "\x3ch1 id=" in page.content %}
+    {% set toc = (toc | first).children %}
+  {% endif %}
+  {% if toc | first is defined %}
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      {{ lang.t("toc.title") }}
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      {% for toc_item in toc %}
+        {% include "partials/toc-item.html" %}
+      {% endfor %}
+    </ul>
+  {% endif %}
+</nav>
+{% if page.meta.tags is defined %}
+<nav class="md-nav md-nav--secondary" aria-label="{{ lang.t('toc.title') }}">
+  <label class="md-nav__title" for="__toc">
+    <span class="md-nav__icon md-icon"></span>
+    Tags
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    {% for tag in page.meta.tags %}
+    <li class="md-nav__item">
+      <a href="/tags.html#{{ tag }}" class="md-nav__link">
+        {{ tag }}
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+</nav>
+{% endif %}

@@ -47,12 +47,15 @@ markdown_extensions:
   - toc:
       permalink: true
   - pymdownx.tasklist
+  - meta
 
 plugins:
   - search # necessary for search to work
   - git-revision-date-localized:
       type: date
-
+  - tags:
+      tags_folder: content/
+      tags_template: content/tags.md.template
 extra_css:
   - assets/stylesheets/powered-by.css
 
@@ -165,5 +168,6 @@ nav:
     - Terraform: misc/terraform.md
     - ConSol Meetup Notes: misc/meetup-notes.md
     - Hetzner Lab notes: misc/hetzner-lab.md
+  - Tags: tags.md
 
 docs_dir: content/
