@@ -95,6 +95,7 @@ nav:
       - Machine Config Server: cluster-configuration/machine-config/machine-config-server.md
     - MachineSets:
       - Debugging: cluster-configuration/MachineSets/debugging.md
+    - Cluster autoscaling: cluster-configuration/cluster-autoscaling/index.md
 
   - Cluster lifecycle:
     - Over-the-Air Upgrades: cluster-lifecycle/oat-upgrades/index.md
