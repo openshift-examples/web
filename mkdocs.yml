@@ -88,8 +88,8 @@ nav:
       - NFS Client provisioner: cluster-configuration/storage/nfs.md
     - NTP: cluster-configuration/ntp.md
     - Alertmanager: cluster-configuration/alertmanager.md
-    - Logging: cluster-configuration/logging/_index.md
-    - Log Forwarding API: cluster-configuration/logging/forwarding-demo.md
+    - Logging:
+      - Log Forwarding API: cluster-configuration/logging/forwarding-demo.md
     - Image Registry: cluster-configuration/image-registry/_index.md
     - MachineConfig:
       - Machine Config Server: cluster-configuration/machine-config/machine-config-server.md
@@ -124,13 +124,14 @@ nav:
     - Scale down DC: deploy/scale-down-deploymentconfigs.md
     - Ops Container: deploy/ops-container.md
     - Token: cluster-configuration/authentication/token.md
+    - Monitoring:
+      - Workload: deploy/monitoring/workload.md
     - Workload examples:
       - JFrog Artifactory: deploy/workload/jfrog-artifactory-enterprise-operator-air-gapped.md
       - Own apache: deploy/workload/own-apache-container.md
       - Gitlab Runner: deploy/workload/gitlab-runner.md
       - Grafana with OAuth Proxy: deploy/workload/grafana-oauth.md
-      - Monitoring: deploy/monitoring/_index.md
-      - Workload: deploy/monitoring/workload.md
+
 
   - Networking:
     - Services & Routes:
