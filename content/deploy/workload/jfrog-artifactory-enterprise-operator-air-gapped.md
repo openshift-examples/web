@@ -5,7 +5,7 @@ weight: 8100
 description: TBD
 tags:
  - air-gapped
- - restriced-network
+ - restricted-network
  - disconnected
 ---
 
