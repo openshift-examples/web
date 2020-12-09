@@ -1,12 +1,13 @@
 # Purpose of this Containerfile is for local development / test only.
-# Build: podman build -t mkdocs:local -f Containerfile .
+# Build: podman build -t mkdocs:local --build-arg GH_TOKEN=${GH_TOKEN} -f Containerfile .
 # Run: podman run -ti -v $(pwd):/opt/app-root/src -p 8080:8080 mkdocs:local
-
-FROM registry.access.redhat.com/ubi8/python-36:latest AS builder
-LABEL "io.openshift.s2i.build.image"="registry.access.redhat.com/ubi8/python-36:latest" \
+#
+FROM registry.access.redhat.com/ubi8/python-38:latest AS builder
+LABEL "io.openshift.s2i.build.image"="registry.access.redhat.com/ubi8/python-38:latest" \
       "io.openshift.s2i.build.commit.author"="Robert Bohne <robert.bohne@redhat.com>"
 
 USER root
+ARG GH_TOKEN=willfail
 
 COPY requirements.txt /tmp/requirements.txt
 RUN pip install -r /tmp/requirements.txt

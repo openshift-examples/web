@@ -1,4 +1,4 @@
 mkdocs
-mkdocs-material
+git+https://${GH_TOKEN}@github.com/squidfunk/mkdocs-material-insiders.git
 mkdocs-git-revision-date-localized-plugin
 git+https://github.com/jldiaz/mkdocs-plugin-tags.git
