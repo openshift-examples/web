@@ -19,8 +19,17 @@ theme:
   logo: images/favicon.png
   favicon: images/favicon.png
   palette:
-    primary: black
-    accent: red
+    - primary: black
+      accent: red
+      toggle:
+        icon: material/lightbulb-outline
+        name: Switch to light mode
+    - scheme: slate
+      primary: black
+      accent: red
+      toggle:
+        icon: material/lightbulb
+        name: Switch to dark mode
   font:
     text: Overpass
     code: Overpass Mono
@@ -41,9 +50,9 @@ extra:
 # Extensions
 markdown_extensions:
   - admonition
-  - codehilite:
-      guess_lang: true
+  - pymdownx.highlight:
       linenums: true
+  - pymdownx.superfences
   - toc:
       permalink: true
   - pymdownx.tasklist
