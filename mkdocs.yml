@@ -141,6 +141,7 @@ nav:
       - Own apache: deploy/workload/own-apache-container.md
       - Gitlab Runner: deploy/workload/gitlab-runner.md
       - Grafana with OAuth Proxy: deploy/workload/grafana-oauth.md
+      - Quake 3 Arena: deploy/workload/quake3.md
 
 
   - Networking:
