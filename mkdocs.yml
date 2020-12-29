@@ -179,6 +179,11 @@ nav:
     - Terraform: misc/terraform.md
     - ConSol Meetup Notes: misc/meetup-notes.md
     - Hetzner Lab notes: misc/hetzner-lab.md
+
+  - My Lab notes:
+    - Hetzner Storage Box: my-lab/storage-box.md
+    - Local fedora: my-lab/local-fedora.md
+    - SSH Agent: my-lab/ssh-agent.md
   - Tags: tags.md
 
 docs_dir: content/
