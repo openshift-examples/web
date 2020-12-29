@@ -3,14 +3,24 @@ title: Build examples
 linktitle: Examples
 weight: 5100
 description: TBD
+tags:
+  - build
 ---
 # Build examples
 
 ## Simple Docker build
 
 ```yaml
-asdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsf
-oc create is simple-docker-build
+# oc create is simple-docker-build
+oc apply -f - <<EOF
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: simple-docker-build
+spec:
+  lookupPolicy:
+    local: false
+EOF
 
 oc apply -f - <<EOF
 apiVersion: build.openshift.io/v1
@@ -38,7 +48,7 @@ EOF
 
 ## Simple Container build
 
-```yaml {linenos=table,hl_lines=[20 21]}
+```yaml hl_lines="20 21"
 oc create is simple-container-build
 
 oc apply -f - <<EOF
@@ -69,9 +79,7 @@ EOF
 
 ## Simple context dir
 
-```yaml {linenos=table,hl_lines=[14]}
-asdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsfasdfadsf
-
+```yaml hl_lines="14"
 oc create is simple-context-dir
 
 oc apply -f - <<EOF
@@ -103,7 +111,7 @@ EOF
 
 ## Complex context dir
 
-```yaml {linenos=table,hl_lines=[14 20 21]}
+```yaml hl_lines="14 20 21"
 oc create is complex-context-dir
 
 oc apply -f - <<EOF
@@ -136,7 +144,7 @@ EOF
 
 ** Nothing special at BuildConfig, checkout the Containerfile: **
 
-```Dockerfile {linenos=table,hl_lines=[1 12]}
+```Dockerfile hl_lines="1 12"
 FROM centos:8 AS builder
 
 RUN yum groupinstall -y 'Development Tools'
@@ -208,6 +216,8 @@ oc new-build --name=simple-http-server \
   --to="quay.io/openshift-examples/simple-http-server:dev" \
   https://github.com/openshift-examples/simple-http-server.git
 ```
+
+## Custom build with Buildah
 
 
 ## Add git config
