@@ -1,7 +1,13 @@
 ---
 title: Network Policy with OVNKubernetes
 linktitle: OVNKubernetes
-weight: 16100
-description: TBD
+weight: 16300
+description: Network Policy with OVNKubernetes
+tags:
+  - NetworkPolicy
+  - OVNKubernetes
 ---
-# Network Policies and OVNKubernetes
+
+# Network Policy with OVNKubernetes
+
+
