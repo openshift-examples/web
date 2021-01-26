@@ -111,6 +111,7 @@ nav:
     - Monitoring:
       - Metrics: cluster-lifecycle/monitoring/metrics.md
     - cloud.redhat.com: cluster-lifecycle/cloud-redhat-com/index.md
+    - Restore: cluster-lifecycle/restore/index.md
 
   - Build:
     - Examples: build/examples.md
