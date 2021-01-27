@@ -3,6 +3,9 @@ title: OpenShift Virtualization (CNV/KubeVirt)
 linktitle: "OpenShift Virtualization"
 weight: 14000
 description: TBD
+tags:
+  - ocs
+  - cnv
 ---
 # OpenShift Virtualization (CNV/KubeVirt)
 
@@ -33,7 +36,22 @@ spec:
 
 Source: [cdi-examples](https://github.com/kubevirt/containerized-data-importer/tree/master/manifests/example)
 
+## OpenShift Virtualization & Container Storage
 
+Recommended storage settings:
+```
+$ oc edit cm kubevirt-storage-class-defaults -n openshift-cnv
+
+accessMode: ReadWriteMany
+ocs-storagecluster-ceph-rbd.accessMode: ReadWriteMany
+ocs-storagecluster-ceph-rbd.volumeMode: Block
+ocs-storagecluster-cephfs.accessMode: ReadWriteMany
+ocs-storagecluster-cephfs.volumeMode: Filesystem
+volumeMode: Block
+
+```
+
+<!-- Internal Source: https://docs.google.com/document/d/1nIPev5h_pMCVz-G0K6xmtTmw7mv2L_J-cRKt9tVXtC4/edit#heading=h.szdpr1v81fo2 -->
 
 ## Build container image with OS disk
 
