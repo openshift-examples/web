@@ -6,6 +6,15 @@ description: TBD
 ---
 # Machine Config Server
 
+## Accessing the MachineConfigServer directly
+
+```
+curl -H "Accept: application/vnd.coreos.ignition+json; version=3.2.0" -k \
+  https://api-int....:22623/config/worker
+```
+[Source](https://github.com/openshift/machine-config-operator/blob/master/docs/HACKING.md#accessing-the-machineconfigserver-directly)
+
+
 #### Create MachineConfig
 
 ```yaml
