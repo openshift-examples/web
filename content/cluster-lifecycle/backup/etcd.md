@@ -9,12 +9,16 @@ tags:
 
 # ETCD Backup
 
-Official documentation: https://docs.openshift.com/container-platform/latest/backup_and_restore/backing-up-etcd.html
+Official documentation: <https://docs.openshift.com/container-platform/latest/backup_and_restore/backing-up-etcd.html>
+
+## via Cronjob / scheduled job **⭐prefered⭐**
+
+<https://github.com/samuelvl/ocp4-upi-baremetal-lab/tree/master/day-two/50-etcd-backup>
 
 
 ## With ACM
 
-https://github.com/open-cluster-management/policy-collection/blob/master/community/CM-Configuration-Management/policy-etcd-backup.yaml
+<https://github.com/open-cluster-management/policy-collection/blob/master/community/CM-Configuration-Management/policy-etcd-backup.yaml>
 
 ## Try to run in a Pod 
 
