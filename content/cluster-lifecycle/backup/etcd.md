@@ -12,6 +12,10 @@ tags:
 Official documentation: https://docs.openshift.com/container-platform/latest/backup_and_restore/backing-up-etcd.html
 
 
+## With ACM
+
+https://github.com/open-cluster-management/policy-collection/blob/master/community/CM-Configuration-Management/policy-etcd-backup.yaml
+
 ## Try to run in a Pod 
 
  * Create pvc with name `etcd-backup`
@@ -33,6 +37,8 @@ metadata:
     run: etcd-backup
   name: etcd-backup
 spec:
+  nodeSelector:
+    node-role.kubernetes.io/master: ''
   containers:
   - command:
     - /bin/sh
