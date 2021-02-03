@@ -35,6 +35,14 @@ oc cluster up --image=registry.access.redhat.com/openshift3/ose \
 |[Red Hat Operators Supported in Disconnected Mode](https://access.redhat.com/articles/4740011)||
 |[Support Policies for Red Hat OpenShift Container Platform Clusters - Deployments Spanning Multiple Sites(Data Centers/Regions)](https://access.redhat.com/articles/3220991)||
 
+## Glossar
+
+
+|Term|Definition|
+|---|---|
+|Container runtime|Container runtimes, or specificially OCI Runtimes are things like runc, crun, kata, gvisor.|
+|Container engines|Container Engines pull and push container images from container registries, configure OCI Runtime Specifications and launch OCI Runtimes. For example CRI-O, ContainerD|
+
 ## Usefull commands
 
 ### Easy install jq on RHEL
