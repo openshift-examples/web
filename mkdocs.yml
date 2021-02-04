@@ -78,6 +78,7 @@ nav:
       - IPI & Proxy: cluster-installation/vmware/ipi-proxy/index.md
       - MachineSet & UPI: cluster-installation/vmware/machineset-with-upi/index.md
     - Nvidia GPU:
+      - General: cluster-installation/gpu/index.md
       - GPU on-prem: cluster-installation/gpu/gpu-on-prem.md
       - GPU on AWS: cluster-installation/gpu/gpu-on-aws.md
       - GPU debugging: cluster-installation/gpu/gpu-debuging.md
