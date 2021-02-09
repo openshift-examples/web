@@ -12,5 +12,4 @@ tags:
 
 ## Channel overview
 
-This is an temporary source: [https://openshift-channels.robszumski.com/](https://openshift-channels.robszumski.com/)
-Red Hat will provide a final version.
+[Red Hat OpenShift Container Platform Update Graph](https://access.redhat.com/labs/ocpupgradegraph/update_channel)
