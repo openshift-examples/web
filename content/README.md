@@ -34,7 +34,8 @@ oc cluster up --image=registry.access.redhat.com/openshift3/ose \
 |[How can a user update OpenShift 4 console route](https://access.redhat.com/solutions/4539491)||
 |[Red Hat Operators Supported in Disconnected Mode](https://access.redhat.com/articles/4740011)||
 |[Support Policies for Red Hat OpenShift Container Platform Clusters - Deployments Spanning Multiple Sites(Data Centers/Regions)](https://access.redhat.com/articles/3220991)||
-
+|[Red Hat OpenShift Container Platform Update Graph](https://access.redhat.com/labs/ocpupgradegraph/update_channel)||
+|[Consolidated Troubleshooting Article OpenShift Container Platform 4.x](https://access.redhat.com/articles/4217411)||
 ## Glossar
 
 
