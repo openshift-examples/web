@@ -8,6 +8,75 @@ tags:
 ---
 # Know-Issues / Debugging
 
+## Check entitlement
+
+```bash
+kubectl run check-entitlement  --image=registry.access.redhat.com/ubi8  --command -- /bin/sh -c 'sleep infinity'
+kubectl exec -ti check-entitlement -- bash
+
+rct cat-cert /etc/pki/entitlement-host/entitlement.pem | grep 'Label: rhocp'
+```
+
+
+```yaml
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: check-entitlement
+  name: check-entitlement
+spec:
+  containers:
+  - command:
+    - /bin/sh
+    - -c
+    - |
+      echo "# Check available repos"
+      rct cat-cert /etc/pki/entitlement-host/entitlement.pem | grep 'Label: rhocp-4.6'
+
+      echo "# Check access to rhocp-4.6-for-rhel-8-x86_64-rpms"
+      curl -I -XGET --silent \
+        --cacert /etc/rhsm/ca/redhat-uep.pem \
+        --key /etc/pki/entitlement-host/entitlement-key.pem \
+        --cert /etc/pki/entitlement-host/entitlement.pem \
+        https:/cdn.redhat.com/content/dist/layered/rhel8/x86_64/rhocp/4.6/os/repodata/repomd.xml
+
+    image: registry.access.redhat.com/ubi8
+    name: check-entitlement
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Never
+status: {}
+EOF
+```
+
+**Wait of pod completion**
+
+```
+$ kubectl logs check-entitlement
+# Check available repos
+        Label: rhocp-4.6-for-rhel-8-x86_64-debug-rpms
+        Label: rhocp-4.6-for-rhel-8-x86_64-files
+        Label: rhocp-4.6-for-rhel-8-x86_64-rpms
+        Label: rhocp-4.6-for-rhel-8-x86_64-source-rpms
+# Check access to rhocp-4.6-for-rhel-8-x86_64-rpms
+HTTP/1.1 200 OK
+Accept-Ranges: bytes
+Content-Type: application/xml
+ETag: "82a31f982e86d3431e2216a8c55f066e:1612871206.488625"
+Last-Modified: Tue, 09 Feb 2021 11:34:11 GMT
+Server: AkamaiNetStorage
+Content-Length: 4150
+Date: Tue, 09 Feb 2021 15:10:21 GMT
+X-Cache: TCP_HIT from a95-101-79-92.deploy.akamaitechnologies.com (AkamaiGHost/10.2.4-31895370) (-)
+Connection: keep-alive
+EJ-HOST: authorizer-prod-dc-us-west-19-mpfsw
+X-Akamai-Request-ID: 103c4687
+
+```
+
 ## ImagePullBackOff of nvidia-driver-daemonset-* pods
 
 ```
