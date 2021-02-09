@@ -3,12 +3,24 @@ title: Universal Base Images
 linktitle: Universal Base Images
 weight: 6000
 description: TBD
+tags:
+   - ubi
 ---
 # Universal Base Images
 
 <center>
 <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/VG7Y1mjVIE0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </center>
+
+## Install packages from RHEL Repos
+
+```dockerfile
+FROM registry.access.redhat.com/ubi8
+# https://redhat-connect.gitbook.io/best-practices-guide/base-image#adding-rhel-packages-to-ubi
+RUN dnf install -y --enablerepo=ansible-2.9-for-rhel-8-x86_64-rpms ansible
+RUN dnf install -y --enablerepo=rhocp-4.6-for-rhel-8-x86_64-rpms python3-requests-oauthlib python3-openshift openshift-clients
+```
+
 
 ## Resources
 
