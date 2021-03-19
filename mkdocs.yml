@@ -7,7 +7,7 @@ site_url: https://examples.openshift.pub
 # Repository
 repo_name: openshift-examples/web
 repo_url: https://github.com/openshift-examples/web
-edit_uri: edit/master/
+edit_uri: edit/master/content/
 # Copyright
 copyright: <a href="/impressum/">Impressum</a>
 
