@@ -188,7 +188,8 @@ nav:
   - My Lab notes:
     - Hetzner Storage Box: my-lab/storage-box.md
     - Local fedora: my-lab/local-fedora.md
-    - SSH Agent: my-lab/ssh-agent.md
+    - SSH: my-lab/ssh-agent.md
+    - OCP Remote worker: my-lab/remote-worker/index.md
   - Tags: tags.md
 
 docs_dir: content/
