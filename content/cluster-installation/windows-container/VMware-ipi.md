@@ -1,5 +1,10 @@
 # Windows Container auf VMware IPI
 
+Doc Bugs:
+  * <https://bugzilla.redhat.com/show_bug.cgi?id=1947052>
+  * <https://bugzilla.redhat.com/show_bug.cgi?id=1943587>
+
+
 **High level steps:**
 
 1. Install OpenShift 4.7+ with `OVNKubernetes` SDN and `hybridOverlayConfig`
@@ -73,6 +78,7 @@ spec:
         hybridClusterNetwork:
         - cidr: 10.132.0.0/14
           hostPrefix: 23
+        # Not supported with Windows 2019 LTSC
         hybridOverlayVXLANPort: 9898
 status: {}
 EOF
@@ -113,6 +119,14 @@ Install-WindowsUpdate -AcceptAll -Install -IgnoreReboot
 ```
 Source: [win-updates.ps1](https://github.com/openshift/windows-machine-config-operator/blob/master/docs/vsphere_ci/scripts/win-updates.ps1)
 
+### Disable IPv6
+
+```powershell
+
+> Get-NetAdapterBinding
+
+> Disable-NetAdapterBinding -Name <Name> -ComponentID ms_tcpip6
+```
 ### Install VMware Tools
 
 Business as usual :-)
