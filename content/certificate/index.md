@@ -71,34 +71,36 @@ Change commonName, DNS...
 ### Generate the root
 
 ```bash
-openssl genrsa -aes256 -out ca.key 2048
+openssl genrsa -aes256 -out ca.key -passout pass:openshift 2048
 
 openssl req -config openssl.root-ca.conf \
   -new -x509 -days 7300 -key ca.key -sha256 \
-  -extensions v3_ca -out ca.crt
+  -extensions v3_ca -out ca.crt \
+  -passin pass:openshift
 ```
 
 ### Generate the domain key:
 
 ```bash
-openssl genrsa -out yoursite.org.key 2048
+openssl genrsa -out ssl.key 2048
 ```
 
 ### Generate the certificate signing request
 
 ```bash
 openssl req -config openssl.certificate.conf \
-  -sha256 -new -key yoursite.org.key -out yoursite.org.csr
+  -sha256 -new -key ssl.key -out ssl.csr
 ```
 
 ### Sign the request with your root key
 
 ```bash
-openssl x509 -sha256 -req -in yoursite.org.csr \
+openssl x509 -sha256 -req -in ssl.csr \
   -CA ca.crt -CAkey ca.key -CAcreateserial \
   -out yoursite.org.crt -days 7300 \
   -extfile openssl.certificate.conf \
-  -extensions v3_req
+  -extensions v3_req \
+  -passin pass:openshift
 ```
 
 ### Checking certificate
