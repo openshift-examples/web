@@ -9,31 +9,10 @@ description: TBD
 
 ## General: Create a self signed certificate
 
-### 1) Create `openssl.self-signed-certificate.conf`
+### 1) Create [openssl.self-signed-certificate.conf](openssl.self-signed-certificate.conf)
 
 ```ini
-[req]
-distinguished_name = req_distinguished_name
-x509_extensions = v3_req
-prompt = no
-
-[req_distinguished_name]
-C = US
-ST = VA
-L = SomeCity
-O = MyCompany
-OU = MyDivision
-CN = nginx-ex-ssl-stc-pipeline.6923.rh-us-east-1.openshiftapps.com
-
-[v3_req]
-keyUsage = nonRepudiation, digitalSignature, keyEncipherment
-extendedKeyUsage = serverAuth
-subjectAltName = @alt_names
-
-[alt_names]
-DNS.1 = nginx-ex-ssl-stc-pipeline.6923.rh-us-east-1.openshiftapps.com
-DNS.2 = company.com
-DNS.3 = company.net
+--8<-- "content/certificate/openssl.self-signed-certificate.conf"
 ```
 
 ### 2) Create self signed certificate
@@ -75,160 +54,14 @@ $ openssl x509 -in cert.pem -noout -text
 
 ### Create OpenSSL Configuration
 
-**Create `openssl.root-ca.conf`**
+**Create [openssl.root-ca.conf](openssl.root-ca.conf)**
 ```ini
-# OpenSSL root CA configuration file.
-
-[ req ]
-# Options for the `req` tool (`man req`).
-default_bits        = 2048
-distinguished_name  = req_distinguished_name
-string_mask         = utf8only
-
-# SHA-1 is deprecated, so use SHA-2 instead.
-default_md          = sha256
-
-# Extension to add when the -x509 option is used.
-x509_extensions     = v3_ca
-req_extensions      = v3_req
-
-[ v3_req ]
-# Extensions to add to a certificate request
-basicConstraints = CA:FALSE
-keyUsage = nonRepudiation, digitalSignature, keyEncipherment
-subjectAltName = @alt_names
-
-[alt_names]
-DNS.1 = rootca.example.com
-# DNS.2 = *.pass.example.com
-# DNS.3 = ...
-# DNS.4 = ...
-
-
-[ req_distinguished_name ]
-# See <https://en.wikipedia.org/wiki/Certificate_signing_request>.
-countryName                     = Country Name (2 letter code)
-stateOrProvinceName             = State or Province Name
-localityName                    = Locality Name
-0.organizationName              = Organization Name
-organizationalUnitName          = Organizational Unit Name
-commonName                      = Common Name
-emailAddress                    = Email Address
-
-# Optionally, specify some defaults.
-countryName_default             = DE
-stateOrProvinceName_default     = Bavaria
-localityName_default            = Munich
-0.organizationName_default      = My Private Root CA
-organizationalUnitName_default  = My Private Root CA
-emailAddress_default            = email@domain.tld
-commonName_default              = rootca.example.com
-
-[ v3_ca ]
-# Extensions for a typical CA (`man x509v3_config`).
-subjectKeyIdentifier = hash
-authorityKeyIdentifier = keyid:always,issuer
-basicConstraints = critical, CA:true
-keyUsage = critical, digitalSignature, cRLSign, keyCertSign
-
-[ v3_intermediate_ca ]
-# Extensions for a typical intermediate CA (`man x509v3_config`).
-subjectKeyIdentifier = hash
-authorityKeyIdentifier = keyid:always,issuer
-basicConstraints = critical, CA:true, pathlen:0
-keyUsage = critical, digitalSignature, cRLSign, keyCertSign
-
-[ server_cert ]
-# Extensions for server certificates (`man x509v3_config`).
-basicConstraints = CA:FALSE
-nsCertType = server
-nsComment = "OpenSSL Generated Server Certificate"
-subjectKeyIdentifier = hash
-authorityKeyIdentifier = keyid,issuer:always
-keyUsage = critical, digitalSignature, keyEncipherment
-extendedKeyUsage = serverAuth
-
-[ crl_ext ]
-# Extension for CRLs (`man x509v3_config`).
-authorityKeyIdentifier=keyid:always
+--8<-- "content/certificate/openssl.root-ca.conf"
 ```
 
-**Create `openssl.certificate.conf`**
+**Create [openssl.certificate.conf](openssl.certificate.conf)**
 ```ini
-# OpenSSL root CA configuration file.
-
-[ req ]
-# Options for the `req` tool (`man req`).
-default_bits        = 2048
-distinguished_name  = req_distinguished_name
-string_mask         = utf8only
-
-# SHA-1 is deprecated, so use SHA-2 instead.
-default_md          = sha256
-
-# Extension to add when the -x509 option is used.
-x509_extensions     = v3_ca
-req_extensions      = v3_req
-
-[ v3_req ]
-# Extensions to add to a certificate request
-basicConstraints = CA:FALSE
-keyUsage = nonRepudiation, digitalSignature, keyEncipherment
-subjectAltName = @alt_names
-
-[alt_names]
-DNS.1 = api.example.com
-DNS.2 = *.pass.example.com
-DNS.3 = nginx-ex-ssl-stc-pipeline.6923.rh-us-east-1.openshiftapps.com
-# DNS.4 = ...
-
-
-[ req_distinguished_name ]
-# See <https://en.wikipedia.org/wiki/Certificate_signing_request>.
-countryName                     = Country Name (2 letter code)
-stateOrProvinceName             = State or Province Name
-localityName                    = Locality Name
-0.organizationName              = Organization Name
-organizationalUnitName          = Organizational Unit Name
-commonName                      = Common Name
-emailAddress                    = Email Address
-
-# Optionally, specify some defaults.
-countryName_default             = DE
-stateOrProvinceName_default     = Bavaria
-localityName_default            = Munich
-0.organizationName_default      = Private
-organizationalUnitName_default  = Private
-emailAddress_default            = email@domain.tld
-commonName_default              = api.example.com
-
-[ v3_ca ]
-# Extensions for a typical CA (`man x509v3_config`).
-subjectKeyIdentifier = hash
-authorityKeyIdentifier = keyid:always,issuer
-basicConstraints = critical, CA:true
-keyUsage = critical, digitalSignature, cRLSign, keyCertSign
-
-[ v3_intermediate_ca ]
-# Extensions for a typical intermediate CA (`man x509v3_config`).
-subjectKeyIdentifier = hash
-authorityKeyIdentifier = keyid:always,issuer
-basicConstraints = critical, CA:true, pathlen:0
-keyUsage = critical, digitalSignature, cRLSign, keyCertSign
-
-[ server_cert ]
-# Extensions for server certificates (`man x509v3_config`).
-basicConstraints = CA:FALSE
-nsCertType = server
-nsComment = "OpenSSL Generated Server Certificate"
-subjectKeyIdentifier = hash
-authorityKeyIdentifier = keyid,issuer:always
-keyUsage = critical, digitalSignature, keyEncipherment
-extendedKeyUsage = serverAuth
-
-[ crl_ext ]
-# Extension for CRLs (`man x509v3_config`).
-authorityKeyIdentifier=keyid:always
+--8<-- "content/certificate/openssl.certificate.conf"
 ```
 
 ### Adjust openssl.certificate.conf
