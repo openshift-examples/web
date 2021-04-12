@@ -14,7 +14,7 @@ RUN pip install -r /tmp/requirements.txt
 
 VOLUME /opt/app-root/src
 EXPOSE 8080/tcp
-CMD mkdocs serve --dev-addr 0.0.0.0:8080
+CMD mkdocs serve --dev-addr 0.0.0.0:8080 --no-livereload
 
 # # Copying in source code
 # COPY . /tmp/src
