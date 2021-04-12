@@ -78,6 +78,7 @@ nav:
     - VMware/vSphere:
       - Basic (UPI): cluster-installation/vmware/upi/index.md
       - Example installation: cluster-installation/vmware/example/index.md
+      - IPI & air-gapped: cluster-installation/vmware/ipi-disconnected/index.md
       - IPI & Proxy: cluster-installation/vmware/ipi-proxy/index.md
       - MachineSet & UPI: cluster-installation/vmware/machineset-with-upi/index.md
     - Nvidia GPU:
