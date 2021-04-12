@@ -8,92 +8,105 @@ description: TBD
 
 ## Running Quay & Clair via podman
 
-Here my lab setup, based on the official [documentation](https://access.redhat.com/documentation/en-us/red_hat_quay/3.2/).
+Here my lab setup, based on the official documentation: [Deploy Red Hat Quay for proof-of-concept (non-production) purposes](https://access.redhat.com/documentation/en-us/red_hat_quay/3.4/html-single/deploy_red_hat_quay_for_proof-of-concept_non-production_purposes/index).
+
 
 
 ### Prepare host machine
 
 ```bash
 # Install necessary packages
-yum install -y telnet podman tmux git make go dnsmasql
+yum install -y podman
 
-# Setup internal dns resolution via cni plugin dnsname
-git clone https://github.com/containers/dnsname.git
-cd dnsname
-make binaries install PREFIX=/usr
+yum module install -y container-tools
 
-# Load kernel module br_netfilter because of:
-# https://bugzilla.redhat.com/show_bug.cgi?id=1703261
-modprobe br_netfilter
 ```
 
-!!! warning
-    ToDo: `modprobe br_netfilter` is not persistant!!
-
-#### Configure dnsname cni plugin for default podman network
-
-Add dnsname plugin to cni plugin list `/etc/cni/net.d/87-podman-bridge.conflist`:
+### Registry authentication
 
 ```bash
-,{
-         "type": "dnsname",
-         "domainName": "dns.podman"
-}
+podman login registry.redhat.io
 ```
 
-### Setup mysql
+### Firewall configuration
 
 ```bash
-mkdir -p /var/lib/mysql
-chmod 777 /var/lib/mysql
-export MYSQL_CONTAINER_NAME=mysql
-export MYSQL_DATABASE=enterpriseregistrydb
-export MYSQL_PASSWORD=JzxCTamgFBmHRhcGFtoPHFkrx1BH2vwQ
-export MYSQL_USER=quayuser
-export MYSQL_ROOT_PASSWORD=L36PrivxRB02bqOB9jtZtWiCcMsApOGn
+firewall-cmd --permanent --add-port=8443/tcp
+firewall-cmd --permanent --add-port=8080/tcp
+firewall-cmd --permanent --add-port=443/tcp
+firewall-cmd --reload```
+```
 
-cat - > /etc/systemd/system/mysql.service <<EOF
+### Add quay server to /etc/hosts
+
+```
+echo "172.16.0.5 quay.example.com" >> /etc/hosts
+```
+
+### Create quay data folder - later use with $QUAY
+
+```
+export QUAY=/home/quay
+mkdir -p /home/quay
+```
+
+### Setup Postgres
+
+```bash
+mkdir -p $QUAY/postgres-quay
+setfacl -m u:26:-wx $QUAY/postgres-quay
+export POSTGRESQL_CONTAINER=postgres-quay
+export POSTGRESQL_USER=quayuser
+export POSTGRESQL_PASSWORD=TaeG8aifee7hiqu8
+export POSTGRESQL_DATABASE=quay
+export POSTGRESQL_ADMIN_PASSWORD=ISeich8lohvoohei
+
+cat - > /etc/systemd/system/postgresql-quay.service <<EOF
 [Unit]
-Description=MySQL Pod
+Description=postgresql-quay
 After=network.target
 
 [Service]
 Type=simple
 TimeoutStartSec=5m
+#Environment=http_proxy=172.16.0.4:3128
+ExecStartPre=-/usr/bin/podman rm ${POSTGRESQL_CONTAINER}
+#ExecStartPre=/usr/bin/podman pull registry.redhat.io/rhel8/postgresql-10:1
+ExecStart=/usr/bin/podman run --name ${POSTGRESQL_CONTAINER} -p 5432:5432 \
+  --env POSTGRESQL_USER=${POSTGRESQL_USER} \
+  --env POSTGRESQL_PASSWORD=${POSTGRESQL_PASSWORD} \
+  --env POSTGRESQL_ADMIN_PASSWORD=${POSTGRESQL_ADMIN_PASSWORD} \
+  --env POSTGRESQL_DATABASE=${POSTGRESQL_DATABASE} \
+  -v $QUAY/postgres-quay:/var/lib/pgsql/data:Z \
+    registry.redhat.io/rhel8/postgresql-10:1
 
-ExecStartPre=-/usr/bin/podman rm ${MYSQL_CONTAINER_NAME}
-ExecStartPre=/usr/bin/podman pull registry.access.redhat.com/rhscl/mysql-57-rhel7
-ExecStart=/usr/bin/podman run --name ${MYSQL_CONTAINER_NAME} --net host \
-  --env MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} \
-  --env MYSQL_USER=${MYSQL_USER} \
-  --env MYSQL_PASSWORD=${MYSQL_PASSWORD} \
-  --env MYSQL_DATABASE=${MYSQL_DATABASE} \
-  -v /var/lib/mysql:/var/lib/mysql/data:Z \
-  --privileged=true \
-  registry.access.redhat.com/rhscl/mysql-57-rhel7
-
-ExecReload=-/usr/bin/podman stop ${MYSQL_CONTAINER_NAME}
-ExecReload=-/usr/bin/podman rm ${MYSQL_CONTAINER_NAME}
-ExecStop=-/usr/bin/podman stop ${MYSQL_CONTAINER_NAME}
+ExecReload=-/usr/bin/podman stop ${POSTGRESQL_CONTAINER}
+ExecReload=-/usr/bin/podman rm ${POSTGRESQL_CONTAINER}
+ExecStop=-/usr/bin/podman stop ${POSTGRESQL_CONTAINER}
 Restart=always
 RestartSec=30
 
 [Install]
 WantedBy=multi-user.target
 EOF
+```
 
+```
+systemctl enable --now postgresql-quay
+systemctl status postgresql-quay
+```
 
+```
+podman exec -it ${POSTGRESQL_CONTAINER} /bin/bash -c 'echo "CREATE EXTENSION IF NOT EXISTS pg_trgm" | psql -d quay -U postgres'
 ```
 
 ### Setup redis
 
 ```bash
-mkdir -p /var/lib/redis
-chmod 777 /var/lib/redis
-
+export REDIS_PASSWORD=ISeich8lohvoohei
 cat - > /etc/systemd/system/redis.service <<EOF
 [Unit]
-Description=MySQL Pod
+Description=Redis
 After=network.target
 
 [Service]
@@ -101,11 +114,10 @@ Type=simple
 TimeoutStartSec=5m
 
 ExecStartPre=-/usr/bin/podman rm redis
-ExecStartPre=/usr/bin/podman pull registry.access.redhat.com/rhscl/redis-32-rhel7
-ExecStart=/usr/bin/podman run --name redis --net host \
-  -v /var/lib/redis:/var/lib/redis/data:Z \
-  --privileged=true \
-  registry.access.redhat.com/rhscl/redis-32-rhel7
+# ExecStartPre=/usr/bin/podman pull registry.redhat.io/rhel8/redis-5:1
+ExecStart=/usr/bin/podman run --name redis -p 6379:6379 \
+  --env REDIS_PASSWORD=${REDIS_PASSWORD} \
+  registry.redhat.io/rhel8/redis-5:1
 
 ExecReload=-/usr/bin/podman stop redis
 ExecReload=-/usr/bin/podman rm redis
@@ -122,36 +134,25 @@ systemctl enable --now redis
 systemctl status redis
 ```
 
-
-### Create auth.json
-
-https://access.redhat.com/solutions/3533201
-
-Create `auth.json` with credentials to pull quay & clair images
-
 ### Run quay configurator
 
 ```bash
-podman pull  --authfile=auth.json quay.io/redhat/quay:v3.3.1
-podman run --privileged=true -p 8443:8443 -d quay.io/redhat/quay:v3.3.1 config eemiTh0see3Iegoh
+podman run --rm -it --name quay_config -p 8080:8080 registry.redhat.io/quay/quay-rhel8:v3.4.3 config eemiTh0see3Iegoh
+
 ```
 
-Configure quay ;-\)
-
-!!! info
-    ToDo: Add a screenshot
+Configure quay!
 
 ### Run quay
 
 ```bash
-mkdir /var/lib/libvirt/images/quay/{config,storage}
-chmod 777 /var/lib/libvirt/images/quay/{config,storage}
+mkdir $QUAY/config
+cp ~/Downloads/quay-config.tar.gz $QUAY/config
+cd $QUAY/config
+tar xvf quay-config.tar.gz
 
-
-# Put the quay configuration bundle into /var/lib/quay-config
-echo "TODO - Put the quay configuration bundle into /var/lib/quay-config"
-
-tar xzvf quay-config.tar.gz -C /var/lib/libvirt/images/quay/config/
+mkdir $QUAY/storage
+setfacl -m u:1001:-wx $QUAY/storage
 
 cat - > /etc/systemd/system/quay.service <<EOF
 [Unit]
@@ -163,12 +164,11 @@ Type=simple
 TimeoutStartSec=5m
 
 ExecStartPre=-/usr/bin/podman rm quay
-ExecStartPre=/usr/bin/podman pull --authfile=/var/lib/libvirt/images/quay/config/auth.json quay.io/redhat/quay:v3.3.1
+#ExecStartPre=/usr/bin/podman pull registry.redhat.io/quay/quay-rhel8:v3.4.3
 ExecStart=/usr/bin/podman run --name quay -p 443:8443 -p 80:8080 \
-  -v /var/lib/libvirt/images/quay/config:/conf/stack:Z \
-  -v /var/lib/libvirt/images/quay/storage:/datastorage:Z \
-  --privileged=true \
-  quay.io/redhat/quay:v3.3.1
+  -v $QUAY/config:/conf/stack:Z \
+  -v $QUAY/storage:/datastorage:Z \
+  registry.redhat.io/quay/quay-rhel8:v3.4.3
 
 ExecReload=-/usr/bin/podman stop quay
 ExecReload=-/usr/bin/podman rm quay
