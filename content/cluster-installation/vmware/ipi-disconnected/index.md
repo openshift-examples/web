@@ -26,6 +26,9 @@ tags:
 
 172.16.0.10 - api.infra
 172.16.0.11 - *.apps...
+
+172.16.0.12 - api.demo1
+172.16.0.13 - *.apps.demo1
 ```
 
 ## Setup suporting infrastructure
@@ -221,6 +224,13 @@ spec:
   allowedRegistriesForImport: 
     - domainName: quay.example.com
       insecure: false
+    # If not added update will fail
+    #  oc logs -n openshift-cluster-version -l k8s-app=cluster-version-operator
+    # I0413 08:12:21.986805       1 reflector.go:530] github.com/openshift/client-go/config/informers/externalversions/factory.go:101: Watch close - *v1.Proxy total 0 items received
+    #E0413 08:12:22.072266       1 task.go:112] error running apply for imagestream "openshift/cli" (378 of 668): ImageStream.image.openshift.io "cli" is invalid: spec.tags[latest].from.name: Forbidden: registry "quay.io" not allowed by whitelist: "image-registry.openshift-image-registry.svc:5000", "quay.example.com:443"
+    #I0413 08:12:24.705418       1 leaderelection.go:273] successfully renewed lease openshift-cluster-version/version
+    - domainName: quay.io
+      insecure: false
   additionalTrustedCA: 
     name: additional-trusted-ca 
   registrySources: 
@@ -305,9 +315,35 @@ oc image mirror \
 
 ### Cluster upgrade
 
+<https://docs.openshift.com/container-platform/4.7/updating/updating-restricted-network-cluster.html>
+
  * Check upgrade path: <https://access.redhat.com/labs/ocpupgradegraph/update_path> 
  * Mirror images again - new version
  * Run oc adm oc adm upgrade --to ..
+
+#### Mirror
+
+```
+source env.sh
+export OCP_RELEASE=4.7.2
+
+oc adm release mirror  -a ${LOCAL_SECRET_JSON} \
+  --from=quay.io/${PRODUCT_REPO}/${RELEASE_NAME}:${OCP_RELEASE}-${ARCHITECTURE}  \
+  --to=${LOCAL_REGISTRY}/${LOCAL_REPOSITORY} \
+  --apply-release-image-signature
+....
+
+```
+
+#### Update command
+
+```
+
+oc adm release info -a $REG_CREDS quay.example.com/infra/openshift4:4.7.2-x86_64 | grep 'Pull From'
+Pull From: quay.example.com/infra/openshift4@sha256:83fca12e93240b503f88ec192be5ff0d6dfe750f81e8b5ef71af991337d7c584
+oc adm upgrade --allow-explicit-upgrade --to-image quay.example.com/infra/openshift4@sha256:83fca12e93240b503f88ec192be5ff0d6dfe750f81e8b5ef71af991337d7c584
+
+```
 
 #### OpenShift Update Service
 
