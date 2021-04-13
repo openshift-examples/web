@@ -120,26 +120,118 @@ imageContentSources:
 
 ### Install OpenShift
 
-
+Example install-config
+```yaml hl_lines="37 39-46 48-55"
+apiVersion: v1
+baseDomain: example.com
+compute:
+- architecture: amd64
+  hyperthreading: Enabled
+  name: worker
+  platform: {}
+  replicas: 3
+controlPlane:
+  architecture: amd64
+  hyperthreading: Enabled
+  name: master
+  platform: {}  replicas: 3metadata:
+  creationTimestamp: null
+  name: infra
+networking:
+  clusterNetwork:
+  - cidr: 10.128.0.0/14
+    hostPrefix: 23
+  machineNetwork:
+  - cidr: 10.0.0.0/16
+  networkType: OpenShiftSDN
+  serviceNetwork:
+  - 172.30.0.0/16
+platform:
+  vsphere:
+    apiVIP: 172.16.0.10
+    cluster: lab
+    datacenter: DC
+    defaultDatastore: datastore
+    ingressVIP: 172.16.0.11
+    network: Disconnected
+    password: xxx
+    username: xxx
+    vCenter: vcenter.example.com
+    folder: /DC/vm/rbohne/
+    clusterOSImage: http://quay.example.com:8080/rhcos-4.7.0-x86_64-vmware.x86_64.ova?sha256=13d92692b8eed717ff8d0d113a24add339a65ef1f12eceeb99dabcd922cc86d1
+publish: External
+imageContentSources:
+- mirrors:
+  - quay.example.com/infra/openshift4
+  source: quay.io/openshift-release-dev/ocp-release
+- mirrors:
+  - quay.example.com/infra/openshift4
+  source: quay.io/openshift-release-dev/ocp-v4.0-art-dev
+pullSecret: '{"auths":{"quay.example.com":{"auth":"YWRtaW46cmVkaGF0MDI="}}}'
+sshKey: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCu9AV3k/ktphogW+Y28fZ0R+ncTxtXalVmpGjvZCuARZJQcgA72pNnXSvrTadJo5D48LgXOz5BwZnoml0toPkLVKBa4fU6kvQsQHDzvElpKbBH8/tmYRV72wt2kJjAS//Ycu9qz2scK+YAdjyle+WUh0qyEzgKKkLjwUmdZOYfJ0eZP+Jl5ljeXk3olCcAQc7JaBr3umREr5o/3+wnHsYPlOGZoSvGRTuEy81tQTL+Nl12LrN1ZxZQZ8jzIExIGRvk8/F2oufFfCigXkEiMf+8l2WXDVR/MGLVhEyle2tJAczBwaskh1nJFKfK6H88lm0fyVev9++GYClSvIxjBWmD88s09cei6C4gRSKANtANmtoOUNhVGcFXaJSPHnrOo7bKnU7XNAcmEZZtUuB05Oc1lJSNoBB9wDj65hzvWnyvQ/zgXeSmUjHObArZ054qPtscIV5QGQUdgVsRCgPWS9SlmYMje9O8AJe+Kqye3ykyMeRDZEUNvO+9Pg+ZGbgH7eM= root@jumphost-disconnected.localdomain"
+additionalTrustBundle: |
+  -----BEGIN CERTIFICATE-----
+  MIIEQzCCAyugAwIBAgIUVwbzbrQNDW3tU2xdZDVsF5VzTlEwDQYJKoZIhvcNAQEL
+  BQAwgagxCzAJBgNVBAYTAkRFMRAwDgYDVQQIDAdCYXZhcmlhMQ8wDQYDVQQHDAZN
+    ....
+  qGE5LlcUuR0SCO8yVcILcaiXhxGzqYlOZK26u4APntWyn4eUGuLpiReimgE4NvZr
+  ZYDgBfQ2I9ulhe0dAScUJz0c8iErjpJJ9kT0Ebar/UuPGQvyOnvM
+  -----END CERTIFICATE-----
 ```
 
-[root@quay ~]# openshift-install create cluster --dir=infra
-INFO Consuming Install Config from target directory
-INFO Obtaining RHCOS image file from 'https://releases-art-rhcos.svc.ci.openshift.org/art/storage/releases/rhcos-4.7/47.83.202102090044-0/x86_64/rhcos-47.83.202102090044-0-vmware.x86_64.ova?sha256=13d92692b8eed717ff8d0d113a24add339a65ef1f12eceeb99dabcd922cc86d1'
-FATAL failed to fetch Terraform Variables: failed to generate asset "Terraform Variables": failed to get vsphere Terraform variables: failed
-to use cached vsphere image: Get "https://releases-art-rhcos.svc.ci.openshift.org/art/storage/releases/rhcos-4.7/47.83.202102090044-0/x86_64/rhcos-47.83.202102090044-0-vmware.x86_64.ova?sha256=13d92692b8eed717ff8d0d113a24add339a65ef1f12eceeb99dabcd922cc86d1": dial tcp: lookup releases-art-rhcos.svc.ci.openshift.org on 172.16.0.5:53: server misbehaving
-
-
-openshift-install explain installconfig.platform.vsphere.clusterOSImage
-KIND:     InstallConfig
-VERSION:  v1
-
-RESOURCE: <string>
-  ClusterOSImage overrides the url provided in rhcos.json to download the RHCOS OVA
-
-```
+Run `openshift-install create cluster`
 
 ### Post installation
+
+#### Configure registry search path & ca
+
+
+<https://docs.openshift.com/container-platform/4.7/openshift_images/image-configuration.html>
+
+```bash
+oc create configmap additional-trusted-ca \
+  --from-file=quay.example.com=/etc/pki/ca-trust/source/anchors/quay.ca.crt \
+  -n openshift-config
+
+oc apply -f - <<EOF
+apiVersion: config.openshift.io/v1
+kind: Image
+metadata:
+  name: cluster
+spec:
+  allowedRegistriesForImport:
+    - domainName: quay.example.com
+      insecure: false
+    # If not added update will fail
+    #  oc logs -n openshift-cluster-version -l k8s-app=cluster-version-operator
+    # I0413 08:12:21.986805       1 reflector.go:530] github.com/openshift/client-go/config/informers/externalversions/factory.go:101: Watch close - *v1.Proxy total 0 items received
+    #E0413 08:12:22.072266       1 task.go:112] error running apply for imagestream "openshift/cli" (378 of 668): ImageStream.image.openshift.io "cli" is invalid: spec.tags[latest].from.name: Forbidden: registry "quay.io" not allowed by whitelist: "image-registry.openshift-image-registry.svc:5000", "quay.example.com:443"
+    #I0413 08:12:24.705418       1 leaderelection.go:273] successfully renewed lease openshift-cluster-version/version
+    - domainName: quay.io
+      insecure: false
+  additionalTrustedCA:
+    name: additional-trusted-ca
+  registrySources:
+    containerRuntimeSearchRegistries:
+    - quay.example.com
+    allowedRegistries:
+    - quay.example.com
+    - registry.redhat.io
+    - quay.io
+    - registry.access.redhat.com
+    - image-registry.openshift-image-registry.svc:5000
+EOF
+
+```
+
+
+#### Disable catalog sources
+
+<https://docs.openshift.com/container-platform/4.7/operators/admin/olm-restricted-networks.html#olm-restricted-networks-operatorhub_olm-restricted-networks>
+
+```
+oc patch OperatorHub cluster --type json -p '[{"op": "add", "path": "/spec/disableAllDefaultSources", "value": true}]'
+```
 
 #### Configure image registry
 
@@ -201,56 +293,6 @@ spec:
 EOF
 
 ```
-#### Configure registry search path & ca
-
-
-<https://docs.openshift.com/container-platform/4.7/openshift_images/image-configuration.html>
-
-```bash
-oc create configmap additional-trusted-ca \
-  --from-file=quay.example.com=/etc/pki/ca-trust/source/anchors/quay.ca.crt \
-  -n openshift-config
-
-oc apply -f - <<EOF
-apiVersion: config.openshift.io/v1
-kind: Image
-metadata:
-  name: cluster
-spec:
-  allowedRegistriesForImport:
-    - domainName: quay.example.com
-      insecure: false
-    # If not added update will fail
-    #  oc logs -n openshift-cluster-version -l k8s-app=cluster-version-operator
-    # I0413 08:12:21.986805       1 reflector.go:530] github.com/openshift/client-go/config/informers/externalversions/factory.go:101: Watch close - *v1.Proxy total 0 items received
-    #E0413 08:12:22.072266       1 task.go:112] error running apply for imagestream "openshift/cli" (378 of 668): ImageStream.image.openshift.io "cli" is invalid: spec.tags[latest].from.name: Forbidden: registry "quay.io" not allowed by whitelist: "image-registry.openshift-image-registry.svc:5000", "quay.example.com:443"
-    #I0413 08:12:24.705418       1 leaderelection.go:273] successfully renewed lease openshift-cluster-version/version
-    - domainName: quay.io
-      insecure: false
-  additionalTrustedCA:
-    name: additional-trusted-ca
-  registrySources:
-    containerRuntimeSearchRegistries:
-    - quay.example.com
-    allowedRegistries:
-    - quay.example.com
-    - registry.redhat.io
-    - quay.io
-    - registry.access.redhat.com
-    - image-registry.openshift-image-registry.svc:5000
-EOF
-
-```
-
-
-#### Disable catalog sources
-
-<https://docs.openshift.com/container-platform/4.7/operators/admin/olm-restricted-networks.html#olm-restricted-networks-operatorhub_olm-restricted-networks>
-
-```
-oc patch OperatorHub cluster --type json -p '[{"op": "add", "path": "/spec/disableAllDefaultSources", "value": true}]'
-```
-
 
 ### Operator installation
 
