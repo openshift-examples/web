@@ -1,80 +1,88 @@
 ---
-title: vSphere IPI in a disconnected/air-gapped env.
-linktitle: IPI & air-gapped
+title: OpenShift.tv - vSphere IPI in a disconnected environment
+linktitle: vSphere IPI & disconnected environment
 description: Demo of an vSphere IPI disconnected/air-gapped installation
 tags:
   - VMware
   - vSphere
   - air-gapped
+  - restriced
   - disconnected
+  - OpenShiftTV
 ---
 
-# vSphere IPI in a restricted network
+# vSphere IPI & disconnected environment
 
-## Restricted definition
+!!! note
+    This is **not** a complete documentation or copy & past ready documentation!
+    At least speaker notes or my personal notes, highlight only some key points.
+    A complete documentation is available at [docs.openshift.com](https://docs.openshift.com) or [docs.redhat.com](https://access.redhat.com/documentation/en-us/openshift_container_platform/4.7/)
 
-* disconnected: Cluster has no access to the internet DIRECTLY (firewall rules are in place). They may or maynot have a proxy
-* restricted: Cluster has SOME access to the internet (firewall rules allow some but not all). Install may fail. They may or maynot have a proxy
-* airgapped. Cluster has NO access to the internet. Full Stop. Not even the router or switches or anything have access. Think of a military install.
+## Recording
 
-## Network overview
-```
+TBD - after the session
 
-172.16.0.0/24
-172.16.0.4 - jumphost (proxy,ntpd,vcenter)
-172.16.0.5 - quay.example.com (registry, dns, dhcp, git-server)
+## Definition
 
-172.16.0.10 - api.infra
-172.16.0.11 - *.apps...
+* **disconnected**: Cluster has no access to the internet DIRECTLY (firewall rules are in place). They may or maynot have a proxy.
+* **restricted**: Cluster has SOME access to the internet (firewall rules allow some but not all). Install may fail. They may or maynot have a proxy. *Term used in the documentation!*
+* **airgapped**. Cluster has NO access to the internet. Full Stop. Not even the router or switches or anything have access. Think of a military install.
 
-172.16.0.12 - api.demo1
-172.16.0.13 - *.apps.demo1
-```
+Kudos to [Christian Hernandez](https://twitter.com/christianh814)
 
-## Setup suporting infrastructure
-### Setup quay
+## Lab information
 
-[Deploy Red Hat Quay for proof-of-concept (non-production) purposes](https://access.redhat.com/documentation/en-us/red_hat_quay/3.4/html-single/deploy_red_hat_quay_for_proof-of-concept_non-production_purposes/index)
+ * vSphere 7
+ * Domain: example.com
+ * Network: `172.16.0.0/24`
+    * `172.16.0.4   ` - jumphost-disconnected.example.com (proxy in the env., ntpd,
+      vcenter forwarder)
+    * `172.16.0.5   ` - quay.example.com (image registry, dns, dhcp, git-server,
+      httpd)
+    * VIPS:
+      * `172.16.0.10` - api.infra.example.com
+      * `172.16.0.11` - *.apps.infra.example.com
+      * `172.16.0.12` - api.demo1.example.com
+      * `172.16.0.13` - *.apps.demo1.example.com
+      * `172.16.0.14` - api.demo1.example.com
+      * `172.16.0.15` - *.apps.demo1.example.com
 
+## Overview
 
+ * OpenShift installation
+    * Mirror release images
+    * Mirror rhcos ova
+    * Prepare install-config.yaml
+        * Important: imageContentSources 🔴, additionalTrustBundle,
+          platform.vsphere.clusterOSImage (check `openshift-install explain`)
+    * Run installation
+ * OpenShift post-installation steps
+    * [Configure registry search path & ca](#configure-registry-search-path-ca) 💡
+ * OperatorHub / OLM
+    * Disable default catalog sources
+    * Create operator index
+    * Mirror operator images
+    * Apply operator source & imageContentSourcePolicy
+ * OpenShift Upgrade
+    * [Check update path](https://access.redhat.com/labs/ocpupgradegraph/update_path)
+    * Mirror release image & image signature
+    * Run upgrade via cli
+    * Futur: [OpenShift Update Service](https://www.openshift.com/blog/openshift-update-service-update-manager-for-your-cluster)
+ * Demo: Run a pipeline
+    * OpenShift Pipeline operator is synced and installed
+    * Copy all necessary git resources into your own git-server
+    * Mirror all necessary container images
+    * [Run the pipeline and fail because of missing pip mirror](#problem) 🔴
 
-### Setup Git-server
+## Documentation & use-full resources
 
-```
-mkdir /home/gogs
-cat > /etc/systemd/system/gogs.service <<EOF
-[Unit]
-Description=gogs
-After=network.target
-
-[Service]
-Type=simple
-TimeoutStartSec=5m
-
-ExecStartPre=-/usr/bin/podman rm gogs
-ExecStart=/usr/bin/podman run --name gogs \
-  -p 2222:22 \
-  -p 3000:3000 \
-  -v /home/gogs:/data:Z \
-  docker.io/gogs/gogs:latest
-
-ExecReload=-/usr/bin/podman stop gogs
-ExecReload=-/usr/bin/podman rm gogs
-ExecStop=-/usr/bin/podman stop gogs
-Restart=always
-RestartSec=30
-
-[Install]
-WantedBy=multi-user.target
-
-EOF
-
-
-```
-
-### DNS & dhcp
-
-...
+ * [Installing a cluster on vSphere in a restricted network](https://docs.openshift.com/container-platform/4.7/installing/installing_vsphere/installing-restricted-networks-installer-provisioned-vsphere.html)
+ * [Updating a restricted network cluster](https://docs.openshift.com/container-platform/4.7/updating/updating-restricted-network-cluster.html)
+ * [Using Operator Lifecycle Manager on restricted networks](https://docs.openshift.com/container-platform/4.7/operators/admin/olm-restricted-networks.html)
+ * [Creating CI/CD solutions for applications using OpenShift Pipelines](https://docs.openshift.com/container-platform/4.7/cicd/pipelines/creating-applications-with-cicd-pipelines.html#creating-pipeline-tasks_creating-applications-with-cicd-pipelines)
+ * [OpenShift Update Path](https://access.redhat.com/labs/ocpupgradegraph/update_path)
+ * [OpenShift Update Service](https://www.openshift.com/blog/openshift-update-service-update-manager-for-your-cluster)
+ * [Container images, multi-architecture, manifests, ids, digests – what’s behind?](https://www.opensourcerers.org/2020/11/16/container-images-multi-architecture-manifests-ids-digests-whats-behind/)
 
 ## OpenShift Installation
 
@@ -105,8 +113,6 @@ imageContentSources:
   source: quay.io/openshift-release-dev/ocp-release- mirrors:
   - quay.example.com/infra/openshift4
   source: quay.io/openshift-release-dev/ocp-v4.0-art-dev
-
-
 
 ```
 
@@ -139,8 +145,7 @@ RESOURCE: <string>
 
 --8<-- "content/cluster-configuration/image-registry/vsphere-registry.md"
 
-
-#### NTP
+#### Configure NTP
 
 ```
 chronybase64=$(cat << EOF | base64 -w 0
@@ -196,17 +201,8 @@ spec:
 EOF
 
 ```
+#### Configure registry search path & ca
 
-#### Disable catalog sources
-
-https://docs.openshift.com/container-platform/4.7/operators/admin/olm-restricted-networks.html#olm-restricted-networks-operatorhub_olm-restricted-networks
-
-```
-oc patch OperatorHub cluster --type json -p '[{"op": "add", "path": "/spec/disableAllDefaultSources", "value": true}]'
-```
-
-
-#### Registry search path & ca
 
 <https://docs.openshift.com/container-platform/4.7/openshift_images/image-configuration.html>
 
@@ -217,11 +213,11 @@ oc create configmap additional-trusted-ca \
 
 oc apply -f - <<EOF
 apiVersion: config.openshift.io/v1
-kind: Image 
+kind: Image
 metadata:
   name: cluster
 spec:
-  allowedRegistriesForImport: 
+  allowedRegistriesForImport:
     - domainName: quay.example.com
       insecure: false
     # If not added update will fail
@@ -231,9 +227,9 @@ spec:
     #I0413 08:12:24.705418       1 leaderelection.go:273] successfully renewed lease openshift-cluster-version/version
     - domainName: quay.io
       insecure: false
-  additionalTrustedCA: 
-    name: additional-trusted-ca 
-  registrySources: 
+  additionalTrustedCA:
+    name: additional-trusted-ca
+  registrySources:
     containerRuntimeSearchRegistries:
     - quay.example.com
     allowedRegistries:
@@ -246,19 +242,23 @@ EOF
 
 ```
 
+
+#### Disable catalog sources
+
+<https://docs.openshift.com/container-platform/4.7/operators/admin/olm-restricted-networks.html#olm-restricted-networks-operatorhub_olm-restricted-networks>
+
+```
+oc patch OperatorHub cluster --type json -p '[{"op": "add", "path": "/spec/disableAllDefaultSources", "value": true}]'
+```
+
+
 ### Operator installation
 
 
  * <https://bugzilla.redhat.com/show_bug.cgi?id=1874106>
 
 ```
-export OCP_RELEASE=4.7.0
-export LOCAL_REGISTRY='quay.example.com'
-export LOCAL_REPOSITORY='infra/openshift4'
-export PRODUCT_REPO='openshift-release-dev'
-export LOCAL_SECRET_JSON='pullsecret.json'
-export RELEASE_NAME="ocp-release"
-export ARCHITECTURE=x86_64
+source env.sh
 export REG_CREDS=${XDG_RUNTIME_DIR}/containers/auth.json
 
 # Login into all registries...
@@ -307,7 +307,7 @@ oc image mirror \
   --skip-multiple-scopes=true \
   -a ${REG_CREDS} \
   --filter-by-os='.*' \
-  -f mapping.txt 
+  -f mapping.txt
 
 
 ```
@@ -317,7 +317,7 @@ oc image mirror \
 
 <https://docs.openshift.com/container-platform/4.7/updating/updating-restricted-network-cluster.html>
 
- * Check upgrade path: <https://access.redhat.com/labs/ocpupgradegraph/update_path> 
+ * Check upgrade path: <https://access.redhat.com/labs/ocpupgradegraph/update_path>
  * Mirror images again - new version
  * Run oc adm oc adm upgrade --to ..
 
@@ -350,10 +350,9 @@ oc adm upgrade --allow-explicit-upgrade --to-image quay.example.com/infra/opensh
 https://www.openshift.com/blog/openshift-update-service-update-manager-for-your-cluster
 
 
+## Demo: Run a pipeline
 
-### Pipeline demo
-
-<https://docs.openshift.com/container-platform/4.7/cicd/pipelines/creating-applications-with-cicd-pipelines.html#creating-pipeline-tasks_creating-applications-with-cicd-pipelines>
+[Creating Pipeline Tasks](https://docs.openshift.com/container-platform/4.7/cicd/pipelines/creating-applications-with-cicd-pipelines.html#creating-pipeline-tasks_creating-applications-with-cicd-pipelines)
 
 ```
 oc create -f http://quay.example.com:3000/openshift/pipelines-tutorial/raw/pipelines-1.3/01_pipeline/01_apply_manifest_task.yaml
@@ -368,7 +367,7 @@ oc create -f http://quay.example.com:3000/openshift/pipelines-tutorial/raw/pipel
 
 #### Mirroring images to run pipelines in a restricted environment
 
-https://docs.openshift.com/container-platform/4.7/cicd/pipelines/creating-applications-with-cicd-pipelines.html#op-mirroring-images-to-run-pipelines-in-restricted-environment_creating-applications-with-cicd-pipelines
+[Mirroring images to run pipelines in a restricted environment](https://docs.openshift.com/container-platform/4.7/cicd/pipelines/creating-applications-with-cicd-pipelines.html#op-mirroring-images-to-run-pipelines-in-restricted-environment_creating-applications-with-cicd-pipelines)
 
 ```
 
@@ -400,7 +399,7 @@ tkn pipeline start build-and-deploy \
 
 ```
 
-**Problem**
+##### Problem
 
 ```
 [build-image : build] WARNING: Retrying (Retry(total=4, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.VerifiedHTTPSConnection object at 0x7fdf07b05c10>: Failed to establish a new connection: [Errno -2] Name or service not known')': /simple/flask/
@@ -418,3 +417,58 @@ tkn pipeline start build-and-deploy \
 ```
 
 Solution: You have to mirror....
+
+## Appendix - Setup supporting infrastructure
+### Setup quay
+
+[Deploy Red Hat Quay for proof-of-concept (non-production) purposes](https://access.redhat.com/documentation/en-us/red_hat_quay/3.4/html-single/deploy_red_hat_quay_for_proof-of-concept_non-production_purposes/index)
+
+### Setup Git-server
+
+```
+mkdir /home/gogs
+cat > /etc/systemd/system/gogs.service <<EOF
+[Unit]
+Description=gogs
+After=network.target
+
+[Service]
+Type=simple
+TimeoutStartSec=5m
+
+ExecStartPre=-/usr/bin/podman rm gogs
+ExecStart=/usr/bin/podman run --name gogs \
+  -p 2222:22 \
+  -p 3000:3000 \
+  -v /home/gogs:/data:Z \
+  docker.io/gogs/gogs:latest
+
+ExecReload=-/usr/bin/podman stop gogs
+ExecReload=-/usr/bin/podman rm gogs
+ExecStop=-/usr/bin/podman stop gogs
+Restart=always
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target
+EOF
+```
+
+### DNS & dhcp
+
+Skiped, straigt foroward dnsmasq:
+```
+[root@quay ~]# cat /etc/dnsmasq.d/openshift-4.conf
+#strict-order
+domain=example.com
+#expand-hosts
+# Dynamisches DHCP
+dhcp-range=172.16.0.100,172.16.0.199,12h
+
+address=/api.infra.example.com/172.16.0.10address=/apps.infra.example.com/172.16.0.11
+
+address=/api.demo1.example.com/172.16.0.12
+address=/apps.demo1.example.com/172.16.0.13
+```
+
+
