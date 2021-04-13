@@ -230,6 +230,8 @@ spec:
     - quay.example.com
     - registry.redhat.io
     - quay.io
+    - registry.access.redhat.com
+    - image-registry.openshift-image-registry.svc:5000
 EOF
 
 ```
@@ -339,6 +341,8 @@ oc image mirror -a $REG_CREDS registry.redhat.io/ubi8/go-toolset:1.14.7 quay.exa
 
 oc tag quay.example.com/ubi8/python-38:latest python:latest --scheduled -n openshift
 oc tag quay.example.com/ubi8/go-toolset:1.14.7  golang:latest --scheduled -n openshift
+
+oc tag quay.example.com/infra/openshift4:4.7.0-x86_64-cli cli:latest --scheduled -n openshift
 
 ```
 
