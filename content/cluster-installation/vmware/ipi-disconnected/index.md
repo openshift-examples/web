@@ -355,4 +355,30 @@ tkn pipeline start build-and-deploy \
   -p deployment-name=vote-api \
   -p git-url=http://quay.example.com:3000/openshift-pipelines/vote-api.git \
   -p IMAGE=image-registry.openshift-image-registry.svc:5000/pipeline/vote-api
+
+tkn pipeline start build-and-deploy \
+  -w name=shared-workspace,volumeClaimTemplateFile=http://quay.example.com:3000/openshift/pipelines-tutorial/raw/pipelines-1.3/01_pipeline/03_persistent_volume_claim.yaml \
+  -p deployment-name=vote-ui \
+  -p git-url=http://quay.example.com:3000/openshift-pipelines/vote-ui.git \
+  -p IMAGE=image-registry.openshift-image-registry.svc:5000/pipeline/vote-ui
+
 ```
+
+**Problem**
+
+```
+[build-image : build] WARNING: Retrying (Retry(total=4, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.VerifiedHTTPSConnection object at 0x7fdf07b05c10>: Failed to establish a new connection: [Errno -2] Name or service not known')': /simple/flask/
+[build-image : build] WARNING: Retrying (Retry(total=3, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.VerifiedHTTPSConnection object at 0x7fdf07b05280>: Failed to establish a new connection: [Errno -2] Name or service not known')': /simple/flask/
+[build-image : build] WARNING: Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.VerifiedHTTPSConnection object at 0x7fdf07b05520>: Failed to establish a new connection: [Errno -2] Name or service not known')': /simple/flask/
+[build-image : build] WARNING: Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.VerifiedHTTPSConnection object at 0x7fdf07b050d0>: Failed to establish a new connection: [Errno -2] Name or service not known')': /simple/flask/
+[build-image : build] WARNING: Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<pip._vendor.urllib3.connection.VerifiedHTTPSConnection object at 0x7fdf07afaf40>: Failed to establish a new connection: [Errno -2] Name or service not known')': /simple/flask/
+[build-image : build] ERROR: Could not find a version that satisfies the requirement Flask (from -r requirements.txt (line 1)) (from versions: none)
+[build-image : build] ERROR: No matching distribution found for Flask (from -r requirements.txt (line 1))
+[build-image : build] subprocess exited with status 1
+[build-image : build] subprocess exited with status 1
+[build-image : build] error building at STEP "RUN pip install -r requirements.txt": exit status 1
+[build-image : build] level=error msg="exit status 1"
+
+```
+
+Solution: You have to mirror....
