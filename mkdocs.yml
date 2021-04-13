@@ -78,7 +78,6 @@ nav:
     - VMware/vSphere:
       - Basic (UPI): cluster-installation/vmware/upi/index.md
       - Example installation: cluster-installation/vmware/example/index.md
-      - IPI & air-gapped: cluster-installation/vmware/ipi-disconnected/index.md
       - IPI & Proxy: cluster-installation/vmware/ipi-proxy/index.md
       - MachineSet & UPI: cluster-installation/vmware/machineset-with-upi/index.md
     - Nvidia GPU:
@@ -194,6 +193,8 @@ nav:
     - Local fedora: my-lab/local-fedora.md
     - SSH: my-lab/ssh-agent.md
     - OCP Remote worker: my-lab/remote-worker/index.md
+  - OpenShift.tv:
+    - "vSphere IPI & disconnected environment": openshift-tv/2021-04-14-vpshere-ipi-disconnected/index.md 
   - Tags: tags.md
 
 docs_dir: content/
