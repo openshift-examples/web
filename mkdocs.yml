@@ -119,6 +119,7 @@ nav:
         - Etcd: cluster-lifecycle/backup/etcd.md
     - Restore & Recovery: cluster-lifecycle/restore/index.md
 
+  - Client: client/index.md
   - Build:
     - Examples: build/examples.md
     - Entitled: build/entitled.md

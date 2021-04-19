@@ -1,0 +1,3 @@
+[submodule "content/client/client-go-template"]
+	path = content/client/client-go-template
+	url = git@github.com:openshift-examples/client-go-template.git
