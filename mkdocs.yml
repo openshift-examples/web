@@ -66,8 +66,8 @@ plugins:
   - git-revision-date-localized:
       type: date
   - tags:
-      tags_folder: content/
-      tags_template: content/tags.md.template
+      tags_file: tags.md
+
 extra_css:
   - assets/stylesheets/powered-by.css
 
