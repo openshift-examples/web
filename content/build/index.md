@@ -161,6 +161,50 @@ COPY --from=builder /opt/bird-1.6.8 /opt/bird-1.6.8
 ENTRYPOINT ["/opt/bird-1.6.8/sbin/bird", "-f"]
 ```
 
+## Java / JAR Binary Build
+
+ * Drag & Drop in OpenShift 4.8:
+
+<center>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/qds3fqt5Nb0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</center>
+
+
+### Create a JAR
+```
+git clone https://github.com/spring-projects/spring-petclinic.git
+cd spring-petclinic
+podman run -ti --rm --user 0 -v $(pwd):/work:Z registry.redhat.io/ubi8/openjdk-11 bash
+cd /work
+mvn package
+exit
+```
+
+### Build with ODO
+```
+odo create java test1 --s2i --binary target/*.jar
+odo push
+```
+
+!!! note
+    Checkout: `odo catalog list components`
+
+### Build with classic BuildConfig
+
+```
+oc new-build java --name=java-binary-build --binary=true
+oc start-build bc/java-binary-build \
+    --from-file=./target/*.jar \
+    --follow
+
+```
+
+## Go source-2-image
+
+ * via Containerfile: <https://github.com/openshift-examples/container-helper>
+ * odo/s2i:  `odo create golang --s2i --git https://github.com/openshift-examples/container-helper.git --port 8080`
+
+
 **BuildConfig**
 ```yaml
 oc create is multi-stage
