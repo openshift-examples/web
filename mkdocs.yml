@@ -36,7 +36,10 @@ theme:
   icon:
     logo: material/library
     repo: fontawesome/brands/github
-
+  features:
+    - navigation.tracking
+    - navigation.indexes
+    - navigation.top
 # Extras
 extra:
   social:
@@ -91,6 +94,7 @@ nav:
     - Adjust RHCOS.ISO: cluster-installation/adjust-rhcos.iso.md
 
   - Cluster configuration:
+    - cluster-configuration/index.md
     - Authentication:
       - ActiveDirectory / LDAP: cluster-configuration/authentication/activedirectory-ldap/index.md
       - Red Hat SSO - via Google: cluster-configuration/authentication/redhat-sso/index.md
@@ -111,6 +115,7 @@ nav:
     - Cluster autoscaling: cluster-configuration/cluster-autoscaling/index.md
 
   - Cluster lifecycle:
+    - cluster-lifecycle/index.md
     - Over-the-Air Upgrades: cluster-lifecycle/oat-upgrades/index.md
     - Monitoring:
       - Metrics: cluster-lifecycle/monitoring/metrics.md
@@ -128,7 +133,7 @@ nav:
     - Universal Base Images: build/universal-base-image/index.md
 
   - Deploy:
-    - Deployments: deploy/deployment.md
+    - deploy/index.md
     - Liveness probe - WiP: deploy/liveness-probe.md
     - Storage: deploy/storage.md
     - ImageStreams: deploy/imagestreams.md
@@ -153,12 +158,13 @@ nav:
 
 
   - Networking:
+    - networking/index.md
     - Services & Routes:
       - Service Certificate: networking/services-routes/service-serving-certificate-secrets/index.md
       - Route encryption: networking/services-routes/route-encryption/index.md
     - Multus: networking/multus.md
     - Network Policy:
-      - General: networking/network-policy/index.md
+      - networking/network-policy/index.md
       - OVNKubernetes: networking/network-policy/OVNKubernetes.md
       - OpenShiftSDN: networking/network-policy/OpenShiftSDN.md
     - Router sharding: networking/services-routes/router-sharding/index.md
@@ -166,6 +172,7 @@ nav:
     - Kubernetes iptables chains: networking/k8s-iptables-chains.md
 
   - Operators:
+    - operators/index.md
     - Custom Resource Definition (CRD): operators/custom-ressource-definition/index.md
     - Air-gapped OLM >= 4.6: operators/air-gapped-4.6.md
     - Air-gapped OperatorHub - pre 4.6: operators/air-gapped-pre-4.6.md
@@ -176,13 +183,14 @@ nav:
     - Simple Application Operator - WiP: operators/simple-application-operator.md
 
   - OpenShift Virtualization:
-    - General: kubevirt/index.md
+    - kubevirt/index.md
     - Networking: kubevirt/networking.md
     - Local-storage: kubevirt/local-storage.md
 
   - Quay & Clair: quay/index.md
   - Certificates: certificate/index.md
   - Misc:
+    - misc/index.md
     - Velero: misc/velero/index.md
     - CloudFlare: misc/cloudflare.md
     - Terraform: misc/terraform.md
@@ -190,12 +198,14 @@ nav:
     - Hetzner Lab notes: misc/hetzner-lab.md
 
   - My Lab notes:
+    - my-lab/index.md
     - Hetzner Storage Box: my-lab/storage-box.md
     - Local fedora: my-lab/local-fedora.md
     - SSH: my-lab/ssh-agent.md
     - OCP Remote worker: my-lab/remote-worker/index.md
   - OpenShift.tv:
-    - "vSphere IPI & disconnected environment": openshift-tv/2021-04-14-vpshere-ipi-disconnected/index.md 
+    - openshift-tv/index.md
+    - vSphere IPI & disconnected environment: openshift-tv/2021-04-14-vpshere-ipi-disconnected/index.md
   - Tags: tags.md
 
 docs_dir: content/
