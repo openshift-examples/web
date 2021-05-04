@@ -8,3 +8,8 @@
 .md-footer-copyright {
     text-align: center
 }
+
+
+.md-grid {
+    max-width: initial;
+}
