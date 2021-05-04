@@ -121,7 +121,7 @@ nav:
 
   - Client: client/index.md
   - Build:
-    - Examples: build/examples.md
+    - build/index.md
     - Entitled: build/entitled.md
     - Jenkins Pipeline: build/jenkins.md
     - S2I - R shiny: build/s2i-r-shiny.md
