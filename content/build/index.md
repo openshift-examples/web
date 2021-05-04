@@ -1,8 +1,8 @@
 ---
-title: Build examples
+title: OpenShift Build's
 linktitle: Examples
 weight: 5100
-description: TBD
+description: A bunch of example around build...
 tags:
   - build
 ---
