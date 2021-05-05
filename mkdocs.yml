@@ -38,7 +38,7 @@ theme:
     repo: fontawesome/brands/github
   features:
     - navigation.tracking
-    - navigation.indexes
+#    - navigation.indexes
     - navigation.top
 # Extras
 extra:
@@ -79,10 +79,10 @@ nav:
   - Cluster installation:
     - Air-gapped: cluster-installation/air-gapped.md
     - VMware/vSphere:
-      - Basic (UPI): cluster-installation/vmware/upi/index.md
-      - Example installation: cluster-installation/vmware/example/index.md
-      - IPI & Proxy: cluster-installation/vmware/ipi-proxy/index.md
-      - MachineSet & UPI: cluster-installation/vmware/machineset-with-upi/index.md
+      - "Basic (UPI)": cluster-installation/vmware/upi/index.md
+      - "Example installation": cluster-installation/vmware/example/index.md
+      - "IPI & Proxy": cluster-installation/vmware/ipi-proxy/index.md
+      - "MachineSet & UPI": cluster-installation/vmware/machineset-with-upi/index.md
     - Nvidia GPU:
       - General: cluster-installation/gpu/index.md
       - GPU on-prem: cluster-installation/gpu/gpu-on-prem.md
