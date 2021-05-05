@@ -11,7 +11,7 @@ tags:
 
 ## Architecture
 
-![](files/example-architecture.png)
+![](example-architecture.png)
 
 ## Setup LB virtual machine
 
@@ -221,32 +221,37 @@ Prerequisite:
 
 Steps:
 
-1) New Virtual Machine...
+1. New Virtual Machine...
 
-2) Create a new Virtual machine
-    * ![Screenshot](files/02-new-virtual-machine.png)
+2. Create a new Virtual machine
+:   ![Screenshot](02-new-virtual-machine.png)
 
-3) Set Virtual machine name: `rhcos-4-ipxe` & select a location
-    * ![Screenshot](files/03-vm-name-location.png)
+3. Set Virtual machine name: `rhcos-4-ipxe` & select a location
+:   ![Screenshot](03-vm-name-location.png)
 
-4) Select a compute resource
+4. Select a compute resource
 
-5) Select storage
+5. Select storage
 
-6) Select compatibility - ESXi 6.7 and later
+6. Select compatibility - ESXi 6.7 and later
 
-7) Select a guest OS - Linux - Red Hat Enterprise Linux 8 (64-bit)
-    * ![Screenshot](files/07-select-a-guest-OS.png)
+7. Select a guest OS - Linux - Red Hat Enterprise Linux 8 (64-bit)
+:   ![Screenshot](07-select-a-guest-OS.png)
 
-8) **Customize hardware** - very important!
-    * ![Screenshot](files/08-1-cpu.png)
-    * ![Screenshot](files/08-1-ram-disk.png)
-    * ![Screenshot](files/08-2-boot-bios.png)
-    * ![Screenshot](files/08-3-diskuuid.png)
-    * ![Screenshot](files/08-4-lat-high.png)
-    * ![Screenshot](files/08-5-boot-from-ipxe.png)
+8. **Customize hardware** - very important!
+:   ![Screenshot](08-1-cpu.png)
 
-9) Ready to complete
+    ![Screenshot](08-1-ram-disk.png)
+
+    ![Screenshot](08-2-boot-bios.png)
+
+    ![Screenshot](08-3-diskuuid.png)
+
+    ![Screenshot](08-4-lat-high.png)
+
+    ![Screenshot](08-5-boot-from-ipxe.png)
+
+9. Ready to complete
 
 
 ## Create `openshift-deploy.sh`

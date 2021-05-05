@@ -9,7 +9,7 @@ description: TBD
 
 ## General: Create a self signed certificate
 
-### 1) Create [openssl.self-signed-certificate.conf](openssl.self-signed-certificate.conf)
+### 1) Create [openssl.self-signed-certificate.conf](certificate/openssl.self-signed-certificate.conf)
 
 ```ini
 --8<-- "content/certificate/openssl.self-signed-certificate.conf"
@@ -54,12 +54,12 @@ $ openssl x509 -in cert.pem -noout -text
 
 ### Create OpenSSL Configuration
 
-**Create [openssl.root-ca.conf](openssl.root-ca.conf)**
+**Create [openssl.root-ca.conf](certificate/openssl.root-ca.conf)**
 ```ini
 --8<-- "content/certificate/openssl.root-ca.conf"
 ```
 
-**Create [openssl.certificate.conf](openssl.certificate.conf)**
+**Create [openssl.certificate.conf](certificate/openssl.certificate.conf)**
 ```ini
 --8<-- "content/certificate/openssl.certificate.conf"
 ```
