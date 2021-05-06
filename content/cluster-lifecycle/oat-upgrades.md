@@ -12,4 +12,5 @@ tags:
 
 ## Channel overview
 
-[Red Hat OpenShift Container Platform Update Graph](https://access.redhat.com/labs/ocpupgradegraph/update_channel)
+ * [Red Hat OpenShift Container Platform Update Graph](https://access.redhat.com/labs/ocpupgradegraph/update_channel)
+ * <https://openshift-channels.robszumski.com>
