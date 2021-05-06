@@ -110,6 +110,7 @@ nav:
       - Log Forwarding API: cluster-configuration/logging/forwarding-demo.md
     - Image Registry: cluster-configuration/image-registry.md
     - MachineConfig:
+      - cluster-configuration/machine-config/index.md
       - Machine Config Server: cluster-configuration/machine-config/machine-config-server.md
     - MachineSets:
       - Debugging: cluster-configuration/MachineSets/debugging.md
