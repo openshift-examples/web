@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: simple-deployment
+    app.kubernetes.io/component: simple-deployment
+    app.kubernetes.io/instance: simple-deployment
+    app.kubernetes.io/part-of: simple-deployment
+    app.openshift.io/runtime: redhat
+  name: simple-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: simple-deployment
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: simple-deployment
+        deploymentconfig: simple-deployment
+    spec:
+      containers:
+      - image: registry.access.redhat.com/ubi8/ubi:latest
+        imagePullPolicy: Always
+        name: simple-deployment
+        command:
+        - /bin/sh
+        - -c
+        - |
+          sleep infinity
+        resources: {}
