@@ -79,6 +79,14 @@ spec:
 ```
 
 
+## Simple Deployment
+
+```yaml
+oc apply -f - <<EOF
+--8<-- "content/deploy/files/simple-deployment.yaml"
+EOF
+```
+
 ## Simple DeploymentConfig
 ```yaml
 apiVersion: v1
