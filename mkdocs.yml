@@ -70,6 +70,8 @@ plugins:
       type: date
   - tags:
       tags_file: tags.md
+  - macros:
+      verbose: false
 
 extra_css:
   - assets/stylesheets/powered-by.css

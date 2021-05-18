@@ -6,6 +6,7 @@ description: TBD
 tags:
   - ocs
   - cnv
+ignore_macros: true
 ---
 # OpenShift Virtualization (CNV/KubeVirt)
 
