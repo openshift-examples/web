@@ -1,0 +1,35 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  labels:
+    tekton.dev/pipeline: buildah-pipeline
+  name: buildah-pipeline-1
+spec:
+  params:
+  - name: IMAGE_NAME
+    value: image-registry.openshift-image-registry.svc:5000/demo-app/container-build:latest
+  - name: GIT_REPO
+    value: https://github.com/openshift-examples/container-build.git
+  - name: GIT_REVISION
+    value: master
+  - name: DOCKERFILE
+    value: ./Containerfile
+  - name: CONTEXT
+    value: buildArgs
+  - name: BUILD_EXTRA_ARGS
+    value: --build-arg USERNAME=$USERNAME --build-arg PASSWORD=$PASSWORD
+  pipelineRef:
+    name: buildah-pipeline
+  serviceAccountName: pipeline
+  timeout: 1h0m0s
+  workspaces:
+  - name: workspace
+    # persistentVolumeClaim:
+    #   claimName: workspace
+    volumeClaimTemplate:
+      spec:
+        accessModes:
+          - ReadWriteMany # access mode may affect how you can use this volume in parallel tasks
+        resources:
+          requests:
+            storage: 1Gi

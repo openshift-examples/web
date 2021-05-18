@@ -51,3 +51,33 @@ oc create secret generic build-args \
     ```yaml
     --8<-- "content/build/pipeline/buildah-pipeline.yaml"
     ```
+
+#### Start pipeline
+
+
+=== "OC"
+
+    ```
+    oc apply -f {{ page.canonical_url }}buildah-pipelinerun.yaml
+    ```
+
+=== "buildah-pipelinerun.yaml"
+
+    ```yaml
+    --8<-- "content/build/pipeline/buildah-pipelinerun.yaml"
+    ```
+
+=== "tkn"
+
+    Missing --workspac argument becuase missnig documentation:
+      <https://github.com/tektoncd/cli/issues/1169>
+
+    ```
+    tkn pipeline start buildah-pipeline -p \
+      IMAGE_NAME=image-registry.openshift-image-registry.svc:5000/demo-app/container-build:latest \
+      GIT_REPO=https://github.com/openshift-examples/container-build.git \
+      CONTEXT=buildArgs \
+      DOCKERFILE=./Containerfile \
+      BUILD_EXTRA_ARGS='--build-arg USERNAME=$USERNAME --build-arg PASSWORD=$PASSWORD' \
+
+    ```
