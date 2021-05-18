@@ -6,6 +6,7 @@ tags:
   - VMware
   - UPI
   - vSphere
+ignore_macros: true
 ---
 # Example installation at my VMware Lab
 

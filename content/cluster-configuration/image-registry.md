@@ -3,6 +3,7 @@ title: Image Registry
 linktitle: Image Registry
 weight: 19000
 description: Some stuff about the OpenShift 4 image registry
+ignore_macros: true
 ---
 
 # Image Registry
