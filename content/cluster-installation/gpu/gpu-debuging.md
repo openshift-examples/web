@@ -236,7 +236,22 @@ Red Hat Internal Links:
 => [OS Content](https://releases-rhcos-art.cloud.privileged.psi.redhat.com/contents.html?stream=releases%2Frhcos-4.5&release=45.82.202007171855-0)
 
 
+
 ### Problems with OpenShift 4.5.x
 
 **NVidia does not provide a suitable CoreOS driver image.**
 
+## Check entitlements
+
+```
+# rct cat-cert export/entitlement_certificates/xxxxx.pem | grep rhel-8-for-x86_64-baseos-eus-rpms
+        Label: rhel-8-for-x86_64-baseos-eus-rpms
+
+# rct cat-cert export/entitlement_certificates/xxxxx.pem | grep rhocp-4.5-for-rhel-8-x86_64-rpms
+        Label: rhocp-4.5-for-rhel-8-x86_64-rpms
+
+# rct cat-cert export/entitlement_certificates/xxxxx.pem | grep SKU
+        SKU: SER0419
+
+```
+[Source](https://community.ibm.com/community/user/storage/blogs/gero-schmidt1/2021/05/10/how-to-install-the-nvidia-gpu-operator-on-openshif)
