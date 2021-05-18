@@ -55,6 +55,7 @@ markdown_extensions:
   - admonition
   - pymdownx.highlight:
       linenums: true
+  - pymdownx.tabbed
   - pymdownx.superfences
   - toc:
       permalink: true
@@ -132,6 +133,7 @@ nav:
   - Build:
     - build/index.md
     - Entitled: build/entitled.md
+    - Tekton/Pipelines: build/pipeline.md
     - Jenkins Pipeline: build/jenkins.md
     - S2I - R shiny: build/s2i-r-shiny.md
     - Universal Base Images: build/universal-base-image.md

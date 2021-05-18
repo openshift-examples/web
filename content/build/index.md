@@ -76,7 +76,33 @@ spec:
       name: 'simple-container-build:latest'
 EOF
 ```
+## Container build w/ buildArgs
+!!! warning
+    Doesn't work:
 
+      * <https://issues.redhat.com/browse/BUILD-88>
+
+      * <https://access.redhat.com/solutions/4501551>
+
+      * <https://bugzilla.redhat.com/show_bug.cgi?id=1959415>
+
+Create secret
+```bash
+oc create secret generic build-args \
+  --from-literal=PASSWORD=IeNae1eigheBiz8ne
+
+oc create configmap build-args \
+  --from-literal=USERNAME=foobar24
+```
+Create BuildConfig
+
+```yaml
+oc create is build-args
+
+oc apply -f - <<EOF
+--8<-- "content/build/bc_build-args.yaml"
+EOF
+```
 ## Simple context dir
 
 ```yaml hl_lines="14"
@@ -108,10 +134,11 @@ spec:
 EOF
 ```
 
+Start & Follow build: `oc start-build bc/build-args --follow`
 
 ## Complex context dir
 
-```yaml hl_lines="14 20 21"
+```yaml hl_li>nes="14 20 21"
 oc create is complex-context-dir
 
 oc apply -f - <<EOF
