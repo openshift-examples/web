@@ -15,13 +15,13 @@ spec:
     type: string
   - name: DOCKERFILE
     type: string
-    value: ./Containerfile
+    default: "./Containerfile"
   - name: CONTEXT
     type: string
-    value: buildArgs
+    default: "buildArgs"
   - name: BUILD_EXTRA_ARGS
     type: string
-    value: "'--build-arg USERNAME=$USERNAME --build-arg PASSWORD=$PASSWORD'"
+    default: "'--build-arg USERNAME=$USERNAME --build-arg PASSWORD=$PASSWORD'"
   tasks:
   - name: fetch-repository
     params:
