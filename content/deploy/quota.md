@@ -6,6 +6,7 @@ tags:
   - work-in-progress
 ---
 
+```bash
 oc apply -f - <<EOF
 apiVersion: v1
 kind: ResourceQuota
@@ -79,3 +80,5 @@ Resource                                                                 Used  H
 --------                                                                 ----  ----
 hostpath-provisioner.storageclass.storage.k8s.io/persistentvolumeclaims  0     0
 managed-nfs-storage.storageclass.storage.k8s.io/persistentvolumeclaims   1     1
+
+```
