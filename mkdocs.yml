@@ -171,6 +171,8 @@ nav:
       - Grafana with OAuth Proxy: deploy/workload/grafana-oauth.md
       - Quake 3 Arena: deploy/workload/quake3.md
 
+  - GitOps:
+    - gitops/index.md
 
   - Networking:
     - networking/index.md
