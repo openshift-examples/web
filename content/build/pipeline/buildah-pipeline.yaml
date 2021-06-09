@@ -4,7 +4,7 @@ metadata:
   name: buildah-pipeline
 spec:
   params:
-  - default: image-registry.openshift-image-registry.svc:5000/demo-app/foobar:latest
+  - default: image-registry.openshift-image-registry.svc:5000/$(context.pipelineRun.namespace)/buildargs:latest
     name: IMAGE_NAME
     type: string
   - default: https://github.com/openshift-examples/container-build.git
@@ -21,7 +21,7 @@ spec:
     default: "buildArgs"
   - name: BUILD_EXTRA_ARGS
     type: string
-    default: "'--build-arg USERNAME=$USERNAME --build-arg PASSWORD=$PASSWORD'"
+    default: "--build-arg USERNAME=$USERNAME --build-arg PASSWORD=$PASSWORD"
   tasks:
   - name: fetch-repository
     params:
