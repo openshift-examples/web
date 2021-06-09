@@ -5,19 +5,6 @@ metadata:
     tekton.dev/pipeline: buildah-pipeline
   name: buildah-pipeline-1
 spec:
-  params:
-  - name: IMAGE_NAME
-    value: image-registry.openshift-image-registry.svc:5000/demo-app/container-build:latest
-  - name: GIT_REPO
-    value: https://github.com/openshift-examples/container-build.git
-  - name: GIT_REVISION
-    value: master
-  - name: DOCKERFILE
-    value: ./Containerfile
-  - name: CONTEXT
-    value: buildArgs
-  - name: BUILD_EXTRA_ARGS
-    value: --build-arg USERNAME=$USERNAME --build-arg PASSWORD=$PASSWORD
   pipelineRef:
     name: buildah-pipeline
   serviceAccountName: pipeline
