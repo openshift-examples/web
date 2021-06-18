@@ -108,7 +108,13 @@ nav:
     - Storage:
       - NFS Client provisioner: cluster-configuration/storage/nfs.md
     - NTP: cluster-configuration/ntp.md
-    - Alertmanager: cluster-configuration/alertmanager.md
+    - Monitoring:
+      - Alertmanager:
+          - cluster-configuration/monitoring/alertmanager/index.md
+          - Debug receiver: cluster-configuration/monitoring/alertmanager/debug-receiver.md
+          - Github receiver: cluster-configuration/monitoring/alertmanager/github-receiver.md
+          - Telegram receiver: cluster-configuration/monitoring/alertmanager/telegram-receiver.md
+
     - Logging:
       - Log Forwarding API: cluster-configuration/logging/forwarding-demo.md
     - Image Registry: cluster-configuration/image-registry.md

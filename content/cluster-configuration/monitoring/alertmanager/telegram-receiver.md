@@ -1,58 +1,15 @@
 ---
-title: Alertmanager
-linktitle: Alertmanager
-weight: 17100
-description: TBD
+title: Telegram receiver
+linktitle: Telegram receiver
+description: Telegram receiver
+tags:
+  - alertmanager
+  - prometheus
+  - Telegram
+  - monitoring
 ---
 
-# Alertmanager
-
-## Setup Slack receiver
-
-https://docs.openshift.com/container-platform/latest/monitoring/cluster_monitoring/configuring-the-monitoring-stack.html#applying-custom-alertmanager-configuration_configuring-monitoring
-
-
-### Example `alertmanager.yaml` with proxy settings
-
-!!! warning
-    Alertmanager do not pickup global proxy settings.
-
-foo.yaml
-```yaml
-"global":
-  "resolve_timeout": "5m"
-  slack_api_url: https://hooks.slack.com/services/xxxx/xxxx/xxxxx
-"receivers":
-  - name: slack
-    slack_configs:
-    - channel: '#ops'
-      http_config:
-        proxy_url: http://192.168.51.1:8888
-
-"route":
-  "group_by":
-  - "job"
-  "group_interval": "5m"
-  "group_wait": "30s"
-  "receiver": "slack"
-  "repeat_interval": "12h"
-  "routes":
-    - receiver: slack
-      match:
-        alertname: Watchdog
-
-```
-
-#### Apply config:
-
-```bash
-oc -n openshift-monitoring create secret generic alertmanager-main \
-   --from-file=alertmanager.yaml=foo.yaml \
-   --dry-run -o=yaml |  oc -n openshift-monitoring replace secret \
-   --filename=-
-```
-
-## Setup Telegram receiver
+# Deploy Telegram receiver
 
 Connected Prometheus alertmanager via [webhook receiver](https://prometheus.io/docs/alerting/configuration/#webhook_config) to telegram.
 
@@ -60,7 +17,7 @@ Connected Prometheus alertmanager via [webhook receiver](https://prometheus.io/d
 oc new-project telegram
 # Build and deploy
 oc new-app --name=telegram \
-    https://github.com/rbo/alertmanager-webhook-telegram.git
+    https://github.com/openshift-examples/alertmanager-webhook-telegram.git
 ```
 
 Add enviorment variables to deploymentconfig telegram
@@ -105,3 +62,4 @@ alertmanager.yaml
         alertname: Watchdog
 
 ```
+
