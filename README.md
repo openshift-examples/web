@@ -41,3 +41,8 @@ podman run -ti --rm \
   -v $(pwd):/opt/app-root/src:z \
   -p 8080:8080 mkdocs:local
 ```
+
+## Stargazers over time
+
+![Stargazers over time](https://starcharts.herokuapp.com/rbo/openshift-examples.svg)
+
