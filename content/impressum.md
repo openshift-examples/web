@@ -2,8 +2,8 @@
 Angaben gemäß § 5 TMG
 
 Robert Bohne<br/>
-Demleitnerstraße 11<br/>
-81371 München<br/>
+Ehamostr. 6a<br/>
+85658 Egmating<br/>
 
 #### Vertreten durch:
 Robert Bohne
