@@ -42,10 +42,13 @@ thanos-ruler-user-workload-1           3/3     Running   0          37s
 ## Granting permission
 
  * [Granting users permission to monitor user-defined projects](https://docs.openshift.com/container-platform/latest/monitoring/enabling-monitoring-for-user-defined-projects.html#granting-users-permission-to-monitor-user-defined-projects_enabling-monitoring-for-user-defined-projects)
-* Granting user permissions by using the [web console](https://docs.openshift.com/container-platform/latest/monitoring/enabling-monitoring-for-user-defined-projects.html#granting-user-permissions-using-the-web-console_enabling-monitoring-for-user-defined-projects) or [CLI](https://docs.openshift.com/container-platform/4.7/monitoring/enabling-monitoring-for-user-defined-projects.html#granting-user-permissions-using-the-cli_enabling-monitoring-for-user-defined-projects)
+* Granting user permissions by using the [web console](https://docs.openshift.com/container-platform/latest/monitoring/enabling-monitoring-for-user-defined-projects.html#granting-user-permissions-using-the-web-console_enabling-monitoring-for-user-defined-projects) or [CLI](https://docs.openshift.com/container-platform/latest/monitoring/enabling-monitoring-for-user-defined-projects.html#granting-user-permissions-using-the-cli_enabling-monitoring-for-user-defined-projects)
 
 
 ## Deploy application
+
+[Official
+example](https://docs.openshift.com/container-platform/latest/monitoring/managing-metrics.html#setting-up-metrics-collection-for-user-defined-projects_managing-metrics)
 
 === "OC"
 
