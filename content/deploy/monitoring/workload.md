@@ -5,11 +5,14 @@ weight: 17200
 description: TBD
 ---
 
-# Workload Monitoring
+# Application Monitoring example
 
-Enable TechPreview workload monitoring: [Enabling monitoring of your own services
-](https://docs.openshift.com/container-platform/4.4/monitoring/monitoring-your-own-services.html#enabling-monitoring-of-your-own-services_monitoring-your-own-services)
 
+## Deploy cluster wide workload monitoring (cluster-admin needed)
+
+[Enabling monitoring for user-defined projects](https://docs.openshift.com/container-platform/latest/monitoring/enabling-monitoring-for-user-defined-projects.html)
+
+### Enable user workload monitoring
 
 ```yaml
 oc create -f - <<EOF
@@ -20,23 +23,60 @@ metadata:
   namespace: openshift-monitoring
 data:
   config.yaml: |
-    techPreviewUserWorkload:
-      enabled: true
+    enableUserWorkload: true
 EOF
 ```
 
+### Check user workload monitoring stack
 
-Deploy sample app: https://docs.openshift.com/container-platform/4.4/monitoring/monitoring-your-own-services.html#deploying-a-sample-service_monitoring-your-own-services
+```bash
+$ oc get pods -n openshift-user-workload-monitoring
+NAME                                   READY   STATUS    RESTARTS   AGE
+prometheus-operator-84d9857947-wlmws   2/2     Running   0          49s
+prometheus-user-workload-0             5/5     Running   1          37s
+prometheus-user-workload-1             5/5     Running   1          37s
+thanos-ruler-user-workload-0           3/3     Running   0          38s
+thanos-ruler-user-workload-1           3/3     Running   0          37s
+```
 
-```
-oc create -f - <<EOF
-kind: ClusterRole
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  name: monitor-crd-edit
-rules:
-- apiGroups: ["monitoring.coreos.com"]
-  resources: ["prometheusrules", "servicemonitors", "podmonitors"]
-  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
-EOF
-```
+## Granting permission
+
+ * [Granting users permission to monitor user-defined projects](https://docs.openshift.com/container-platform/latest/monitoring/enabling-monitoring-for-user-defined-projects.html#granting-users-permission-to-monitor-user-defined-projects_enabling-monitoring-for-user-defined-projects)
+* Granting user permissions by using the [web console](https://docs.openshift.com/container-platform/latest/monitoring/enabling-monitoring-for-user-defined-projects.html#granting-user-permissions-using-the-web-console_enabling-monitoring-for-user-defined-projects) or [CLI](https://docs.openshift.com/container-platform/4.7/monitoring/enabling-monitoring-for-user-defined-projects.html#granting-user-permissions-using-the-cli_enabling-monitoring-for-user-defined-projects)
+
+
+## Deploy application
+
+=== "OC"
+
+    ```
+    oc apply -f {{ page.canonical_url }}deployment.yaml
+    ```
+
+=== "deployment.yaml"
+
+    ```yaml
+    --8<-- "content/deploy/monitoring/deployment.yaml"
+    ```
+
+
+
+## Create Service Monitoring
+
+
+=== "OC"
+
+    ```
+    oc apply -f {{ page.canonical_url }}servicemonitor.yaml
+    ```
+
+=== "deployment.yaml"
+
+    ```yaml
+    --8<-- "content/deploy/monitoring/servicemonitor.yaml"
+    ```
+
+
+## Result
+
+![Screenshot](workload.png)
