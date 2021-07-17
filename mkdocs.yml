@@ -37,9 +37,8 @@ theme:
     logo: material/bookmark
     repo: fontawesome/brands/github
   features:
-    - navigation.tracking
-    - navigation.indexes
     - navigation.top
+
 # Extras
 extra:
   social:
