@@ -1,4 +1,0 @@
-mkdocs
-git+https://${GH_TOKEN}@github.com/squidfunk/mkdocs-material-insiders.git
-mkdocs-git-revision-date-localized-plugin
-git+https://github.com/fralau/mkdocs_macros_plugin.git@v0.5.11
