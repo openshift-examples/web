@@ -73,6 +73,7 @@ plugins:
       tags_file: tags.md
   - macros:
       verbose: false
+  - section-index
 
 extra_css:
   - assets/stylesheets/powered-by.css

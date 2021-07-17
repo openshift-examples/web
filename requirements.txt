@@ -1,5 +1,6 @@
 mkdocs
 mkdocs-material
+mkdocs-section-index
 mkdocs-git-revision-date-localized-plugin
 git+https://github.com/jldiaz/mkdocs-plugin-tags.git
 git+https://github.com/fralau/mkdocs_macros_plugin.git@v0.5.11
