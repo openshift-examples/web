@@ -2,21 +2,26 @@
 title: NTP
 linktitle: NTP
 weight: 27100
-description: TBD
+description: Configure & test NTP
 ---
 # NTP Server
 
-## Chrony
+## Usefull chrony commands
 
+```bash
 chronyc -a makestep
 chronyc tracking
 chronyc sources
+```
 
+## MachineConfig
 
+!!! warning
+    If you apply the machine config, all nodes will reboot one after the other.
 
 ```bash
 chronybase64=$(cat << EOF | base64 -w 0
-server host.compute.local iburst
+server <NTPSERVER> iburst
 driftfile /var/lib/chrony/drift
 makestep 1.0 3
 rtcsync
@@ -36,7 +41,7 @@ metadata:
 spec:
   config:
     ignition:
-      version: 2.2.0
+      version: 3.1.0
     storage:
       files:
       - contents:
@@ -57,7 +62,7 @@ metadata:
 spec:
   config:
     ignition:
-      version: 2.2.0
+      version: 3.1.0
     storage:
       files:
       - contents:
