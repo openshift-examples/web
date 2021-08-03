@@ -155,7 +155,7 @@ nav:
     - ImageStreams: deploy/imagestreams.md
     - StatefulSet: deploy/statefulset.md
     - Quota - WiP: deploy/quota.md
-    - SCC anyuid example": deploy/scc-anyuid.md
+    - SCC anyuid example: deploy/scc-anyuid.md
     - Init containers: deploy/initcontainers.md
     - Nginx reverse proxy: deploy/nginx-reverse-proxy.md
     - EAP Cluster demo: deploy/eap-cluster.md
