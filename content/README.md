@@ -256,5 +256,5 @@ curl -s -k -X GET -H "Authorization: Bearer $(oc whoami -t)" https://192.168.37.
 ```
 ## Stargazers over time
 
-![Stargazers over time](https://starcharts.herokuapp.com/rbo/openshift-examples.svg)
+[![Stargazers over time](https://starchart.cc/openshift-examples/web.svg)](https://starchart.cc/openshift-examples/web)
 

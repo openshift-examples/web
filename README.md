@@ -44,5 +44,5 @@ podman run -ti --rm \
 
 ## Stargazers over time
 
-![Stargazers over time](https://starcharts.herokuapp.com/rbo/openshift-examples.svg)
+[![Stargazers over time](https://starchart.cc/openshift-examples/web.svg)](https://starchart.cc/openshift-examples/web)
 
