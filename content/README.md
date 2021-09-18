@@ -40,6 +40,7 @@ oc cluster up --image=registry.access.redhat.com/openshift3/ose \
 |[Red Hat Container Support Policy](https://access.redhat.com/articles/2726611)||
 |[Red Hat Enterprise Linux Container Compatibility Matrix](https://access.redhat.com/support/policy/rhel-container-compatibility)||
 |[Consolidated Troubleshooting Article OpenShift Container Platform 4.x](https://access.redhat.com/articles/4217411)||
+|[Red Hat OpenShift Container Platform Life Cycle Policy](https://access.redhat.com/support/policy/updates/openshift)||
 
 
 ## Glossar
