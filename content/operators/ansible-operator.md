@@ -14,79 +14,51 @@ ignore_macros: true
 #### Create first ansible operator
 
 ```bash
-operator-sdk new ansible-operator \
-    --api-version=ansible-operator.openshift.pub/v1  \
-    --kind=Config \
-    --type=ansible
-cd ansible-operator
+mkdir sample-operator
+cd sample-operator
 
-operator-sdk build quay.io/openshift-examples/ansible-example-operator:latest
-docker push quay.io/openshift-examples/ansible-example-operator:latest
+operator-sdk init \
+  --plugins=ansible.sdk.operatorframework.io/v1 \
+  --domain=example.com \
+  --group=app --version=v1alpha1 --kind=AppService \
+  --generate-playbook \
+  --generate-role
 
-sed -i "" 's|{{ REPLACE_IMAGE }}|quay.io/openshift-examples/ansible-example-operator:latest|g' deploy/operator.yaml
-sed -i "" 's|{{ pull_policy\|default('\''Always'\'') }}|Always|g' deploy/operator.yaml
+make docker-build docker-push \
+  IMG="quay.io/openshift-examples/ansible-example-operator:latest"
 
-oc new-project ansible-example-operator
-# Setup Service Account
-oc create -f deploy/service_account.yaml
-# Setup RBAC
-oc create -f deploy/role.yaml
-oc create -f deploy/role_binding.yaml
-# Setup the CRD
-oc create -f deploy/crds/ansibleoperator_v1_config_crd.yaml
-# Deploy the app-operator
-oc create -f deploy/operator.yaml
+make deploy \
+  IMG="quay.io/openshift-examples/ansible-example-operator:latest"
 
-# Create an AppService CR
-# The default controller will watch for AppService objects and create a pod for each CR
-oc create -f deploy/crds/ansibleoperator_v1_config_cr.yaml
+
+kubectl get pods -n sample-operator-system --watch
+
+kubectl apply -f config/samples/app_v1alpha1_appservice.yaml
+
+kubectl logs -n sample-operator-system \
+    -l control-plane=controller-manager -c manager --tail=-1
+
 ```
 
-#### Adjust `roles/config/tasks/main.yml`
+#### Adjust `roles/appservice/tasks/main.yml`
 
 ```text
----
-# tasks file for config
-- name: Print some debug information
-  vars:
-    msg: |
-        Module Variables ("vars"):
-        --------------------------------
-        {{ vars | to_nice_json }}
-
-        Environment Variables ("environment"):
-        --------------------------------
-        {{ environment | to_nice_json }}
-
-        GROUP NAMES Variables ("group_names"):
-        --------------------------------
-        {{ group_names | to_nice_json }}
-
-        GROUPS Variables ("groups"):
-        --------------------------------
-        {{ groups | to_nice_json }}
-
-        HOST Variables ("hostvars"):
-        --------------------------------
-        {{ hostvars | to_nice_json }}
-
-  debug:
-    msg: "{{ msg.split('\n') }}"
+--8<-- "content/operators/ansible-operator-demo/example-tasks.yaml"
 ```
 
 #### Rebuild and redeploy
 
 ```bash
-operator-sdk build quay.io/openshift-examples/ansible-example-operator:latest
-docker push quay.io/openshift-examples/ansible-example-operator:latest
-oc delete pods -l name=ansible-operator
+make docker-build docker-push \
+  IMG="quay.io/openshift-examples/ansible-example-operator:latest"
+
+make deploy \
+  IMG="quay.io/openshift-examples/ansible-example-operator:latest"
 ```
 
 #### Cleanup
 
 ```bash
-# Setup Service Account
-oc delete -f deploy/crds/ansibleoperator_v1_config_crd.yaml
-oc delete project ansible-example-operator
+make undeploy
 ```
 
