@@ -6,14 +6,10 @@
 
 ### via Containerfile
 
-Export `GH_TOKEN` with access to `github.com/squidfunk/mkdocs-material-insiders.git`.
-In case you don't have access to material-insiders it will build with material.
-
 ```bash
 podman build \
   -t mkdocs:local \
   --no-cache \
-  --build-arg GH_TOKEN=${GH_TOKEN} \
   -f Containerfile .
 
 ```
@@ -22,14 +18,10 @@ podman build \
 
 #### Build local runtime.
 
-Export `GH_TOKEN` with access to `github.com/squidfunk/mkdocs-material-insiders.git`.
-In case you don't have access to material-insiders it will build with material.
-
 ```bash
 podman build \
   -t mkdocs:local \
   --no-cache \
-  --build-arg GH_TOKEN=${GH_TOKEN} \
   -f Containerfile.local-run .
 
 ```
