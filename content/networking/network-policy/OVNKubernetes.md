@@ -33,22 +33,9 @@ tags:
 ![demo overview](demo-overview.png)
 
 ```bash
-oc new-project bouvier
-oc new-app quay.io/rbo/demo-http:master --name patty
-oc expose svc/patty
-oc scale deployment/patty --replicas=1
-oc new-app quay.io/rbo/demo-http:master --name selma
-oc scale deployment/selma --replicas=1
-oc expose svc/selma
-
-oc new-project simpson
-oc new-app quay.io/rbo/demo-http:master --name homer
-oc expose svc/homer
-oc scale deployment/homer --replicas=1
-oc new-app quay.io/rbo/demo-http:master --name marge
-oc scale deployment/marge --replicas=1
-oc expose svc/marge
+--8<-- "content/networking/network-policy/deploy-commands"
 ```
+
 ### Download some helper scripts
 
 ```bash
