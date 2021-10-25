@@ -118,7 +118,7 @@ nav:
           - Telegram receiver: cluster-configuration/monitoring/alertmanager/telegram-receiver.md
 
     - Logging:
-      - Log Forwarding API: cluster-configuration/logging/forwarding-demo.md
+      - Log Forwarding API: cluster-configuration/logging/forwarding-demo/index.md
     - Image Registry: cluster-configuration/image-registry.md
     - MachineConfig:
       - cluster-configuration/machine-config/index.md
