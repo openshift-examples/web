@@ -52,10 +52,12 @@ extra:
 # Extensions
 markdown_extensions:
   - admonition
+  - pymdownx.details
   - pymdownx.highlight:
       linenums: true
-  - pymdownx.tabbed
   - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
   - toc:
       permalink: true
   - pymdownx.tasklist
@@ -84,7 +86,7 @@ nav:
     - Air-gapped: cluster-installation/air-gapped.md
     - VMware/vSphere:
       - "Basic (UPI)": cluster-installation/vmware/upi.md
-      - "Example installation": cluster-installation/vmware/example.md
+      - "Example installation": cluster-installation/vmware/example/index.md
       - "IPI & Proxy": cluster-installation/vmware/ipi-proxy.md
       - "MachineSet & UPI": cluster-installation/vmware/machineset-with-upi.md
     - Nvidia GPU:
