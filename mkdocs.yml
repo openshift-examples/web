@@ -166,6 +166,7 @@ nav:
     - Ops Container: deploy/ops-container.md
     - Java/JAR: deploy/jar.md
     - Token: cluster-configuration/authentication/token.md
+    - Faketime (libtaketime): deploy/faketime.md
     - Monitoring:
       - Workload: deploy/monitoring/workload.md
     - Workload examples:
