@@ -1,0 +1,67 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simple-nginx
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: simple-nginx
+  template:
+    metadata:
+      labels:
+        app: simple-nginx
+    spec:
+      containers:
+      - image: registry.access.redhat.com/ubi8/nginx-120
+        name: nginx
+        command:
+          - /bin/sh
+          - -c
+          - |
+
+            set -x
+
+            echo "Greetings from MicroShift" >> /opt/app-root/src/index.html
+
+            nginx -g "daemon off;"
+  triggers:
+  - type: ConfigChange
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: simple-nginx
+  name: simple-nginx
+spec:
+  ports:
+  - name: 8080-8080
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: simple-nginx
+  sessionAffinity: None
+  type: ClusterIP
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  labels:
+    app: simple-nginx
+  name: simple-nginx
+spec:
+  port:
+    targetPort: 8080
+  to:
+    kind: "Service"
+    name: simple-nginx
+    weight: null
+  tls:
+    termination: Edge
+    insecureEdgeTerminationPolicy: Redirect
+
