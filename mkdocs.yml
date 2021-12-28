@@ -87,7 +87,6 @@ nav:
   - Cluster installation:
     - Air-gapped: cluster-installation/air-gapped.md
     - VMware/vSphere:
-      - "Basic (UPI)": cluster-installation/vmware/upi.md
       - "Example installation": cluster-installation/vmware/example/index.md
       - "IPI & Proxy": cluster-installation/vmware/ipi-proxy.md
       - "MachineSet & UPI": cluster-installation/vmware/machineset-with-upi.md
