@@ -104,6 +104,8 @@ nav:
   - Cluster configuration:
     - cluster-configuration/index.md
     - Authentication:
+      - cluster-configuration/authentication/index.md
+      - Client Certificate: cluster-configuration/authentication/client-certificate/index.md
       - ActiveDirectory / LDAP: cluster-configuration/authentication/activedirectory-ldap.md
       - Red Hat SSO - via Google: cluster-configuration/authentication/redhat-sso.md
       - Basic Authentication (Remote): cluster-configuration/authentication/auth-basic-authentication.md
