@@ -37,7 +37,10 @@ theme:
     logo: material/bookmark
     repo: fontawesome/brands/github
   features:
+    - navigation.instant
     - navigation.top
+    - navigation.indexes
+    - navigation.tracking
 
 # Extras
 extra:
@@ -75,7 +78,6 @@ plugins:
       tags_template: content/tags.md.template
   - macros:
       verbose: false
-  - section-index
 
 extra_css:
   - assets/stylesheets/powered-by.css
