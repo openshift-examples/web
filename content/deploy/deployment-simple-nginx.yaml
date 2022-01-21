@@ -15,9 +15,32 @@ spec:
       labels:
         app: simple-nginx
     spec:
+      automountServiceAccountToken: false
+      volumes:
+        - name: docroot
+          emptyDir: {}
       containers:
       - image: registry.access.redhat.com/ubi8/nginx-120
         name: nginx
+        securityContext:
+          readOnlyRootFilesystem: true
+        resources:
+          limits:
+            ephemeral-storage: 40Mi
+            cpu: 0.1
+            memory: "20Mi"
+          requests:
+            ephemeral-storage: 20Mi
+            cpu: 0.1
+            memory: "20Mi"
+        volumeMounts:
+          - name: docroot
+            mountPath: /opt/app-root/src/
+        env:
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
         command:
           - /bin/sh
           - -c
@@ -25,9 +48,10 @@ spec:
 
             set -x
 
-            echo "Greetings from MicroShift" >> /opt/app-root/src/index.html
+            echo "Greetings from $POD_NAME" >> /opt/app-root/src/index.html
 
             nginx -g "daemon off;"
+
   triggers:
   - type: ConfigChange
 ---
