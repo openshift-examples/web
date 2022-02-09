@@ -19,6 +19,8 @@ cat .openshift_install_state.json \
 
 ## Restore kube-scheduler
 
+Or follow the KCS: [Kube-scheduler is not scheduling pods due to client certificate not renewed automatically in OpenShift 4](https://access.redhat.com/solutions/5442201)
+
 If pods stucks in Pending, might a problem with kube scheduler.
 
 Problem expired cert:
