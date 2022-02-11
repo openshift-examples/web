@@ -9,9 +9,7 @@ tags:
 
 # Faketime for your application
 
-How to inject <https://github.com/wolfcw/libfaketime> into your application deployment.
-
-
+How to inject <https://github.com/wolfcw/libfaketime> into your application deployment or you use the [Time Machine Operator](https://catalog.redhat.com/software/operators/detail/5e98727a6c5dcb34dfbb19e3)
 
 === "libfaketime.yaml"
 
