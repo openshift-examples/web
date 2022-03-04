@@ -16,7 +16,7 @@ Connected Prometheus alertmanager via [webhook receiver](https://prometheus.io/d
 ```bash
 oc new-project telegram
 # Build and deploy
-oc new-app --name=telegram \
+oc new-app --name=telegram --strategy=docker --context-dir=docker\
     https://github.com/openshift-examples/alertmanager-webhook-telegram.git
 ```
 
