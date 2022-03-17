@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: x11
+labels:
+    app: x11
+    app.kubernetes.io/component: x11
+    app.kubernetes.io/instance: x11
+    app.kubernetes.io/name: x11
+    app.kubernetes.io/part-of: x11-app
+    app.openshift.io/runtime: other-linux
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: x11
+  template:
+    metadata:
+      labels:
+        app: x11
+    spec:
+      serviceAccountName: privileged
+      containers:
+      - name: x11
+        securityContext:
+          runAsUser: 0
+          privileged: true
+        image: registry.fedoraproject.org/fedora:35
+        command:
+         - /bin/sh
+         - -c
+         - |
+            set -x
+            yum -y groups install "Basic Desktop" "Fonts"
+            yum -y install firefox xinput
+
+            X &
+            export DISPLAY=:0
+            firefox -kiosk --private-window https://examples.openshift.pub/
+            sleep infinity
