@@ -1,9 +1,11 @@
 ---
-title: Cluster autoscaling
-linktitle: Cluster autoscaling
-description: All about autoscaling on cluster level
+title: Cluster autoscaler
+linktitle: Cluster autoscaler
+description: All about autoscaler on cluster level
 tags:
   - autoscaling
+  - autoscaler
+
 ---
 
 # Cluster autoscaling
