@@ -1,0 +1,13 @@
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfigPool
+metadata:
+  name: dpdk
+  labels:
+    mcp: dpdk
+spec:
+  machineConfigSelector:
+    matchExpressions:
+      - {key: machineconfiguration.openshift.io/role, operator: In, values: [worker,dpdk]}
+  nodeSelector:
+    matchLabels:
+      node-role.kubernetes.io/dpdk: ""

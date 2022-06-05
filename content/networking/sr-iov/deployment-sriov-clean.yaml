@@ -1,0 +1,42 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sriov-clean
+#  namespace: rbohne-sriov-test
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: sriov-clean
+  template:
+    metadata:
+      annotations:
+        cpu-load-balancing.crio.io: "disable"
+        cpu-quota.crio.io: "disable"
+        irq-load-balancing.crio.io: "disable"
+      labels:
+        app: sriov-clean
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: storm5-10g.ocp5.stormshift.coe.muc.redhat.com
+      #serviceAccountName: anyuid
+      containers:
+      - image: registry.redhat.io/openshift4/dpdk-base-rhel8:v4.9.5-2
+      #- image: default-route-openshift-image-registry.apps.ocp5.stormshift.coe.muc.redhat.com/openshift/tools:latest
+        securityContext:
+          runAsUser: 0
+        name: sriov
+        command:
+          - /bin/bash
+          - -c
+          - |
+              dnf install -y which
+
+              dpdk-devbind.py --status-dev net
+
+              sleep infinity
+  triggers:
+  - type: ConfigChange
