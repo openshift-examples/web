@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ubi-micro
+labels:
+    app: ubi-micro
+    app.kubernetes.io/component: ubi-micro
+    app.kubernetes.io/instance: ubi-micro
+    app.kubernetes.io/name: ubi-micro
+    app.kubernetes.io/part-of: ubi-micro-app
+    app.openshift.io/runtime: other-linux
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: ubi-micro
+  template:
+    metadata:
+      labels:
+        app: ubi-micro
+    spec:
+      containers:
+      - name: ubi-micro
+        image: registry.access.redhat.com/ubi8/ubi-micro:8.5-596
+        command:
+         - /bin/sh
+         - -c
+         - |
+            sleep infinity

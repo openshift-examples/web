@@ -1,0 +1,41 @@
+# https://support.binarylane.com.au/support/solutions/articles/1000055889-how-to-benchmark-disk-i-o
+FROM registry.access.redhat.com/ubi8/ubi:latest AS dep
+
+RUN dnf install -y libaio
+
+FROM dep AS builder
+
+WORKDIR /root/
+
+RUN dnf install -y make gcc
+
+RUN dnf download --source libaio && \
+    rpm -ivh libaio-*rpm && \
+    cd rpmbuild/SOURCES/ && \
+    tar xzvf libaio-*.tar.gz && \
+    cd libaio-*/ && \
+    make install
+
+RUN cd /root &&\
+    curl -L -O https://brick.kernel.dk/snaps/fio-3.28.tar.gz &&\
+    tar xzvf fio-3.28.tar.gz &&\
+    cd fio-3.28/ &&\
+    make
+
+RUN cd /root &&\
+    curl -L -O https://github.com/koct9i/ioping/archive/refs/tags/v1.2.tar.gz &&\
+    tar xzvf v1.2.tar.gz &&\
+    cd ioping-1.2/ &&\
+    make
+
+FROM dep AS runner
+
+VOLUME /disk-bench
+
+COPY --from=builder /root/fio-3.28/fio /usr/local/bin
+COPY --from=builder /root/ioping-1.2/ioping /usr/local/bin
+
+COPY bench.sh /usr/local/bin/
+
+CMD "/usr/local/bin/bench.sh"
+

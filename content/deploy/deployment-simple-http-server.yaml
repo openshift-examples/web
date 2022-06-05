@@ -1,0 +1,54 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simple-http-server
+spec:
+  replicas: 2
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: simple-http-server
+  template:
+    metadata:
+      labels:
+        app: simple-http-server
+    spec:
+      containers:
+      - image: quay.io/openshift-examples/simple-http-server:latest
+        name: container
+  triggers:
+  - type: ConfigChange
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: simple-http-server
+  name: simple-http-server
+spec:
+  ports:
+  - name: 8080-8080
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: simple-http-server
+  sessionAffinity: None
+  type: ClusterIP
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  labels:
+    app: simple-http-server
+  name: simple-http-server
+spec:
+  port:
+    targetPort: 8080
+  to:
+    kind: "Service"
+    name: simple-http-server
+    weight: null
+

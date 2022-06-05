@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: disk-bench
+  labels:
+    app: disk-bench
+  namespace: default
+spec:
+  restartPolicy: Never
+  containers:
+    - name: disk-bench
+      image: 'quay.io/openshift-examples/disk-bench:latest'
+      volumeMounts:
+        - name: local
+          mountPath: /disk-bench
+      securityContext:
+        runAsUser: 0
+        privileged: true
+  volumes:
+    - name: local
+      hostPath:
+        path: /var/tmp/
