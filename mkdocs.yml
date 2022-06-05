@@ -131,7 +131,7 @@ nav:
       - Machine Config Server: cluster-configuration/machine-config/machine-config-server.md
     - MachineSets:
       - Debugging: cluster-configuration/MachineSets/debugging.md
-    - Cluster autoscaling: cluster-configuration/cluster-autoscaling.md
+    - Cluster autoscaler: cluster-configuration/cluster-autoscaling.md
 
   - Cluster lifecycle:
     - cluster-lifecycle/index.md
