@@ -8,7 +8,7 @@ description: My personal remote worker node setup notes
 
 These are my personal nodes, nothing more nothing less and of course not perfect.
 
-![Architecure](architecture.draw.io.png)
+![Architecure](remote-worker/architecture.draw.io.png)
 
 ## Install WireGuard VPN on all sites
 

@@ -32,4 +32,4 @@ tags:
 
 Administrator -> Cluster Settings -> Global configuration -> Alertmanager -> Create Receiver
 
-![](receiver-config.png)
+![](debug-receiver/receiver-config.png)
