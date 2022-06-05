@@ -68,6 +68,7 @@ markdown_extensions:
   - pymdownx.snippets:
       check_paths: true
   - meta
+  - attr_list
 
 plugins:
   - search # necessary for search to work

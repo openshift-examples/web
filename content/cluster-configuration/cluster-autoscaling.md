@@ -8,7 +8,7 @@ tags:
 
 # Cluster autoscaling
 
-Documentation: [Applying autoscaling to an OpenShift Container Platform cluster](https://docs.openshift.com/container-platform/latest/machine_management/applying-autoscaling.html)
+Documentation: [Applying autoscaling to an OpenShift Container Platform cluster](https://docs.openshift.com/container-platform/latest/machine_management/applying-autoscaling.html){target=_blank}
 
 
 ## MachineAutoscaler resource definition
