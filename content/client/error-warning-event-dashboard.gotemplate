@@ -1,0 +1,24 @@
+{{- /* YAML that we're looking for
+  spec:
+    taints:
+    - effect: NoSchedule
+      key: app
+      value: myapp
+*/ -}}
+
+{{- define "event-details" -}}
+    {{- if or (eq .type "Warning") (eq .type "Error") -}}
+        {{- println .count "\t" .involvedObject.namespace "\t" .message -}}
+    {{- end -}}
+{{- end -}}
+
+{{- block "events" . -}}
+    {{- if gt (len .items) 0 -}}
+        {{- println "COUNT" "\t" "NAMESPACE" "\t" "MESSAGE" -}}
+        {{- range .items -}}
+            {{- template "event-details" . -}}
+        {{- end -}}
+    {{- else -}}
+        {{- println "There are no events." -}}
+    {{- end -}}
+{{- end -}}

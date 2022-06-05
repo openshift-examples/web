@@ -1,0 +1,24 @@
+{{$printf_format := "%-25s\t%-10s\t%-10s\t%s\n" }}
+{{- printf $printf_format "NAME" "CPU" "MEMORY" "NODE_ROLE" -}}
+{{- $cpu_sum := 0 -}}
+{{- range .items -}}
+    {{- if eq .kind "Node" -}}
+        {{ $node_role := "" }}
+        {{- $clean_node_role := "" -}}
+        {{- range $k, $v := .metadata.labels -}}
+            {{- $clean_node_role := printf "%.23s" $k -}}
+            {{- if eq $clean_node_role "node-role.kubernetes.io" -}}
+                {{- if eq $node_role "" -}}
+                    {{ $node_role = $k }}
+                {{- else -}}
+                    {{ $node_role = printf "%s, %s" $node_role $k }}
+                {{- end -}}
+            {{- end -}}
+        {{- end -}}
+        {{ range $index, $node_role := .Equipment}}
+            {{if $index}},{{end}}
+            {{ $index }}
+        {{end}}
+        {{- printf $printf_format .metadata.name .status.capacity.cpu .status.capacity.memory $node_role  -}}
+    {{- end -}}
+{{- end -}}

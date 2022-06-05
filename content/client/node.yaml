@@ -1,0 +1,251 @@
+apiVersion: v1
+kind: Node
+metadata:
+  annotations:
+    k8s.ovn.org/host-addresses: '["192.168.52.13","2a01:4f8:10a:1fe0:34::1003"]'
+    k8s.ovn.org/l3-gateway-config: '{"default":{"mode":"shared","interface-id":"br-ex_compute-0","mac-address":"52:54:00:a8:34:0d","ip-addresses":["192.168.52.13/24","2a01:4f8:10a:1fe0:34::1003/128"],"next-hops":["192.168.52.1","fe80::5054:ff:fe46:e974"],"node-port-enable":"true","vlan-id":"0"}}'
+    k8s.ovn.org/node-chassis-id: 0ac2a1f6-5d2e-46ee-9e9a-2b102dcac466
+    k8s.ovn.org/node-mgmt-port-mac-address: 5a:b9:9c:49:98:da
+    k8s.ovn.org/node-primary-ifaddr: '{"ipv4":"192.168.52.13/24","ipv6":"2a01:4f8:10a:1fe0:34::1003/128"}'
+    k8s.ovn.org/node-subnets: '{"default":["10.131.0.0/23","fd00:10:128:3::/64"]}'
+    machineconfiguration.openshift.io/controlPlaneTopology: HighlyAvailable
+    machineconfiguration.openshift.io/currentConfig: rendered-worker-56b71353e10a53e2127a20eb10e485a2
+    machineconfiguration.openshift.io/desiredConfig: rendered-worker-56b71353e10a53e2127a20eb10e485a2
+    machineconfiguration.openshift.io/reason: ""
+    machineconfiguration.openshift.io/state: Done
+    volumes.kubernetes.io/controller-managed-attach-detach: "true"
+  creationTimestamp: "2021-10-01T22:40:14Z"
+  labels:
+    beta.kubernetes.io/arch: amd64
+    beta.kubernetes.io/os: linux
+    kubernetes.io/arch: amd64
+    kubernetes.io/hostname: compute-0
+    kubernetes.io/os: linux
+    node-role.kubernetes.io/worker: ""
+    node.openshift.io/os_id: rhcos
+  name: compute-0
+  resourceVersion: "3421714"
+  uid: 6197d37b-0b3c-4d4c-8697-4452acd959c0
+spec: {}
+status:
+  addresses:
+  - address: 192.168.52.13
+    type: InternalIP
+  - address: 2a01:4f8:10a:1fe0:34::1003
+    type: InternalIP
+  - address: compute-0
+    type: Hostname
+  allocatable:
+    cpu: 7500m
+    ephemeral-storage: "115470533646"
+    hugepages-1Gi: "0"
+    hugepages-2Mi: "0"
+    memory: 63254400Ki
+    pods: "250"
+  capacity:
+    cpu: "8"
+    ephemeral-storage: 125293548Ki
+    hugepages-1Gi: "0"
+    hugepages-2Mi: "0"
+    memory: 64405376Ki
+    pods: "250"
+  conditions:
+  - lastHeartbeatTime: "2021-10-07T18:09:53Z"
+    lastTransitionTime: "2021-10-01T22:40:14Z"
+    message: kubelet has sufficient memory available
+    reason: KubeletHasSufficientMemory
+    status: "False"
+    type: MemoryPressure
+  - lastHeartbeatTime: "2021-10-07T18:09:53Z"
+    lastTransitionTime: "2021-10-01T22:40:14Z"
+    message: kubelet has no disk pressure
+    reason: KubeletHasNoDiskPressure
+    status: "False"
+    type: DiskPressure
+  - lastHeartbeatTime: "2021-10-07T18:09:53Z"
+    lastTransitionTime: "2021-10-01T22:40:14Z"
+    message: kubelet has sufficient PID available
+    reason: KubeletHasSufficientPID
+    status: "False"
+    type: PIDPressure
+  - lastHeartbeatTime: "2021-10-07T18:09:53Z"
+    lastTransitionTime: "2021-10-01T22:41:26Z"
+    message: kubelet is posting ready status
+    reason: KubeletReady
+    status: "True"
+    type: Ready
+  daemonEndpoints:
+    kubeletEndpoint:
+      Port: 10250
+  images:
+  - names:
+    - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:d2c13adb26d233db1c436d246fa7ff60b9824b42d77e638f694e8b212c51c992
+    sizeBytes: 996892282
+  - names:
+    - image-registry.openshift-image-registry.svc:5000/test2/demoapp@sha256:cac96f8a8ca395a4f8c1066f8cb2a397ec402052bcc9ffe37dca2789564ce19e
+    sizeBytes: 914246864
+  - names:
+    - image-registry.openshift-image-registry.svc:5000/test2/eap73-openjdk11-openshift-rhel8-2@sha256:9c0a83c358ef945e0e7ddc9417f97106864eb0e7bc74302ad5bfb41e1ffe1a5b
+    sizeBytes: 913677887
+  - names:
+    - registry.redhat.io/redhat/community-operator-index@sha256:d21cb3adb11af46566fa77ec85b285932925756af4e80312bb1a058f068931d7
+    sizeBytes: 810712345
+  - names:
+    - registry.redhat.io/redhat/community-operator-index@sha256:240e041a9cf8e79eebdc02cd21ae3ba8810bde4113269b6d2f4de046471ae6a5
+    sizeBytes: 810712342
+  - names:
+    - registry.redhat.io/redhat/community-operator-index@sha256:e5d1a036f6ae22997aa9f9c550b7be47be1215bcb7e07203e41cc7c2e95579ad
+    sizeBytes: 810712338
+  - names:
+    - registry.redhat.io/redhat/community-operator-index@sha256:88ed6703a021b805259a602054c89024fb7d28924a854b2b5c80dad8ac0b08c7
+    sizeBytes: 810712337
+  - names:
+    - registry.redhat.io/redhat/community-operator-index@sha256:79e767ec37e396374bccca05d2ecff52c9726b121a61b549b25bb7fd458ee539
+    sizeBytes: 810712337
+  - names:
+    - registry.redhat.io/redhat/community-operator-index@sha256:34901e8ad3043129a112fc180c228756dfa632a53d3ce6768903f23876920216
+    - registry.redhat.io/redhat/community-operator-index@sha256:791c16f7ae031a07f9d7388ad78743cce6840f969abbc8e9c1b89a76c646bf81
+    - registry.redhat.io/redhat/community-operator-index:v4.8
+    sizeBytes: 810712332
+  - names:
+    - registry.redhat.io/redhat/community-operator-index@sha256:17da6238c98c1fd3904d4e26c0f679e95c94ffa8a6b822851d61cda0a9de5b48
+    sizeBytes: 810712329
+  - names:
+    - image-registry.openshift-image-registry.svc:5000/test/eap-app@sha256:1a13d8bcf08ac0a357054f91a81d14bdd22a5304909e7f7ca040a19f30e0324e
+    sizeBytes: 740493075
+  - names:
+    - registry.redhat.io/redhat/redhat-operator-index@sha256:16eba7c53354c8304145d198760ab478ad4d971592a2b8541138703b1d888b6d
+    sizeBytes: 737477103
+  - names:
+    - registry.redhat.io/redhat/redhat-operator-index@sha256:ef2a9888d7010f8e014058bb57c5b303f7bd200379520d487b6608a8aa204e35
+    sizeBytes: 737477100
+  - names:
+    - registry.redhat.io/redhat/redhat-operator-index@sha256:5c314d06a1be20341eda093a2bff12d19ff2a07b53bc80ad9abe52861595c598
+    sizeBytes: 737477100
+  - names:
+    - registry.redhat.io/redhat/redhat-operator-index@sha256:07f1f79559e3b8b12a12050586829256da9e191f5365063f89af482d399ba31b
+    - registry.redhat.io/redhat/redhat-operator-index@sha256:ef966dae3a9a80dcec3721bfbad584b6313788ee259381623eba043479bc3434
+    - registry.redhat.io/redhat/redhat-operator-index:v4.8
+    sizeBytes: 737477094
+  - names:
+    - registry.redhat.io/redhat/redhat-operator-index@sha256:69396bf24d7e6f5e181cbd72cdaa96042152c6e982da8a1e1fddda3e9c93cb1c
+    sizeBytes: 737477083
+  - names:
+    - registry.redhat.io/redhat/redhat-operator-index@sha256:3a1fe799c1d6b17a2ce51284045b2772201eed7725415ba68f234b5d91f3909e
+    sizeBytes: 737477078
+  - names:
+    - registry.redhat.io/redhat/certified-operator-index@sha256:657902afa7927812310c407bc3429ab98082cf82fcc71780b5a6ca9d1a7af002
+    sizeBytes: 720197484
+  - names:
+    - registry.redhat.io/redhat/certified-operator-index@sha256:ece7c2aebf4ae2f02590df184e30ca89aa4c5474ffd8ccb69912356fff5d743d
+    sizeBytes: 720197481
+  - names:
+    - registry.redhat.io/redhat/certified-operator-index@sha256:a4e8781d5ba64f90ee0d84b68d0ef519b5c533ab59e9c2b868581182e96e5a76
+    sizeBytes: 720197474
+  - names:
+    - registry.redhat.io/redhat/certified-operator-index@sha256:78f495116cda4e3ee86e1e8211c939c5a73196825c6e6600620f9a9528112f10
+    sizeBytes: 720197474
+  - names:
+    - registry.redhat.io/redhat/certified-operator-index@sha256:27e1386156bb74a336671a8f94ed9ab34b9dc31bdc1ef637e679851a2a7021d6
+    sizeBytes: 720197473
+  - names:
+    - registry.redhat.io/redhat/certified-operator-index@sha256:267dbd16be7d5471173903f659da7b35f54cf279f23245a6a8bfb188454402be
+    sizeBytes: 720197470
+  - names:
+    - registry.redhat.io/redhat/certified-operator-index@sha256:b5dfe214adac5f06d5b6d0eebf7e14c4d7565fb6a1d4c5f34db58477ffd497d4
+    sizeBytes: 720197470
+  - names:
+    - registry.redhat.io/redhat/certified-operator-index@sha256:51c9f53f775df68a9d4549ac1aef468b127e5e5b3db8e0ec8e4919035ff23ae1
+    sizeBytes: 720197469
+  - names:
+    - registry.redhat.io/redhat/certified-operator-index@sha256:48bfde550cd6ae42c74e9049ce0095cdb2b1830e2b6bf79e7dd73c88e0ffe75b
+    sizeBytes: 720197469
+  - names:
+    - registry.redhat.io/redhat/certified-operator-index@sha256:8e329b2cd90e2f3f2d230a812601a7d716ecf5cf436259dc2518b384bdd017f4
+    sizeBytes: 720197466
+  - names:
+    - registry.redhat.io/redhat/certified-operator-index@sha256:58721b8726b007e18e8ea731ef57faa8355859c0f7ab3b2430a9a5ef39e22321
+    - registry.redhat.io/redhat/certified-operator-index@sha256:611cd21959fe591b979d303524666532e45627ae64ccdc4882ecd9babcf0bc3b
+    - registry.redhat.io/redhat/certified-operator-index:v4.8
+    sizeBytes: 720197464
+  - names:
+    - registry.redhat.io/redhat/redhat-marketplace-index@sha256:3df55bbef20c3994ab2e5c15f55382532422191db4d2a60e0b1be98dc78a8b82
+    sizeBytes: 700688221
+  - names:
+    - registry.redhat.io/redhat/redhat-marketplace-index@sha256:4ba8aca3485bde6249fee5aefba7d22528985fc10c69f5604421cc573892469c
+    sizeBytes: 700688217
+  - names:
+    - registry.redhat.io/redhat/redhat-marketplace-index@sha256:8cb1441ffd1eb83546c33e2c813b14c028695233d3ce058e70274657c0b6599f
+    sizeBytes: 700688215
+  - names:
+    - registry.redhat.io/redhat/redhat-marketplace-index@sha256:3f11288ef3f135161f9b01acc3e46e8a66f8b7bea552feac77a8d5007a5834b2
+    sizeBytes: 700688214
+  - names:
+    - registry.redhat.io/redhat/redhat-marketplace-index@sha256:86df0f76d4baff63a908992cff0df254c66b3033a94bd6f7e86183555bd87c48
+    - registry.redhat.io/redhat/redhat-marketplace-index@sha256:f9906b1d1ba334017ef44c10d78f19a68e0f1df43912580d69217169424a92c6
+    - registry.redhat.io/redhat/redhat-marketplace-index:v4.8
+    sizeBytes: 700688212
+  - names:
+    - registry.redhat.io/redhat/redhat-marketplace-index@sha256:580ee814c38a69cb48f1368dc20e5e1382744555bec02b7e819a3dca619defdf
+    sizeBytes: 700688208
+  - names:
+    - registry.redhat.io/redhat/redhat-marketplace-index@sha256:8188d9e89450fdacc50ec35953e0c8084ef73af503bfea23957e4c972d403f76
+    sizeBytes: 700688205
+  - names:
+    - registry.redhat.io/redhat/redhat-marketplace-index@sha256:833bcde3039e8aab4cfad860bb31db10e1f2c0a0c7a49b8de5f92214457511b0
+    sizeBytes: 700688202
+  - names:
+    - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:0d6253807a3fd5031c697c54142e4ce2ca750ad4188abbecc0f4391ecca40eac
+    sizeBytes: 601166671
+  - names:
+    - registry.redhat.io/openshift-gitops-1/argocd-rhel8@sha256:2779d45080d3c59884171f9ffd53c1026b730920e304405ebde0461b3c39cdb2
+    - registry.redhat.io/openshift-gitops-1/argocd-rhel8@sha256:8e416d21654c7d02599aa7ce448c9de2028c770933c53c461a5d0359e48a6aaa
+    sizeBytes: 589909303
+  - names:
+    - registry.redhat.io/redhat/certified-operator-index@sha256:471dcdfa97d6d84e4646eb85ede55a4bfb9143525c93cdc6cdfcf022563d9b6f
+    sizeBytes: 583623912
+  - names:
+    - registry.redhat.io/redhat/redhat-marketplace-index@sha256:1420821dddd32688b25ffa607470caf960789d895a2b67f2cf839c6ec933a51f
+    sizeBytes: 564114657
+  - names:
+    - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:faf2ae4b1dc40d82a2eac202776d92ec903a76335e0af9415aaec279ed038913
+    sizeBytes: 550169112
+  - names:
+    - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:fd68af1773a9f6e3535c4ecfb6ca39a83fbec1d951a1f70e825456dff33240e6
+    sizeBytes: 536804443
+  - names:
+    - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:4cb23e2a6db3dade0172964db53d0451dd50fcf4ee8c2a2bddff74b84a91fa27
+    sizeBytes: 519668735
+  - names:
+    - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:35101aff03c766ab50183f2979754b45d312739b163aed1732a082d4bf5f2642
+    sizeBytes: 490599205
+  - names:
+    - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:216598b8db43a3d009a2635d3fc7abf8d3578c5e4525879952336579906338bb
+    sizeBytes: 475547735
+  - names:
+    - registry.redhat.io/openshift-gitops-1/kam-delivery-rhel8@sha256:2a2838ae4138a9b2329611488e70b28672deea6322ce8dfd45f8cf693e649b47
+    - registry.redhat.io/openshift-gitops-1/kam-delivery-rhel8@sha256:48031a83b9b4da64d33bc8aa4b586dc1bf00fff20f68b1940d7d44482af91092
+    sizeBytes: 467497768
+  - names:
+    - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:56560421f15944c7282635c86e852a49147bfbe2d627bb93663f781c316d816d
+    sizeBytes: 467447925
+  - names:
+    - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:5b337466f08d1aab75efd543162cb573113c6df70efa219d87f6dc3aeb4723e0
+    sizeBytes: 462340756
+  - names:
+    - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:bcfd759e8174198b0ec6d81c031cbec485e9869a3f0e33e30191df34f1b57a1c
+    sizeBytes: 433223335
+  - names:
+    - quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:9ea9b053616ac12758d4f5b51ddab1230d6ab425c1882fe0f8a501211ba7b4a7
+    sizeBytes: 432105044
+  nodeInfo:
+    architecture: amd64
+    bootID: 73d03f00-d684-4067-9cc9-4f6836c88abd
+    containerRuntimeVersion: cri-o://1.21.2-5.rhaos4.8.gitb27d974.el8
+    kernelVersion: 4.18.0-305.10.2.el8_4.x86_64
+    kubeProxyVersion: v1.21.1+051ac4f
+    kubeletVersion: v1.21.1+051ac4f
+    machineID: 8d35ce079b954b7981a9535d32581a15
+    operatingSystem: linux
+    osImage: Red Hat Enterprise Linux CoreOS 48.84.202107202156-0 (Ootpa)
+    systemUUID: 8d35ce07-9b95-4b79-81a9-535d32581a15

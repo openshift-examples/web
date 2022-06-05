@@ -1,0 +1,7 @@
+{{$printf_format := "%-50s\t%-50s\n" }}
+{{- printf $printf_format "NAME" "VOLUME" -}}
+{{- range .items -}}
+    {{- if eq .kind "PersistentVolume" -}}
+        {{- printf $printf_format .metadata.name .spec.vsphereVolume.volumePath -}}
+    {{- end -}}
+{{- end -}}
