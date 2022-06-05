@@ -1,0 +1,15 @@
+variant: rhcos
+version: 0.1.0
+ignition:
+  config:
+    merge:
+      - local: bootstrap-in-place-for-live-iso.ign
+storage:
+  files:
+    - path: /etc/NetworkManager/conf.d/01-ipv6.conf
+      contents:
+        source: data:,%5Bconnection%5D%0Aipv6.dhcp-iaid%3Dmac%0Aipv6.dhcp-duid%3Dll
+      mode: 420
+      user:
+        name: root
+      overwrite: true
