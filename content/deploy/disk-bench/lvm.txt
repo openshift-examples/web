@@ -1,0 +1,47 @@
+Saturday 02 October 2021  01:10:00 +0200 (0:00:00.012)       0:25:14.680 ******
+===============================================================================
+openshift-4-cluster : Waiting installation to complete ---------------------------------------------------------------------------- 750.50s
+openshift-4-cluster : Waiting for bootstrap to complete --------------------------------------------------------------------------- 512.10s
+openshift-4-cluster : Add pvc registry-storage to image registry ------------------------------------------------------------------ 121.53s
+openshift-4-cluster : Copy/dd coreos into device ----------------------------------------------------------------------------------- 11.69s
+openshift-4-cluster : Create infra-registry pv ------------------------------------------------------------------------------------- 10.55s
+openshift-4-cluster : Copy/dd coreos into device ----------------------------------------------------------------------------------- 10.17s
+openshift-4-cluster : Copy/dd coreos into device ----------------------------------------------------------------------------------- 10.01s
+openshift-4-cluster : Copy/dd coreos into device ------------------------------------------------------------------------------------ 9.85s
+openshift-4-cluster : Copy/dd coreos into device ------------------------------------------------------------------------------------ 9.84s
+public_dns : Create Cloudflare DNS records ------------------------------------------------------------------------------------------ 8.10s
+public_dns : Create IPv6 Cloudflare DNS records ------------------------------------------------------------------------------------- 7.94s
+openshift-4-loadbalancer : Install haproxy ------------------------------------------------------------------------------------------ 4.57s
+openshift-4-cluster : Ensure NFS utilities are installed. --------------------------------------------------------------------------- 4.52s
+openshift-4-cluster : Create ignition files ----------------------------------------------------------------------------------------- 4.12s
+openshift-4-cluster : Check download urls ------------------------------------------------------------------------------------------- 3.80s
+Enable and start openshift-4-loadbalancer-demo2.service ----------------------------------------------------------------------------- 2.70s
+openshift-4-cluster : check if coreos image already downloaded and get checksum ----------------------------------------------------- 1.74s
+openshift-4-loadbalancer : Collect services facts ----------------------------------------------------------------------------------- 1.33s
+openshift-4-cluster : Setup cluster role bindings ----------------------------------------------------------------------------------- 0.69s
+Fetch letsencrypt root ca ----------------------------------------------------------------------------------------------------------- 0.67s
+
+
+
+Saturday 02 October 2021  02:15:42 +0200 (0:00:00.011)       0:26:31.862 ******
+===============================================================================
+openshift-4-cluster : Waiting installation to complete ---------------------------- 735.29s
+openshift-4-cluster : Waiting for bootstrap to complete --------------------------- 665.42s
+openshift-4-cluster : Add pvc registry-storage to image registry ------------------ 121.25s
+openshift-4-cluster : Create registry-storage pvc ---------------------------------- 10.51s
+public_dns : Create Cloudflare DNS records ------------------------------------------ 6.10s
+public_dns : Create IPv6 Cloudflare DNS records ------------------------------------- 5.98s
+openshift-4-cluster : Check download urls ------------------------------------------- 4.58s
+openshift-4-cluster : Ensure NFS utilities are installed. --------------------------- 4.48s
+openshift-4-loadbalancer : Install haproxy ------------------------------------------ 4.31s
+openshift-4-cluster : check if coreos image already downloaded and get checksum ----- 1.52s
+openshift-4-cluster : Start VirtualMachine demo2-master-2 --------------------------- 1.38s
+openshift-4-loadbalancer : Collect services facts ----------------------------------- 1.32s
+openshift-4-cluster : Define VirtualMachine demo2-master-2 -------------------------- 1.18s
+openshift-4-cluster : Setup cluster role bindings ----------------------------------- 0.76s
+openshift-4-cluster : Create RHCOS Config ------------------------------------------- 0.67s
+Gathering Facts --------------------------------------------------------------------- 0.64s
+openshift-4-cluster : Create a symbolic link ---------------------------------------- 0.63s
+openshift-4-cluster : Create infra-registry pv -------------------------------------- 0.57s
+openshift-4-cluster : Create htpasswd secret ---------------------------------------- 0.55s
+openshift-4-cluster : Create google secret secret ----------------------------------- 0.52s
