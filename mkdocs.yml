@@ -165,7 +165,7 @@ nav:
     - Init containers: deploy/initcontainers.md
     - Nginx reverse proxy: deploy/nginx-reverse-proxy.md
     - EAP Cluster demo: deploy/eap-cluster.md
-    - POD Autoscaling: deploy/autoscaling.md
+    - Pod Autoscaling: deploy/autoscaling/index.md
     - Scale down DC: deploy/scale-down-deploymentconfigs.md
     - Ops Container: deploy/ops-container.md
     - Java/JAR: deploy/jar.md
