@@ -64,7 +64,7 @@ EOF
 
 ```bash
 oc new-project nginx
-oc new-app nginx-example
+oc new-app nginx-example -p NGINX_VERSION=1.20-ubi8
 
 $ oc get deploymentconfig
 NAME            REVISION   DESIRED   CURRENT   TRIGGERED BY
