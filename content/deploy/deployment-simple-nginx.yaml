@@ -49,8 +49,8 @@ spec:
             set -x
 
             echo "Greetings from $POD_NAME" >> /opt/app-root/src/index.html
+            /usr/libexec/s2i/run
 
-            nginx -g "daemon off;"
 
   triggers:
   - type: ConfigChange
