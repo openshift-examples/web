@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: patty
+    app.kubernetes.io/component: patty
+    app.kubernetes.io/instance: patty
+    app.kubernetes.io/name: patty
+    app.kubernetes.io/part-of: patty
+    app.openshift.io/runtime-version: micro
+  name: patty
+spec:
+  ports:
+  - name: 8080-tcp
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: patty
+    deployment: patty

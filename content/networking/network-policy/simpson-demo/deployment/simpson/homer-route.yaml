@@ -1,0 +1,22 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  labels:
+    app: homer
+    app.kubernetes.io/component: homer
+    app.kubernetes.io/instance: homer
+    app.kubernetes.io/name: homer
+    app.kubernetes.io/part-of: homer
+    app.openshift.io/runtime-version: micro
+  name: homer
+spec:
+  port:
+    targetPort: 8080-tcp
+  tls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: edge
+  to:
+    kind: Service
+    name: homer
+    weight: 100
+  wildcardPolicy: None

@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: patty
+    app.kubernetes.io/component: patty
+    app.kubernetes.io/instance: patty
+    app.kubernetes.io/name: patty
+    app.kubernetes.io/part-of: patty
+    app.openshift.io/runtime: redhat
+  name: patty
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: patty
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: patty
+        deployment: patty
+    spec:
+      containers:
+      - image: quay.io/openshift-examples/simple-http-server:micro
+        imagePullPolicy: IfNotPresent
+        name: http-server
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        resources: {}

@@ -1,0 +1,22 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  labels:
+    app: selma
+    app.kubernetes.io/component: selma
+    app.kubernetes.io/instance: selma
+    app.kubernetes.io/name: selma
+    app.kubernetes.io/part-of: selma
+    app.openshift.io/runtime-version: micro
+  name: selma
+spec:
+  port:
+    targetPort: 8080-tcp
+  tls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: edge
+  to:
+    kind: Service
+    name: selma
+    weight: 100
+  wildcardPolicy: None
