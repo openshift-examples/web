@@ -191,6 +191,7 @@ nav:
     - Multus: networking/multus.md
     - Network Policy:
       - networking/network-policy/index.md
+      - Demo: networking/network-policy/network-policy-demo/README.md
       - OVNKubernetes: networking/network-policy/OVNKubernetes.md
       - OpenShiftSDN: networking/network-policy/OpenShiftSDN.md
     - Router sharding: networking/services-routes/router-sharding.md
