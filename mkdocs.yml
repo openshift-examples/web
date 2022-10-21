@@ -79,6 +79,7 @@ plugins:
       tags_template: content/tags.md.template
   - macros:
       verbose: false
+  - glightbox
 
 extra_css:
   - assets/stylesheets/powered-by.css
