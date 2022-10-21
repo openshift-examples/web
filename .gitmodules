@@ -1,0 +1,3 @@
+[submodule "content/networking/network-policy/network-policy-demo"]
+	path = content/networking/network-policy/network-policy-demo
+	url = https://github.com/openshift-examples/network-policy-demo.git

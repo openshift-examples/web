@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  annotations:
-    openshift.io/description: "Home of Selma & Petty Bouvier"
-    openshift.io/display-name: "Bouvier"
-  name: bouvier
-spec: {}
