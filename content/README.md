@@ -43,7 +43,7 @@ oc cluster up --image=registry.access.redhat.com/openshift3/ose \
 |[Red Hat OpenShift Container Platform Life Cycle Policy](https://access.redhat.com/support/policy/updates/openshift)||
 
 
-## Glossar
+## Glossary
 
 
 |Term|Definition|
