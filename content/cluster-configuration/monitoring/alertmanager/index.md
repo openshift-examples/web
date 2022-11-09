@@ -14,9 +14,8 @@ Documentation: [Sending notifications to external systems](https://docs.openshif
 
  * Webhook: [Debug receiver - log alerts to stdout](debug-receiver/)
  * Webhook: [Telegram receiver](telegram-receiver/)
+ * Webhook: [Microsoft Teams receiver](microsoft-teams-receiver/)
  * E-Mail: [Using labels to direct email notifications](https://www.robustperception.io/using-labels-to-direct-email-notifications)
-
-
 
 ### Proxy & Alertmanager
 
