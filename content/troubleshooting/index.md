@@ -1,3 +1,11 @@
+---
+title: Troubleshooting
+linktitle: Troubleshooting
+description: Troubleshooting
+tags:
+  - troubleshooting
+ignore_macros: true
+---
 # Troubleshooting
 
 ## The openshift-console is not coming up

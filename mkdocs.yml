@@ -144,6 +144,8 @@ nav:
         - Etcd: cluster-lifecycle/backup/etcd.md
     - Restore & Recovery: cluster-lifecycle/restore.md
 
+  - Troubleshooting: troubleshooting/index.md
+
   - Client: client/index.md
   - Build:
     - build/index.md
