@@ -1,0 +1,17 @@
+apiVersion: sriovnetwork.openshift.io/v1
+kind: SriovNetworkNodePolicy
+metadata:
+  name: policy-x710-vfio-pci
+  namespace: openshift-sriov-network-operator
+spec:
+  deviceType: vfio-pci
+  nicSelector:
+    deviceID: "1572"
+    rootDevices:
+    - "0000:19:00.0"
+    vendor: "8086"
+    #pfNames: ["eno1#1-15"]
+  nodeSelector:
+    feature.node.kubernetes.io/network-sriov.capable: "true"
+  numVfs: 32
+  resourceName: x710_vfio_pci

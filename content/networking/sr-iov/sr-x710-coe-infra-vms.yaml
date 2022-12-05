@@ -1,0 +1,9 @@
+apiVersion: sriovnetwork.openshift.io/v1
+kind: SriovNetwork
+metadata:
+  name: x710-coe-infra-vms
+  namespace: openshift-sriov-network-operator
+spec:
+  resourceName: x710_vfio_pci
+  networkNamespace: coe-infra-vms
+  spoofChk: "off"
