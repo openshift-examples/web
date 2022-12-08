@@ -1,0 +1,13 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: etc-pki-entitlement
+rules:
+- apiGroups:
+  - sharedresource.openshift.io
+  resourceNames:
+  - etc-pki-entitlement
+  resources:
+  - sharedsecrets
+  verbs:
+  - use

@@ -5,247 +5,182 @@ weight: 5200
 description: TBD
 tags:
   - entitlement
+  - build
 ---
-# Entitled builds on OpenShift 4
+# Entitled builds and OpenShift 4
 
-**Resources**
+With entitled builds, we have to cover two main topics:
 
- * [NVIDIA GPU Operator with OpenShift 4.3 on Red Hat OpenStack Platform 13
-](https://egallen.com/gpu-operator-openshift-43-openstack-13/)
- * Official documentation: [Using Red Hat subscriptions in builds](https://docs.openshift.com/container-platform/4.4/builds/running-entitled-builds.html)
+  1. How to get the entitlement and refresh the entitlement
 
-<!-- RedHat Internal: https://docs.google.com/document/d/1udIkiF_-R6LUEzIFCnoafu4dFpQnz04zFePFBu7RwTM/edit# -->
-<!-- RedHat Internal: https://docs.google.com/document/d/1TlE4jGgYkID4wENAZ4LyZ3cKT8bGw2RWrpgbD6eEItI/edit# -->
-<!-- https://issues.redhat.com/browse/DEVEXP-470 -->
+  2. How to provide/attach the entitlement to the build.
 
 
-**Options to rollout RHEL entitlement for container builds:**
+## Let’s elaborate on the first one: How to get the entitlement.
 
- * Cluster-wide: via MachineConfig to the whole cluster and ALL running PODS
- * Per-Build: via Secrets / Configmaps per Container Build
+Technically, the entitlement is a certificate to get access to specific Red Hat Enterprise Linux content and have to refresh regularly. Red Hat introduce [Simple Content Access](https://access.redhat.com/documentation/en-us/subscription_central/2021/html/getting_started_with_simple_content_access/index) to simplify the access, for example for container builds.
 
-## Cluster-wide entitlement
-
-!!! warning
-    All running POD's get access to the entitlement!
-
-Create a machine config to rollout
-
- * /etc/rhsm/rhsm.conf
- * /etc/pki/entitlement/
-
-Described in Blog article: [NVIDIA GPU Operator with OpenShift 4.3 on Red Hat OpenStack Platform 13
-](https://egallen.com/gpu-operator-openshift-43-openstack-13/)
-
-The files are mounted to ALL POD's/Containers: checkout crio's default mounts files:
+With `openssl` or `rct` command you can get some information from your entitlement:
 
 ```bash
-[root@compute-0 ~]# cat /usr/share/containers/mounts.conf
-/usr/share/rhel/secrets:/run/secrets
-[root@compute-0 ~]# ls -la /usr/share/rhel/secrets
-total 0
-drwxr-xr-x. 2 root root 64 Jan  1  1970 .
-drwxr-xr-x. 3 root root 21 Jan  1  1970 ..
-lrwxrwxrwx. 3 root root 20 Apr 26 08:32 etc-pki-entitlement -> /etc/pki/entitlement
-lrwxrwxrwx. 3 root root 28 Apr 26 08:32 redhat.repo -> /etc/yum.repos.d/redhat.repo
-lrwxrwxrwx. 3 root root  9 Apr 26 08:32 rhsm -> /etc/rhsm
+$ rct stat-cert /etc/pki/entitlement/entitlement.pem
+Type: Entitlement Certificate
+Version: 3.4
+DER size: 1610b
+Subject Key ID size: 20b
+Content sets: 5835
+$ openssl x509 -in /etc/pki/entitlement/entitlement.pem -noout -issuer
+issuer=C = US, ST = North Carolina, O = "Red Hat, Inc.", OU = Red Hat Network, CN = Red Hat Candlepin Authority, emailAddress = ca-support@redhat.com
+$ rct cat-cert  /etc/pki/entitlement/entitlement.pem  | head -n15
+
++-------------------------------------------+
+    Entitlement Certificate
++-------------------------------------------+
+
+Certificate:
+    Path: /etc/pki/entitlement/entitlement.pem
+    Version: 3.4
+    Serial: <Cert Serial>
+    Start Date: 2022-07-10 03:19:11+00:00
+    End Date: 2023-07-10 03:19:11+00:00
+    Pool ID: Not Available
+
+Subject:
+    CN: xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxx
 ```
-Documentation: [default_mounts_file](https://github.com/cri-o/cri-o/blob/master/docs/crio.conf.5.md#crioruntime-table)
 
 
-## Per-Build entitlement
+How to get the entitlement certificate? If simple content access is enabled at your organisation/redhat account, the insights Operatos automatically provide and refresh and entitlement to your OpenShift 4 Cluster.
 
-Example based von my [own-apache-container](https://github.com/openshift-examples/own-apache-container) example.
+You can enable and check the Simple content access at <https://access.redhat.com/management>, it should look like this:
 
-Just-for-information: Here the diff of changes I made in the Dockerfile to get it running on OpenShift 4: [Fixed Dockerfile.rhel - OpenShift 4 ready](https://github.com/openshift-examples/own-apache-container/commit/bfca5e6d4b2700f30ca91e1af53bbd76902c3334#diff-71a884046d6eedf388a5dc754169bb9c)
 
-### Store entitlement in a secret
 
-The entitlement contains the information which repos are available for the entitlement. List of available repos:
-`rct cat-cert /etc/pki/entitlement/xxxxxx.pem`
+At your OpenShift 4 Cluster you can take a look your entitlement via:
+```
+$ oc get secrets etc-pki-entitlement -n openshift-config-managed  -o jsonpath="{.data.entitlement\.pem}" | base64 -d > entitlement.pem
+
+$ rct cat-cert entitlement.pem | head -n15
+
++-------------------------------------------+
+    Entitlement Certificate
++-------------------------------------------+
+
+Certificate:
+    Path: entitlement.pem
+    Version: 3.4
+    Serial: <Cert Serial>
+    Start Date: 2022-07-10 05:06:45+00:00
+    End Date: 2023-07-10 05:06:45+00:00
+    Pool ID: Not Available
+
+Subject:
+    CN: xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxx
+$
+```
+
+Relevant documentation part: [Importing simple content access certificates with Insights Operator](https://docs.openshift.com/container-platform/4.11/support/remote_health_monitoring/insights-operator-simple-access.html)
+
+Another option to get an entitlement from your Red Hat Satellite installation in your environment.
+Or copy the entitlement from a subscribed Red Hat Enterprise Linux - this is not recommended, and I assume this is against Red Hat Terms and conditions.
+
+
+## Let’s elaborate on the second one: How to provide/attach the entitlement to the build.
+
+There are three options to attach the entitlement to a build – build pod at the end:
+
+  1. Simple attaches a secret with the entitlement to the build.
+     Documentation: [Adding subscription entitlements as a build secret](https://docs.openshift.com/container-platform/4.11/cicd/builds/running-entitled-builds.html#builds-source-secrets-entitlements_running-entitled-builds)
+
+  2. Leverage the [Shared Resource CSI Driver Operator](https://docs.openshift.com/container-platform/4.11/storage/container_storage_interface/ephemeral-storage-shared-resource-csi-driver-operator.html)    (Technology Preview) to share the etc-pki-entitlement secrets from openshift-config-managed namespace provided by the Insights Operator.
+
+  3. Rollout entitlement cluster-wide via MachineConfigOperator.
+     Not recommend because it changes every single build behavior in the OpenShift Cluster, additional you have to update the MachineConfig to the new entitlement regularly.
+
+### Let’s take a more in-depth look at the Shared Resource CSI solution:
+
+First enable the Shared Resource CSI Driver Operator via FeatureGates:
+
+  * [Enabling feature sets using the web console](https://docs.openshift.com/container-platform/4.11/nodes/clusters/nodes-cluster-enabling-features.html#nodes-cluster-enabling-features-console_nodes-cluster-enabling)
+
+  * [Enabling feature sets using the CLI](https://docs.openshift.com/container-platform/4.11/nodes/clusters/nodes-cluster-enabling-features.html#nodes-cluster-enabling-features-console_nodes-cluster-enabling)
+
+Then wait for the MachineConfigPool is updated and shared resources objects are available:
 
 ```bash
-oc create secret generic etc-pki-entitlement \
-    --from-file /etc/pki/entitlement/xxxxxx.pem \
-    --from-file /etc/pki/entitlement/xxxxxx-key.pem
+$  oc api-resources | grep  sharedresource
+Sharedconfigmaps  sharedresource.openshift.io/v1alpha1 false SharedConfigMap
+Sharedsecrets     sharedresource.openshift.io/v1alpha1 false SharedSecret
 ```
 
-### Create image streams
+#### Create an sharedsecrets object (cluster scoped):
 
-Not all images are easily accessible, in many cases you need access to registry.redhat.io.
-You can provide the access to registry.redhat.io in the namespace or use the available access in the openshift namespace.
+=== "OC"
 
-**Used in my dockerfile of my own-apache-container:**
-```bash
-oc import-image rhel7:7.6 \
-  --from=registry.access.redhat.com/rhel7/rhel:7.6  \
-  --namespace openshift \
-  --confirm
-```
+    ```bash
+    oc apply -f {{ page.canonical_url }}etc-pki-entitlement.SharedSecret.yaml
+    ```
 
-### Build config
+=== "etc-pki-entitlement.SharedSecret.yaml"
 
-```bash hl_lines="26 27 28 29 30 33 34"
-# Create imagestream own-apache-container-rhel7
-oc create is own-apache-container-rhel7
+    ```yaml
+    --8<-- "content/build/entitled/etc-pki-entitlement.SharedSecret.yaml"
+    ```
 
-oc apply -f - <<EOF
-apiVersion: build.openshift.io/v1
-kind: BuildConfig
-metadata:
-  annotations:
-    openshift.io/generated-by: OpenShiftNewBuild
-  creationTimestamp: null
-  labels:
-    build: own-apache-container-rhel7
-  name: own-apache-container-rhel7
-spec:
-  nodeSelector: null
-  output:
-    to:
-      kind: ImageStreamTag
-      name: own-apache-container-rhel7:latest
-  postCommit: {}
-  resources: {}
-  source:
-    git:
-      uri: https://github.com/openshift-examples/own-apache-container.git
-    type: Git
-    # IMPORTANT: mount the rhel entitlement
-    secrets:
-    - secret:
-        name: etc-pki-entitlement
-      destinationDir: etc-pki-entitlement
-  strategy:
-    dockerStrategy:
-      # IMPORTANT: to select the rhel dockerfile
-      dockerfilePath: Dockerfile.rhel
-      from:
-        kind: ImageStreamTag
-        name: rhel7:7.6
-        namespace: openshift
-    type: Docker
-  triggers:
-  - type: ConfigChange
-  - imageChange: {}
-    type: ImageChange
-status:
-  lastVersion: 0
-EOF
 
-```
+#### Create a project/namespace
 
-## Playground
+=== "OC"
 
-### How to run a root rhel container with entitlement
+    ```bash
+    oc create project entitled-build-demo
+    ```
 
-```bash
 
-# Create image stream (at openshift namespace)
-oc import-image rhel7:7.6 \
-  --from=registry.access.redhat.com/rhel7/rhel:7.6  \
-  --namespace openshift \
-  --confirm
+#### Grant access to SharedSecret `etc-pki-entitlement`
 
-# Create entitlement secret
-oc create secret generic etc-pki-entitlement \
-    --from-file /etc/pki/entitlement/3331047254240145326.pem \
-    --from-file /etc/pki/entitlement/3331047254240145326-key.pem
+=== "OC"
 
-# Service account
-oc create sa anyuid
+    ```bash
+    oc apply -f {{ page.canonical_url }}etc-pki-entitlement.Role.yaml
+    oc apply -f {{ page.canonical_url }}etc-pki-entitlement.RoleBinding.yaml
+    ```
 
-# Allow service anyuid to use SCC anyuid
-oc create -f - <<EOF
-apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
-metadata:
-  name: scc-anyuid
-rules:
-- apiGroups:
-  - security.openshift.io
-  resourceNames:
-  - anyuid
-  resources:
-  - securitycontextconstraints
-  verbs:
-  - use
-EOF
+=== "etc-pki-entitlement.SharedSecret.yaml"
 
-oc create -f - <<EOF
-kind: RoleBinding
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  name: sa-to-scc-anyuid
-subjects:
-  - kind: ServiceAccount
-    name: anyuid
-roleRef:
-  kind: Role
-  name: scc-anyuid
-  apiGroup: rbac.authorization.k8s.io
-EOF
+    ```yaml
+    ---
+    --8<-- "content/build/entitled/etc-pki-entitlement.Role.yaml"
+    ---
+    --8<-- "content/build/entitled/etc-pki-entitlement.RoleBinding.yaml"
+    ```
 
-```
-#### Create secret with entitlement
 
-The entitlement contains the information which repos are available for the entitlement. List of available repos:
-`rct cat-cert /etc/pki/entitlement/3551555797900109932.pem`
+#### Create ImageStream and BuildConfig with access to entitlement
 
-```bash
-oc create secret generic etc-pki-entitlement \
-    --from-file /etc/pki/entitlement/3551555797900109932.pem \
-    --from-file /etc/pki/entitlement/3551555797900109932-key.pem
-```
 
-#### Deploy rhel7
+=== "etc-pki-entitlement.SharedSecret.yaml"
 
-```bash
+    ```yaml hl_lines="28-38"
+    ---
+    --8<-- "content/build/entitled/etc-pki-entitlement.ImageStream.yaml"
+    ---
+    --8<-- "content/build/entitled/etc-pki-entitlement.BuildConfig.yaml"
+    ```
 
-oc create deploymentconfig rhel7 \
-  --image=rhel7:7.6 -- sleep infinity
+=== "OC"
 
-oc patch dc/rhel7 \
-    --type='json' \
-    --patch='[
-        {"op": "replace", "path": "/spec/template/spec/serviceAccount", "value": "anyuid"},
-        {"op": "replace", "path": "/spec/template/spec/serviceAccountName", "value": "anyuid"}
-    ]'
+    ```bash
+    oc apply -f {{ page.canonical_url }}etc-pki-entitlement.ImageStream.yaml
+    oc apply -f {{ page.canonical_url }}etc-pki-entitlement.BuildConfig.yaml
+    ```
 
-oc set volumes dc/rhel7 --add \
-  --name=etc-pki-entitlement \
-  --mount-path /etc/pki/entitlement \
-  --secret-name=etc-pki-entitlement
-```
 
-#### Play with rhel7
 
-```bash
-$ oc rsh dc/rhel
-sh-4.2# yum repolist
-Loaded plugins: ovl, product-id, search-disabled-repos, subscription-manager
-Repo rhel-7-server-rpms forced skip_if_unavailable=True due to: %(ca_cert_dir)sredhat-uep.pem
-https://cdn.redhat.com/content/dist/rhel/server/7/7Server/x86_64/os/repodata/repomd.xml: [Errno 14] curl#77 - "Problem with the SSL CA cert (path? access rights?)"
-Trying other mirror.
-repolist: 0
-sh-4.2#
-```
+Additional Resources
 
-!!! info
-    **Problem:**
-    Delete the `rm /etc/rhsm-host` first, rhel 7 can not handle an `/etc/rhsm-host/` without an `rhsm.conf`.
-    Deleting of `/etc/rhsm-host` force the package managment to use `/etc/rhsm` provided by the container image together with entitlement mount.
+  * <https://cloud.redhat.com/blog/how-to-build-images-with-rhel-subscriptions-on-openshift>
+  * <https://cloud.redhat.com/blog/the-path-to-improving-the-experience-with-rhel-entitlements-on-openshift>
+  * <https://github.com/openshift/enhancements/blob/master/enhancements/subscription-content/subscription-injection.md>
+  * <https://issues.redhat.com/browse/OCPBU-141>
 
-```bash
-sh-4.2# rm /etc/rhsm-host`
-sh-4.2# yum repolist
-Loaded plugins: ovl, product-id, search-disabled-repos, subscription-manager
-rhel-7-server-rpms
-(1/3): rhel-7-server-rpms/7Server/x86_64/group
-(2/3): rhel-7-server-rpms/7Server/x86_64/updateinfo
-(3/3): rhel-7-server-rpms/7Server/x86_64/primary_db
-repo id                                                                                                           repo name                                                                                                                 status
-rhel-7-server-rpms/7Server/x86_64                                                                                 Red Hat Enterprise Linux 7 Server (RPMs)                                                                                  28807
-repolist: 28807
-sh-4.2#
-```
