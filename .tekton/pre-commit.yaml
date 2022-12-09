@@ -96,6 +96,38 @@ spec:
           - name: PAC_GITHUB_SECRET
             value: "$(params.git_auth_secret)"
 
+      - name: wait-for-imagestream
+        params:
+          - name: SCRIPT
+            value: |
+              while true; do
+                oc get imagestream/pr-$(params.pull_request_number) && exit 0 ;
+                sleep 5;
+              done;
+          - name: VERSION
+            value: latest
+        runAfter:
+          - github-add-labels
+        taskRef:
+          kind: ClusterTask
+          name: openshift-client
+
+      - name: build-image
+        params:
+        - name: IMAGE
+          value: image-registry.openshift-image-registry.svc:5000/cicd-openshift-examples/pr-$(params.pull_request_number):latest
+        - name: DOCKERFILE
+          value: ./Containerfile
+        - name: TLSVERIFY
+          value: 'false'
+        runAfter:
+        - wait-for-imagestream
+        taskRef:
+          kind: ClusterTask
+          name: buildah
+        workspaces:
+        - name: source
+          workspace: source
 
   workspaces:
     - name: source

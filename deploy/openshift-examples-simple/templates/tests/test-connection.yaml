@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "openshift-examples-simple.fullname" . }}-test-connection"
+  labels:
+    {{- include "openshift-examples-simple.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "openshift-examples-simple.fullname" . }}:{{ .Values.service.port }}']
+  restartPolicy: Never
