@@ -75,10 +75,12 @@ spec:
             - name: source
           steps:
             - name: pre-commit
-              image: quay.io/rbohne/pre-commit:latest
+              image: quay.io/openshift-examples/pre-commit:latest
               workingDir: $(workspaces.source.path)
               script: |
-                echo pre-commit run --color=never --all-files
+                pre-commit run --color=never --all-files
+                echo "Exit 0 - we have to cleanup first..."
+                exit 0
 
       - name: github-add-labels
         runAfter:
