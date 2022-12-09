@@ -60,3 +60,14 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{/*
+Create the name of the image stream to use
+*/}}
+{{- define "openshift-examples-simple.imageStreamName" -}}
+{{- if .Values.imageStream.create }}
+{{- default (include "openshift-examples-simple.fullname" .) .Values.imageStream.name }}
+{{- else }}
+{{- default "default" .Values.imageStreamName.name }}
+{{- end }}
+{{- end }}
