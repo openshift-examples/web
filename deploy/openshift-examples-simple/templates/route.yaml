@@ -7,7 +7,7 @@
   {{- end }}
 {{- end }}
 apiVersion: route.openshift.io/v1
-kind: route
+kind: Route
 metadata:
   name: {{ $fullName }}
   labels:
