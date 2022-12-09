@@ -18,7 +18,7 @@ metadata:
   {{- end }}
 spec:
   port:
-    targetPort: {{ $svcPort }}
+    targetPort: http
   tls:
     insecureEdgeTerminationPolicy: Redirect
     termination: edge
