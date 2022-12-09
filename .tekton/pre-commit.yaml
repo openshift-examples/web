@@ -118,6 +118,8 @@ spec:
           value: image-registry.openshift-image-registry.svc:5000/cicd-openshift-examples/pr-$(params.pull_request_number):latest
         - name: DOCKERFILE
           value: ./Containerfile
+        - name: TLSVERIFY
+          value: 'false'
         runAfter:
         - wait-for-imagestream
         taskRef:
