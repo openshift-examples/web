@@ -1,0 +1,22 @@
+---
+# exclude: pipeline
+
+repos:
+  - repo: https://github.com/markdownlint/markdownlint.git
+    rev: v0.12.0
+    hooks:
+      - id: markdownlint
+        name: Markdownlint
+        description: Run markdownlint on your Markdown files
+        entry: mdl
+        language: ruby
+        files: \.(md|mdown|markdown)$
+  - repo: https://github.com/adrienverge/yamllint.git
+    rev: v1.28.0
+    hooks:
+      - id: yamllint
+        name: yamllint
+        description: This hook runs yamllint.
+        entry: yamllint
+        language: python
+        types: [file, yaml]
