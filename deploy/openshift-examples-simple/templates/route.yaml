@@ -1,0 +1,29 @@
+{{- if .Values.route.enabled -}}
+{{- $fullName := include "openshift-examples-simple.fullname" . -}}
+{{- $svcPort := .Values.service.port -}}
+{{- if and .Values.route.className (not (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion)) }}
+  {{- if not (hasKey .Values.route.annotations "kubernetes.io/route.class") }}
+  {{- $_ := set .Values.route.annotations "kubernetes.io/route.class" .Values.route.className}}
+  {{- end }}
+{{- end }}
+apiVersion: route.openshift.io/v1
+kind: route
+metadata:
+  name: {{ $fullName }}
+  labels:
+    {{- include "openshift-examples-simple.labels" . | nindent 4 }}
+  {{- with .Values.route.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  port:
+    targetPort: {{ $svcPort }}
+  tls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: edge
+  to:
+    kind: Service
+    name: {{ $fullName }}
+    weight: null
+{{- end }}
