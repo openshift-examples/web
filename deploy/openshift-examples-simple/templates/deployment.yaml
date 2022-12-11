@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   name: {{ include "openshift-examples-simple.fullname" . }}
   labels:
+    app.openshift.io/runtime: nginx
     {{- include "openshift-examples-simple.labels" . | nindent 4 }}
   annotations:
 {{- if .Values.imageStream.create }}
