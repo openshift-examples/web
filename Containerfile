@@ -2,8 +2,8 @@
 # Build: podman build -t mkdocs:local --no-cache -f Containerfile.local-run .
 # Run: podman run -ti --rm -v $(pwd):/opt/app-root/src:z -p 8080:8080 mkdocs:local
 #
-FROM registry.access.redhat.com/ubi8/python-38:latest AS builder
-LABEL "io.openshift.s2i.build.image"="registry.access.redhat.com/ubi8/python-38:latest" \
+FROM registry.access.redhat.com/ubi9/python-39:latest AS builder
+LABEL "io.openshift.s2i.build.image"="registry.access.redhat.com/ubi9/python-39:latest" \
       "io.openshift.s2i.build.commit.author"="Robert Bohne <robert.bohne@redhat.com>"
 
 USER root
@@ -18,7 +18,7 @@ RUN /usr/libexec/s2i/assemble
 
 RUN mkdocs build --clean
 
-FROM registry.access.redhat.com/ubi8/nginx-118:latest
+FROM registry.access.redhat.com/ubi9/nginx-120:latest
 USER root
 
 COPY --from=builder /opt/app-root/src/site /tmp/src
