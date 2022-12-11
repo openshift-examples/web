@@ -4,6 +4,7 @@ metadata:
   name: {{ include "openshift-examples-simple.fullname" . }}
   labels:
     app.openshift.io/runtime: nginx
+    app.kubernetes.io/component: nginx
     {{- include "openshift-examples-simple.labels" . | nindent 4 }}
   annotations:
 {{- if .Values.imageStream.create }}

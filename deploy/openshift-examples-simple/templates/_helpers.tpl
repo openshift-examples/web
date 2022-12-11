@@ -34,6 +34,7 @@ Create chart name and version as used by the chart label.
 Common labels
 */}}
 {{- define "openshift-examples-simple.labels" -}}
+app.kubernetes.io/part-of: {{ .Chart.Name }}
 helm.sh/chart: {{ include "openshift-examples-simple.chart" . }}
 {{ include "openshift-examples-simple.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
