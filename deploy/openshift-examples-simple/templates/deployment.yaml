@@ -4,6 +4,11 @@ metadata:
   name: {{ include "openshift-examples-simple.fullname" . }}
   labels:
     {{- include "openshift-examples-simple.labels" . | nindent 4 }}
+  annotations:
+{{- if .Values.imageStream.create }}
+    image.openshift.io/triggers: >-
+      [{"from":{"kind":"ImageStreamTag","name":"{{ include "openshift-examples-simple.imageStreamName" .  }}:latest"},"fieldPath":"spec.template.spec.containers[?(@.name==\"{{ .Chart.Name }}\")].image","pause":"false"}]
+{{- end }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
