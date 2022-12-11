@@ -19,15 +19,6 @@ ignore_macros: true
 
 [Code Ready Containers](https://github.com/code-ready/crc)
 
-### OpenShift 3
-
-- [Container Development Kit](https://developers.redhat.com/products/cdk/overview)
-- Or simple `oc cluster up`
-```text
-oc cluster up --image=registry.access.redhat.com/openshift3/ose \
-  --public-hostname=localhost
-```
-
 ## Usefull Red Hat Solutions article
 
 |Article|Note|
