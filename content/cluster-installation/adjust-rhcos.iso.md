@@ -20,8 +20,8 @@ Prerequisites
 
 or use that one created from `openshift-install`
 
-```
- oc get -n openshift-machine-api \
+```bash
+oc get -n openshift-machine-api \
   secrets/worker-user-data \
   -o go-template="{{ .data.userData | base64decode }}" \
   > worker.ign
