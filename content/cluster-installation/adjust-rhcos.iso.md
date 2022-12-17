@@ -3,20 +3,18 @@ title: How to adjust the an RHEL CoreOS ISO
 linktitle: Adjust RHCOS.ISO
 weight: 1900
 description: TBD
-tags:
-  - rhcos
-  - coreos
+tags: ['rhcos', 'coreos']
 ignore_macros: true
 ---
+
 # How to adjust the an RHEL CoreOS ISO
 
 Prerequisites
 
-  * [Red Hat CoreOS ISO](https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/)
-  * [Latest coreos-installer](https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/coreos-installer/latest/)
+* [Red Hat CoreOS ISO](https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/)
+* [Latest coreos-installer](https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/coreos-installer/latest/)
 
 ## Prepare auto-install USB-Sticks including worker igntion
-
 
 ### Get worker ignition from running cluster
 
@@ -29,7 +27,6 @@ or use that one created from `openshift-install`
   > worker.ign
 ```
 
-
 ### Create own rhcos iso
 
 ```bash
@@ -41,6 +38,7 @@ coreos-installer iso customize \
 ```
 
 Option: double check ignition:
+
 ```
 coreos-installer iso ignition show ready-to-install-at-sda.iso
 ```
