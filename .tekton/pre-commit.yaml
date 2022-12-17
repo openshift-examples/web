@@ -23,6 +23,7 @@ metadata:
     # example:
     #pipelinesascode.tekton.dev/task-2: "[github-add-labels]"
     pipelinesascode.tekton.dev/task-2: "[.tekton/task/github-add-labels.yaml]"
+    pipelinesascode.tekton.dev/task-3: "[.tekton/task/github-add-comment.yaml]"
 
     # How many runs we want to keep attached to this event
     pipelinesascode.tekton.dev/max-keep-runs: "5"
@@ -129,6 +130,55 @@ spec:
         - name: source
           workspace: source
 
+      - name: wait-for-route-and-notify
+        runAfter:
+          - build-image
+        workspaces:
+          - name: source
+            workspace: source
+        params:
+            - name: pull_request_number
+              value: "$(params.pull_request_number)"
+        taskSpec:
+          params:
+            - name: pull_request_number
+              type: string
+          workspaces:
+            - name: source
+          steps:
+            - name: pre-commit
+              image: image-registry.openshift-image-registry.svc:5000/openshift/cli:latest
+              workingDir: $(workspaces.source.path)
+              script: |
+                #!/usr/bin/env bash
+                set -euxo pipefail
+
+                while true; do
+                  oc get routes/pr-$(params.pull_request_number) && break ;
+                  sleep 5;
+                done;
+
+                oc rollout status deployment/pr-$(params.pull_request_number)
+
+                oc get routes/pr-$(params.pull_request_number) \
+                  -o go-template='💻 Deployed & available at {{"\n"}}🌎 https://{{ .spec.host}}{{"\n"}}' \
+                  | tee $(workspaces.source.path)/notify-deployment.txt
+
+      - name: notify-deployment
+        runAfter:
+          - wait-for-route-and-notify
+        workspaces:
+          - name: comment-file
+            workspace: source
+        params:
+          - name: REQUEST_URL
+            value: "$(params.repo_url)/pull/$(params.pull_request_number)"
+          - name: PAC_GITHUB_SECRET
+            value: "$(params.git_auth_secret)"
+          - name: COMMENT_OR_FILE
+            value: "notify-deployment.txt"
+        taskRef:
+          name: github-add-comment
   workspaces:
     - name: source
       volumeClaimTemplate:
