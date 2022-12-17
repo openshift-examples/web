@@ -5,38 +5,48 @@ weight: 1900
 description: TBD
 tags:
   - rhcos
+  - coreos
+ignore_macros: true
 ---
 # How to adjust the an RHEL CoreOS ISO
 
- * Download ISO from [rhcos-4.5.6-x86_64-installer.x86_64.iso](https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.5/4.5.6/rhcos-4.5.6-x86_64-installer.x86_64.iso)
+Prerequisites
 
-Run commands:
+  * [Red Hat CoreOS ISO](https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/)
+  * [Latest coreos-installer](https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/coreos-installer/latest/)
+
+## Prepare auto-install USB-Sticks including worker igntion
+
+
+### Get worker ignition from running cluster
+
+or use that one created from `openshift-install`
+
+```
+ oc get -n openshift-machine-api \
+  secrets/worker-user-data \
+  -o go-template="{{ .data.userData | base64decode }}" \
+  > worker.ign
+```
+
+
+### Create own rhcos iso
+
 ```bash
-
-mount rhcos-4.5.6-x86_64-installer.x86_64.iso /mnt/
-mkdir /tmp/rhcos
-rsync -a /mnt/* /tmp/rhcos/
-cd /tmp/rhcos
-```
-## Edit isolinux/isolinux.cfg
-
-Example
-```
-label linux
-  menu label ^$HOSTNAME
-  kernel /images/vmlinuz
-  append initrd=/images/initramfs.img nomodeset rd.neednet=1 coreos.inst=yes ip=$IP::$GW:$NM:$HOSTNAME.example.com:ens192:none nameserver=4.4.4.4 nameserver=8.8.8.8 coreos.inst.install_dev=sda coreos.inst.image_url=http://10.40.201.78:8080/rhcos-4.5.6-x86_64-metal.x86_64.raw.gz coreos.inst.ignition_url=http://10.40.201.78:8080/$HOSTNAME.ign
+coreos-installer iso customize \
+  --dest-device /dev/sda \
+  --dest-ignition worker.ign \
+  -o ready-to-install-at-sda.iso \
+  rhcos-live.x86_64.iso
 ```
 
-## Build ISO
-```bash
-genisoimage -U -A "RHCOS-x86_64" -V "RHCOS-x86_64" \
-  -volset "RHCOS-x86_64" \
-  -J -joliet-long -r -v -T -x ./lost+found \
-  -o /tmp/rhcos-4.5.6-x86_64-installer-custom.x86_64.iso \
-  -b isolinux/isolinux.bin \
-  -c isolinux/boot.cat \
-  -no-emul-boot -boot-load-size 4 \
-  -boot-info-table -eltorito-alt-boot \
-  -e images/efiboot.img -no-emul-boot .
+Option: double check ignition:
+```
+coreos-installer iso ignition show ready-to-install-at-sda.iso
+```
+
+### Prepare usb stick
+
+```
+dd if=ready-to-install-at-sda.iso of=/dev/$USB_DISK status=progress
 ```
