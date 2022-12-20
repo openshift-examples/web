@@ -3,6 +3,7 @@ title: Certificates
 linktitle: Certificates
 weight: 26000
 description: TBD
+ignore_macros: true
 ---
 
 # Certificates
@@ -10,9 +11,15 @@ description: TBD
 ## Usefull OpenSSL Comments
 
 ### Get the list of certificates from a secrets
+
 ```bash
+
 SECRET=letsencrypt-router-certs
-openssl crl2pkcs7 -nocrl -certfile <(oc get secrets $SECRET -o go-template='{{ index .data "tls.crt" | base64decode }}' ) | openssl pkcs7 -print_certs  -noout
+
+openssl crl2pkcs7 -nocrl -certfile \
+  <(oc get secrets $SECRET -o go-template='{{ index .data "tls.crt" | base64decode }}' ) \
+  | openssl pkcs7 -print_certs  -noout
+
 ```
 
 ## General: Create a self signed certificate
@@ -20,17 +27,21 @@ openssl crl2pkcs7 -nocrl -certfile <(oc get secrets $SECRET -o go-template='{{ i
 ### 1) Create [openssl.self-signed-certificate.conf](certificate/openssl.self-signed-certificate.conf)
 
 ```ini
+
 --8<-- "content/certificate/openssl.self-signed-certificate.conf"
+
 ```
 
 ### 2) Create self signed certificate
 
 ```bash
+
 openssl req -x509 -nodes -days 730 \
   -newkey rsa:2048 -keyout cert.pem \
   -out cert.pem \
   -config openssl.self-signed-certificate.conf \
   -extensions 'v3_req'
+
 ```
 
 ### 3) Print self signed certificate
@@ -62,14 +73,20 @@ $ openssl x509 -in cert.pem -noout -text
 
 ### Create OpenSSL Configuration
 
-**Create [openssl.root-ca.conf](certificate/openssl.root-ca.conf)**
+#### Create [openssl.root-ca.conf](certificate/openssl.root-ca.conf)
+
 ```ini
+
 --8<-- "content/certificate/openssl.root-ca.conf"
+
 ```
 
-**Create [openssl.certificate.conf](certificate/openssl.certificate.conf)**
+#### Create [openssl.certificate.conf](certificate/openssl.certificate.conf)
+
 ```ini
+
 --8<-- "content/certificate/openssl.certificate.conf"
+
 ```
 
 ### Adjust openssl.certificate.conf
@@ -87,7 +104,7 @@ openssl req -config openssl.root-ca.conf \
   -passin pass:openshift
 ```
 
-### Generate the domain key:
+### Generate the domain key
 
 ```bash
 openssl genrsa -out ssl.key 2048
@@ -133,7 +150,7 @@ Cache-control: private
 
 ### Trust own root CA on your Linux box
 
-https://access.redhat.com/solutions/1519813
+<https://access.redhat.com/solutions/1519813>
 
 ```bash
 update-ca-trust enable
@@ -200,8 +217,6 @@ $ oc get cm/trusted-ca-bundle -o yaml -n openshift-console  |grep MyP
 [CONFIGURING A CUSTOM PKI](https://access.redhat.com/documentation/en-us/openshift_container_platform/4.2/html/networking/configuring-a-custom-pki)
 
 ## Some usefull openssl commands
-
-
 
 ```bash
 
