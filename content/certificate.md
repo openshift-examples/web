@@ -7,6 +7,14 @@ description: TBD
 
 # Certificates
 
+## Usefull OpenSSL Comments
+
+### Get the list of certificates from a secrets
+```bash
+SECRET=letsencrypt-router-certs
+openssl crl2pkcs7 -nocrl -certfile <(oc get secrets $SECRET -o go-template='{{ index .data "tls.crt" | base64decode }}' ) | openssl pkcs7 -print_certs  -noout
+```
+
 ## General: Create a self signed certificate
 
 ### 1) Create [openssl.self-signed-certificate.conf](certificate/openssl.self-signed-certificate.conf)
@@ -193,10 +201,10 @@ $ oc get cm/trusted-ca-bundle -o yaml -n openshift-console  |grep MyP
 
 ## Some usefull openssl commands
 
-```bash
-openssl crl2pkcs7 -nocrl -certfile <(oc get secret/router-certs -o yaml --export | grep tls.crt | cut -f2 -d ':' | tr -d ' ' |base64 -D ) | openssl pkcs7 -print_certs  -noout
 
-openssl crl2pkcs7 -nocrl -certfile <(oc get secret/grafana-tls -o json --export | jq -r '.data."tls.crt"'  | base64 -D ) | openssl pkcs7 -print_certs  -noout
+
+```bash
 
 oc get svc --all-namespaces  -o=custom-columns="tls:.metadata.annotations.service\.alpha\.openshift\.io/serving-cert-secret-name,namespace:.metadata.namespace"  | grep -v '^<none>' | awk '{ print "oc delete secret/" $1 " -n " $2}'
+
 ```
