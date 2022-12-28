@@ -23,7 +23,18 @@ python3 -c 'import cv2;print(cv2.getBuildInformation())'  |grep cuda
 ### Check dlib
 
 ```
+python3 -c 'import dlib; print(dlib.DLIB_USE_CUDA);print(dlib.cuda.get_num_devices())'
+```
 
+### Cuda version
+
+```
+$ /usr/local/cuda/bin/nvcc --version
+nvcc: NVIDIA (R) Cuda compiler driver
+Copyright (c) 2005-2022 NVIDIA Corporation
+Built on Wed_May__4_00:02:26_PDT_2022
+Cuda compilation tools, release 11.4, V11.4.239
+Build cuda_11.4.r11.4/compiler.31294910_0
 ```
 
 ## Issues & References
