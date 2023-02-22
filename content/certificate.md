@@ -11,6 +11,7 @@ description: TBD
 
 ### Get the list of certificates from a secrets
 
+{% raw %}
 ```bash
 
 SECRET=letsencrypt-router-certs
@@ -20,6 +21,7 @@ openssl crl2pkcs7 -nocrl -certfile \
   | openssl pkcs7 -print_certs  -noout
 
 ```
+{% endraw %}
 
 ## General: Create a self signed certificate
 
