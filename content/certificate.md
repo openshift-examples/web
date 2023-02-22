@@ -26,11 +26,19 @@ openssl crl2pkcs7 -nocrl -certfile \
 
 ### 1) Create [openssl.self-signed-certificate.conf](certificate/openssl.self-signed-certificate.conf)
 
-```ini
 
---8<-- "content/certificate/openssl.self-signed-certificate.conf"
+=== "Download"
 
-```
+    ```
+    curl -L -O {{ page.canonical_url }}openssl.self-signed-certificate.conf
+    ```
+
+=== "openssl.self-signed-certificate.conf"
+
+    ```ini
+    --8<-- "content/certificate/openssl.self-signed-certificate.conf"
+    ```
+
 
 ### 2) Create self signed certificate
 
@@ -75,19 +83,32 @@ $ openssl x509 -in cert.pem -noout -text
 
 #### Create [openssl.root-ca.conf](certificate/openssl.root-ca.conf)
 
-```ini
+=== "Download"
 
---8<-- "content/certificate/openssl.root-ca.conf"
+    ```
+    curl -L -O {{ page.canonical_url }}openssl.root-ca.conf
+    ```
 
-```
+=== "openssl.root-ca.conf"
+
+    ```ini
+    --8<-- "content/certificate/openssl.root-ca.conf"
+    ```
+
 
 #### Create [openssl.certificate.conf](certificate/openssl.certificate.conf)
 
-```ini
+=== "Download"
 
---8<-- "content/certificate/openssl.certificate.conf"
+    ```
+    curl -L -O {{ page.canonical_url }}openssl.certificate.conf
+    ```
 
-```
+=== "openssl.certificate.conf"
+
+    ```ini
+    --8<-- "content/certificate/openssl.certificate.conf"
+    ```
 
 ### Adjust openssl.certificate.conf
 
