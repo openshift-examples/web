@@ -3,7 +3,6 @@ title: Certificates
 linktitle: Certificates
 weight: 26000
 description: TBD
-ignore_macros: true
 ---
 
 # Certificates
@@ -35,9 +34,11 @@ openssl crl2pkcs7 -nocrl -certfile \
 
 === "openssl.self-signed-certificate.conf"
 
+    {% raw %}
     ```ini
     --8<-- "content/certificate/openssl.self-signed-certificate.conf"
     ```
+    {% endraw %}
 
 
 ### 2) Create self signed certificate
@@ -91,9 +92,11 @@ $ openssl x509 -in cert.pem -noout -text
 
 === "openssl.root-ca.conf"
 
+    {% raw %}
     ```ini
     --8<-- "content/certificate/openssl.root-ca.conf"
     ```
+    {% endraw %}
 
 
 #### Create [openssl.certificate.conf](certificate/openssl.certificate.conf)
@@ -106,9 +109,11 @@ $ openssl x509 -in cert.pem -noout -text
 
 === "openssl.certificate.conf"
 
+    {% raw %}
     ```ini
     --8<-- "content/certificate/openssl.certificate.conf"
     ```
+    {% endraw %}
 
 ### Adjust openssl.certificate.conf
 
