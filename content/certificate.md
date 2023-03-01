@@ -7,6 +7,10 @@ description: TBD
 
 # Certificates
 
+## Debugging Certificate Errors
+
+<https://www.netmeister.org/blog/debugging-certificate-errors.html>
+
 ## Usefull OpenSSL Comments
 
 ### Get the list of certificates from a secrets
