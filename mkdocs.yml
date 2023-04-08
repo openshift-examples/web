@@ -111,7 +111,7 @@ nav:
           - VMware IPI: cluster-installation/windows-container/VMware-ipi.md
           - DevPreview: cluster-installation/windows-container/dev-prev.md
       - Adjust RHCOS.ISO: cluster-installation/adjust-rhcos.iso.md
-
+      - Hosted Control Plane: cluster-installation/hosted-control-plane/index.md
   - Cluster configuration:
       - cluster-configuration/index.md
       - Authentication:

@@ -1,0 +1,48 @@
+---
+apiVersion: metallb.io/v1beta1
+kind: MetalLB
+metadata:
+  name: metallb
+  namespace: metallb
+---
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: ingress-public-ip
+  namespace: metallb
+spec:
+  protocol: layer2
+  autoAssign: false
+  addresses:
+    - 10.32.98.148-10.32.98.148
+---
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: l2advertisement
+  namespace: metallb
+spec:
+  ipAddressPools:
+  - ingress-public-ip
+---
+kind: Service
+apiVersion: v1
+metadata:
+  annotations:
+    metallb.universe.tf/address-pool: ingress-public-ip
+  name: metallb-ingress
+  namespace: openshift-ingress
+spec:
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 80
+    - name: https
+      protocol: TCP
+      port: 443
+      targetPort: 443
+  selector:
+    ingresscontroller.operator.openshift.io/deployment-ingresscontroller: default
+  type: LoadBalancer
+---
