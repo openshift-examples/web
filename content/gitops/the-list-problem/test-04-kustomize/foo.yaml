@@ -1,0 +1,9 @@
+
+apiVersion: examples.openshift.pub/v1
+kind: ExamplesOpenShiftPub
+metadata:
+  name: test
+  namespace: gitops-list-problem
+spec:
+  list:
+  - first-element

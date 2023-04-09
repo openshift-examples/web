@@ -195,6 +195,7 @@ nav:
 
   - GitOps:
       - gitops/index.md
+      - the list problem: gitops/the-list-problem/index.md
 
   - Networking:
       - networking/index.md
