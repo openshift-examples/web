@@ -21,18 +21,33 @@ oc new-project gitops-list-problem
 
 ### Build up playground
 
-```bash
-oc apply -k 01-bootstrap/
-```
+=== "oc apply -k"
+
+    ```bash
+    oc apply -k {{ page.canonical_url }}01-bootstrap/
+    ```
+
+=== "CustomResourceDefinition"
+
+    ```yaml
+    --8<-- "content/itops/the-list-problem/01-bootstrap/CustomResourceDefinition/gitops-examples-openshift-pub.yaml"
+    ```
+
+
+=== "CR"
+
+    ```yaml
+    --8<-- "content/itops/the-list-problem/01-bootstrap/ExamplesOpenShiftPub/test.yaml"
+    ```
 
 ### The command to rest between tests:
 
 ```bash
-oc apply  --force-conflicts --server-side \
-  -k 01-bootstrap/ExamplesOpenShiftPub/
+oc apply --force-conflicts --server-side \
+  -k {{ page.canonical_url }}01-bootstrap/ExamplesOpenShiftPub/
 ```
 
-## ❌ Test 1) oc apply --server-side : FAIL
+## ❌ Test 1) oc apply --server-side
 
 
 ```bash
@@ -60,7 +75,7 @@ spec:
   - second-element
 ```
 
-## ✅ Test 2) oc patch --type=json : SUCCESS
+## ✅ Test 2) oc patch --type=json
 
 ```bash
 oc patch eop/test --type=json \
@@ -84,7 +99,7 @@ spec:
 ```
 
 
-## ❌ Test 3) oc patch --type=merge : FAIL
+## ❌ Test 3) oc patch --type=merge
 
 ```bash
 oc patch eop/test --type=merge \
@@ -103,7 +118,7 @@ spec:
   - second-element
 ```
 
-## ❌ Test 4) kustomize & patchesJSON6902 : FAIL
+## ❌ Test 4) kustomize & patchesJSON6902
 
 ```yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
