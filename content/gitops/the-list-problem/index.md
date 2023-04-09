@@ -8,6 +8,8 @@ tags:
 
 # The list problem
 
+{{ macros_info() }}
+
 how to add an element to an existing list
 
 ## Bootstrap the playground
@@ -24,27 +26,27 @@ oc new-project gitops-list-problem
 === "oc apply -k"
 
     ```bash
-    oc apply -k {{ page.canonical_url }}01-bootstrap/
+    oc apply -k {{ config.repo_url }}.git/content/gitops/the-list-problem/01-bootstrap/?ref=
     ```
 
 === "CustomResourceDefinition"
 
     ```yaml
-    --8<-- "content/itops/the-list-problem/01-bootstrap/CustomResourceDefinition/gitops-examples-openshift-pub.yaml"
+    --8<-- "content/gitops/the-list-problem/01-bootstrap/CustomResourceDefinition/gitops-examples-openshift-pub.yaml"
     ```
 
 
 === "CR"
 
     ```yaml
-    --8<-- "content/itops/the-list-problem/01-bootstrap/ExamplesOpenShiftPub/test.yaml"
+    --8<-- "content/gitops/the-list-problem/01-bootstrap/ExamplesOpenShiftPub/test.yaml"
     ```
 
 ### The command to rest between tests:
 
 ```bash
 oc apply --force-conflicts --server-side \
-  -k {{ page.canonical_url }}01-bootstrap/ExamplesOpenShiftPub/
+  -k {{ config.repo_url }}.git/content/gitops/the-list-problem/01-bootstrap/ExamplesOpenShiftPub/
 ```
 
 ## ❌ Test 1) oc apply --server-side
