@@ -116,7 +116,7 @@ spec:
       - name: build-image
         params:
         - name: IMAGE
-          value: image-registry.openshift-image-registry.svc:5000/cicd-openshift-examples/pr-$(params.pull_request_number):latest
+          value: image-registry.openshift-image-registry.svc:5000/$(context.pipelineRun.namespace)/pr-$(params.pull_request_number):latest
         - name: DOCKERFILE
           value: ./Containerfile
         - name: TLSVERIFY
