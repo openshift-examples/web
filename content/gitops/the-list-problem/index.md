@@ -8,8 +8,6 @@ tags:
 
 # The list problem
 
-{{ macros_info() }}
-
 how to add an element to an existing list
 
 ## Bootstrap the playground
