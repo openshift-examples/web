@@ -146,3 +146,8 @@ $ kustomize build test-04-kustomize/
 $
 ```
 
+## ❌ Test 5) argocd serversideapply
+
+```bash
+oc create -n openshift-gitops 
+

@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: test-05-argocd-ssa
+  namespace: openshift-gitops
+spec:
+  destination:
+    namespace: gitops-list-problem
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: content/gitops/the-list-problem/test-05-argocd-ssa
+    repoURL: https://github.com/openshift-examples/web
+    targetRevision: gitops-array
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - ServerSideApply=true  # Enable SSA
+      - Validate=false # Needed for patching
+      - CreateNamespace=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
