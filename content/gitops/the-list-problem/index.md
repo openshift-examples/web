@@ -149,5 +149,36 @@ $
 ## ❌ Test 5) argocd serversideapply
 
 ```bash
-oc create -n openshift-gitops 
+$ oc create -f {{ config.repo_url }}.git/content/gitops/the-list-problem/test-05-argocd-ssa.app.yaml
 
+$ argocd app  get test-05-argocd-ssa
+Name:               test-05-argocd-ssa
+Project:            default
+Server:             https://kubernetes.default.svc
+Namespace:          gitops-list-problem
+URL:                https://openshift-gitops-server-openshift-gitops.apps.onlogic.bohne.io/applications/test-05-argocd-ssa
+Repo:               https://github.com/openshift-examples/web
+Target:             gitops-array
+Path:               content/gitops/the-list-problem/test-05-argocd-ssa
+SyncWindow:         Sync Allowed
+Sync Policy:        Automated (Prune)
+Sync Status:        Synced to gitops-array (2499b42)
+Health Status:      Healthy
+
+GROUP                   KIND                  NAMESPACE            NAME  STATUS  HEALTH  HOOK  MESSAGE
+examples.openshift.pub  ExamplesOpenShiftPub  gitops-list-problem  test  Synced                examplesopenshiftpub.examples.openshift.pub/test serverside-applied
+
+
+```
+
+### Result:
+
+```yaml
+apiVersion: examples.openshift.pub/v1
+kind: ExamplesOpenShiftPub
+metadata:
+  name: test
+spec:
+  list:
+  - second-element
+```
