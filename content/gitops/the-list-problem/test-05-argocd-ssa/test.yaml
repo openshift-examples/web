@@ -1,0 +1,7 @@
+apiVersion: examples.openshift.pub/v1
+kind: ExamplesOpenShiftPub
+metadata:
+  name: test
+spec:
+  list:
+  - second-element
