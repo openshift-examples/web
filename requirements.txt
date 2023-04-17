@@ -4,3 +4,5 @@ mkdocs-git-revision-date-localized-plugin
 mkdocs-glightbox
 git+https://github.com/jldiaz/mkdocs-plugin-tags.git
 git+https://github.com/fralau/mkdocs_macros_plugin.git@v0.5.11
+# Only for pre-commit checks not for mkdocs it selfe
+pre-commit
