@@ -182,3 +182,31 @@ spec:
   list:
   - second-element
 ```
+
+## ❌ Test 6) oc apply --server-side // "named" list
+
+
+```bash
+oc apply --server-side --force-conflicts -f - <<EOF
+apiVersion: examples.openshift.pub/v1
+kind: ExamplesOpenShiftPub
+metadata:
+  name: test
+spec:
+  list:
+  - name: second-element
+EOF
+```
+
+
+### Result:
+
+```yaml
+apiVersion: examples.openshift.pub/v1
+kind: ExamplesOpenShiftPub
+metadata:
+  name: test
+spec:
+  list:
+  - name: second-element
+```
