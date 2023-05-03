@@ -144,6 +144,66 @@ For reference, please see
 * [Masters and Workers Fail to Ignite Reporting Error 'x509: certificate has expired or not yet valid'](https://access.redhat.com/solutions/4355651)
 
 
+
+## Ignition fails - connection error "no such host" during the installation process
+
+```log
+#OCP installer cannot progress after bootstrap and master nodes are created in vSphere; bootstrap does not become reachable for the master nodes via API VIP
+
+DEBUG Built from commit 6db5fb9d56c9284124cf9147afd8f3e79345e907
+INFO Waiting up to 20m0s (until 8:33AM) for the Kubernetes API at https://api.ocpinstall.gym.lan:6443...
+DEBUG Still waiting for the Kubernetes API: Get "https://api.ocpinstall.gym.lan:6443/version": dial tcp: lookup api.ocpinstall.gym.lan on 192.168.127.1:53: no such host
+DEBUG Still waiting for the Kubernetes API: Get "https://api.ocpinstall.gym.lan:6443/version": dial tcp: lookup api.ocpinstall.gym.lan on 192.168.127.1:53: no such host
+```
+
+**Problem determination**:
+To break down the issue and determine the root cause, ssh into the bootstrap machine and check if the bootstrapping process is progressing. In particular, check for the following root causes:
+
+- **Firewall / Proxy settings**: Make sure quay.io is reachable from the bootstrap machine and Redhat images can be pulled. In case of vSphere installation, make sure the bootstrap and master machines can reach vCenter API.
+- **Bootstrapping progress**:
+
+  - Check the `bootkube.service` log for abnormalities with
+
+    ```bash
+    journalctl -b -f -u bootkube.service
+    ```
+
+  - Check podman container logs for abnormalities with
+    ```bash
+    for pod in $(sudo podman ps -a -q); do sudo podman logs $pod; done
+    ```
+
+**Issue**: The `httpProxy` and `httpsProxy` settings might be erroneous, causing bootstrap fail to authenticate at the proxy server and thus cannot reach the internet. Additionally, the firewall could be blocking bootstrap and master nodes from reaching the proxy server.
+
+**Solution**:
+Verify the correctness of the proxy settings in the install config yaml
+
+```yml
+proxy:
+  httpProxy: <http://user:pw@proxy:8080>
+  httpsProxy: <http://user:pw@proxy:8080>
+  noProxy: <api, ingress VIP, DHCPrange, intranet>
+```
+
+It is very recommendable to install OCP in a bastion host located inside the same network segment of the installed cluster. By doing this, network issues can be identified timely.
+
+## After bootstrapping, `openshift-apiserver` and ingress keep crashlooping, while no workers can be provisioned
+
+**Problem determination**: Determine whether the proxy and firewall settings are setup correctly for the master and worker hosts. The following criteria must be met:
+
+- Master nodes can react vSphere API to provision worker nodes;
+- In the installation yaml, `machineNetwork` must correspond to the actual IPs assigned to the nodes, otherwise the proxy settings won't get propagated correctly to the nodes.
+
+**Issue**: There are two potential issues:
+
+- Master node cannot reach vSphere API to provision worker nodes due to firewall blockage;
+- Apiserver and ingress pods' health checks fail, because the `machineNetwork` does not contain the IPs of the machines. Thus the machines are not under `noProxy` and the health checks arrive at the proxy server.
+
+**Solution**:
+Fill out the `machineNetwork` correctly in the install config yaml. In case of DHCP, put the entire DHCP range into `machineNetwork` or under `noProxy` in order to be absolutely sure.
+Check out https://docs.openshift.com/container-platform/4.12/networking/enable-cluster-wide-proxy.html for more detailed instructions.
+
+
 ## Troubleshooting network issues
 ```bash
 $ oc get nodes -o wide
