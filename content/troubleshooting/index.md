@@ -176,7 +176,7 @@ To break down the issue and determine the root cause, ssh into the bootstrap mac
 **Issue**: The `httpProxy` and `httpsProxy` settings might be erroneous, causing bootstrap fail to authenticate at the proxy server and thus cannot reach the internet. Additionally, the firewall could be blocking bootstrap and master nodes from reaching the proxy server.
 
 **Solution**:
-Verify the correctness of the proxy settings in the install config yaml
+Verify the correctness of the proxy settings in the install config yaml:
 
 ```yml
 proxy:
@@ -184,6 +184,7 @@ proxy:
   httpsProxy: <http://user:pw@proxy:8080>
   noProxy: <api, ingress VIP, DHCPrange, intranet>
 ```
+Verify that the firewall is not blocking the communications between proxy server and machines.
 
 It is very recommendable to install OCP in a bastion host located inside the same network segment of the installed cluster. By doing this, network issues can be identified timely.
 
@@ -191,7 +192,7 @@ It is very recommendable to install OCP in a bastion host located inside the sam
 
 **Problem determination**: Determine whether the proxy and firewall settings are setup correctly for the master and worker hosts. The following criteria must be met:
 
-- Master nodes can react vSphere API to provision worker nodes;
+- Master nodes can reach vCenter API to provision worker nodes;
 - In the installation yaml, `machineNetwork` must correspond to the actual IPs assigned to the nodes, otherwise the proxy settings won't get propagated correctly to the nodes.
 
 **Issue**: There are two potential issues:
