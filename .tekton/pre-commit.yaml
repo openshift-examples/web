@@ -78,7 +78,7 @@ spec:
             - name: source
           steps:
             - name: pre-commit
-              image: quay.io/openshift-examples/pre-commit:latest
+              image: quay.io/openshift-examples/builder:devel
               workingDir: $(workspaces.source.path)
               script: |
                 pre-commit run --color=never --from-ref main --to-ref $(params.revision)
