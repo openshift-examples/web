@@ -39,6 +39,10 @@ spec:
       value: "{{ pull_request_number }}"
     - name: git_auth_secret
       value: "{{ git_auth_secret }}"
+    - name: source_branch
+      value: "{{source_branch}}"
+    - name: target_branch
+      value: "{{target_branch}}"
   pipelineSpec:
     params:
       - name: repo_url
@@ -49,7 +53,7 @@ spec:
       - name: source
       - name: basic-auth
     tasks:
-      - name: fetch-repository
+      - name: fetch-repository-pr
         taskRef:
           name: git-clone
           kind: ClusterTask
@@ -65,23 +69,66 @@ spec:
             value: $(params.revision)
           - name: depth
             value: 0
+          - name: subdirectory
+            value: pr
+      - name: fetch-repository-main
+        taskRef:
+          name: git-clone
+          kind: ClusterTask
+        workspaces:
+          - name: output
+            workspace: source
+          - name: basic-auth
+            workspace: basic-auth
+        params:
+          - name: url
+            value: $(params.repo_url)
+          - name: revision
+            value: main
+          - name: subdirectory
+            value: main
+          # - name: depth
+          #   value: 1
       # Customize this task if you like, or just do a taskRef
       # to one of the hub task.
       - name: pre-commit
         runAfter:
-          - fetch-repository
+          - fetch-repository-pr
+          - fetch-repository-main
         workspaces:
           - name: source
             workspace: source
+        params:
+          - name: main_commit
+            value: $(tasks.fetch-repository-main.results.commit)
+          - name: pr_commit
+            value: $(tasks.fetch-repository-pr.results.commit)
         taskSpec:
           workspaces:
             - name: source
           steps:
             - name: pre-commit
               image: quay.io/openshift-examples/builder:devel
-              workingDir: $(workspaces.source.path)
+              workingDir: $(workspaces.source.path)/pr
               script: |
-                pre-commit run --color=never --from-ref main --to-ref HEAD
+                set -euxo pipefail
+
+                echo -e ' 💀 There was an error during pre-commit / linter:\n\n```' \
+                  > $(workspaces.source.path)/notify-linter-on-failure.txt
+
+                pre-commit run --color=never \
+                  --from-ref $(params.main_commit) \
+                  --to-ref $(params.pr_commit) \
+                | sed -r "s/\x1B\[([0-9]{1,3}(;[0-9]{1,2};?)?)?[mGK]//g" \
+                | tee -a $(workspaces.source.path)/notify-linter-on-failure.txt
+
+                RC=$?
+                echo "Return code $RC"
+
+                echo -e '\n```\n' \
+                  > $(workspaces.source.path)/notify-linter-on-failure.txt
+
+                exit $?
 
       - name: github-add-labels
         runAfter:
@@ -121,6 +168,8 @@ spec:
           value: ./Containerfile
         - name: TLSVERIFY
           value: 'false'
+        - name: CONTEXT
+          value: 'pr/'
         runAfter:
         - wait-for-imagestream
         taskRef:
@@ -179,6 +228,25 @@ spec:
             value: "notify-deployment.txt"
         taskRef:
           name: github-add-comment
+    finally:
+      - name: notify-linter-on-failure
+        workspaces:
+          - name: comment-file
+            workspace: source
+        when:
+          - input: $(tasks.pre-commit.status)
+            operator: in
+            values: ["Failed"]
+        params:
+          - name: REQUEST_URL
+            value: "$(params.repo_url)/pull/$(params.pull_request_number)"
+          - name: PAC_GITHUB_SECRET
+            value: "$(params.git_auth_secret)"
+          - name: COMMENT_OR_FILE
+            value: "notify-linter-on-failure.txt"
+        taskRef:
+          name: github-add-comment
+
   workspaces:
     - name: source
       volumeClaimTemplate:
