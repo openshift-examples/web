@@ -21,7 +21,7 @@ metadata:
     # You can add more tasks in here to reuse, browse the one you like from here
     # https://hub.tekton.dev/
     # example:
-    #pipelinesascode.tekton.dev/task-2: "[github-add-labels]"
+    # pipelinesascode.tekton.dev/task-2: "[github-add-labels]"
     pipelinesascode.tekton.dev/task-2: "[.tekton/task/github-add-labels.yaml]"
     pipelinesascode.tekton.dev/task-3: "[.tekton/task/github-add-comment.yaml]"
 
@@ -162,22 +162,22 @@ spec:
 
       - name: build-image
         params:
-        - name: IMAGE
-          value: image-registry.openshift-image-registry.svc:5000/$(context.pipelineRun.namespace)/pr-$(params.pull_request_number):latest
-        - name: DOCKERFILE
-          value: ./Containerfile
-        - name: TLSVERIFY
-          value: 'false'
-        - name: CONTEXT
-          value: 'pr/'
+          - name: IMAGE
+            value: image-registry.openshift-image-registry.svc:5000/$(context.pipelineRun.namespace)/pr-$(params.pull_request_number):latest
+          - name: DOCKERFILE
+            value: ./Containerfile
+          - name: TLSVERIFY
+            value: 'false'
+          - name: CONTEXT
+            value: 'pr/'
         runAfter:
-        - wait-for-imagestream
+          - wait-for-imagestream
         taskRef:
           kind: ClusterTask
           name: buildah
         workspaces:
-        - name: source
-          workspace: source
+          - name: source
+            workspace: source
 
       - name: wait-for-route-and-notify
         runAfter:
@@ -186,8 +186,8 @@ spec:
           - name: source
             workspace: source
         params:
-            - name: pull_request_number
-              value: "$(params.pull_request_number)"
+          - name: pull_request_number
+            value: "$(params.pull_request_number)"
         taskSpec:
           params:
             - name: pull_request_number
