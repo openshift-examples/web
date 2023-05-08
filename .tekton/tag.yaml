@@ -112,8 +112,8 @@ spec:
           - name: BUILD_EXTRA_ARGS
             value: '--target builder'
         runAfter:
-        - tag
-        - fetch-repository
+          - tag
+          - fetch-repository
         taskRef:
           kind: ClusterTask
           name: buildah
