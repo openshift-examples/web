@@ -25,7 +25,6 @@ USER root
 ADD builder.assemble /usr/libexec/s2i/assemble
 USER 1001
 
-VOLUME /opt/app-root/src
 EXPOSE 8080/tcp
 WORKDIR /opt/app-root/src
 CMD mkdocs serve --dev-addr 0.0.0.0:8080 --no-livereload
