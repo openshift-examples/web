@@ -5,9 +5,9 @@
 FROM quay.io/openshift-examples/builder:devel AS builder
 USER root
 # Copying in source code
-COPY . /opt/app-root/src/
+COPY . /tmp/src/
 # Change file ownership to the assemble user. Builder image must support chown command.
-RUN chown -R 1001:0 /opt/app-root/src/
+RUN chown -R 1001:0 /tmp/src/
 USER 1001
 
 RUN /usr/libexec/s2i/assemble
