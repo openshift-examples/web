@@ -108,9 +108,9 @@ spec:
           - name: IMAGE
             value: quay.io/openshift-examples/builder:$(tasks.tag.results.name)
           - name: DOCKERFILE
-            value: ./Containerfile
-          - name: BUILD_EXTRA_ARGS
-            value: '--target builder'
+            value: ./builder.Containerfile
+          # - name: BUILD_EXTRA_ARGS
+          #   value: '--target builder'
         runAfter:
           - tag
           - fetch-repository
@@ -120,15 +120,17 @@ spec:
         workspaces:
           - name: source
             workspace: source
+
       - name: build-web-image
         params:
           - name: IMAGE
             value: 'quay.io/openshift-examples/web:$(tasks.tag.results.name)'
           - name: DOCKERFILE
             value: ./Containerfile
+          - name: BUILD_EXTRA_ARGS
+            value: "--build-arg BUILDER_IMAGE=$(tasks.build-builder-image.results.IMAGE_URL)"
         runAfter:
-          - tag
-          - fetch-repository
+          - build-builder-image
         taskRef:
           kind: ClusterTask
           name: buildah
