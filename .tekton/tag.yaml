@@ -110,7 +110,7 @@ spec:
           - name: DOCKERFILE
             value: ./Containerfile
           - name: BUILD_EXTRA_ARGS
-            value: "--build-arg BUILDER_IMAGE=$(tasks.build-builder-image.results.IMAGE_URL)"
+            value: "--build-arg BUILDER_IMAGE=quay.io/openshift-examples/builder:$(tasks.tag.results.name)"
         runAfter:
           - build-builder-image
         taskRef:
