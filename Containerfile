@@ -1,8 +1,6 @@
-# Purpose of this Containerfile is for local development / test only.
-# Build: podman build --target builder -t mkdocs:local --no-cache .
-# Run: podman run -ti --rm -v $(pwd):/opt/app-root/src:z -p 8080:8080 mkdocs:local
-#
-FROM quay.io/openshift-examples/builder:devel AS builder
+ARG  BUILDER_IMAGE=quay.io/openshift-examples/builder:devel
+FROM ${BUILDER_IMAGE} AS builder
+
 USER root
 # Copying in source code
 COPY . /tmp/src/

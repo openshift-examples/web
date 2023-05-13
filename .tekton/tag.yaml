@@ -10,7 +10,7 @@ metadata:
     pipelinesascode.tekton.dev/on-event: "[push]"
     # The branch or tag we are targeting (ie: main, refs/tags/*)
     # pipelinesascode.tekton.dev/on-target-branch: "[main]"
-    pipelinesascode.tekton.dev/on-target-branch: "[refs/tags/*,main,devel]"
+    pipelinesascode.tekton.dev/on-target-branch: "[refs/tags/*,main,devel,refactor-development]"
 
     # Fetch the git-clone task from hub, we are able to reference later on it
     # with taskRef and it will automatically be embedded into our pipeline.
@@ -84,24 +84,6 @@ spec:
                 set -x
                 SOURCE_BRANCH="$(params.source_branch)"
                 echo -n ${SOURCE_BRANCH#refs/tags/} | tee $(results.name.path)
-
-      # - name: build
-      #   runAfter:
-      #     - tag
-      #     - fetch-repository
-      #   params:
-      #     - name: tag
-      #       value: $(tasks.tag.results.name)
-      #     - name: tag2
-      #       value: asdf$(tasks.tag.results.name)
-      #   taskSpec:
-      #     steps:
-      #       - name: transform-tag
-      #         image: registry.access.redhat.com/ubi9/ubi-micro:latest
-      #         script: |
-      #           set -x
-      #           echo $(params.tag)
-      #           echo $(params.tag2)
 
       - name: build-builder-image
         params:
