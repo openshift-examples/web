@@ -29,7 +29,7 @@ tags:
 ```bash
 
 export PULL_SECRET=${HOME}/redhat-pullsecret-rh-ee-rbohne.json
-export KUBEVIRT_CLUSTER_NAME=ibm
+export KUBEVIRT_CLUSTER_NAME=ocp414
 export TRUSTED_BUNDLE=${HOME}/Devel/gitlab.consulting.redhat.com/coe-lab/certificates/ca-bundle-v1.pem
 
 
@@ -48,7 +48,7 @@ kubevirt \
   --control-plane-availability-policy HighlyAvailable \
   --additional-trust-bundle $TRUSTED_BUNDLE \
   --auto-repair \
-  --release-image=quay.io/openshift-release-dev/ocp-release:4.12.1-x86_64
+  --release-image=quay.io/openshift-release-dev/ocp-release:4.12.22-x86_64
 
   --render
   # Optional - add --render to show yaml
@@ -102,3 +102,20 @@ none \
   --render
 
 ```
+
+
+# Trouble shooting
+
+https://hypershift-docs.netlify.app/how-to/troubleshooting/
+
+export KUBEVIRT_CLUSTER_NAME=lenggries3
+export CLUSTERNS="rbohne-hcp"
+
+mkdir clusterDump-${CLUSTERNS}-${KUBEVIRT_CLUSTER_NAME}
+hypershift dump cluster \
+    --name ${KUBEVIRT_CLUSTER_NAME} \
+    --namespace ${CLUSTERNS} \
+    --dump-guest-cluster \
+    --artifact-dir clusterDump-${CLUSTERNS}-${KUBEVIRT_CLUSTER_NAME}
+
+
