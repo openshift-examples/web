@@ -160,12 +160,33 @@ spec:
           kind: ClusterTask
           name: openshift-client
 
-      - name: build-image
+      - name: build-builder-image
+        params:
+          - name: IMAGE
+            value: image-registry.openshift-image-registry.svc:5000/$(context.pipelineRun.namespace)/pr-$(params.pull_request_number):builder
+          - name: DOCKERFILE
+            value: ./builder.Containerfile
+          - name: TLSVERIFY
+            value: 'false'
+          - name: CONTEXT
+            value: 'pr/'
+        runAfter:
+          - wait-for-imagestream
+        taskRef:
+          kind: ClusterTask
+          name: buildah
+        workspaces:
+          - name: source
+            workspace: source
+
+      - name: build-web-image
         params:
           - name: IMAGE
             value: image-registry.openshift-image-registry.svc:5000/$(context.pipelineRun.namespace)/pr-$(params.pull_request_number):latest
           - name: DOCKERFILE
             value: ./Containerfile
+          - name: BUILD_EXTRA_ARGS
+            value: "--build-arg image-registry.openshift-image-registry.svc:5000/$(context.pipelineRun.namespace)/pr-$(params.pull_request_number):builder"
           - name: TLSVERIFY
             value: 'false'
           - name: CONTEXT
