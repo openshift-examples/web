@@ -111,6 +111,8 @@ spec:
             value: ./Containerfile
           - name: BUILD_EXTRA_ARGS
             value: "--build-arg BUILDER_IMAGE=quay.io/openshift-examples/builder:$(tasks.tag.results.name)"
+          - name: PUSH_EXTRA_ARGS
+            value: "--format v2s2"
         runAfter:
           - build-builder-image
         taskRef:
