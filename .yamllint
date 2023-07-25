@@ -1,6 +1,8 @@
 ---
 extends: default
 
+ignore: |
+  deploy/openshift-examples-simple/templates/
 rules:
   comments-indentation: false
   document-start: disable
