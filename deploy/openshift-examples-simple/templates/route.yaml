@@ -29,4 +29,5 @@ spec:
     kind: Service
     name: {{ $fullName }}
     weight: 100
+staus: {}
 {{- end }}
