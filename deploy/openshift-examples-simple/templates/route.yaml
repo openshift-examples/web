@@ -17,6 +17,9 @@ metadata:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
+  {{- if .Values.route.hostOverride }}
+  host: {{ .Values.route.hostOverride }}
+  {{- end }}
   port:
     targetPort: http
   tls:
@@ -25,5 +28,5 @@ spec:
   to:
     kind: Service
     name: {{ $fullName }}
-    weight: null
+    weight: 100
 {{- end }}
