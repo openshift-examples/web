@@ -30,5 +30,5 @@ spec:
     name: {{ $fullName }}
     weight: 100
 status:
-  ingress: {}
+  ingress: []
 {{- end }}
