@@ -29,5 +29,6 @@ spec:
     kind: Service
     name: {{ $fullName }}
     weight: 100
-status: {}
+status:
+  ingress: {}
 {{- end }}
