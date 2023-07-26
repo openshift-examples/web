@@ -5,19 +5,19 @@ description: "..."
 ignore_macros: true
 ---
 
-## [OpenShift Examples](https://examples.openshift.pub/) gathered by [Robert Bohne](https://github.com/rbo)
+# [OpenShift Examples](https://examples.openshift.pub/) gathered by [Robert Bohne](https://github.com/rbo)
 
 ![](openshift-examples.png)
 
-The OpenShift Examples is a personal collection of valuable information, code snippets, and practical 
-demonstrations related to OpenShift and Kubernetes. It serves as a repository of Robert's own experiences 
+The OpenShift Examples is a personal collection of valuable information, code snippets, and practical
+demonstrations related to OpenShift and Kubernetes. It serves as a repository of Robert's own experiences
 & contributions, solutions, and best practices in managing and deploying applications on OpenShift.
 
-Contributions to this collection are warmly welcomed and highly appreciated! 
-They foster collaboration and knowledge sharing within the OpenShift community, 
+Contributions to this collection are warmly welcomed and highly appreciated!
+They foster collaboration and knowledge sharing within the OpenShift community,
 making the repository even more valuable as a collective resource.
 
-Feel free to explore the examples, contribute your own insights, 
+Feel free to explore the examples, contribute your own insights,
 and benefit from the expertise shared in this repository.
 
 Please visit <https://examples.openshift.pub/>
@@ -200,12 +200,9 @@ $ cat /proc/net/fib_trie | grep "|--"   | egrep -v "0.0.0.0| 127."
      |-- 224.0.0.0
 ```
 
-
 #### cURL & Kubernetes/OpenShift API examples
 
 ```text
-
-
 $ curl --cacert /run/secrets/kubernetes.io/serviceaccount/ca.crt \
   --header "Authorization: Bearer $(cat /run/secrets/kubernetes.io/serviceaccount/token)" \
   https://kubernetes.default.svc.cluster.local/version
@@ -222,9 +219,7 @@ $ curl --cacert /run/secrets/kubernetes.io/serviceaccount/ca.crt \
   "platform": "linux/amd64"
 }
 
-
 ```
-
 
 ### List all Services from ansible-service-broker
 
