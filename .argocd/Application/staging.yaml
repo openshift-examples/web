@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: examples-stage-openshift-pub
+spec:
+  destination:
+    namespace: production
+    server: https://api.rh-us-east-1.openshift.com
+  project: default
+  source:
+    helm:
+      valueFiles:
+        - staging.value.yaml
+    path: deploy/openshift-examples-simple/
+    repoURL: https://github.com/rbo/openshift-examples-web
+    targetRevision: refactor-development
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
