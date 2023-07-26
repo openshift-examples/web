@@ -1,0 +1,39 @@
+---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: employee-ocp-production
+spec:
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: onepassword-container
+  target:
+    creationPolicy: Owner
+    name: employee-ocp-production
+    template:
+      metadata:
+        name: employee-ocp-production
+        labels:
+          argocd.argoproj.io/secret-type: cluster
+      type: Opaque
+      data:
+        name: employee-ocp-production
+        server: '{{ .api_server }}'
+        clusterResources: "false"
+        namespaces: production
+        config: |
+          {
+            "bearerToken": "{{ .password }}",
+            "tlsClientConfig": {
+              "insecure": true
+            }
+          }
+  data:
+  - secretKey: api_server
+    remoteRef:
+      key: employee-ocp-production-argocd
+      property: api-server
+  - secretKey: password
+    remoteRef:
+      key: employee-ocp-production-argocd
+      property: password
