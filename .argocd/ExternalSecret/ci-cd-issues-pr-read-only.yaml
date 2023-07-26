@@ -1,0 +1,16 @@
+---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: ci-cd-issues-pr-read-only
+spec:
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: onepassword-container
+  target:
+    creationPolicy: Owner
+  data:
+  - secretKey: token
+    remoteRef:
+      key: github-ci-cd-issues-pr-read-only
+      property: password
