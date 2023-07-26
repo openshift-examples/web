@@ -1,0 +1,46 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: ok-for-test-deployment
+spec:
+  generators:
+  - pullRequest:
+      github:
+        # The GitHub organization or user.
+        owner: openshift-examples
+        # The Github repository
+        repo: web
+        # Reference to a Secret containing an access token. (optional)
+        tokenRef:
+          secretName: ci-cd-issues-pr-read-only
+          key: token
+        # Labels is used to filter the PRs that you want to target. (optional)
+        labels:
+        - ok-for-test-deployment
+  template:
+    metadata:
+      name: 'pr-{{number}}'
+    spec:
+      source:
+        repoURL: 'https://github.com/openshift-examples/web.git'
+        targetRevision: '{{head_sha}}'
+        path: deploy/openshift-examples-simple/
+        helm:
+          parameters:
+          - name: "imageStream.create"
+            value: "true"
+          - name: "nameOverride"
+            value: "pr-{{number}}"
+      project: default
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: examples-openshift-pub
+      ignoreDifferences:
+      - group: "apps"
+        kind: "Deployment"
+        jqPathExpressions:
+          - .spec.template.spec.containers[].image
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
