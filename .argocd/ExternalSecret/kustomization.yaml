@@ -3,3 +3,4 @@ kind: Kustomization
 resources:
 - ci-cd-issues-pr-read-only.yaml
 - quay-push-bot.yaml
+- employee-ocp-production.yaml
