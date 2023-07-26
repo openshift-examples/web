@@ -1,11 +1,11 @@
+# [OpenShift Examples](https://examples.openshift.pub/) gathered by [Robert Bohne](https://github.com/rbo)
+
 ---
 title: OpenShift Examples
 hero: "This is my (Robert Bohne) personal OpenShift Examples and Notice collection. ( Including a lot of typos \U0001F609)"
 description: "..."
 ignore_macros: true
 ---
-
-# [OpenShift Examples](https://examples.openshift.pub/) gathered by [Robert Bohne](https://github.com/rbo)
 
 ![](openshift-examples.png)
 
@@ -55,9 +55,9 @@ sudo mv jq-linux64 /usr/local/bin/jq
 
 #### jq examples
 
-**PVC CSV**
+##### PVC CSV
 
-```text
+```bash
 oc get pvc --all-namespaces -o json | jq -r  ' .items[] |  [.metadata.namespace,.metadata.name,.status.capacity.storage|tostring]|@csv'
 ```
 
@@ -75,7 +75,7 @@ openssl crl2pkcs7 -nocrl -certfile foo.pem | openssl pkcs7 -print_certs  -noout
 echo -n | openssl s_client -connect q.bohne.io:8443 -servername q.bohne.io 2>/dev/null | openssl x509 -noout -subject -issuer
 ```
 
-### OpenShift certificate overview:
+### OpenShift certificate overview
 
 ```text
 find /etc/origin/master/ /etc/origin/node -name "*.crt" -printf '%p - ' -exec openssl x509 -noout -subject -in {} \;
@@ -84,7 +84,8 @@ find /etc/origin/master/ /etc/origin/node -name "*.crt" -printf '%p - ' -exec op
 ### kubectl/oc patch
 
 For example:
-```
+
+```bash
 oc patch configs.imageregistry.operator.openshift.io/cluster \
     --type='json' \
     --patch='[
@@ -96,23 +97,17 @@ oc patch configs.imageregistry.operator.openshift.io/cluster \
 
 **patch definition:**
 
- * JSON Merge Patch RFC 7386: [https://tools.ietf.org/html/rfc7386](https://tools.ietf.org/html/rfc7386)
- * JSON Patch RFC 6902: [https://tools.ietf.org/html/rfc6902](https://tools.ietf.org/html/rfc6902)
- * The JSONPath websites offers a good description which operation can be used an how: [http://jsonpatch.com/](http://jsonpatch.com/)
+* JSON Merge Patch RFC 7386: [https://tools.ietf.org/html/rfc7386](https://tools.ietf.org/html/rfc7386)
+* JSON Patch RFC 6902: [https://tools.ietf.org/html/rfc6902](https://tools.ietf.org/html/rfc6902)
+* The JSONPath websites offers a good description which operation can be used an how: [http://jsonpatch.com/](http://jsonpatch.com/)
 
 Blog post: [https://labs.consol.de/development/2019/04/08/oc-patch-unleashed.html](https://labs.consol.de/development/2019/04/08/oc-patch-unleashed.html)
 
 ### Commands inside a POD
 
-#### Get IP Addresses without ip or ifconfig?
+#### Get IP Addresses without ip or ifconfig
 
-##### Command
 ```bash
-cat /proc/net/fib_trie
-```
-
-##### Sample outpout
-```
 $ cat /proc/net/fib_trie
 Main:
   +-- 0.0.0.0/0 3 0 4
@@ -176,15 +171,7 @@ Local:
         /4 universe UNICAST
 ```
 
-##### Command
-
-```text
-cat /proc/net/fib_trie | grep "|--"   | egrep -v "0.0.0.0| 127."
-```
-
-##### Sample output
-
-```
+```bash
 $ cat /proc/net/fib_trie | grep "|--"   | egrep -v "0.0.0.0| 127."
            |-- 10.128.0.0
                  |-- 10.131.0.0
@@ -218,7 +205,6 @@ $ curl --cacert /run/secrets/kubernetes.io/serviceaccount/ca.crt \
   "compiler": "gc",
   "platform": "linux/amd64"
 }
-
 ```
 
 ### List all Services from ansible-service-broker
@@ -231,7 +217,7 @@ $ curl --cacert /run/secrets/kubernetes.io/serviceaccount/ca.crt \
 }
 ```
 
-### List all services from template broker:
+### List all services from template broker
 
 ```text
 curl -s -k -X GET -H "Authorization: Bearer $(oc whoami -t)" -H "X-Broker-Api-Version: 2.7"  https://192.168.37.1:8443/brokers/template.openshift.io/v2/catalog | jq ' .services[] | {Name: .name, displayName: .metadata.displayName}'
@@ -242,7 +228,7 @@ curl -s -k -X GET -H "Authorization: Bearer $(oc whoami -t)" -H "X-Broker-Api-Ve
 ```text
 curl -s -k -X GET -H "Authorization: Bearer $(oc whoami -t)" https://192.168.37.1:8443/apis/servicecatalog.k8s.io/v1alpha1/serviceclasses | jq ' .items[] | { brokerName: .brokerName, name: .metadata.name, displayName: .externalMetadata.displayName } '
 ```
+
 ## Stargazers over time
 
 [![Stargazers over time](https://starchart.cc/openshift-examples/web.svg)](https://starchart.cc/openshift-examples/web)
-
