@@ -6,4 +6,5 @@ resources:
 - Repository/
 - ArgoCD/
 - ApplicationSet/
+- Application/
 - ExternalSecret/
