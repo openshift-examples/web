@@ -5,19 +5,22 @@ description: "..."
 ignore_macros: true
 ---
 
-# OpenShift Examples
+## [OpenShift Examples](https://examples.openshift.pub/) gathered by [Robert Bohne](https://github.com/rbo)
 
 ![](openshift-examples.png)
 
-## Run OpenShift on your Hetzner Server
+The OpenShift Examples is a personal collection of valuable information, code snippets, and practical 
+demonstrations related to OpenShift and Kubernetes. It serves as a repository of Robert's own experiences 
+& contributions, solutions, and best practices in managing and deploying applications on OpenShift.
 
-[https://github.com/RedHat-EMEA-SSA-Team/hetzner-ocp4](https://github.com/RedHat-EMEA-SSA-Team/hetzner-ocp4)
+Contributions to this collection are warmly welcomed and highly appreciated! 
+They foster collaboration and knowledge sharing within the OpenShift community, 
+making the repository even more valuable as a collective resource.
 
-## Run OCP on your laptop
+Feel free to explore the examples, contribute your own insights, 
+and benefit from the expertise shared in this repository.
 
-### OpenShift 4
-
-[Code Ready Containers](https://github.com/code-ready/crc)
+Please visit <https://examples.openshift.pub/>
 
 ## Usefull Red Hat Solutions article
 
@@ -33,9 +36,7 @@ ignore_macros: true
 |[Consolidated Troubleshooting Article OpenShift Container Platform 4.x](https://access.redhat.com/articles/4217411)||
 |[Red Hat OpenShift Container Platform Life Cycle Policy](https://access.redhat.com/support/policy/updates/openshift)||
 
-
 ## Glossary
-
 
 |Term|Definition|
 |---|---|
