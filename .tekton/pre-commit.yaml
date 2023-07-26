@@ -200,8 +200,6 @@ spec:
           - name: source
             workspace: source
 
-
-
       - name: wait-for-route-and-notify
         runAfter:
           - build-web-image
