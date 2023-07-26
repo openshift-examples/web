@@ -1,6 +1,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-- ci-cd-issues-pr-read-only.yaml
-- quay-push-bot.yaml
-- employee-ocp-production.yaml
+  - ci-cd-issues-pr-read-only.yaml
+  - quay-push-bot.yaml
+  - employee-ocp-production.yaml
