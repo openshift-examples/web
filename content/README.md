@@ -207,28 +207,6 @@ $ curl --cacert /run/secrets/kubernetes.io/serviceaccount/ca.crt \
 }
 ```
 
-### List all Services from ansible-service-broker
-
-```bash
-curl -k -s $(oc get broker ansible-service-broker -o go-template='{{.spec.url}}v2/catalog') | jq ' .services[] | {Name: .name, displayName: .metadata.displayName}'
-{
-  "Name": "dh--latest",
-  "displayName": "Hello World (APB)"
-}
-```
-
-### List all services from template broker
-
-```bash
-curl -s -k -X GET -H "Authorization: Bearer $(oc whoami -t)" -H "X-Broker-Api-Version: 2.7"  https://192.168.37.1:8443/brokers/template.openshift.io/v2/catalog | jq ' .services[] | {Name: .name, displayName: .metadata.displayName}'
-```
-
-### List all services from service catalog
-
-```bash
-curl -s -k -X GET -H "Authorization: Bearer $(oc whoami -t)" https://192.168.37.1:8443/apis/servicecatalog.k8s.io/v1alpha1/serviceclasses | jq ' .items[] | { brokerName: .brokerName, name: .metadata.name, displayName: .externalMetadata.displayName } '
-```
-
 ## Stargazers over time
 
 [![Stargazers over time](https://starchart.cc/openshift-examples/web.svg)](https://starchart.cc/openshift-examples/web)
