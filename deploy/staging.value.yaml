@@ -1,0 +1,11 @@
+nameOverride: examples-stage-openshift-pub
+replicaCount: 1
+image:
+  repository: quay.io/openshift-examples/web
+  pullPolicy: Always
+  tag: "refactor-development"
+
+route:
+  hostOverride: examples-stage.openshift.pub
+  annotations:
+    kubernetes.io/tls-acme: 'true'
