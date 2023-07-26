@@ -12,7 +12,6 @@ spec:
     name: employee-ocp-production
     template:
       metadata:
-        name: employee-ocp-production
         labels:
           argocd.argoproj.io/secret-type: cluster
       type: Opaque
