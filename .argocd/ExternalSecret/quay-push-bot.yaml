@@ -22,11 +22,11 @@ spec:
           }
     name: quay-push-bot
   data:
-  - secretKey: username
-    remoteRef:
-      key: quay-openshift-examples+cicd
-      property: username
-  - secretKey: password
-    remoteRef:
-      key: quay-openshift-examples+cicd
-      property: password
+    - secretKey: username
+      remoteRef:
+        key: quay-openshift-examples+cicd
+        property: username
+    - secretKey: password
+      remoteRef:
+        key: quay-openshift-examples+cicd
+        property: password

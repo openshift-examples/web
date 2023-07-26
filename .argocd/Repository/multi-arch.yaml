@@ -1,7 +1,7 @@
 apiVersion: "pipelinesascode.tekton.dev/v1alpha1"
 kind: Repository
 metadata:
-  name: multi-arch 
+  name: multi-arch
   namespace: examples-openshift-pub
 spec:
   url: "https://github.com/openshift-examples/multi-arch"
