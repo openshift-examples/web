@@ -28,11 +28,11 @@ spec:
             }
           }
   data:
-  - secretKey: api_server
-    remoteRef:
-      key: employee-ocp-production-argocd
-      property: api-server
-  - secretKey: password
-    remoteRef:
-      key: employee-ocp-production-argocd
-      property: password
+    - secretKey: api_server
+      remoteRef:
+        key: employee-ocp-production-argocd
+        property: api-server
+    - secretKey: password
+      remoteRef:
+        key: employee-ocp-production-argocd
+        property: password

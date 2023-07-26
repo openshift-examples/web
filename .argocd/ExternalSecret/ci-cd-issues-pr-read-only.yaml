@@ -10,7 +10,7 @@ spec:
   target:
     creationPolicy: Owner
   data:
-  - secretKey: token
-    remoteRef:
-      key: github-ci-cd-issues-pr-read-only
-      property: password
+    - secretKey: token
+      remoteRef:
+        key: github-ci-cd-issues-pr-read-only
+        property: password
