@@ -20,9 +20,6 @@ making the repository even more valuable as a collective resource.
 Feel free to explore the examples, contribute your own insights,
 and benefit from the expertise shared in this repository.
 
-
-
-
 ## Usefull Red Hat Solutions article
 
 |Article|Note|
