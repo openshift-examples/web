@@ -2,16 +2,16 @@
 apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
-  name: release-tag
+  name: push-to-main
   annotations:
     # The event we are targeting as seen from the webhook payload
     # this can be an array too, i.e: [pull_request, push]
     # pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-event: "[push]"
     # The branch or tag we are targeting (ie: main, refs/tags/*)
-    # pipelinesascode.tekton.dev/on-target-branch: "[main]"
-    pipelinesascode.tekton.dev/on-target-branch: "[refs/tags/*,devel]"
-
+    pipelinesascode.tekton.dev/on-target-branch: "[main]"
+    pipelinesascode.tekton.dev/on-cel-expression: |
+            event == "push" && target_branch == "main" && ! "deploy/*".pathChanged()
     # Fetch the git-clone task from hub, we are able to reference later on it
     # with taskRef and it will automatically be embedded into our pipeline.
     pipelinesascode.tekton.dev/task: "git-clone"
@@ -33,7 +33,7 @@ spec:
     # The variable with brackets are special to Pipelines as Code
     # They will automatically be expanded with the events from Github.
     - name: repo_url
-      value: "{{ repo_url }}"
+      value: "{{ clone_url }}"
     - name: revision
       value: "{{ revision }}"
     # - name: pull_request_number
@@ -52,6 +52,7 @@ spec:
     workspaces:
       - name: source
       - name: basic-auth
+      - name: deploy-key
     tasks:
       - name: fetch-repository
         taskRef:
@@ -62,13 +63,13 @@ spec:
             workspace: source
           - name: basic-auth
             workspace: basic-auth
+          - name: ssh-directory
+            workspace: deploy-key
         params:
           - name: url
             value: $(params.repo_url)
           - name: revision
             value: $(params.revision)
-      # Customize this task if you like, or just do a taskRef
-      # to one of the hub task.
       - name: tag
         params:
           - name: source_branch
@@ -91,11 +92,9 @@ spec:
             value: quay.io/openshift-examples/builder:$(tasks.tag.results.name)
           - name: DOCKERFILE
             value: ./builder.Containerfile
-          # - name: BUILD_EXTRA_ARGS
-          #   value: '--target builder'
         runAfter:
-          - tag
           - fetch-repository
+          - tag
         taskRef:
           kind: ClusterTask
           name: buildah
@@ -127,6 +126,66 @@ spec:
           - name: dockerconfig
             workspace: quay-push-bot
 
+      - name: update-main-stage
+        runAfter:
+          - build-web-image
+        workspaces:
+          - name: source
+            workspace: source
+          - name: ssh-directory
+            workspace: deploy-key
+        params:
+          - name: IMAGE_DIGEST
+            value: $(tasks.build-web-image.results.IMAGE_DIGEST)
+          - name: IMAGE_URL
+            value: $(tasks.build-web-image.results.IMAGE_URL)
+        taskSpec:
+          workspaces:
+            - name: source
+            - name: ssh-directory
+          params:
+            - default: /home/git
+              description: |
+                Absolute path to the user's home directory.
+              name: userHome
+              type: string
+          steps:
+            - name: debug
+              env:
+                - name: WORKSPACE_SSH_DIRECTORY_BOUND
+                  value: $(workspaces.ssh-directory.bound)
+                - name: WORKSPACE_SSH_DIRECTORY_PATH
+                  value: $(workspaces.ssh-directory.path)
+                - name: PARAM_USER_HOME
+                  value: $(params.userHome)
+                - name: WORKSPACE_OUTPUT_PATH
+                  value: $(workspaces.source.path)
+                - name: IMAGE_DIGEST
+                  value: $(params.IMAGE_DIGEST)
+
+              image: registry.redhat.io/openshift-pipelines/pipelines-git-init-rhel8@sha256:1a50511583fc02a27012d17d942e247813404104ddd282d7e26f99765174392c
+              workingDir: $(workspaces.source.path)
+              script: |
+                set -euxo pipefail
+
+                if [ "${WORKSPACE_SSH_DIRECTORY_BOUND}" = "true" ] ; then
+                  cp -R "${WORKSPACE_SSH_DIRECTORY_PATH}" "${PARAM_USER_HOME}"/.ssh
+                  chmod 700 "${PARAM_USER_HOME}"/.ssh
+                  chmod -R 400 "${PARAM_USER_HOME}"/.ssh/*
+                fi
+
+                git config --global --add safe.directory "${WORKSPACE_OUTPUT_PATH}"
+
+                git config --global user.email "skull-cicd@example.com"
+                git config --global user.name "OpenShift Pipeline as Code (Tekton)"
+
+                sed "s/  tag:.*/  tag: $IMAGE_DIGEST/" -i deploy/main.value.yaml
+
+                git add deploy/main.value.yaml
+
+                git commit --allow-empty -m "[OpenShift Pipeline as Code] Update main deployment to $IMAGE_DIGEST"
+                git push -v origin HEAD:main
+
   workspaces:
     - name: source
       volumeClaimTemplate:
@@ -144,3 +203,7 @@ spec:
     - name: quay-push-bot
       secret:
         secretName: quay-push-bot
+    - name: deploy-key
+      secret:
+        secretName: web-deploy-key
+
