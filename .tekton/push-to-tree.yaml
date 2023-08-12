@@ -72,6 +72,8 @@ spec:
             value: $(params.repo_url)
           - name: revision
             value: $(params.revision)
+          - name: depth
+            value: 0
       - name: tag
         params:
           - name: source_branch
