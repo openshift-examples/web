@@ -3,7 +3,7 @@ replicaCount: 1
 image:
   repository: quay.io/openshift-examples/web
   pullPolicy: Always
-  tag: asdf
+  tag: devel
 
 route:
   hostOverride: examples-stage.openshift.pub
