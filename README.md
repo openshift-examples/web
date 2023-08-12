@@ -4,34 +4,22 @@
 
 ## Build
 
-### via Containerfile
+### Builder image
 
 ```bash
 podman build \
-  -t mkdocs:local \
+  -t mkdocs:builder \
   --no-cache \
-  -f Containerfile .
-
-```
-
-### Local development
-
-#### Build local runtime.
-
-```bash
-podman build \
-  -t mkdocs:local \
-  --no-cache \
-  -f Containerfile.local-run .
+  -f builder.Containerfile .
 
 ```
 
 #### Run it
 
 ```bash
-podman run -ti --rm \
+podman run -ti --user 0 --rm \
   -v $(pwd):/opt/app-root/src:z \
-  -p 8080:8080 mkdocs:local
+  -p 8080:8080 mkdocs:builder
 ```
 
 ## Stargazers over time
