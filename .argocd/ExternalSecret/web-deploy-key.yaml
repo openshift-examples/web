@@ -19,4 +19,3 @@ spec:
       remoteRef:
         key: web-deploy-key-examples+cicd
         property: id_ed25519
-
