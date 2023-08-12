@@ -1,0 +1,22 @@
+---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: web-deploy-key
+spec:
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: onepassword-container
+  target:
+    creationPolicy: Owner
+    template:
+      type: Opaque
+      data:
+        id_ed25519: "{{ .id_ed25519 | b64dec }}"
+    name: web-deploy-key
+  data:
+    - secretKey: id_ed25519
+      remoteRef:
+        key: web-deploy-key-examples+cicd
+        property: id_ed25519
+
