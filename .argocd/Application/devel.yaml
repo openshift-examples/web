@@ -10,10 +10,10 @@ spec:
   source:
     helm:
       valueFiles:
-        - ../staging.value.yaml
+        - ../devel.value.yaml
     path: deploy/openshift-examples-simple/
-    repoURL: https://github.com/rbo/openshift-examples-web
-    targetRevision: refactor-development
+    repoURL: https://github.com/openshift-examples/web
+    targetRevision: devel
   syncPolicy:
     automated:
       prune: true
