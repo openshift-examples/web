@@ -2,16 +2,16 @@
 apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
-  name: push-to-main
+  name: push-to-tree
   annotations:
     # The event we are targeting as seen from the webhook payload
     # this can be an array too, i.e: [pull_request, push]
     # pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-event: "[push]"
     # The branch or tag we are targeting (ie: main, refs/tags/*)
-    pipelinesascode.tekton.dev/on-target-branch: "[main]"
+    pipelinesascode.tekton.dev/on-target-branch: "[main,devel]"
     pipelinesascode.tekton.dev/on-cel-expression: |
-            event == "push" && target_branch == "main" && ! "deploy/*".pathChanged()
+            event == "push" && ( target_branch == "main" || target_branch == "devel" ) && ! "deploy/*".pathChanged()
     # Fetch the git-clone task from hub, we are able to reference later on it
     # with taskRef and it will automatically be embedded into our pipeline.
     pipelinesascode.tekton.dev/task: "git-clone"
@@ -126,7 +126,7 @@ spec:
           - name: dockerconfig
             workspace: quay-push-bot
 
-      - name: update-main-stage
+      - name: update-stage
         runAfter:
           - build-web-image
         workspaces:
@@ -162,6 +162,8 @@ spec:
                   value: $(workspaces.source.path)
                 - name: IMAGE_DIGEST
                   value: $(params.IMAGE_DIGEST)
+                - name: TAG_NAME
+                  value: $(tasks.tag.results.name)
 
               image: registry.redhat.io/openshift-pipelines/pipelines-git-init-rhel8@sha256:1a50511583fc02a27012d17d942e247813404104ddd282d7e26f99765174392c
               workingDir: $(workspaces.source.path)
@@ -179,12 +181,12 @@ spec:
                 git config --global user.email "skull-cicd@example.com"
                 git config --global user.name "OpenShift Pipeline as Code (Tekton)"
 
-                sed "s/  tag:.*/  tag: $IMAGE_DIGEST/" -i deploy/main.value.yaml
+                sed "s/  tag:.*/  tag: $IMAGE_DIGEST/" -i deploy/${TAG_NAME}.value.yaml
 
-                git add deploy/main.value.yaml
+                git add deploy/${TAG_NAME}.value.yaml
 
-                git commit --allow-empty -m "[OpenShift Pipeline as Code] Update main deployment to $IMAGE_DIGEST"
-                git push -v origin HEAD:main
+                git commit --allow-empty -m "[OpenShift Pipeline as Code] Update ${TAG_NAME} deployment to $IMAGE_DIGEST"
+                git push -v origin HEAD:${TAG_NAME}
 
   workspaces:
     - name: source
