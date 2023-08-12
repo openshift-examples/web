@@ -183,7 +183,7 @@ spec:
 
                 git config --global --add safe.directory "${WORKSPACE_OUTPUT_PATH}"
 
-                git config --global user.email "skull-cicd@example.com"
+                git config --global user.email "rbohne+skull-cicd@redhat.com"
                 git config --global user.name "OpenShift Pipeline as Code (Tekton)"
 
                 sed "s/  tag:.*/  tag: $IMAGE_DIGEST/" -i deploy/${TAG_NAME}.value.yaml
