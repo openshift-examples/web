@@ -67,6 +67,8 @@ spec:
             value: $(params.repo_url)
           - name: revision
             value: $(params.revision)
+          - name: depth
+            value: 0
       # Customize this task if you like, or just do a taskRef
       # to one of the hub task.
       - name: tag
