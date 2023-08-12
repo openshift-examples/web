@@ -11,8 +11,8 @@ metadata:
     # The branch or tag we are targeting (ie: main, refs/tags/*)
     pipelinesascode.tekton.dev/on-target-branch: "[main,devel]"
     pipelinesascode.tekton.dev/on-cel-expression: |
-            event == "push" 
-            && ( target_branch == "main" || target_branch == "devel" ) 
+            event == "push"
+            && ( target_branch == "main" || target_branch == "devel" )
             && ! "deploy/*".pathChanged()
     # Fetch the git-clone task from hub, we are able to reference later on it
     # with taskRef and it will automatically be embedded into our pipeline.
@@ -141,6 +141,8 @@ spec:
             value: $(tasks.build-web-image.results.IMAGE_DIGEST)
           - name: IMAGE_URL
             value: $(tasks.build-web-image.results.IMAGE_URL)
+          - name: TAG_NAME
+            value: $(tasks.tag.results.name)
         taskSpec:
           workspaces:
             - name: source
@@ -151,6 +153,7 @@ spec:
                 Absolute path to the user's home directory.
               name: userHome
               type: string
+            - name: TAG_NAME
           steps:
             - name: debug
               env:
@@ -165,7 +168,7 @@ spec:
                 - name: IMAGE_DIGEST
                   value: $(params.IMAGE_DIGEST)
                 - name: TAG_NAME
-                  value: $(tasks.tag.results.name)
+                  value: $(params.TAG_NAME)
 
               image: registry.redhat.io/openshift-pipelines/pipelines-git-init-rhel8@sha256:1a50511583fc02a27012d17d942e247813404104ddd282d7e26f99765174392c
               workingDir: $(workspaces.source.path)
