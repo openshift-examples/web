@@ -11,7 +11,9 @@ metadata:
     # The branch or tag we are targeting (ie: main, refs/tags/*)
     pipelinesascode.tekton.dev/on-target-branch: "[main,devel]"
     pipelinesascode.tekton.dev/on-cel-expression: |
-            event == "push" && ( target_branch == "main" || target_branch == "devel" ) && ! "deploy/*".pathChanged()
+            event == "push" 
+            && ( target_branch == "main" || target_branch == "devel" ) 
+            && ! "deploy/*".pathChanged()
     # Fetch the git-clone task from hub, we are able to reference later on it
     # with taskRef and it will automatically be embedded into our pipeline.
     pipelinesascode.tekton.dev/task: "git-clone"
