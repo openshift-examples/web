@@ -208,4 +208,3 @@ spec:
     - name: deploy-key
       secret:
         secretName: web-deploy-key
-

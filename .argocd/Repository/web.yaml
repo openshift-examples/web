@@ -6,5 +6,5 @@ metadata:
 spec:
   url: "https://github.com/openshift-examples/web"
   params:
-  - name: clone_url
-    value: git@github.com:openshift-examples/web.git
+    - name: clone_url
+      value: git@github.com:openshift-examples/web.git
