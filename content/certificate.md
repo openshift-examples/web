@@ -27,6 +27,12 @@ openssl crl2pkcs7 -nocrl -certfile \
 ```
 {% endraw %}
 
+### Check certificate
+
+```text
+echo -n | openssl s_client -connect q.bohne.io:8443 -servername q.bohne.io 2>/dev/null | openssl x509 -noout -subject -issuer
+```
+
 ## General: Create a self signed certificate
 
 ### 1) Create [openssl.self-signed-certificate.conf](certificate/openssl.self-signed-certificate.conf)
