@@ -7,3 +7,4 @@ git+https://github.com/jldiaz/mkdocs-plugin-tags.git
 git+https://github.com/fralau/mkdocs_macros_plugin.git@v0.5.11
 # Only for pre-commit checks not for mkdocs it selfe
 pre-commit==3.3.1
+mkdocs-git-authors-plugin==0.7.2
