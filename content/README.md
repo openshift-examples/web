@@ -40,28 +40,6 @@ and benefit from the expertise shared in this repository.
 |Container runtime|Container runtimes, or specificially OCI Runtimes are things like runc, crun, kata, gvisor.|
 |Container engines|Container Engines pull and push container images from container registries, configure OCI Runtime Specifications and launch OCI Runtimes. For example CRI-O, ContainerD|
 
-## Usefull commands
-
-
-#### cURL & Kubernetes/OpenShift API examples
-
-```text
-$ curl --cacert /run/secrets/kubernetes.io/serviceaccount/ca.crt \
-  --header "Authorization: Bearer $(cat /run/secrets/kubernetes.io/serviceaccount/token)" \
-  https://kubernetes.default.svc.cluster.local/version
-
-{
-  "major": "1",
-  "minor": "16+",
-  "gitVersion": "v1.16.2",
-  "gitCommit": "4320e48",
-  "gitTreeState": "clean",
-  "buildDate": "2020-01-21T19:50:59Z",
-  "goVersion": "go1.12.12",
-  "compiler": "gc",
-  "platform": "linux/amd64"
-}
-```
 
 ## Stargazers over time
 
