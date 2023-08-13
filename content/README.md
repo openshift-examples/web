@@ -21,24 +21,17 @@ and benefit from the expertise shared in this repository.
 
 ## Usefull Red Hat Solutions article
 
-|Article|Note|
-|---|---|
-|[How can a user update OpenShift 4 console route](https://access.redhat.com/solutions/4539491)||
-|[Red Hat Operators Supported in Disconnected Mode](https://access.redhat.com/articles/4740011)||
-|[Support Policies for Red Hat OpenShift Container Platform Clusters - Deployments Spanning Multiple Sites(Data Centers/Regions)](https://access.redhat.com/articles/3220991)||
-|[Red Hat OpenShift Container Platform Update Graph](https://access.redhat.com/labs/ocpupgradegraph/update_channel)||
-|[Consolidated Troubleshooting Article OpenShift Container Platform 4.x](https://access.redhat.com/articles/4217411)||
-|[Red Hat Container Support Policy](https://access.redhat.com/articles/2726611)||
-|[Red Hat Enterprise Linux Container Compatibility Matrix](https://access.redhat.com/support/policy/rhel-container-compatibility)||
-|[Consolidated Troubleshooting Article OpenShift Container Platform 4.x](https://access.redhat.com/articles/4217411)||
-|[Red Hat OpenShift Container Platform Life Cycle Policy](https://access.redhat.com/support/policy/updates/openshift)||
-
-## Glossary
-
-|Term|Definition|
-|---|---|
-|Container runtime|Container runtimes, or specificially OCI Runtimes are things like runc, crun, kata, gvisor.|
-|Container engines|Container Engines pull and push container images from container registries, configure OCI Runtime Specifications and launch OCI Runtimes. For example CRI-O, ContainerD|
+ * [How can a user update OpenShift 4 console route](https://access.redhat.com/solutions/4539491)
+ * [Red Hat Operators Supported in Disconnected Mode](https://access.redhat.com/articles/4740011)
+ * [Support Policies for Red Hat OpenShift Container Platform Clusters - Deployments Spanning Multiple Sites(Data Centers/Regions)](https://access.redhat.com/articles/3220991)
+ * [Red Hat OpenShift Container Platform Update Graph](https://access.redhat.com/labs/ocpupgradegraph/update_channel)
+ * [Consolidated Troubleshooting Article OpenShift Container Platform 4.x](https://access.redhat.com/articles/4217411)
+ * [Red Hat Container Support Policy](https://access.redhat.com/articles/2726611)
+ * [Red Hat Enterprise Linux Container Compatibility Matrix](https://access.redhat.com/support/policy/rhel-container-compatibility)
+ * [Consolidated Troubleshooting Article OpenShift Container Platform 4.x](https://access.redhat.com/articles/4217411)
+ * [Red Hat OpenShift Container Platform Life Cycle Policy](https://access.redhat.com/support/policy/updates/openshift)
+ * [Deploying OpenShift 4.x on non-tested platforms using the bare metal install method](https://access.redhat.com/articles/4207611)
+ * [Certified OpenShift CNI Plug-ins](https://access.redhat.com/articles/5436171)
 
 
 ## Stargazers over time
