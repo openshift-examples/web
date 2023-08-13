@@ -82,8 +82,7 @@ plugins:
       fallback_to_build_date: false
       type: timeago
   - tags:
-      tags_folder: content/
-      tags_template: content/tags.md.template
+      tags_file: tags.md
   - macros:
       verbose: false
   - glightbox
