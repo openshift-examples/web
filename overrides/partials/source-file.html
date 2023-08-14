@@ -1,0 +1,39 @@
+{#-
+  This file was automatically generated - do not edit
+-#}
+<hr>
+<div class="md-source-file">
+  <span class="md-source-file__fact">
+    {% if page.meta.git_revision_date_localized %}
+      <span class="md-icon" title="{{ lang.t("source.file.date.updated") }}">
+        {% include ".icons/material/timer-edit-outline" ~ ".svg" %}
+      </span>
+      {{ page.meta.git_revision_date_localized }}
+
+      {% if page.meta.git_creation_date_localized %}
+        <span class="md-icon" title="{{ lang.t("source.file.date.created") }}">
+        {% include ".icons/material/timer-plus-outline" ~ ".svg" %}
+        </span>
+      {{ page.meta.git_creation_date_localized }}
+      {% endif %}
+
+      {% elif page.meta.revision_date %}
+      {{ lang.t("source.file.date.updated") }}:
+      {{ page.meta.revision_date }}
+      {% endif %}
+
+      {% if git_info %}
+      <span class="md-icon" title="Contributors">
+        {% include ".icons/material/github" ~ ".svg" %}
+      </span>
+      <span>Contributors:</span>
+      {%- for author in git_info.get('page_authors') -%}
+      <span>
+        <a href="mailto:{{ author.email }}" class="md-author" title="{{ author.name }}">
+          <img src="https://www.gravatar.com/avatar/{{ author.email | trim | lower | sha256 }}?s=25" alt="{{ author.name }}">
+        </a>
+      </span>
+      {%- endfor -%}
+      {% endif %}
+  </span>
+</div>
