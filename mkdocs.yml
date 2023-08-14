@@ -88,6 +88,9 @@ plugins:
       verbose: false
   - glightbox
 
+hooks:
+  - hooks/sha256_filter.py
+
 extra_css:
   - assets/stylesheets/powered-by.css
 
