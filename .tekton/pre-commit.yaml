@@ -113,6 +113,8 @@ spec:
               script: |
                 set -euxo pipefail
 
+                git config --global --add safe.directory $(workspaces.source.path)/pr
+
                 echo -e ' 💀 There was an error during pre-commit / linter:\n\n```' \
                   > $(workspaces.source.path)/notify-linter-on-failure.txt
 
