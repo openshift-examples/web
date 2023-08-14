@@ -3,6 +3,10 @@ title: Certificates
 linktitle: Certificates
 weight: 26000
 description: TBD
+tags:
+
+- certificates
+
 ---
 
 # Certificates
@@ -16,6 +20,7 @@ description: TBD
 ### Get the list of certificates from a secrets
 
 {% raw %}
+
 ```bash
 
 SECRET=letsencrypt-router-certs
@@ -23,8 +28,8 @@ SECRET=letsencrypt-router-certs
 openssl crl2pkcs7 -nocrl -certfile \
   <(oc get secrets $SECRET -o go-template='{{ index .data "tls.crt" | base64decode }}' ) \
   | openssl pkcs7 -print_certs  -noout
-
 ```
+
 {% endraw %}
 
 ### Check certificate
@@ -35,34 +40,32 @@ echo -n | openssl s_client -connect q.bohne.io:8443 -servername q.bohne.io 2>/de
 
 ## General: Create a self signed certificate
 
-### 1) Create [openssl.self-signed-certificate.conf](certificate/openssl.self-signed-certificate.conf)
-
+### Create [openssl.self-signed-certificate.conf](certificate/openssl.self-signed-certificate.conf)
 
 === "Download"
 
-    ```
+    ```bash
     curl -L -O {{ page.canonical_url }}openssl.self-signed-certificate.conf
     ```
 
 === "openssl.self-signed-certificate.conf"
 
-    {% raw %}
+{% raw %}
+
     ```ini
     --8<-- "content/certificate/openssl.self-signed-certificate.conf"
     ```
-    {% endraw %}
 
+{% endraw %}
 
-### 2) Create self signed certificate
+### Create self signed certificate
 
 ```bash
-
 openssl req -x509 -nodes -days 730 \
   -newkey rsa:2048 -keyout cert.pem \
   -out cert.pem \
   -config openssl.self-signed-certificate.conf \
   -extensions 'v3_req'
-
 ```
 
 ### 3) Print self signed certificate
@@ -105,11 +108,12 @@ $ openssl x509 -in cert.pem -noout -text
 === "openssl.root-ca.conf"
 
     {% raw %}
+
     ```ini
     --8<-- "content/certificate/openssl.root-ca.conf"
     ```
-    {% endraw %}
 
+    {% endraw %}
 
 #### Create [openssl.certificate.conf](certificate/openssl.certificate.conf)
 
@@ -122,9 +126,11 @@ $ openssl x509 -in cert.pem -noout -text
 === "openssl.certificate.conf"
 
     {% raw %}
+
     ```ini
     --8<-- "content/certificate/openssl.certificate.conf"
     ```
+
     {% endraw %}
 
 ### Adjust openssl.certificate.conf
@@ -200,12 +206,13 @@ update-ca-trust extract
 
 Official docs:
 
-* [Replacing the default ingress certificate](https://docs.openshift.com/container-platform/latest/authentication/certificates/replacing-default-ingress-certificate.html\#replacing-default-ingress\_replacing-default-ingress)
-* [Setting a custom default certificate](https://docs.openshift.com/container-platform/4.2/networking/ingress-operator.html\#nw-ingress-setting-a-custom-default-certificate\_configuring-ingress)
+[Replacing the default ingress certificate](https://docs.openshift.com/container-platform/latest/authentication/certificates/replacing-default-ingress-certificate.html\#replacing-default-ingress\_replacing-default-ingress)
+
+[Setting a custom default certificate](https://docs.openshift.com/container-platform/4.2/networking/ingress-operator.html\#nw-ingress-setting-a-custom-default-certificate\_configuring-ingress)
 
 **WARNING:** If the default certificate is replaced, it **must** be signed by a public certificate authority already included in the CA bundle as provided by the container userspace.
 
-1) Create secret with certificates
+### Create secret with certificates
 
 ```bash
 oc create secret tls router-certs \
@@ -214,7 +221,7 @@ oc create secret tls router-certs \
   -n openshift-ingress
 ```
 
-2) Add secret to ingresscontroller
+### Add secret to ingresscontroller
 
 ```bash
 oc patch ingresscontroller default \
