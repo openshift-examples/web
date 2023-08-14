@@ -2,20 +2,15 @@
 title: OpenShift/Kubernetes Client
 linktitle: Client (oc/kubectl)
 description: All about OpenShift/Kubernetes clients
-tags:
-  - client
-  - kubectl
-  - oc
+tags: client, kubectl, oc
 ---
-
-#  OpenShift/Kubernetes Client
+# OpenShift/Kubernetes Client
 
 ## Resources
 
 * <https://github.com/openshift-examples/client-go-template>
 * <https://www.openshift.com/blog/customizing-oc-output-with-go-templates>
-g* <https://github.com/brandisher/openshift-and-gotemplates-workshop>
-
+* <https://github.com/brandisher/openshift-and-gotemplates-workshop>
 
 ## Different Pod details
 
