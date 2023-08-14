@@ -13,3 +13,16 @@
 .md-grid {
     max-width: initial;
 }
+
+.md-source-file__fact {
+    align-items: center;
+    color: var(--md-default-fg-color--light);
+    display: inline-flex;
+    font-size: .68rem;
+    gap: .3rem;
+}
+
+.md-typeset .md-author img {
+    border-radius: 100%;
+    display: block;
+}
