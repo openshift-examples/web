@@ -80,7 +80,9 @@ resources: {}
   #   cpu: 100m
   #   memory: 128Mi
 
-nodeSelector: {}
+nodeSelector:
+  kubernetes.io/arch: amd64
+  kubernetes.io/os: linux
 
 tolerations: []
 
