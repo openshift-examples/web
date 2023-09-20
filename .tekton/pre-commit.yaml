@@ -43,6 +43,14 @@ spec:
       value: "{{source_branch}}"
     - name: target_branch
       value: "{{target_branch}}"
+  podTemplate:
+    nodeSelector:
+      kubernetes.io/arch: amd64
+  # taskRunSpecs:
+  #   - pipelineTaskName: pre-commit
+  #     podTemplate:
+  #       nodeSelector:
+  #         kubernetes.io/arch: amd64
   pipelineSpec:
     params:
       - name: repo_url
