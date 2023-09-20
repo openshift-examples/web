@@ -23,7 +23,7 @@ metadata:
   namespace: metallb
 spec:
   ipAddressPools:
-  - ingress-public-ip
+    - ingress-public-ip
 ---
 kind: Service
 apiVersion: v1
@@ -45,4 +45,3 @@ spec:
   selector:
     ingresscontroller.operator.openshift.io/deployment-ingresscontroller: default
   type: LoadBalancer
----
