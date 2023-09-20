@@ -2,10 +2,7 @@
 title: Hosted Control Plane
 linktitle: Hosted Control Plane
 description: Hosted Control Plane aka HyperShift
-tags:
-  - HostedControlPlane
-  - hcp
-  - hypershift
+tags: HostedControlPlane, hcp, hypershift
 ---
 
 # Hosted Control Plane
@@ -14,15 +11,12 @@ tags:
 
 <https://github.com/gqlo/blogs/blob/main/hosted-control-plane-with-the-kubevirt-provider.md>
 
-
 ## Platform
 
 - Cluster erstellen
 - Bestehendes zeigen
 - BareMetal zeigen
 - MetalLB
--
-
 
 ### KubeVirt
 
@@ -31,7 +25,6 @@ tags:
 export PULL_SECRET=${HOME}/redhat-pullsecret-rh-ee-rbohne.json
 export KUBEVIRT_CLUSTER_NAME=ocp414
 export TRUSTED_BUNDLE=${HOME}/Devel/gitlab.consulting.redhat.com/coe-lab/certificates/ca-bundle-v1.pem
-
 
 hypershift create cluster \
 kubevirt \
@@ -57,21 +50,19 @@ kubevirt \
 
 #### Export kubeconfig
 
-```
+```bash
 hypershift create kubeconfig \
   --name $KUBEVIRT_CLUSTER_NAME \
   --namespace rbohne-hcp | sed "s/admin/$KUBEVIRT_CLUSTER_NAME/" > ~/.kube/clusters/${KUBEVIRT_CLUSTER_NAME}
 ```
 
-
-
 ### Agent
-
 
 #### Exposing vie MetalLB
 
 Missing:
-```
+
+```yaml
 apiVersion: metallb.io/v1beta1
 kind: L2Advertisement
 metadata:
@@ -89,8 +80,7 @@ spec:
   Will not supported and disapear from upstream docs.
   Please go with agent.
 
-
-```
+```bash
 hypershift create cluster \
 none \
   --expose-through-load-balancer \
@@ -103,10 +93,9 @@ none \
 
 ```
 
-
 # Trouble shooting
 
-https://hypershift-docs.netlify.app/how-to/troubleshooting/
+<https://hypershift-docs.netlify.app/how-to/troubleshooting/>
 
 export KUBEVIRT_CLUSTER_NAME=lenggries3
 export CLUSTERNS="rbohne-hcp"
@@ -117,5 +106,3 @@ hypershift dump cluster \
     --namespace ${CLUSTERNS} \
     --dump-guest-cluster \
     --artifact-dir clusterDump-${CLUSTERNS}-${KUBEVIRT_CLUSTER_NAME}
-
-
