@@ -4,8 +4,8 @@ metadata:
   name: examples-stage-openshift-pub
 spec:
   destination:
-    namespace: production
-    server: https://api.rh-us-east-1.openshift.com
+    server: 'https://kubernetes.default.svc'
+    namespace: examples-openshift-pub
   project: default
   source:
     helm:
