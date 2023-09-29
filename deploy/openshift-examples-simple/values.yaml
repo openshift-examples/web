@@ -53,7 +53,7 @@ route:
   enabled: true
 
 certificate:
-  enabled: true
+  enabled: false
   commonName: "examples-hc1.openshift.pub"
   dnsNames:
     - "examples-hc1.openshift.pub"
@@ -64,7 +64,7 @@ certificate:
   secretName: examples-hc1-openshift-pub
 
 ingress:
-  enabled: true
+  enabled: false
   className: ""
   annotations:
     route.openshift.io/termination: "edge"
