@@ -32,6 +32,7 @@ and benefit from the expertise shared in this repository.
 * [Red Hat OpenShift Container Platform Life Cycle Policy](https://access.redhat.com/support/policy/updates/openshift)
 * [Deploying OpenShift 4.x on non-tested platforms using the bare metal install method](https://access.redhat.com/articles/4207611)
 * [Certified OpenShift CNI Plug-ins](https://access.redhat.com/articles/5436171)
+* [Is it supported to have mixed environment (VMware+Baremetal) setup for RHOCP 4.x cluster](https://access.redhat.com/solutions/5376701)
 
 ## Stargazers over time
 
