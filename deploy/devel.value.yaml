@@ -6,6 +6,33 @@ image:
   tag: sha256:618ccaf0769b6a927143443e1c5a2a2fac498930f7ba8db9c703b4b4b5d8bf8d
 
 route:
+  enabled: false
   hostOverride: examples-stage.openshift.pub
   annotations:
     kubernetes.io/tls-acme: 'true'
+
+certificate:
+  enabled: true
+  commonName: "examples-stage.openshift.pub"
+  dnsNames:
+    - "examples-stage.openshift.pub"
+  issuerRef:
+    group: cert-manager.io
+    kind: ClusterIssuer
+    name: cloudflare-openshift-pub
+  secretName: examples-stage-openshift-pub
+
+ingress:
+  enabled: true
+  className: ""
+  annotations:
+    route.openshift.io/termination: "edge"
+  hosts:
+    - host: examples-stage.openshift.pub
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls:
+    - secretName: examples-hc1-openshift-pub
+      hosts:
+        - examples-stage.openshift.pub
