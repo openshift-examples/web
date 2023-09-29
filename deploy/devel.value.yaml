@@ -33,6 +33,6 @@ ingress:
         - path: /
           pathType: ImplementationSpecific
   tls:
-   - secretName: examples-hc1-openshift-pub
-     hosts:
-       - examples-stage.openshift.pub
+    - secretName: examples-hc1-openshift-pub
+      hosts:
+        - examples-stage.openshift.pub
