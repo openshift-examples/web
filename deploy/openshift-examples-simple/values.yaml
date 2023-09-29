@@ -76,9 +76,9 @@ ingress:
         - path: /
           pathType: ImplementationSpecific
   tls:
-   - secretName: examples-hc1-openshift-pub
-     hosts:
-       - examples-hc1.openshift.pub
+    - secretName: examples-hc1-openshift-pub
+      hosts:
+        - examples-hc1.openshift.pub
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
