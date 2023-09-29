@@ -1,0 +1,27 @@
+{{- if .Values.certificate.enabled -}}
+{{- $fullName := include "openshift-examples-simple.fullname" . -}}
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ $fullName }}
+  labels:
+    {{- include "openshift-examples-simple.labels" . | nindent 4 }}
+  {{- with .Values.certificate.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  commonName: {{ .Values.certificate.commonName | quote }}
+  dnsNames:
+  {{- range .Values.certificate.dnsNames }}
+    - {{ . | quote }}
+  {{- end }}
+  issuerRef:
+    group: {{ .Values.certificate.issuerRef.group }}
+    kind: {{ .Values.certificate.issuerRef.kind }}
+    name: {{ .Values.certificate.issuerRef.name }}
+  privateKey:
+    algorithm: ECDSA
+    size: 256
+  secretName: {{ .Values.certificate.secretName }}
+{{- end }}
