@@ -102,6 +102,7 @@ nav:
           - "Example installation": cluster-installation/vmware/example/index.md
           - "IPI & Proxy": cluster-installation/vmware/ipi-proxy.md
           - "MachineSet & UPI": cluster-installation/vmware/machineset-with-upi.md
+      - Hosted Control Plane: cluster-installation/hosted-control-plane.md
       - Nvidia GPU:
           - cluster-installation/gpu/index.md
           - GPU on-prem: cluster-installation/gpu/gpu-on-prem.md

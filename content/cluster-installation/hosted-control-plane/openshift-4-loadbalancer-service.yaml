@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: openshift-4-loadbalancer
+spec:
+  type: LoadBalancer
+  selector:
+      app: openshift-4-loadbalancer
+      deployment: openshift-4-loadbalancer
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      name: http
+    - protocol: TCP
+      port: 443
+      targetPort: 443
+      name: https
+    - protocol: TCP
+      port: 1984
+      targetPort: 1984
+      name: stats
+
