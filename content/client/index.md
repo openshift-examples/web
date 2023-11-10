@@ -2,10 +2,7 @@
 title: OpenShift/Kubernetes Client
 linktitle: Client (oc/kubectl)
 description: All about OpenShift/Kubernetes clients
-tags:
-  - client
-  - kubectl
-  - oc
+tags: ["client", "kubectl", "oc"]
 ---
 # OpenShift/Kubernetes Client
 
