@@ -45,6 +45,9 @@ spec:
       value: "{{target_branch}}"
     - name: pr_base_sha
       value: "{{ body.pull_request.base.sha }}"
+    - name: pr_commits
+      value: "{{ body.pull_request.commits }}"
+
   podTemplate:
     nodeSelector:
       kubernetes.io/arch: amd64
@@ -60,6 +63,7 @@ spec:
       - name: pull_request_number
       - name: git_auth_secret
       - name: pr_base_sha
+      - name: pr_commits
     workspaces:
       - name: source
       - name: basic-auth
@@ -117,8 +121,8 @@ spec:
         params:
           - name: pr_commit
             value: $(tasks.fetch-repository-pr.results.commit)
-          - name: pr_base_sha
-            value: $(params.pr_base_sha)
+          - name: pr_commits
+            value: $(params.pr_commits)
         taskSpec:
           workspaces:
             - name: source
@@ -127,8 +131,8 @@ spec:
               image: quay.io/openshift-examples/builder:devel
               workingDir: $(workspaces.source.path)/pr
               env:
-                - name: PR_BASE_SHA
-                  value: $(params.pr_base_sha)
+                - name: PR_COMMITS
+                  value: $(params.pr_commits)
                 - name: PR_COMMIT
                   value: $(params.pr_commit)
                 - name: WORKSPACE
@@ -142,7 +146,7 @@ spec:
                   > ${WORKSPACE}/notify-linter-on-failure.txt
 
                 pre-commit run --color=never \
-                  --from-ref ${PR_BASE_SHA} \
+                  --from-ref HEAD~${PR_COMMITS} \
                   --to-ref ${PR_COMMIT} \
                 | sed -r "s/\x1B\[([0-9]{1,3}(;[0-9]{1,2};?)?)?[mGK]//g" \
                 | tee -a ${WORKSPACE}/notify-linter-on-failure.txt
