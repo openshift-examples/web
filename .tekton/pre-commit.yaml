@@ -43,6 +43,8 @@ spec:
       value: "{{source_branch}}"
     - name: target_branch
       value: "{{target_branch}}"
+    - name: pr_base_sha
+      value: "{{ body.pull_request.base.sha }}"
   podTemplate:
     nodeSelector:
       kubernetes.io/arch: amd64
@@ -57,11 +59,37 @@ spec:
       - name: revision
       - name: pull_request_number
       - name: git_auth_secret
+      - name: pr_base_sha
     workspaces:
       - name: source
       - name: basic-auth
     tasks:
+
+      - name: debug
+        workspaces:
+          - name: source
+            workspace: source
+        params:
+          - name: pr_base_sha
+            value: $(params.pr_base_sha)
+        taskSpec:
+          steps:
+            - name: debug
+              env:
+                - name: PR_BASE_SHA
+                  value: $(params.pr_base_sha)
+              image: registry.access.redhat.com/ubi9/ubi
+              script: |
+                #!/usr/bin/env python3
+                import json
+                import pprint
+                pp = pprint.PrettyPrinter(indent=4)
+                pp.pprint(json.loads("""{{ body }}"""))
+                exit(0)
+
       - name: fetch-repository-pr
+        runAfter:
+          - debug
         taskRef:
           name: git-clone
           kind: ClusterTask
@@ -79,38 +107,18 @@ spec:
             value: 0
           - name: subdirectory
             value: pr
-      - name: fetch-repository-main
-        taskRef:
-          name: git-clone
-          kind: ClusterTask
-        workspaces:
-          - name: output
-            workspace: source
-          - name: basic-auth
-            workspace: basic-auth
-        params:
-          - name: url
-            value: $(params.repo_url)
-          - name: revision
-            value: main
-          - name: subdirectory
-            value: main
-          # - name: depth
-          #   value: 1
-      # Customize this task if you like, or just do a taskRef
-      # to one of the hub task.
+
       - name: pre-commit
         runAfter:
           - fetch-repository-pr
-          - fetch-repository-main
         workspaces:
           - name: source
             workspace: source
         params:
-          - name: main_commit
-            value: $(tasks.fetch-repository-main.results.commit)
           - name: pr_commit
             value: $(tasks.fetch-repository-pr.results.commit)
+          - name: pr_base_sha
+            value: $(params.pr_base_sha)
         taskSpec:
           workspaces:
             - name: source
@@ -118,25 +126,32 @@ spec:
             - name: pre-commit
               image: quay.io/openshift-examples/builder:devel
               workingDir: $(workspaces.source.path)/pr
+              env:
+                - name: PR_BASE_SHA
+                  value: $(params.pr_base_sha)
+                - name: PR_COMMIT
+                  value: $(params.pr_commit)
+                - name: WORKSPACE
+                  value: $(workspaces.source.path)
               script: |
                 set -euxo pipefail
 
-                git config --global --add safe.directory $(workspaces.source.path)/pr
+                git config --global --add safe.directory ${WORKSPACE}/pr
 
                 echo -e ' 💀 There was an error during pre-commit / linter:\n\n```' \
-                  > $(workspaces.source.path)/notify-linter-on-failure.txt
+                  > ${WORKSPACE}/notify-linter-on-failure.txt
 
                 pre-commit run --color=never \
-                  --from-ref $(params.main_commit) \
-                  --to-ref $(params.pr_commit) \
+                  --from-ref ${PR_BASE_SHA} \
+                  --to-ref ${PR_COMMIT} \
                 | sed -r "s/\x1B\[([0-9]{1,3}(;[0-9]{1,2};?)?)?[mGK]//g" \
-                | tee -a $(workspaces.source.path)/notify-linter-on-failure.txt
+                | tee -a ${WORKSPACE}/notify-linter-on-failure.txt
 
                 RC=$?
                 echo "Return code $RC"
 
                 echo -e '\n```\n' \
-                  > $(workspaces.source.path)/notify-linter-on-failure.txt
+                  > ${WORKSPACE}/notify-linter-on-failure.txt
 
                 exit $?
 
