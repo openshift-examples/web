@@ -101,7 +101,7 @@ nav:
       - VMware/vSphere:
           - "Example installation": cluster-installation/vmware/example/index.md
           - "IPI & Proxy": cluster-installation/vmware/ipi-proxy.md
-          - "MachineSet & UPI": cluster-installation/vmware/machineset-with-upi.md
+          - "MachineSet & UPI": content/cluster-configuration/MachineSets/VMware-UPI/index.md
       - Hosted Control Plane: cluster-installation/hosted-control-plane.md
       - Nvidia GPU:
           - cluster-installation/gpu/index.md
@@ -143,6 +143,7 @@ nav:
           - Machine Config Server: cluster-configuration/machine-config/machine-config-server.md
       - MachineSets:
           - Debugging: cluster-configuration/MachineSets/debugging.md
+          - "VMware UPI": content/cluster-configuration/MachineSets/VMware-UPI/index.md
       - Cluster autoscaler: cluster-configuration/cluster-autoscaling.md
 
   - Cluster lifecycle:
