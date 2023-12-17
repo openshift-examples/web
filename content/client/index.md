@@ -38,7 +38,6 @@ tags: ["client", "kubectl", "oc"]
 
 ### List of Nodes with resources
 
-
 === "CLI"
 
     ```
@@ -58,8 +57,6 @@ tags: ["client", "kubectl", "oc"]
     --8<-- "content/client/nodelist-with-resources.example"
 
     ```
-
-
 
 ## cURL & Kubernetes/OpenShift API examples
 
