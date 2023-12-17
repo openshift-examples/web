@@ -5,8 +5,8 @@ metadata:
 spec:
   type: LoadBalancer
   selector:
-      app: openshift-4-loadbalancer
-      deployment: openshift-4-loadbalancer
+    app: openshift-4-loadbalancer
+    deployment: openshift-4-loadbalancer
   ports:
     - protocol: TCP
       port: 80
@@ -20,4 +20,3 @@ spec:
       port: 1984
       targetPort: 1984
       name: stats
-
