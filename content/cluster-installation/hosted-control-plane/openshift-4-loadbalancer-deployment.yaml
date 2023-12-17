@@ -27,31 +27,31 @@ spec:
         deployment: openshift-4-loadbalancer
     spec:
       containers:
-      - image: quay.io/redhat-emea-ssa-team/openshift-4-loadbalancer:latest
-        imagePullPolicy: Always
-        name: openshift-4-loadbalancer
-        env:
-          - name: INGRESS_HTTP
-            value: "ucs56-0=10.32.96.56:80,ucs57-0=10.32.96.57:80"
-          - name: INGRESS_HTTPS
-            value: "ucs56-0=10.32.96.56:443,ucs57-0=10.32.96.57:443"
-        ports:
-        - containerPort: 22623
-          protocol: TCP
-        - containerPort: 443
-          protocol: TCP
-        - containerPort: 6443
-          protocol: TCP
-        - containerPort: 80
-          protocol: TCP
-        - containerPort: 1984
-          protocol: TCP
-        resources: {}
-        securityContext:
-          privileged: true
-          runAsUser: 0
-        terminationMessagePath: /dev/termination-log
-        terminationMessagePolicy: File
+        - image: quay.io/redhat-emea-ssa-team/openshift-4-loadbalancer:latest
+          imagePullPolicy: Always
+          name: openshift-4-loadbalancer
+          env:
+            - name: INGRESS_HTTP
+              value: "ucs56-0=10.32.96.56:80,ucs57-0=10.32.96.57:80"
+            - name: INGRESS_HTTPS
+              value: "ucs56-0=10.32.96.56:443,ucs57-0=10.32.96.57:443"
+          ports:
+            - containerPort: 22623
+              protocol: TCP
+            - containerPort: 443
+              protocol: TCP
+            - containerPort: 6443
+              protocol: TCP
+            - containerPort: 80
+              protocol: TCP
+            - containerPort: 1984
+              protocol: TCP
+          resources: {}
+          securityContext:
+            privileged: true
+            runAsUser: 0
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
