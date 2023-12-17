@@ -50,11 +50,10 @@ hcp create kubeconfig \
   --namespace rbohne-hcp | sed "s/admin/$KUBEVIRT_CLUSTER_NAME/" > ~/.kube/clusters/${KUBEVIRT_CLUSTER_NAME}
 ```
 
-
 ### Platform - None / BareMetal
 
-
 Not tested, for a long time:
+
 ```bash
 hcp create cluster \
 none \
@@ -64,8 +63,7 @@ none \
   --etcd-storage-class ocs-storagecluster-ceph-rbd \
   --release-image=quay.io/openshift-release-dev/ocp-release:4.12.1-x86_64 \
   --pull-secret $PULL_SECRET
-  ## --render
-
+  # --render
 ```
 
 #### Loadbalacner for ingress
@@ -74,10 +72,10 @@ Ingress is running on physical nodes, you have to provide an external load balan
 
 Here a container solution bases on [openshift-4-loadbalancer](https://github.com/RedHat-EMEA-SSA-Team/openshift-4-loadbalancer)
 
- * Create new project
- * Create service account `privileged` : `oc create sa privileged`
- * Grant scc `privileged` to service account `privileged`
- * Download and edit line 35 & 37 with your BareMetal endpoints
+* Create new project
+* Create service account `privileged` : `oc create sa privileged`
+* Grant scc `privileged` to service account `privileged`
+* Download and edit line 35 & 37 with your BareMetal endpoints
 
 === "Download, edit and apply"
 
@@ -93,7 +91,7 @@ Here a container solution bases on [openshift-4-loadbalancer](https://github.com
     --8<-- "content/cluster-installation/hosted-control-plane/openshift-4-loadbalancer-deployment.yaml"
     ```
 
- * Apply service type load balancer
+* Apply service type load balancer
 
 === "Apply"
 
@@ -106,8 +104,6 @@ Here a container solution bases on [openshift-4-loadbalancer](https://github.com
     ```yaml  hl_lines="37 35"
     --8<-- "content/cluster-installation/hosted-control-plane/openshift-4-loadbalancer-service.yaml"
     ```
-
-
 
 # Trouble shooting
 
