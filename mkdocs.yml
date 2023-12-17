@@ -244,6 +244,8 @@ nav:
       - Local fedora: my-lab/local-fedora.md
       - SSH: my-lab/ssh.md
       - OCP Remote worker: my-lab/remote-worker.md
+      - Workstation: my-lab/fedora-workstation.md
+
   - OpenShift.tv:
       - openshift-tv/index.md
       - vSphere IPI & disconnected environment: openshift-tv/2021-04-14-vpshere-ipi-disconnected.md
