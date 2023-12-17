@@ -69,31 +69,31 @@ spec:
       - name: basic-auth
     tasks:
 
-      - name: debug
-        workspaces:
-          - name: source
-            workspace: source
-        params:
-          - name: pr_base_sha
-            value: $(params.pr_base_sha)
-        taskSpec:
-          steps:
-            - name: debug
-              env:
-                - name: PR_BASE_SHA
-                  value: $(params.pr_base_sha)
-              image: registry.access.redhat.com/ubi9/ubi
-              script: |
-                #!/usr/bin/env python3
-                import json
-                import pprint
-                pp = pprint.PrettyPrinter(indent=4)
-                pp.pprint(json.loads("""{{ body }}"""))
-                exit(0)
+      # - name: debug
+      #   workspaces:
+      #     - name: source
+      #       workspace: source
+      #   params:
+      #     - name: pr_base_sha
+      #       value: $(params.pr_base_sha)
+      #   taskSpec:
+      #     steps:
+      #       - name: debug
+      #         env:
+      #           - name: PR_BASE_SHA
+      #             value: $(params.pr_base_sha)
+      #         image: registry.access.redhat.com/ubi9/ubi
+      #         script: |
+      #           #!/usr/bin/env python3
+      #           import json
+      #           import pprint
+      #           pp = pprint.PrettyPrinter(indent=4)
+      #           pp.pprint(json.loads("""{{ body }}"""))
+      #           exit(0)
 
       - name: fetch-repository-pr
-        runAfter:
-          - debug
+        # runAfter:
+        #   - debug
         taskRef:
           name: git-clone
           kind: ClusterTask
