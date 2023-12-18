@@ -44,6 +44,9 @@ spec:
     #   value: "{{ git_auth_secret }}"
     - name: source_branch
       value: '{{ source_branch }}'
+  podTemplate:
+    nodeSelector:
+      kubernetes.io/arch: amd64
   pipelineSpec:
     params:
       - name: repo_url
