@@ -2,9 +2,8 @@
 title: GitOps
 linktitle: GitOps
 description: All about GitOps
-tags:
-  - gitops
-  - argocd
+tags: ['gitops','argocd']
+icon: simple/argo
 ---
 
 # GitOps
