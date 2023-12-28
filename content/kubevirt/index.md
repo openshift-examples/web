@@ -10,10 +10,6 @@ ignore_macros: true
 ---
 # OpenShift Virtualization (CNV/KubeVirt)
 
-## My lab environment
-
-build with [hetzner-ocp4](https://github.com/RedHat-EMEA-SSA-Team/hetzner-ocp4/blob/master/docs/cnv.md)
-
 
 ## Containerized Data Importer (CDI) / DataVolume
 
@@ -100,8 +96,8 @@ oc apply -f https://raw.githubusercontent.com/openshift-examples/web/master/cont
  - [Kubernetes and Virtualization: kubevirt will let you spawn virtual machine on your cluster!](https://medium.com/@alezzandro/kubernetes-and-virtualization-kubevirt-will-let-you-spawn-virtual-machine-on-your-cluster-e809914cc783)
 
  - Very old, please double check: [Know Issue: No IP address in VM after pod deletion #1646](https://github.com/kubevirt/kubevirt/issues/1646)
- - https://developers.redhat.com/blog/2018/10/22/introduction-to-linux-interfaces-for-virtual-networking/
- - https://www.praqma.com/stories/debugging-kubernetes-networking/
+ - <https://developers.redhat.com/blog/2018/10/22/introduction-to-linux-interfaces-for-virtual-networking/>
+ - <https://www.praqma.com/stories/debugging-kubernetes-networking/>
 
 
 

@@ -226,6 +226,7 @@ nav:
 
   - OpenShift Virtualization:
       - kubevirt/index.md
+      - VM Templates: kubevirt/template.md
       - Networking: kubevirt/networking.md
       - Local-storage: kubevirt/local-storage.md
 
