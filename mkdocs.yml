@@ -231,15 +231,7 @@ nav:
       - Networking: kubevirt/networking.md
       - Local-storage: kubevirt/local-storage.md
 
-  - Quay & Clair: quay.md
   - Certificates: certificate.md
-  - Misc:
-      - misc/index.md
-      - Velero: misc/velero.md
-      - CloudFlare: misc/cloudflare.md
-      - Terraform: misc/terraform.md
-      - ConSol Meetup Notes: misc/meetup-notes.md
-      - Hetzner Lab notes: misc/hetzner-lab.md
 
   - My Lab notes:
       - my-lab/index.md
