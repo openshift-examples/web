@@ -34,7 +34,7 @@ theme:
     text: Overpass
     code: Overpass Mono
   icon:
-    logo: material/bookmark
+    logo: simple/redhatopenshift
     repo: fontawesome/brands/github
   features:
     - navigation.instant
@@ -95,8 +95,10 @@ extra_css:
   - assets/stylesheets/powered-by.css
 
 #  gsed -E "s/\* \[(.+)\]\((.+)\)/- \'\1\': '\2'/" docs/SUMMARY.md
+# :material-folder-plus:
 nav:
   - Cluster installation:
+      - cluster-installation/index.md
       - Air-gapped: cluster-installation/air-gapped.md
       - VMware/vSphere:
           - "Example installation": cluster-installation/vmware/example/index.md

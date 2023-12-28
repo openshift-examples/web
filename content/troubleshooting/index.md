@@ -5,6 +5,7 @@ description: Troubleshooting
 tags:
   - troubleshooting
 ignore_macros: true
+icon: material/card-search
 ---
 # Troubleshooting
 
@@ -57,14 +58,14 @@ metadata:
 ....
 ```
 
-## The bootstrap is running but the customer can't pull from the mirror registry 
+## The bootstrap is running but the customer can't pull from the mirror registry
 ```log
 Error pulling candidate abc.def.ghi/company-openshift-docker/openshift-release-dev/ocp-release@sha256:97410a5db655a9d3017b735c2c0747c849d09ff551765e49d5272b80c024a844: initializing source docker://abc.def.ghi/company-openshift-docker/openshift-release-dev/ocp-release@sha256:97410a5db655a9d3017b735c2c0747c849d09ff551765e49d5272b80c024a844: pinging container registry abc.def.ghi: Get "https://abc.def.ghi/v2/ <https://abc.def.ghi/v2/> ": x509: certificate signed by unknown authority
 
 Error: initializing source docker://abc.def.ghi/company-openshift-docker/openshift-release-dev/ocp-release@sha256:97410a5db655a9d3017b735c2c0747c849d09ff551765e49d5272b80c024a844: pinging container registry abc.def.ghi: Get "https://abc.def.ghi/v2/ <https://abc.def.ghi/v2/> ": x509: certificate signed by unknown authority
 ```
 
-**Issue**: The mirror registry's certificate isn't trusted. 
+**Issue**: The mirror registry's certificate isn't trusted.
 
 **Solution**: Use curl and openssl to identify the correct certificate/chain of certificates needed to be able to securely connect to the mirror registry and add them to the additionalTrustBundle section inside the `install-config.yaml` file with the right intendation, for [example](https://docs.openshift.com/container-platform/4.11/installing/installing_vsphere/installing-restricted-networks-installer-provisioned-vsphere.html#installation-installer-provisioned-vsphere-config-yaml_installing-restricted-networks-installer-provisioned-vsphere).
 
@@ -80,16 +81,16 @@ fetch discovery: Get "https://localhost:6443/api?timeout=32s": dial tcp
 [::1]:6443: connect: connection refused
 ```
 
-**Problem determination**: 
+**Problem determination**:
 Check whether the Kubernetes API (`https://api.<cluster-id>.<domain>:port`) is accessible. This helps to verify that the DNS resolution on the bootstrap server is set up correctly.
 6443 is the (API) port used by all nodes to communicate with the control plane (master nodes). For reference see [Network connectivity requirements](https://docs.openshift.com/container-platform/4.11/installing/installing_vsphere/installing-vsphere-installer-provisioned.html#installation-vsphere-installer-network-requirements_installing-vsphere-installer-provisioned).
-  
+
 ```bash
 #$ curl -k -I -v https://api.<cluster-id>.<domain>:port
 
 #The result output hinted at a certificate issue
-[core@v0004369 ~]$ curl -k -I -v https://api.<cluster-id>.<domain>:port 
-* Rebuilt URL to: https://api.<cluster-id>.<domain>:port/ 
+[core@v0004369 ~]$ curl -k -I -v https://api.<cluster-id>.<domain>:port
+* Rebuilt URL to: https://api.<cluster-id>.<domain>:port/
 *  Trying x.x.x.x...
 * TCP_NODELAY set
 * Connected to api.<cluster-id>.<domain> (<ip address>) port 6443 (#0)
@@ -104,7 +105,7 @@ api.<cluster-id>.<domain>:6443
 curl: (35) OpenSSL SSL_connect: SSL_ERROR_SYSCALL in connection to
 api.<cluster-id>.<domain>:6443
 ```
-  
+
 Run the below debug command from the OpenShift installation directory. This command can be used to follow the installation process.
 ```bash
 $ openshift-install wait-for bootstrap-complete --log-level debug
@@ -126,9 +127,9 @@ after 2022-09-10T08:45:15Z
 DEBUG Still waiting for the Kubernetes API: Get "https://api.<cluster-id>.<domain>:6443": EOF
 ```
 
-**Issue**: The Ignition config files that the openshift-install program generates contain certificates that expire after 24 hours. Expired certificates cause the installation to fail.  
+**Issue**: The Ignition config files that the openshift-install program generates contain certificates that expire after 24 hours. Expired certificates cause the installation to fail.
 
-**Solution**: 
+**Solution**:
 Verify the validity of the certificate being presented by the bootstrap node.
 ```bash
 openssl s_client -connect api-int.cluster.fqdn:22623 | openssl x509 -noout -text
@@ -139,7 +140,7 @@ Check that all certificates are valid, especially the certificates from which th
 **Note:**
 It is recommended that you use Ignition config files within 12 hours after they are generated because the 24-hour certificate rotates from 16 to 22 hours after the cluster is installed
 
-For reference, please see 
+For reference, please see
 * [Creating the Kubernetes manifest and Ignition config files](https://docs.openshift.com/container-platform/4.11/installing/installing_platform_agnostic/installing-platform-agnostic.html#installation-user-infra-generate-k8s-manifest-ignition_installing-platform-agnostic)
 * [Masters and Workers Fail to Ignite Reporting Error 'x509: certificate has expired or not yet valid'](https://access.redhat.com/solutions/4355651)
 
@@ -220,14 +221,14 @@ $ oc get co
 ## Worker nodes are not visible when running oc get nodes
 `oc get nodes` only shows master nodes.
 
-**Issue**: The nodes' certificate requests haven't been approved. 
+**Issue**: The nodes' certificate requests haven't been approved.
 
-**Solution**: 
+**Solution**:
 The new worker node(s) will still be missing or in pending state. Add them by signing the respective client and server CSR requests. Run `oc get csr` and then sign each request.
 
 ```bash
 oc get csr
-oc adm certificate approve <csr_name> 
+oc adm certificate approve <csr_name>
 ```
 
 There will be multiple CSRs created per worker, so run the commands above multiple times until the workers show up as ready.
@@ -246,7 +247,7 @@ oc get nodes
 
 **Issue**: The OVA image has been started prior to cloning.
 
-**Solution**: 
+**Solution**:
 Create a new template for the OVA image and then clone the template as needed. Starting the OVA image prior to cloning will kick off the ignition process and, as a result, the ignition of the templates fails.
 
 
@@ -257,7 +258,7 @@ $ oc get co
 $ oc get ingresscontroller/default -o yaml -n openshift-ingress-operator
 ```
 
-Place a nodeSeclector of this deployment on a master node provided that master nodes are running and ready. To verify that masters are unschedulable ensure that 
+Place a nodeSeclector of this deployment on a master node provided that master nodes are running and ready. To verify that masters are unschedulable ensure that
 the masterSchedulable field is set to false.
 ```bash
 $ oc edit schedulers.config.openshift.io cluster
@@ -275,7 +276,7 @@ spec:
   mastersSchedulable: false
   policy:
     name: ""
-status: {} 
+status: {}
 ```
 
 ## Troubleshooting node startup issues
@@ -307,6 +308,6 @@ https://unix.stackexchange.com/questions/678677/in-an-ubuntu-vm-in-vmware-i-incr
 
 ## How to delete/destroy a failed installation
 ```bash
-./openshift-install destroy cluster --dir <installation_directory> --log-level info 
+./openshift-install destroy cluster --dir <installation_directory> --log-level info
 ```
 [Reference](https://docs.openshift.com/container-platform/4.11/installing/installing_ibm_cloud_public/uninstalling-cluster-ibm-cloud.html)
