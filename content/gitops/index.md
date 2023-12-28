@@ -10,7 +10,7 @@ icon: simple/argo
 
 ## ArgoCD comand line
 
-```
+```bash
 argocd login --username admin \
   --password $(oc get secrets -n openshift-gitops openshift-gitops-cluster -o jsonpath="{.data.admin\.password}" | base64 -d) \
   --insecure \
@@ -58,7 +58,7 @@ kubeseal \
 
 <https://blog.oddbit.com/post/2021-03-09-getting-started-with-ksops/>
 
-```
+```bash
 # Kustomize
 curl -L https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv4.2.0/kustomize_v4.2.0_linux_amd64.tar.gz | tar xz
 install -m 755
@@ -77,15 +77,11 @@ install -m 755 ksops ~/.config/kustomize/plugin/viaduct.ai/v1/ksops/ksops
 rm ksops
 ```
 
-
 ## Resources & Examples
 
- * <https://github.com/openshift-examples/apps>
- * <https://github.com/gnunn-gitops/standards> => Text-Beschreibung
- * <https://github.com/gnunn-gitops/cluster-config> => Example für Cluster Config (von Gerald)
- * <https://github.com/PixelJonas/cluster-gitops> => Example Cluster Config (von nem anderen dude)
- * <https://github.com/redhat-canada-gitops/catalog> => Repo mit kustomize base-folder für verschiedene Operator und/oder KOnfigurationenexi
-
-
- https://argoproj.github.io/argo-cd/faq/#why-is-my-app-out-of-sync-even-after-syncing
-
+* <https://github.com/openshift-examples/apps>
+* <https://github.com/gnunn-gitops/standards> => Text-Beschreibung
+* <https://github.com/gnunn-gitops/cluster-config> => Example für Cluster Config (von Gerald)
+* <https://github.com/PixelJonas/cluster-gitops> => Example Cluster Config (von nem anderen dude)
+* <https://github.com/redhat-canada-gitops/catalog> => Repo mit kustomize base-folder für verschiedene Operator und/oder KOnfigurationenexi
+* <https://argoproj.github.io/argo-cd/faq/#why-is-my-app-out-of-sync-even-after-syncing>

@@ -2,14 +2,12 @@
 
 ![](content/images/logo-black.png)
 
-
-
-
 ## Development
 
 ### Git Submodules
 
 Create a new submodule
+
 ```bash
 cd content/kubevirt/
 git submodule add https://github.com/openshift-examples/kubevirt-ansible ansible
