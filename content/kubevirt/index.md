@@ -5,6 +5,7 @@ weight: 14000
 description: TBD
 tags: ['cnv', 'kubevirt','ocp-v']
 ignore_macros: true
+icon: material/new-box
 ---
 # OpenShift Virtualization (CNV/KubeVirt)
 

@@ -3,10 +3,8 @@ title: Certificates
 linktitle: Certificates
 weight: 26000
 description: TBD
-tags:
-
-- certificates
-
+tags: ['certificates']
+icon: material/certificate
 ---
 
 # Certificates
