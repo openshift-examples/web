@@ -3,8 +3,8 @@ title: OpenShift Build's
 linktitle: Examples
 weight: 5100
 description: A bunch of example around build...
-tags:
-  - build
+tags:  ['build']
+icon: material/folder-refresh
 ---
 # Build examples
 

@@ -3,6 +3,7 @@ title: OpenShift/Kubernetes Client
 linktitle: Client (oc/kubectl)
 description: All about OpenShift/Kubernetes clients
 tags: ["client", "kubectl", "oc"]
+icon: material/laptop
 ---
 # OpenShift/Kubernetes Client
 
