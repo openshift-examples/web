@@ -48,8 +48,8 @@ spec:
   - name: generic
 ```
 
-
 ## BusyBox Pod
+
 ```yaml
 apiVersion: v1
 kind: Pod
@@ -64,6 +64,7 @@ spec:
 ```
 
 ## BusyBox Pod with PVC
+
 ```yaml
 apiVersion: v1
 kind: Pod
@@ -79,7 +80,6 @@ spec:
   restartPolicy: Never
 ```
 
-
 ## Simple Deployment
 
 ```yaml
@@ -89,6 +89,7 @@ EOF
 ```
 
 ## Simple DeploymentConfig
+
 ```yaml
 apiVersion: v1
 kind: DeploymentConfig
@@ -110,7 +111,9 @@ spec:
   triggers:
   - type: ConfigChange
 ```
+
 ## Simple DeploymentConfig with hostpath
+
 ```yaml
 #
 #   oc create serviceaccount hostaccess
@@ -143,7 +146,6 @@ spec:
             path: /
   triggers:
   - type: ConfigChange
-
 ```
 
 ## Pod with hostpath
@@ -259,9 +261,9 @@ spec:
     type: ImageChange
 ```
 
-## Deployment with limit and request:
+## Deployment with limit and request
 
-```
+```yaml
 apiVersion: v1
 kind: DeploymentConfig
 metadata:
@@ -295,9 +297,10 @@ spec:
   - type: ConfigChange
 ```
 
-##### Example
+### Example
 
 List of allocatable memory:
+
 ```bash
 $ oc get nodes -o custom-columns=NAME:.metadata.name,MEM-allocatable:.status.allocatable.memory  -l node-role.kubernetes.io/worker
 NAME                                 MEM-allocatable
@@ -310,10 +313,9 @@ worker-3.rbohne.e2e.bos.redhat.com   15270356Ki
     This is allocatable memory on the whole host for Pods.
     The amount of allocatable memory do **NOT** include allocated memory of running Pods!
 
-
 **Request & limit:**
 
-```
+```yaml
 resources:
   limits:
     memory: 32Gi
@@ -325,7 +327,7 @@ resources:
 
 **Request & limit:**
 
-```
+```yaml
 resources:
   limits:
     memory: 10Gi
