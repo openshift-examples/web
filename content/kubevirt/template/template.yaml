@@ -42,81 +42,81 @@ metadata:
   namespace: openshift
 
 objects:
-- apiVersion: kubevirt.io/v1
-  kind: VirtualMachine
-  metadata:
-    labels:
-      app: ${NAME}
-      kubevirt.io/dynamic-credentials-support: "false"
-    name: ${NAME}
-  spec:
-    dataVolumeTemplates:
-    - apiVersion: cdi.kubevirt.io/v1beta1
-      kind: DataVolume
-      metadata:
-        name: ${NAME}
-      spec:
-        sourceRef:
-          kind: DataSource
-          name: ${DATA_SOURCE_NAME}
-          namespace: ${DATA_SOURCE_NAMESPACE}
-        storage:
-          resources:
-            requests:
-              storage: 60Gi
-    running: false
-    template:
-      metadata:
-        annotations:
-          vm.kubevirt.io/flavor: large
-          vm.kubevirt.io/os: other
-          vm.kubevirt.io/workload: server
-        labels:
-          kubevirt.io/domain: ${NAME}
-          kubevirt.io/size: large
-      spec:
-        domain:
-          cpu:
-            cores: 1
-            sockets: 2
-            threads: 1
-          devices:
-            disks:
-            - disk:
-                bus: virtio
-              name: rootdisk
-            interfaces:
-            - masquerade: {}
-              model: virtio
-              name: default
-            networkInterfaceMultiqueue: true
-            rng: {}
-          features:
-            smm:
-              enabled: true
-          firmware:
-            bootloader:
-              efi: {}
-          machine:
-            type: pc-q35-rhel9.2.0
-          memory:
-            guest: 8Gi
-        networks:
-        - name: default
-          pod: {}
-        terminationGracePeriodSeconds: 180
-        volumes:
-        - dataVolume:
+  - apiVersion: kubevirt.io/v1
+    kind: VirtualMachine
+    metadata:
+      labels:
+        app: ${NAME}
+        kubevirt.io/dynamic-credentials-support: "false"
+      name: ${NAME}
+    spec:
+      dataVolumeTemplates:
+        - apiVersion: cdi.kubevirt.io/v1beta1
+          kind: DataVolume
+          metadata:
             name: ${NAME}
-          name: rootdisk
+          spec:
+            sourceRef:
+              kind: DataSource
+              name: ${DATA_SOURCE_NAME}
+              namespace: ${DATA_SOURCE_NAMESPACE}
+            storage:
+              resources:
+                requests:
+                  storage: 60Gi
+      running: false
+      template:
+        metadata:
+          annotations:
+            vm.kubevirt.io/flavor: large
+            vm.kubevirt.io/os: other
+            vm.kubevirt.io/workload: server
+          labels:
+            kubevirt.io/domain: ${NAME}
+            kubevirt.io/size: large
+        spec:
+          domain:
+            cpu:
+              cores: 1
+              sockets: 2
+              threads: 1
+            devices:
+              disks:
+                - disk:
+                    bus: virtio
+                  name: rootdisk
+              interfaces:
+                - masquerade: {}
+                  model: virtio
+                  name: default
+              networkInterfaceMultiqueue: true
+              rng: {}
+            features:
+              smm:
+                enabled: true
+            firmware:
+              bootloader:
+                efi: {}
+            machine:
+              type: pc-q35-rhel9.2.0
+            memory:
+              guest: 8Gi
+          networks:
+            - name: default
+              pod: {}
+          terminationGracePeriodSeconds: 180
+          volumes:
+            - dataVolume:
+                name: ${NAME}
+              name: rootdisk
 parameters:
-- description: VM name
-  from: remote-mgmt-supporter-[a-z0-9]{16}
-  generate: expression
-  name: NAME
-- description: Name of the DataSource to clone
-  name: DATA_SOURCE_NAME
-  value: remote-mgmt-supporter
-- description: Namespace of the DataSource
-  name: DATA_SOURCE_NAMESPACE
-  value: openshift-virtualization-os-images
+  - description: VM name
+    from: remote-mgmt-supporter-[a-z0-9]{16}
+    generate: expression
+    name: NAME
+  - description: Name of the DataSource to clone
+    name: DATA_SOURCE_NAME
+    value: remote-mgmt-supporter
+  - description: Namespace of the DataSource
+    name: DATA_SOURCE_NAMESPACE
+    value: openshift-virtualization-os-images
