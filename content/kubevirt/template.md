@@ -1,6 +1,6 @@
 ---
 title: OpenShift Virt Template example
-linktitle: VM Templates
+linktitle: Templates
 description: Virtual Machine Templates in OpenShift Virtualization
 tags: ['cnv', 'kubevirt', 'template', 'ocp-v']
 ---
@@ -32,4 +32,18 @@ tags: ['cnv', 'kubevirt', 'template', 'ocp-v']
 
         ```
         curl -L -O {{ page.canonical_url }}datasource.yaml
+        ```
+
+1. Adjust / Apply template
+
+    === "template.yaml"
+
+        ```yaml
+        --8<-- "content/kubevirt/template/template.yaml"
+        ```
+
+    === "Download"
+
+        ```
+        curl -L -O {{ page.canonical_url }}template.yaml
         ```
