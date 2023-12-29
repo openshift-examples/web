@@ -1,0 +1,122 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  annotations:
+    defaults.template.kubevirt.io/disk: rootdisk
+    description: |
+      32Bit Debian based bunsenlabs VM with old Browsers and Java.
+      To managed all systems at the COE Lab Munich.
+
+    iconClass: icon-debian
+    name.os.template.kubevirt.io/debian11: Based in Debian 11 Bullseye
+    openshift.io/display-name: COE Lab - Remote Mgmt Supporter
+    openshift.io/documentation-url: https://gitlab.consulting.redhat.com/coe-lab/remote-mgmt-supporter
+    openshift.io/provider-display-name: COE Lab
+    openshift.io/support-url: https://gitlab.consulting.redhat.com/coe-lab/remote-mgmt-supporter/-/issues
+    openshift.kubevirt.io/pronounceable-suffix-for-name-expression: "true"
+
+    tags: debian,linux,coe,remotemgmt
+
+    template.kubevirt.io/editable: |
+      /objects[0].spec.template.spec.domain.cpu.sockets
+      /objects[0].spec.template.spec.domain.cpu.cores
+      /objects[0].spec.template.spec.domain.cpu.threads
+      /objects[0].spec.template.spec.domain.memory.guest
+      /objects[0].spec.template.spec.domain.devices.disks
+      /objects[0].spec.template.spec.volumes
+      /objects[0].spec.template.spec.networks
+
+    template.kubevirt.io/images: |
+      https://drive.google.com/drive/folders/1YclzXWW56YZuTfCBotjU79CFLQ-X2WJG?usp=drive_link
+    template.kubevirt.io/provider: COE Lab
+    template.kubevirt.io/provider-support-level: Full
+    template.kubevirt.io/provider-url: https://gitlab.consulting.redhat.com/coe-lab/remote-mgmt-supporter
+    template.openshift.io/bindable: "false"
+  labels:
+    flavor.template.kubevirt.io/large: "true"
+    name.os.template.kubevirt.io/debian11: "true"
+    template.kubevirt.io/type: base
+    workload.template.kubevirt.io/desktop: "true"
+    template.kubevirt.io/default-os-variant: "true"
+  name: remote-mgmt-supporter
+  namespace: openshift
+
+objects:
+- apiVersion: kubevirt.io/v1
+  kind: VirtualMachine
+  metadata:
+    labels:
+      app: ${NAME}
+      kubevirt.io/dynamic-credentials-support: "false"
+    name: ${NAME}
+  spec:
+    dataVolumeTemplates:
+    - apiVersion: cdi.kubevirt.io/v1beta1
+      kind: DataVolume
+      metadata:
+        name: ${NAME}
+      spec:
+        sourceRef:
+          kind: DataSource
+          name: ${DATA_SOURCE_NAME}
+          namespace: ${DATA_SOURCE_NAMESPACE}
+        storage:
+          resources:
+            requests:
+              storage: 60Gi
+    running: false
+    template:
+      metadata:
+        annotations:
+          vm.kubevirt.io/flavor: large
+          vm.kubevirt.io/os: other
+          vm.kubevirt.io/workload: server
+        labels:
+          kubevirt.io/domain: ${NAME}
+          kubevirt.io/size: large
+      spec:
+        domain:
+          cpu:
+            cores: 1
+            sockets: 2
+            threads: 1
+          devices:
+            disks:
+            - disk:
+                bus: virtio
+              name: rootdisk
+            interfaces:
+            - masquerade: {}
+              model: virtio
+              name: default
+            networkInterfaceMultiqueue: true
+            rng: {}
+          features:
+            smm:
+              enabled: true
+          firmware:
+            bootloader:
+              efi: {}
+          machine:
+            type: pc-q35-rhel9.2.0
+          memory:
+            guest: 8Gi
+        networks:
+        - name: default
+          pod: {}
+        terminationGracePeriodSeconds: 180
+        volumes:
+        - dataVolume:
+            name: ${NAME}
+          name: rootdisk
+parameters:
+- description: VM name
+  from: remote-mgmt-supporter-[a-z0-9]{16}
+  generate: expression
+  name: NAME
+- description: Name of the DataSource to clone
+  name: DATA_SOURCE_NAME
+  value: remote-mgmt-supporter
+- description: Namespace of the DataSource
+  name: DATA_SOURCE_NAMESPACE
+  value: openshift-virtualization-os-images
