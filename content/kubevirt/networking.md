@@ -66,7 +66,7 @@ EOF
 
 ## Debugging purpose
 
-#### Create br1 via nmcli
+### Create br1 via nmcli
 
 ```bash
 nmcli con show --active
@@ -78,7 +78,6 @@ nmcli con up br1
 nmcli con mod br1 connection.autoconnect yes
 nmcli con mod 'Wired connection 1' connection.autoconnect no
 ```
-
 
 ```bash
 [root@compute-0 ~]# nmcli con show
@@ -112,11 +111,9 @@ bridge.vlans:                           --
 
 ```
 
-
 ## Connection problem with `kubevirt.io/allow-pod-bridge-network-live-migration` after live migration
 
-
-### HCP Cluster sendling:
+### HCP Cluster sendling
 
 ```bash
 oc get nodes
@@ -147,6 +144,7 @@ exit
 
 Removing debug pod ...
 ```
+
 </details>
 
 <details>
@@ -161,15 +159,13 @@ If you don't see a command prompt, try pressing enter.
 sh-4.4# ping www.google.de
 PING www.google.de (172.253.62.94) 56(84) bytes of data.
 ```
-</details>
 
+</details>
 
 * Node sendling-d0c14274-**6nbvl** - Ping google ✅
 * Node sendling-d0c14274-**sz7rb** - Ping google ❌
 
-
 ```bash
-
 $ oc get pods -l kubevirt.io=virt-launcher -o wide -n rbohne-hcp-sendling
 NAME                                          READY   STATUS      RESTARTS   AGE     IP             NODE                 NOMINATED NODE   READINESS GATES
 virt-launcher-sendling-d0c14274-6nbvl-pb6zd   1/1     Running     0          6d2h    10.128.8.133   inf8                 <none>           1/1
@@ -179,9 +175,10 @@ virt-launcher-sendling-d0c14274-sz7rb-nb25r   0/1     Completed   0          6d2
 $
 ```
 
-#### Checkout node routing:
+#### Checkout node routing
 
 Host subnets:
+
 ``` bash
 $ oc get nodes -o custom-columns="NODE:.metadata.name,node-subnets:.metadata.annotations.k8s\.ovn\.org/node-subnets"
 NODE                 node-subnets
@@ -281,9 +278,4 @@ Route Table <main>:
             10.131.0.0/21                100.88.0.5 dst-ip
             10.131.8.0/21                100.88.0.9 dst-ip
             10.128.0.0/14                100.64.0.8 src-ip
-
-
 ```
-
-
-
