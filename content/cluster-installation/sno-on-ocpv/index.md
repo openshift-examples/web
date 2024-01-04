@@ -9,23 +9,7 @@ tags: ['ocp-v','kubevirt','cnv','sno','installation']
 
 ## DNS Records
 
-### Kubernetes Service type load balancer
-
-=== "service.yaml"
-
-    ```yaml
-    --8<-- "content/cluster-installation/sno-on-ocpv/service.yaml"
-    ```
-
-=== "oc apply"
-
-    ```bash
-    oc apply -f {{ page.canonical_url }}/service.yaml
-    ```
-
-Get EXTERNAL-IP `oc get svc sno1-rbohne-demo -o jsonpath='{.status.loadBalancer.ingress[0].ip}'`
-
-Create DNS Records to EXTERNAL-IP
+Create DNS Records to VM IP
 
 * api-int.*cluster-name*.*baseDomain*
 * api.*cluster-name*.*baseDomain*
