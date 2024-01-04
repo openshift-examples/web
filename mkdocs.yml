@@ -33,6 +33,7 @@ theme:
   font:
     text: Overpass
     code: Overpass Mono
+  favicon: images/favicon.png
   icon:
     logo: simple/redhatopenshift
     repo: fontawesome/brands/github
