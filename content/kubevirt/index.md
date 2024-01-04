@@ -2,12 +2,55 @@
 title: OpenShift Virtualization (CNV/KubeVirt)
 linktitle: "OpenShift Virtualization"
 weight: 14000
-description: TBD
+description: Running VM's on OpenShift
 tags: ['cnv', 'kubevirt','ocp-v']
-ignore_macros: true
 icon: material/new-box
 ---
 # OpenShift Virtualization (CNV/KubeVirt)
+
+## Example deployments
+
+??? example "Tiny RHEL 9 VM with pod bridge network"
+
+    === "tiny-rhel-pod-bridge.yaml"
+
+        ```yaml
+        --8<-- "content/kubevirt/example/tiny-rhel-pod-bridge.yaml"
+        ```
+
+    === "oc apply -f ...."
+
+        ```bash
+        oc apply -f {{ page.canonical_url }}example/tiny-rhel-pod-bridge.yaml
+        ```
+
+??? example "Red Hat CoreOS with ignition & pod bridge network"
+
+    === "rhcos-pod-bridge.yaml"
+
+        ```yaml
+        --8<-- "content/kubevirt/example/rhcos-pod-bridge.yaml"
+        ```
+
+    === "oc apply -f ...."
+
+        ```bash
+        oc apply -f {{ page.canonical_url }}example/rhcos-pod-bridge.yaml
+        ```
+
+??? example "Boot from ISO"
+
+    === "boot-from-iso.yaml"
+
+        ```yaml
+        --8<-- "content/kubevirt/example/boot-from-iso.yaml"
+        ```
+
+    === "oc apply -f ...."
+
+        ```bash
+        oc apply -f {{ page.canonical_url }}example/boot-from-iso.yaml
+        ```
 
 ## Containerized Data Importer (CDI) / DataVolume
 
@@ -69,7 +112,7 @@ EOF
 
 oc create is iis -n cnv
 
-export REGISTRY=$(oc get route default-route -n openshift-image-registry --template='{{ .spec.host }}')
+export REGISTRY=$(oc get route default-route -n openshift-image-registry -o jsonpath='{.spec.host}')
 export REGISTRY_TOKEN=$(oc whoami -t)
 podman login -u $(oc whoami) -p $REGISTRY_TOKEN --tls-verify=false $HOST
 
