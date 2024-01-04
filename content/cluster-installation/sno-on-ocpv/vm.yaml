@@ -22,8 +22,6 @@ spec:
   running: true
   template:
     metadata:
-      annotations:
-        kubevirt.io/allow-pod-bridge-network-live-migration: ""
       labels:
         kubevirt.io/domain: sno1-rbohne-demo
     spec:
@@ -35,8 +33,9 @@ spec:
           dataVolume:
             name: sno1-rbohne-demo-root
       networks:
-        - name: default
-          pod: {}
+        - name: coe
+          multus:
+            networkName: coe-bridge
       domain:
         cpu:
           cores: 8
@@ -57,4 +56,6 @@ spec:
                 bus: sata
           interfaces:
             - bridge: {}
-              name: default
+              model: virtio
+              name: coe
+
