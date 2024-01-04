@@ -58,4 +58,3 @@ spec:
             - bridge: {}
               model: virtio
               name: coe
-
