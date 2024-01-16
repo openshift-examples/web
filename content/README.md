@@ -20,7 +20,7 @@ making the repository even more valuable as a collective resource.
 Feel free to explore the examples, contribute your own insights,
 and benefit from the expertise shared in this repository.
 
-## Usefull Red Hat Solutions article
+## Usefull Red Hat Solutions articles & blog posts
 
 * [How can a user update OpenShift 4 console route](https://access.redhat.com/solutions/4539491)
 * [Red Hat Operators Supported in Disconnected Mode](https://access.redhat.com/articles/4740011)
@@ -34,6 +34,7 @@ and benefit from the expertise shared in this repository.
 * [Deploying OpenShift 4.x on non-tested platforms using the bare metal install method](https://access.redhat.com/articles/4207611)
 * [Certified OpenShift CNI Plug-ins](https://access.redhat.com/articles/5436171)
 * [Is it supported to have mixed environment (VMware+Baremetal) setup for RHOCP 4.x cluster](https://access.redhat.com/solutions/5376701)
+* [Demystifying the OpenShift release image](https://www.stb.id.au/blog/demystifying-ocp-release-image)
 
 ## Stargazers over time
 
