@@ -24,16 +24,23 @@ govc vm.create \
   -folder /Boston/vm/rbohne \
   -g rhel9_64Guest \
   cp-{1,2}
-```
+..
 
+for i in cp-{0,1,2} wp-{0,1}; do govc vm.change -vm /Boston/vm/rbohne/${i} -e disk.enableUUID=TRUE ;done
+
+# Just for information
+#for i in cp-{0,1,2} wp-{0,1}; do govc vm.power -off -force /Boston/vm/rbohne/${i} ;done
+#for i in cp-{0,1,2} wp-{0,1}; do govc vm.power -on  /Boston/vm/rbohne/${i} ;done
+
+```
 ## Collect mac-addresses
 
 ```ini
 cp-0;00:50:56:89:5b:02
 cp-1;00:50:56:89:dd:e4
 cp-2;00:50:56:89:0d:fe
-w-0;00:50:56:89:e0:2c
-w-1;00:50:56:89:80:a3
+wp-0;00:50:56:89:e0:2c
+wp-1;00:50:56:89:80:a3
 ```
 
 ## Get rendezvousIP
