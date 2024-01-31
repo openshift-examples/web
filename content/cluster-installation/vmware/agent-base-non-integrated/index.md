@@ -54,7 +54,7 @@ Boot with RHEL/RHCOS Live ISO cp-0 and get IP from DHCP
     === "agent-config.yaml"
 
         ```yaml
-        --8<-- "cluster-installation/vmware/agent-base-non-integrated/agent-config.yaml"
+        --8<-- "content/cluster-installation/vmware/agent-base-non-integrated/agent-config.yaml"
         ```
 
     === "oc apply -f ...."
@@ -68,7 +68,7 @@ Boot with RHEL/RHCOS Live ISO cp-0 and get IP from DHCP
     === "install-config.yaml"
 
         ```yaml
-        --8<-- "cluster-installation/vmware/agent-base-non-integrated/install-config.yaml"
+        --8<-- "content/cluster-installation/vmware/agent-base-non-integrated/install-config.yaml"
         ```
 
     === "oc apply -f ...."
