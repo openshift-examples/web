@@ -50,7 +50,7 @@ Boot with RHEL/RHCOS Live ISO cp-0 and get IP from DHCP
 
 ## Create configuration
 
-??? example "agent-config.yaml"
+???+ example "agent-config.yaml"
 
     === "agent-config.yaml"
 
@@ -64,7 +64,7 @@ Boot with RHEL/RHCOS Live ISO cp-0 and get IP from DHCP
         curl -L -O {{ page.canonical_url }}/agent-config.yaml
         ```
 
-??? example "install-config.yaml"
+???+ example "install-config.yaml"
 
     === "install-config.yaml"
 
