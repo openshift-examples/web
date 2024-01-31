@@ -33,6 +33,7 @@ for i in cp-{0,1,2} wp-{0,1}; do govc vm.change -vm /Boston/vm/rbohne/${i} -e di
 #for i in cp-{0,1,2} wp-{0,1}; do govc vm.power -on  /Boston/vm/rbohne/${i} ;done
 
 ```
+
 ## Collect mac-addresses
 
 ```ini
