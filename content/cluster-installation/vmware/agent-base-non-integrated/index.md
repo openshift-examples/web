@@ -58,10 +58,10 @@ Boot with RHEL/RHCOS Live ISO cp-0 and get IP from DHCP
         --8<-- "content/cluster-installation/vmware/agent-base-non-integrated/agent-config.yaml"
         ```
 
-    === "oc apply -f ...."
+    === "curl"
 
         ```bash
-        oc apply -f {{ page.canonical_url }}/agent-config.yaml
+        curl -L -O {{ page.canonical_url }}/agent-config.yaml
         ```
 
 ??? example "install-config.yaml"
@@ -72,10 +72,10 @@ Boot with RHEL/RHCOS Live ISO cp-0 and get IP from DHCP
         --8<-- "content/cluster-installation/vmware/agent-base-non-integrated/install-config.yaml"
         ```
 
-    === "oc apply -f ...."
+    === "curl"
 
         ```bash
-        oc apply -f {{ page.canonical_url }}/install-config.yaml
+        curl -L -O {{ page.canonical_url }}/install-config.yaml
         ```
 
 ## Create iso
