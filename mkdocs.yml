@@ -103,6 +103,7 @@ nav:
       - Air-gapped: cluster-installation/air-gapped.md
       - SNO on OCP-V: cluster-installation/sno-on-ocpv/index.md
       - VMware/vSphere:
+          - cluster-installation/vmware/index.md
           - "Example installation": cluster-installation/vmware/example/index.md
           - "IPI & Proxy": cluster-installation/vmware/ipi-proxy.md
           - "MachineSet & UPI": cluster-configuration/MachineSets/VMware-UPI/index.md
