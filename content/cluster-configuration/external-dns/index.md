@@ -13,5 +13,3 @@ tags: ['dns','freeipa']
 * <https://bind9.readthedocs.io/en/v9.16.20/reference.html#dynamic-update-policies>
 * <https://github.com/kubernetes-sigs/external-dns/blob/master/docs/tutorials/rfc2136.md>
 * <https://access.redhat.com/solutions/203473q>
-
-
