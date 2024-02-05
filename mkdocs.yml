@@ -130,6 +130,7 @@ nav:
       - Cluster entitlement:
           - cluster-configuration/full-cluster-entitlement/index.md
           - Debugging: cluster-configuration/full-cluster-entitlement/debugging.md
+      - External DNS: cluster-configuration/external-dns/index.md
       - Kernel Module: cluster-configuration/build-load-kernel-module/index.md
       - Storage:
           - NFS Client provisioner: cluster-configuration/storage/nfs.md
