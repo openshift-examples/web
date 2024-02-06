@@ -41,21 +41,23 @@ key "openshift-external-dns" {
 };
 
 ```
-### Allow DNS updates and zone transfer for the key:
+
+### Allow DNS updates and zone transfer for the key
 
 Select the zone you want to manage, in my example `.disco.local`:
 
- * Enable `Dynamic update`
- * Add `grant openshift-external-dns subdomain disco.local ANY ;` to BIND update policy
-   Details about the policy configuration you can [here](https://bind9.readthedocs.io/en/v9.16.20/reference.html#dynamic-update-policies)
+* Enable `Dynamic update`
+* Add `grant openshift-external-dns subdomain disco.local ANY ;` to BIND update policy
+  Details about the policy configuration you can [here](https://bind9.readthedocs.io/en/v9.16.20/reference.html#dynamic-update-policies)
 
 ![Screenshot](ipa.png)
 
- * Configure `Allow transfer` is not possible via WebUI. [Because](https://www.freeipa.org/page/Howto/DNS_updates_and_zone_transfers_with_TSIG)
+* Configure `Allow transfer` is not possible via WebUI. [Because](https://www.freeipa.org/page/Howto/DNS_updates_and_zone_transfers_with_TSIG)
 
     ??? example "ldap search example"
 
         At the ipa server
+
         ```bash
         # kinit admin
         Password for admin@DISCO.LOCAL:
@@ -113,6 +115,7 @@ based on [Configuring RFC2136 provider](https://github.com/kubernetes-sigs/exter
         --8<-- "content/cluster-configuration/external-dns/deployment/clusterrolebinding.yaml"
         --8<-- "content/cluster-configuration/external-dns/deployment/deployment.yaml"
         ```
+
     === "oc apply -k ...."
 
         ```bash
@@ -127,7 +130,7 @@ oc logs -n infra-external-dns deployment/external-dns
 
 ## Example deployment
 
- * Required MetalLB or support of service type LoadBalancer.
+* Required MetalLB or support of service type LoadBalancer.
 
 ```bash
 oc new-project external-dns-demo

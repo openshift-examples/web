@@ -20,40 +20,38 @@ spec:
         - name: docroot
           emptyDir: {}
       containers:
-      - image: registry.access.redhat.com/ubi8/nginx-120
-        name: nginx
-        securityContext:
-          readOnlyRootFilesystem: false
-        resources:
-          limits:
-            ephemeral-storage: 128Mi
-            cpu: 1
-            memory: "128Mi"
-          requests:
-            ephemeral-storage: 128Mi
-            cpu: 1
-            memory: "128Mi"
-        volumeMounts:
-          - name: docroot
-            mountPath: /opt/app-root/src/
-        env:
-          - name: POD_NAME
-            valueFrom:
-              fieldRef:
-                fieldPath: metadata.name
-        command:
-          - /bin/sh
-          - -c
-          - |
+        - image: registry.access.redhat.com/ubi8/nginx-120
+          name: nginx
+          securityContext:
+            readOnlyRootFilesystem: false
+          resources:
+            limits:
+              ephemeral-storage: 128Mi
+              cpu: 1
+              memory: "128Mi"
+            requests:
+              ephemeral-storage: 128Mi
+              cpu: 1
+              memory: "128Mi"
+          volumeMounts:
+            - name: docroot
+              mountPath: /opt/app-root/src/
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+          command:
+            - /bin/sh
+            - -c
+            - |
 
-            set -x
+              set -x
 
-            echo "Greetings from $POD_NAME" >> /opt/app-root/src/index.html
-            /usr/libexec/s2i/run
-
-
+              echo "Greetings from $POD_NAME" >> /opt/app-root/src/index.html
+              /usr/libexec/s2i/run
   triggers:
-  - type: ConfigChange
+    - type: ConfigChange
 ---
 apiVersion: v1
 kind: Service
@@ -63,10 +61,10 @@ metadata:
   name: simple-nginx
 spec:
   ports:
-  - name: 8080-8080
-    port: 8080
-    protocol: TCP
-    targetPort: 8080
+    - name: 8080-8080
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
   selector:
     app: simple-nginx
   sessionAffinity: None
@@ -88,4 +86,3 @@ spec:
   tls:
     termination: Edge
     insecureEdgeTerminationPolicy: Redirect
-
