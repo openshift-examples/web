@@ -112,6 +112,7 @@ based on [Configuring RFC2136 provider](https://github.com/kubernetes-sigs/exter
      oc create secret generic external-dns-rfc2136-tsig-secret \
         --from-literal=EXTERNAL_DNS_RFC2136_TSIG_SECRET="c3LyD11u....xX6WA=="
     ```
+
     === "YAML"
 
         ```yaml
