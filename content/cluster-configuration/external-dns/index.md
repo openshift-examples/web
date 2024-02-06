@@ -106,6 +106,12 @@ based on [Configuring RFC2136 provider](https://github.com/kubernetes-sigs/exter
 
 ??? example "Deployment"
 
+    Create a secret with the tsig key `c3LyD11u....xX6WA==`
+
+    ```bash
+     oc create secret generic external-dns-rfc2136-tsig-secret \
+        --from-literal=EXTERNAL_DNS_RFC2136_TSIG_SECRET="c3LyD11u....xX6WA=="
+    ```
     === "YAML"
 
         ```yaml
@@ -139,6 +145,6 @@ oc apply -f {{ page.canonical_url }}../../deploy/deployment-simple-nginx.yaml
 
 oc patch service/simple-nginx --type merge -p '{"spec":{"type":"LoadBalancer"}}'
 
-oc annotate service/simple-nginx external-dns.alpha.kubernetes.io/hostname="external-dns-demo.disco.local"
-oc annotate service/simple-nginx external-dns.alpha.kubernetes.io/ttl: '60'
+oc annotate service/simple-nginx external-dns.alpha.kubernetes.io/hostname='external-dns-demo.disco.local'
+oc annotate service/simple-nginx external-dns.alpha.kubernetes.io/ttl='60'
 ```
