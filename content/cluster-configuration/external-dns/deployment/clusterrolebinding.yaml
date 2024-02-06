@@ -8,5 +8,5 @@ roleRef:
   kind: ClusterRole
   name: external-dns
 subjects:
-- kind: ServiceAccount
-  name: external-dns
+  - kind: ServiceAccount
+    name: external-dns
