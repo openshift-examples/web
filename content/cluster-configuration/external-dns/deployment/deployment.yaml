@@ -1,0 +1,43 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: external-dns
+spec:
+  selector:
+    matchLabels:
+      app: external-dns
+  template:
+    metadata:
+      labels:
+        app: external-dns
+    spec:
+      serviceAccountName: external-dns
+      nodeSelector:
+        node-role.kubernetes.io/master: ""
+      tolerations:
+        - effect: NoSchedule
+          key: node-role.kubernetes.io/master
+          operator: Exists
+      containers:
+      - name: external-dns
+        env:
+          - name: EXTERNAL_DNS_RFC2136_TSIG_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: external-dns-rfc2136-tsig-secret
+                key: EXTERNAL_DNS_RFC2136_TSIG_SECRET
+        image: registry.k8s.io/external-dns/external-dns:v0.14.0
+        args:
+        - --registry=txt
+        - --txt-suffix=-%{record_type}-external-dns
+        - --txt-owner-id=cluster.disco.local
+        - --provider=rfc2136
+        - --rfc2136-host=dns01.disco.local
+        - --rfc2136-port=53
+        - --rfc2136-zone=disco.local
+        - --rfc2136-tsig-secret-alg=hmac-sha512
+        - --rfc2136-tsig-keyname=openshift-external-dns
+        - --rfc2136-tsig-axfr
+        - --source=service
+        - --domain-filter=disco.local
