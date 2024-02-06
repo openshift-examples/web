@@ -9,7 +9,7 @@ tags: ['dns','freeipa']
 
 Sadly the External DNS Operator do not support RFC2136. Let's use the upstream one.
 
-Thanks to <https://astrid.tech/2021/04/18/0/k8s-freeipa-dns/> for the starting point.
+Thanks to [astrid](https://astrid.tech/2021/04/18/0/k8s-freeipa-dns/) for the starting point.
 
 ## Prepare IPA DNS Zone
 
