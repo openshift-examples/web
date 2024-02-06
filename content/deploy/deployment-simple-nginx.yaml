@@ -23,16 +23,16 @@ spec:
       - image: registry.access.redhat.com/ubi8/nginx-120
         name: nginx
         securityContext:
-          readOnlyRootFilesystem: true
+          readOnlyRootFilesystem: false
         resources:
           limits:
-            ephemeral-storage: 40Mi
-            cpu: 0.1
-            memory: "20Mi"
+            ephemeral-storage: 128Mi
+            cpu: 1
+            memory: "128Mi"
           requests:
-            ephemeral-storage: 20Mi
-            cpu: 0.1
-            memory: "20Mi"
+            ephemeral-storage: 128Mi
+            cpu: 1
+            memory: "128Mi"
         volumeMounts:
           - name: docroot
             mountPath: /opt/app-root/src/
