@@ -1,18 +1,136 @@
 ---
-title: New Page
-linktitle: New Page
-description: Some information
-tags:
-  - tagA
-  - tagB
+title: Keycloak
+linktitle: Keycloak
+description: How to deploy and configure keycloak
+tags: ['keycloak','redhatsso']
 ---
 
-# Some information
+# How to deploy and configure keycloak
 
+## Goals
 
-https://keycloakthemes.com/blog/how-to-setup-sign-in-with-google-using-keycloak
-https://medium.com/keycloak/using-keycloak-identity-provider-to-secure-openshift-f929a7a0f7f1
+* [X] One central Keycloak/SSO instance for varios OpenShift Cluster
+* [ ] Keycloak use Google as identifyprovider (via oauth)
+* [ ] Configurat OpenShift with two different Identify Providers:
+  * [ ] "COE SSO Admin"
+    * [ ] User created with `-admin` postfix
+    * [ ] User is automatic in keycloak group `idp-coe-sso-admins`
+  * [ ] "COE SSO"
+    * [ ] User is automatic in keycloak group `idp-coe-sso`
+* [ ] Keycloak provide a group `coe-sso-admin` where we add admin user
+* [ ] OpenShift Cluster give group `coe-sso-admin` cluster-admin privileges.
 
+## Keycloak installation
+
+* Install following operators via OperatorHub
+  * CloudNativePG (Cerified Operator)
+  * Keycloak Operator (Red Hat Operator)
+
+### Spinup PostgreSQL database via CloudNativePG
+
+In my setup we use SAN Storage (iscsi) provided from a Netapp via Trident and the database should run on my control plan/master nodes.
+
+??? example "postgresql cluster cr"
+
+    ```yaml
+    kind: Cluster
+    apiVersion: postgresql.cnpg.io/v1
+    metadata:
+      name: pq-for-rhbk
+      namespace: rhbk-operator
+    spec:
+      affinity:
+        nodeSelector:
+          node-role.kubernetes.io/master: ""
+        tolerations:
+          - effect: NoSchedule
+            key: node-role.kubernetes.io/master
+            operator: Exists
+      instances: 3
+      logLevel: info
+      primaryUpdateStrategy: unsupervised
+      storage:
+        size: 3Gi
+        storageClass: coe-netapp-san
+      walStorage:
+        size: 3Gi
+        storageClass: coe-netapp-san
+    ```
+
+### Spinup Keycloak
+
+* I'm using a customer DNS name, `sso.coe.muc.redhat.com`
+  DNS configuration:
+
+    ```bind
+    sso.coe.muc.redhat.com.   86400   IN  CNAME  *.apps.isar.coe.muc.redhat.com.
+    ```
+
+* SSL Certificate for  `sso.coe.muc.redhat.com` is stared in Vault and copied into a secret via ExternalSecret Operator
+
+    ??? example "ExternalSecret"
+
+        ```yaml
+        apiVersion: external-secrets.io/v1beta1
+        kind: ExternalSecret
+        metadata:
+          name: cert-wildcard-coe
+          namespace: rhbk-operator
+        spec:
+          data:
+          - remoteRef:
+              key: coe-lab/wildcard-cert-coe
+              property: wildcard-coe.chain.cert
+            secretKey: tls.crt
+          - remoteRef:
+              key: coe-lab/wildcard-cert-coe
+              property: wildcard-coe.key
+            secretKey: tls.key
+          refreshInterval: 12h
+          secretStoreRef:
+            kind: ClusterSecretStore
+            name: redhat-vault
+          target:
+            creationPolicy: Owner
+            deletionPolicy: Retain
+            name: cert-wildcard-coe
+            template:
+              type: kubernetes.io/tls
+        ```
+
+* Deploy Red Hat Build of Keycloak
+
+    ??? example "Keycloak"
+
+        ```yaml
+        apiVersion: k8s.keycloak.org/v2alpha1
+        kind: Keycloak
+        metadata:
+          name: coe-sso
+          namespace: rhbk-operator
+        spec:
+          instances: 2
+          db:
+            vendor: postgres
+            host: pq-for-rhbk-rw
+            database: app
+            usernameSecret:
+              name: pq-for-rhbk-app
+              key: username
+            passwordSecret:
+              name: pq-for-rhbk-app
+              key: password
+          http:
+            tlsSecret: cert-wildcard-coe
+          hostname:
+            hostname: sso.coe.muc.redhat.com
+        ```
+
+**GitOpsified deployment** is here: <https://github.com/stormshift/clusters/tree/main/isar-apps/keycloak>
+
+## Keycloak Configuration
+
+```yaml
 apiVersion: v1
 data:
   ca.crt: |-
@@ -41,8 +159,9 @@ data:
 kind: ConfigMap
 metadata:
   name: keycloak-coe
+```
 
-
+```yaml
 spec:
   configuration:
     oauth:
@@ -56,3 +175,9 @@ spec:
             clientSecret:
               name:
             issuer: https://keycloak.apps.sendling.coe.muc.redhat.com/realms/master
+```
+
+# Resources
+
+* <https://keycloakthemes.com/blog/how-to-setup-sign-in-with-google-using-keycloak>
+* <https://medium.com/keycloak/using-keycloak-identity-provider-to-secure-openshift-f929a7a0f7f1>
