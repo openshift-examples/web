@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    meta.helm.sh/release-name: developer-hub
+    meta.helm.sh/release-namespace: redhat-developer-hub
+  labels:
+    app.kubernetes.io/component: backstage
+    app.kubernetes.io/instance: developer-hub
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: developer-hub
+    helm.sh/chart: upstream-1.8.0
+  name: developer-hub-a
+  namespace: redhat-developer-hub
+spec:
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - name: oauth2-proxy
+    port: 4180
+    protocol: TCP
+    targetPort: oauth2-proxy
+  selector:
+    app.kubernetes.io/component: backstage
+    app.kubernetes.io/instance: developer-hub
+    app.kubernetes.io/name: developer-hub
+  sessionAffinity: None
+  type: ClusterIP
