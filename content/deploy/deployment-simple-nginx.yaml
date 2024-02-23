@@ -3,6 +3,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: simple-nginx
+  labels:
+    app: simple-nginx
+    app.openshift.io/runtime: nginx
+    app.kubernetes.io/part-of: simple-nginx
 spec:
   replicas: 1
   strategy:
@@ -20,38 +24,58 @@ spec:
         - name: docroot
           emptyDir: {}
       containers:
-        - image: registry.access.redhat.com/ubi8/nginx-120
-          name: nginx
-          securityContext:
-            readOnlyRootFilesystem: false
-          resources:
-            limits:
-              ephemeral-storage: 128Mi
-              cpu: 1
-              memory: "128Mi"
-            requests:
-              ephemeral-storage: 128Mi
-              cpu: 1
-              memory: "128Mi"
-          volumeMounts:
-            - name: docroot
-              mountPath: /opt/app-root/src/
-          env:
-            - name: POD_NAME
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.name
-          command:
-            - /bin/sh
-            - -c
-            - |
+      - image: registry.access.redhat.com/ubi9/nginx-122:latest
+        name: nginx
+        ports:
+          - name: http
+            containerPort: 8080
+        securityContext:
+          readOnlyRootFilesystem: false
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8080
+            scheme: HTTP
+          timeoutSeconds: 1
+          periodSeconds: 10
+          successThreshold: 1
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8080
+            scheme: HTTP
+          timeoutSeconds: 1
+          periodSeconds: 10
+          successThreshold: 1
+          failureThreshold: 3
+        resources:
+          limits:
+            ephemeral-storage: 40Mi
+            cpu: 0.5
+            memory: "256Mi"
+          requests:
+            ephemeral-storage: 20Mi
+            cpu: 0.5
+            memory: "256Mi"
+        volumeMounts:
+          - name: docroot
+            mountPath: /opt/app-root/src/
+        env:
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+        command:
+          - /bin/sh
+          - -c
+          - |
 
-              set -x
+            set -x
 
-              echo "Greetings from $POD_NAME" >> /opt/app-root/src/index.html
-              /usr/libexec/s2i/run
-  triggers:
-    - type: ConfigChange
+            echo "Greetings from $POD_NAME" >> /opt/app-root/src/index.html
+            /usr/libexec/s2i/run
+
 ---
 apiVersion: v1
 kind: Service
@@ -61,10 +85,10 @@ metadata:
   name: simple-nginx
 spec:
   ports:
-    - name: 8080-8080
-      port: 8080
-      protocol: TCP
-      targetPort: 8080
+  - name: http
+    port: 8080
+    protocol: TCP
+    targetPort: http
   selector:
     app: simple-nginx
   sessionAffinity: None
@@ -78,7 +102,7 @@ metadata:
   name: simple-nginx
 spec:
   port:
-    targetPort: 8080
+    targetPort: http
   to:
     kind: "Service"
     name: simple-nginx
