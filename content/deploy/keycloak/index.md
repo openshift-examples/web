@@ -66,7 +66,7 @@ In my setup we use SAN Storage (iscsi) provided from a Netapp via Trident and th
     sso.coe.muc.redhat.com.   86400   IN  CNAME  *.apps.isar.coe.muc.redhat.com.
     ```
 
-* SSL Certificate for  `sso.coe.muc.redhat.com` is stared in Vault and copied into a secret via ExternalSecret Operator
+* SSL Certificate for `sso.coe.muc.redhat.com` is stared in Vault and copied into a secret via ExternalSecret Operator
 
     ??? example "ExternalSecret"
 
@@ -129,6 +129,30 @@ In my setup we use SAN Storage (iscsi) provided from a Netapp via Trident and th
 **GitOpsified deployment** is here: <https://github.com/stormshift/clusters/tree/main/isar-apps/keycloak>
 
 ## Keycloak Configuration
+
+Login into keycloak, in my case https://sso.coe.muc.redhat.com
+
+Get the initial admin user and password:
+
+```bash
+# Username
+$ oc get secrets -n rhbk-operator  coe-sso-initial-admin  -o jsonpath="{.data.username}" | base64 -d;echo
+admin
+
+# Password
+$ oc get secrets -n rhbk-operator  coe-sso-initial-admin  -o jsonpath="{.data.password}" | base64 -d;echo
+cbd4f....
+```
+
+### Create a new realm `coe-sso`
+
+* Create realm
+
+    ??? note "Screenshot"
+
+        ![](images/create-realm.png)
+
+* **Realm name:** coe-sso
 
 ```yaml
 apiVersion: v1
