@@ -178,6 +178,7 @@ nav:
 
   - Deploy:
       - deploy/index.md
+      - Keycloak: deploy/keycloak/index.md
       - Liveness probe - WiP: deploy/liveness-probe.md
       - Storage: deploy/storage.md
       - ImageStreams: deploy/imagestreams.md
