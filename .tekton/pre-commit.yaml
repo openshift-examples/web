@@ -129,6 +129,7 @@ spec:
           steps:
             - name: pre-commit
               image: quay.io/openshift-examples/builder:devel
+              imagePullPolicy: Always
               workingDir: $(workspaces.source.path)/pr
               env:
                 - name: PR_COMMITS
