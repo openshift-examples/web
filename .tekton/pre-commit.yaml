@@ -128,7 +128,7 @@ spec:
             - name: source
           steps:
             - name: pre-commit
-              image: quay.io/openshift-examples/builder:main
+              image: quay.io/openshift-examples/builder:devel
               workingDir: $(workspaces.source.path)/pr
               env:
                 - name: PR_COMMITS
