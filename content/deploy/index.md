@@ -50,20 +50,19 @@ spec:
 
 ## UBI9 Micro Pod
 
-
 ```yaml
 --8<-- "content/deploy/ubi-pod.yaml"
 ```
-source: [ubi-pod.yaml]({{ page.canonical_url }}ubi-pod.yaml)
 
+source: [ubi-pod.yaml]({{ page.canonical_url }}ubi-pod.yaml)
 
 ## UBI9 deployment with pvc
 
 ```yaml
 --8<-- "content/deploy/ubi-deployment-w-pvc.yaml"
 ```
-source: [ubi-deployment-w-pvc.yaml]({{ page.canonical_url }}ubi-deployment-w-pvc.yaml)
 
+source: [ubi-deployment-w-pvc.yaml]({{ page.canonical_url }}ubi-deployment-w-pvc.yaml)
 
 ## S2I playground
 
