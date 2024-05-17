@@ -2,7 +2,7 @@
 title: Deployments
 linktitle: Deployments
 weight: 4100
-description: TBD
+description: Various deployment example...
 icon: material/folder-play
 ---
 # Deployments
@@ -48,132 +48,22 @@ spec:
   - name: generic
 ```
 
-## BusyBox Pod
+## UBI9 Micro Pod
+
 
 ```yaml
-apiVersion: v1
-kind: Pod
-metadata:
-  name: busybox
-spec:
-  containers:
-    - name: busybox
-      image: busybox
-      command: [ "/bin/sh", "-c", "while true ; do date; sleep 1; done;" ]
-  restartPolicy: Never
+--8<-- "content/deploy/ubi-pod.yaml"
 ```
+source: [ubi-pod.yaml]({{ page.canonical_url }}ubi-pod.yaml)
 
-## BusyBox Pod with PVC
+
+## UBI9 deployment with pvc
 
 ```yaml
-apiVersion: v1
-kind: Pod
-metadata:
-  name: busybox-nfs
-spec:
-  containers:
-  - name: busybox-nfs
-    image: busybox
-    command: [ "/bin/sh", "-c", "while true ; do date; sleep 1; done;" ]
-  volumes:
-    - persistentVolumeClaim: nfs
-  restartPolicy: Never
+--8<-- "content/deploy/ubi-deployment-w-pvc.yaml"
 ```
+source: [ubi-deployment-w-pvc.yaml]({{ page.canonical_url }}ubi-deployment-w-pvc.yaml)
 
-## Simple Deployment
-
-```yaml
-oc apply -f - <<EOF
---8<-- "content/deploy/files/simple-deployment.yaml"
-EOF
-```
-
-## Simple DeploymentConfig
-
-```yaml
-apiVersion: v1
-kind: DeploymentConfig
-metadata:
-  name: busybox
-spec:
-  replicas: 1
-  strategy:
-    type: Recreate
-  template:
-    metadata:
-      labels:
-        deploymentconfig: busybox
-    spec:
-      containers:
-      - image: busybox
-        name: busybox
-        command: [ "/bin/sh", "-c", "while true ; do date; sleep 1; done;" ]
-  triggers:
-  - type: ConfigChange
-```
-
-## Simple DeploymentConfig with hostpath
-
-```yaml
-#
-#   oc create serviceaccount hostaccess
-#   oc adm policy add-scc-to-user hostaccess -z hostaccess
----
-apiVersion: v1
-kind: DeploymentConfig
-metadata:
-  name: rhel-tools
-spec:
-  replicas: 1
-  strategy:
-    type: Recreate
-  template:
-    metadata:
-      labels:
-        deploymentconfig: rhel-tools
-    spec:
-      serviceAccountName: hostaccess
-      containers:
-        - name: rhel-tools
-          image: rhel7/rhel-tools
-          command: [ "/bin/sh", "-c", "while true ; do date; sleep 1; done;" ]
-          volumeMounts:
-            - name: host
-              mountPath: /host
-      volumes:
-        - name: host
-          hostPath:
-            path: /
-  triggers:
-  - type: ConfigChange
-```
-
-## Pod with hostpath
-
-```yaml
-#
-#   oc create serviceaccount hostaccess
-#   oc adm policy add-scc-to-user hostaccess -z hostaccess
----
-apiVersion: v1
-kind: Pod
-metadata:
-  name: rhel-tools
-spec:
-#  serviceAccountName: hostaccess
-  containers:
-    - name: rhel-tools
-      image: rhel7/rhel-tools
-      command: [ "/bin/sh", "-c", "while true ; do date; sleep 1; done;" ]
-      volumeMounts:
-        - name: host
-          mountPath: /host
-  restartPolicy: Never
-  volumes:
-    - name: host
-      hostPath:
-        path: /
-```
 
 ## S2I playground
 
