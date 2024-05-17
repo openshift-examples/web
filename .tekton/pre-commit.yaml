@@ -145,9 +145,6 @@ spec:
                 echo -e ' 💀 There was an error during pre-commit / linter:\n\n```' \
                   > ${WORKSPACE}/notify-linter-on-failure.txt
 
-                # https://github.com/pre-commit/pre-commit/issues/2799#issuecomment-1581753428
-                rm -f /usr/share/rubygems/rubygems/defaults/operating_system.rb
-
                 pre-commit run --color=never \
                   --from-ref HEAD~${PR_COMMITS} \
                   --to-ref ${PR_COMMIT} \
