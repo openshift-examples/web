@@ -10,7 +10,7 @@ USER root
 
 # Install gem for pre-commit
 RUN dnf -y update \
- && dnf -y install gem \
+ && dnf -y install gem ruby-devel\
  && dnf clean all
 
 # Copying in source code
@@ -23,6 +23,8 @@ RUN /usr/libexec/s2i/assemble && rm /opt/app-root/src/requirements.txt
 
 USER root
 ADD builder.assemble /usr/libexec/s2i/assemble
+# https://github.com/pre-commit/pre-commit/issues/2799#issuecomment-1581753428
+RUN rm -f /usr/share/rubygems/rubygems/defaults/operating_system.rb
 USER 1001
 
 EXPOSE 8080/tcp
