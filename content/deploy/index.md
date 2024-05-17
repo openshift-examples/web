@@ -151,42 +151,6 @@ spec:
     type: ImageChange
 ```
 
-## Deployment with limit and request
-
-```yaml
-apiVersion: v1
-kind: DeploymentConfig
-metadata:
-  name: ubi8
-spec:
-  replicas: 1
-  strategy:
-    type: Recreate
-  template:
-    metadata:
-      labels:
-        deploymentconfig: ubi8
-    spec:
-      containers:
-      - image: ubi8
-        name: container-1
-        command:
-        - /bin/sh
-        - "-c"
-        - |
-          while true ;
-            do date;
-            sleep 1;
-          done;
-        resources:
-          limits:
-            memory: 10Gi
-          requests:
-            memory: 10Gi
-  triggers:
-  - type: ConfigChange
-```
-
 ### Example
 
 List of allocatable memory:
