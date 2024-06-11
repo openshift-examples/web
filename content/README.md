@@ -35,6 +35,7 @@ and benefit from the expertise shared in this repository.
 * [Certified OpenShift CNI Plug-ins](https://access.redhat.com/articles/5436171)
 * [Is it supported to have mixed environment (VMware+Baremetal) setup for RHOCP 4.x cluster](https://access.redhat.com/solutions/5376701)
 * [Demystifying the OpenShift release image](https://www.stb.id.au/blog/demystifying-ocp-release-image)
+* [OpenShift Virtualization – Fencing and VM High Availability Guide](https://access.redhat.com/articles/7057929)
 
 ## Stargazers over time
 
