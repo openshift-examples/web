@@ -7,7 +7,7 @@ tags: ['HostedControlPlane','hcp','hypershift']
 
 # Hosted Control Plane
 
-<https://docs.google.com/document/d/1EUaKD_0JGPPPAD7rAshfXUVfAOzTqmU5qx_60Hl_NE0/edit>
+ * [OpenShift 4.17 Hosted Control Plane documentation](https://docs.redhat.com/en/documentation/openshift_container_platform/4.17/html-single/hosted_control_planes/index#hcp-overview)
 
 <https://github.com/gqlo/blogs/blob/main/hosted-control-plane-with-the-kubevirt-provider.md>
 
@@ -15,40 +15,53 @@ tags: ['HostedControlPlane','hcp','hypershift']
 
 ### Platform - KubeVirt
 
+#### Deploy
+
 ```bash
 
 export PULL_SECRET=${HOME}/redhat-pullsecret-rh-ee-rbohne.json
-export KUBEVIRT_CLUSTER_NAME=oat23
-export TRUSTED_BUNDLE=${HOME}/Devel/gitlab.consulting.redhat.com/coe-lab/certificates/ca-bundle-v1.pem
+export CLUSTER_NAME=cli
+export TRUSTED_BUNDLE=${HOME}/Devel/gitlab.consulting.redhat.com/coe-lab/certificates/Current-IT-Root-CAs.crt
+export NAMESPACE=rbohne-hcp
 
-hcp create cluster \
-kubevirt \
-  --name $KUBEVIRT_CLUSTER_NAME \
-  --namespace rbohne-hcp \
+hcp create cluster kubevirt \
+  --name $CLUSTER_NAME \
+  --namespace ${NAMESPACE} \
   --node-pool-replicas=2 \
   --memory '16Gi' \
   --cores '8' \
   --generate-ssh \
   --root-volume-size 120 \
-  --root-volume-storage-class 'coe-netapp-nas' \
+  --root-volume-storage-class 'coe-netapp-san' \
   --pull-secret $PULL_SECRET \
-  --etcd-storage-class ocs-storagecluster-ceph-rbd \
+  --etcd-storage-class lvms-for-etcd \
+  --infra-storage-class-mapping ocs-storagecluster-ceph-rbd/ocs-storagecluster-ceph-rbd \
   --control-plane-availability-policy HighlyAvailable \
   --additional-trust-bundle $TRUSTED_BUNDLE \
-  --auto-repair \
-  --release-image=quay.io/openshift-release-dev/ocp-release:4.14.1-x86_64
-  # --render
+  --release-image=quay.io/openshift-release-dev/ocp-release:4.16.15-x86_64
+  --render
   # Optional - add --render to show yaml
 
+oc get hc -n ${NAMESPACE}
 ```
 
 #### Export kubeconfig
 
 ```bash
 hcp create kubeconfig \
-  --name $KUBEVIRT_CLUSTER_NAME \
-  --namespace rbohne-hcp | sed "s/admin/$KUBEVIRT_CLUSTER_NAME/" > ~/.kube/clusters/${KUBEVIRT_CLUSTER_NAME}
+  --name $CLUSTER_NAME \
+  --namespace ${NAMESPACE} | sed "s/admin/$CLUSTER_NAME/" > ~/.kube/clusters/${CLUSTER_NAME}
 ```
+
+#### Destroy
+
+```bash
+hcp destroy cluster kubevirt \
+  --name ${CLUSTER_NAME} \
+  --namespace ${NAMESPACE}
+```
+
+
 
 ### Platform - None / BareMetal
 
@@ -58,7 +71,7 @@ Not tested, for a long time:
 hcp create cluster \
 none \
   --expose-through-load-balancer \
-  --name $KUBEVIRT_CLUSTER_NAME \
+  --name $CLUSTER_NAME \
   --control-plane-availability-policy HighlyAvailable \
   --etcd-storage-class ocs-storagecluster-ceph-rbd \
   --release-image=quay.io/openshift-release-dev/ocp-release:4.12.1-x86_64 \
@@ -110,13 +123,13 @@ Here a container solution bases on [openshift-4-loadbalancer](https://github.com
 <https://hypershift-docs.netlify.app/how-to/troubleshooting/>
 
 ```bash
-export KUBEVIRT_CLUSTER_NAME=lenggries3
-export CLUSTERNS="rbohne-hcp"
+export CLUSTER_NAME=lenggries3
+export CLUSTERNS="${NAMESPACE}"
 
-mkdir clusterDump-${CLUSTERNS}-${KUBEVIRT_CLUSTER_NAME}
+mkdir clusterDump-${CLUSTERNS}-${CLUSTER_NAME}
 hcp dump cluster \
-    --name ${KUBEVIRT_CLUSTER_NAME} \
+    --name ${CLUSTER_NAME} \
     --namespace ${CLUSTERNS} \
     --dump-guest-cluster \
-    --artifact-dir clusterDump-${CLUSTERNS}-${KUBEVIRT_CLUSTER_NAME}
+    --artifact-dir clusterDump-${CLUSTERNS}-${CLUSTER_NAME}
 ```
