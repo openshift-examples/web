@@ -2,8 +2,8 @@
 Angaben gemäß § 5 TMG
 
 Robert Bohne<br/>
-Ehamostr. 6a<br/>
-85658 Egmating<br/>
+Hoferichterweg 15<br/>
+81827 Muenchen<br/>
 
 #### Vertreten durch:
 Robert Bohne
