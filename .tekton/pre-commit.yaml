@@ -126,7 +126,7 @@ spec:
             workspace: source
         params:
           - name: pr_commit
-            value: $(tasks.fetch-repository-pr.results.commit)
+            value: $(tasks.fetch-repository-pr.results.COMMIT)
           - name: pr_commits
             value: $(params.pr_commits)
         taskSpec:
