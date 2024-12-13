@@ -95,8 +95,14 @@ spec:
         # runAfter:
         #   - debug
         taskRef:
-          name: git-clone
-          kind: ClusterTask
+          resolver: cluster
+          params:
+          - name: kind
+            value: task
+          - name: name
+            value: git-clone
+          - name: namespace
+            value: openshift-pipelines
         workspaces:
           - name: output
             workspace: source
@@ -187,9 +193,15 @@ spec:
         runAfter:
           - github-add-labels
         taskRef:
-          kind: ClusterTask
-          name: openshift-client
-
+          resolver: cluster
+          params:
+          - name: kind
+            value: task
+          - name: name
+            value: openshift-client
+          - name: namespace
+            value: openshift-pipelines
+        workspaces:
       - name: build-builder-image
         params:
           - name: IMAGE
@@ -203,8 +215,14 @@ spec:
         runAfter:
           - wait-for-imagestream
         taskRef:
-          kind: ClusterTask
-          name: buildah
+          resolver: cluster
+          params:
+          - name: kind
+            value: task
+          - name: name
+            value: buildah
+          - name: namespace
+            value: openshift-pipelines
         workspaces:
           - name: source
             workspace: source
@@ -224,8 +242,14 @@ spec:
         runAfter:
           - build-builder-image
         taskRef:
-          kind: ClusterTask
-          name: buildah
+          resolver: cluster
+          params:
+          - name: kind
+            value: task
+          - name: name
+            value: buildah
+          - name: namespace
+            value: openshift-pipelines
         workspaces:
           - name: source
             workspace: source
