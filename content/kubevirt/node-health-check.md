@@ -2,12 +2,11 @@
 title: Node Health Check
 linktitle: Node Health Check
 description: OpenShift Virtualization - Fencing and VM High Availability Guide
-tags: ["kubevirt","ocpv","cnv"]
+tags: ["kubevirt","ocp-v","cnv"]
 ---
 
 # Node Health Check
 
 ## Resources
 
- *(OpenShift Virtualization - Fencing and VM High Availability Guide
-)[https://access.redhat.com/articles/7057929]
+ * [OpenShift Virtualization - Fencing and VM High Availability Guide](https://access.redhat.com/articles/7057929)
