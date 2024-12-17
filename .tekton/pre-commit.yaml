@@ -210,7 +210,7 @@ spec:
           - name: IMAGE
             value: image-registry.openshift-image-registry.svc:5000/$(context.pipelineRun.namespace)/pr-$(params.pull_request_number):builder
           - name: DOCKERFILE
-            value: ./builder.Containerfile
+            value: ./pr/builder.Containerfile
           - name: TLSVERIFY
             value: 'false'
           - name: CONTEXT
