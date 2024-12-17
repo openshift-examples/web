@@ -68,50 +68,17 @@ oc patch configs.imageregistry.operator.openshift.io cluster --type='json' -p='[
 ```
 
 
-## Deploy nfs-csi
+## Deploy nfs-client-provisioner
 
+Based on a retired project: https://github.com/kubernetes-retired/external-storage/tree/master/nfs-client
 
 ```bash
 
-
-  
-  
-  # --set storageClass.create=true \
-  # --set storageClass.name=nfs-csi \
-  # --set storageClass.parameters.server=10.32.97.1 \
-  # --set storageClass.parameters.share=/coe_stormshift_ocp1 \
-  # --set storageClass.parameters.share.subDir='${pvc.metadata.namespace}-${pvc.metadata.name}-${pv.metadata.name}'
-
-oc apply -f - <<EOF
-apiVersion: storage.k8s.io/v1
-kind: StorageClass
-metadata:
-  name: nfs-csi
-  annotations:
-    storageclass.kubevirt.io/is-default-virt-class: 'true'
-    storageclass.kubernetes.io/is-default-class: 'true'
-provisioner: nfs.csi.k8s.io   
-parameters:
-  server: 10.32.97.1 
-  share:  /coe_stormshift_ocp1      
-  subDir: ${pvc.metadata.namespace}-${pvc.metadata.name}-${pv.metadata.name}
-reclaimPolicy: Delete
-volumeBindingMode: Immediate
-allowVolumeExpansion: true
-EOF
-
-oc apply -f << EOF
-apiVersion: snapshot.storage.k8s.io/v1
-kind: VolumeSnapshotClass
-metadata:
-  name: nfs-csi-snapclass
-driver: nfs.csi.k8s.io
-deletionPolicy: Delete
-EOF
+oc process -f  https://raw.githubusercontent.com/openshift-examples/external-storage-nfs-client/main/openshift-template-nfs-client-provisioner.yaml \
+  -p NFS_SERVER=192.168.51.1 \
+  -p NFS_PATH=/srv/nfs-storage-pv-user-pvs  | oc apply -f -
 
 ```
-
-
 ### Air-gapped deployment
 
 ```bash
