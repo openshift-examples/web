@@ -97,12 +97,12 @@ spec:
         taskRef:
           resolver: cluster
           params:
-          - name: kind
-            value: task
-          - name: name
-            value: git-clone
-          - name: namespace
-            value: openshift-pipelines
+            - name: kind
+              value: task
+            - name: name
+              value: git-clone
+            - name: namespace
+              value: openshift-pipelines
         workspaces:
           - name: output
             workspace: source
@@ -198,12 +198,12 @@ spec:
         taskRef:
           resolver: cluster
           params:
-          - name: kind
-            value: task
-          - name: name
-            value: openshift-client
-          - name: namespace
-            value: openshift-pipelines
+            - name: kind
+              value: task
+            - name: name
+              value: openshift-client
+            - name: namespace
+              value: openshift-pipelines
         workspaces:
       - name: build-builder-image
         params:
@@ -220,12 +220,12 @@ spec:
         taskRef:
           resolver: cluster
           params:
-          - name: kind
-            value: task
-          - name: name
-            value: buildah
-          - name: namespace
-            value: openshift-pipelines
+            - name: kind
+              value: task
+            - name: name
+              value: buildah
+            - name: namespace
+              value: openshift-pipelines
         workspaces:
           - name: source
             workspace: source
@@ -247,12 +247,12 @@ spec:
         taskRef:
           resolver: cluster
           params:
-          - name: kind
-            value: task
-          - name: name
-            value: buildah
-          - name: namespace
-            value: openshift-pipelines
+            - name: kind
+              value: task
+            - name: name
+              value: buildah
+            - name: namespace
+              value: openshift-pipelines
         workspaces:
           - name: source
             workspace: source
