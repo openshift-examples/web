@@ -61,8 +61,14 @@ spec:
     tasks:
       - name: fetch-repository
         taskRef:
-          name: git-clone
-          kind: ClusterTask
+          resolver: cluster
+          params:
+            - name: kind
+              value: task
+            - name: name
+              value: git-clone
+            - name: namespace
+              value: openshift-pipelines
         workspaces:
           - name: output
             workspace: source
@@ -160,7 +166,10 @@ spec:
               type: string
             - name: TAG_NAME
           steps:
-            - name: debug
+            - name: git-cli
+              securityContext:
+                runAsNonRoot: true
+                runAsUser: 65532
               env:
                 - name: WORKSPACE_SSH_DIRECTORY_BOUND
                   value: $(workspaces.ssh-directory.bound)
