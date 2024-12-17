@@ -42,6 +42,8 @@ oc adm policy add-scc-to-user -n  ${NAMESPACE}  privileged -z csi-nfs-node-sa
 
 ### Deploy
 
+Download `values.yaml` and adjust the NFS-Server and Path in the last lines.
+
 === "helm"
 
     ```bash
