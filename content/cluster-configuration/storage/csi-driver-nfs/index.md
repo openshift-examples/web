@@ -6,11 +6,11 @@ tags: ['nfs','csi','ocp-v','kubevirt']
 ---
 # CSI Driver NFS
 
-Based on 
+Based on
 
- * <https://github.com/kubernetes-csi/csi-driver-nfs>
- * <https://hackmd.io/@johnsimcall/BJeW2Y5mT>
- * <https://hackmd.io/@kincl/csi-driver-nfs-with-console>
+* <https://github.com/kubernetes-csi/csi-driver-nfs>
+* <https://hackmd.io/@johnsimcall/BJeW2Y5mT>
+* <https://hackmd.io/@kincl/csi-driver-nfs-with-console>
 
 ???+ warning "Snapshots are very slow!"
 
@@ -28,7 +28,6 @@ Based on
         name: rhel9-violet-halibut-12
     ```
 
-
 ## Deployment via helm
 
 ### Prepare namespace
@@ -41,7 +40,6 @@ oc adm policy add-scc-to-user -n  ${NAMESPACE}  privileged -z csi-nfs-node-sa
 ```
 
 ### Deploy
-
 
 === "helm"
 
