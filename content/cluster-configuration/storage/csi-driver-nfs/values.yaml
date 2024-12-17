@@ -1,0 +1,32 @@
+---
+controller:
+  resources:
+    csiProvisioner:
+      limits:
+        memory: 1024Mi
+    csiSnapshotter:
+      limits:
+        memory: 1024Mi
+    livenessProbe:
+      limits:
+        memory: 1024Mi
+    nfs:
+      limits:
+        memory: 1024Mi
+
+externalSnapshotter:
+  enabled: true
+  customResourceDefinitions:
+    enabled: false
+
+## StorageClass resource example:
+storageClass:
+  create: true
+  name: nfs-csi
+  annotations:
+    storageclass.kubevirt.io/is-default-virt-class: "true"
+    storageclass.kubernetes.io/is-default-class: "true"
+  parameters:
+    server: 10.32.97.1
+    share: /coe_stormshift_ocp1
+    subDir: ${pvc.metadata.namespace}-${pvc.metadata.name}-${pv.metadata.name}

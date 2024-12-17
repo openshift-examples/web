@@ -1,0 +1,8 @@
+{{$printf_format := "%-40s\t%-20s\t%-20s\n" }}
+{{- printf $printf_format "NODE" "CAPACITY CPU" "CAPACITY MEMORY" -}}
+{{- range .items -}}
+    {{- if eq .kind "Node" -}}
+            {{$name := .metadata.name}}
+            {{- printf $printf_format .metadata.name .status.capacity.cpu .status.capacity.memory -}}
+    {{- end -}}
+{{- end -}}

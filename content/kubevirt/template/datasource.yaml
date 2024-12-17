@@ -1,0 +1,11 @@
+apiVersion: cdi.kubevirt.io/v1beta1
+kind: DataSource
+metadata:
+  annotations:
+  name: remote-mgmt-supporter
+  namespace: openshift-virtualization-os-images
+spec:
+  source:
+    pvc:
+      name: remote-mgmt-supporter-20231211
+      namespace: openshift-virtualization-os-images

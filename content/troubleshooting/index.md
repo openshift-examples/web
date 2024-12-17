@@ -2,13 +2,15 @@
 title: Troubleshooting
 linktitle: Troubleshooting
 description: Troubleshooting
-tags:
-  - troubleshooting
+tags: ['troubleshooting']
 ignore_macros: true
+icon: material/card-search
 ---
+
 # Troubleshooting
 
-## The openshift-console is not coming up
+## The openshift-console is not coming up #1
+
 ```log
 E1011 08:07:56.183305       1 auth.go:231] error contacting auth provider (retrying in 10s): request to OAuth issuer endpoint https://oauth-openshift.apps.hal.openshift.airgapped/oauth/token failed: Head "https://oauth-openshift.apps.hal.openshift.airgapped": EOF
 E1011 08:08:06.187357       1 auth.go:231] error contacting auth provider (retrying in 10s): request to OAuth issuer endpoint https://oauth-openshift.apps.hal.openshift.airgapped/oauth/token failed: Head "https://oauth-openshift.apps.hal.openshift.airgapped": EOF
@@ -17,12 +19,14 @@ E1011 08:08:06.187357       1 auth.go:231] error contacting auth provider (retry
 **Issue**: Router pods scheduled on master.
 
 **Solution**: Find and delete pods using the below command:
+
 ```bash
 oc get pod -n openshift-ingress -o wide
 oc delete pod router-default-65c56bb644-2ldfp router-default-65c56bb644-lqznd -n openshift-ingress
 ```
 
-## The openshift-console is not coming up
+## The openshift-console is not coming up #2
+
 ```log
 oc describe pod <podname>
 
@@ -32,8 +36,10 @@ FailedScheduling: 0/7 nodes are available: 3 nodes had taint, that the pod didn�
 **Issue**: Because of insufficient CPU the pod(s) cannot be scheduled.
 
 **Solution**: Allocate more physical or virtual CPU or use the Cluster Resource Override Operator to override the ratio between requests and limits set on containers/ pods:
-1.  Install the [Cluster Resource Override Operator](https://docs.openshift.com/container-platform/4.10/nodes/clusters/nodes-cluster-overcommit.html)
-2.  Add the below custom resource definition
+
+1. Install the [Cluster Resource Override Operator](https://docs.openshift.com/container-platform/4.10/nodes/clusters/nodes-cluster-overcommit.html)
+1. Add the below custom resource definition
+
 ```bash
 apiVersion: operator.autoscaling.openshift.io/v1
 kind: ClusterResourceOverride
@@ -44,10 +50,12 @@ spec:
     spec:
        cpuRequestToLimitPercent: 25
 ```
+
 If a container CPU limit has been specified or defaulted, this will override the CPU request to 25% percentage of the limit.
 
-3. Apply the following label to the Namespace object for each project (overrides can be enabled per-project):
-```
+1. Apply the following label to the Namespace object for each project (overrides can be enabled per-project):
+
+```yaml
 apiVersion: v1
 kind: Namespace
 metadata:
@@ -57,19 +65,20 @@ metadata:
 ....
 ```
 
-## The bootstrap is running but the customer can't pull from the mirror registry 
+## The bootstrap is running but the customer can't pull from the mirror registry
+
 ```log
 Error pulling candidate abc.def.ghi/company-openshift-docker/openshift-release-dev/ocp-release@sha256:97410a5db655a9d3017b735c2c0747c849d09ff551765e49d5272b80c024a844: initializing source docker://abc.def.ghi/company-openshift-docker/openshift-release-dev/ocp-release@sha256:97410a5db655a9d3017b735c2c0747c849d09ff551765e49d5272b80c024a844: pinging container registry abc.def.ghi: Get "https://abc.def.ghi/v2/ <https://abc.def.ghi/v2/> ": x509: certificate signed by unknown authority
 
 Error: initializing source docker://abc.def.ghi/company-openshift-docker/openshift-release-dev/ocp-release@sha256:97410a5db655a9d3017b735c2c0747c849d09ff551765e49d5272b80c024a844: pinging container registry abc.def.ghi: Get "https://abc.def.ghi/v2/ <https://abc.def.ghi/v2/> ": x509: certificate signed by unknown authority
 ```
 
-**Issue**: The mirror registry's certificate isn't trusted. 
+**Issue**: The mirror registry's certificate isn't trusted.
 
 **Solution**: Use curl and openssl to identify the correct certificate/chain of certificates needed to be able to securely connect to the mirror registry and add them to the additionalTrustBundle section inside the `install-config.yaml` file with the right intendation, for [example](https://docs.openshift.com/container-platform/4.11/installing/installing_vsphere/installing-restricted-networks-installer-provisioned-vsphere.html#installation-installer-provisioned-vsphere-config-yaml_installing-restricted-networks-installer-provisioned-vsphere).
 
-
 ## Ignition fails - connection refused errors during the installation process
+
 ```log
 #Checking the bootstrap via journalctl shows below error:
 Sep 13 11:58:08 v0004369.abc.def.ghi cluster-bootstrap[46455]: [#602]
@@ -80,16 +89,16 @@ fetch discovery: Get "https://localhost:6443/api?timeout=32s": dial tcp
 [::1]:6443: connect: connection refused
 ```
 
-**Problem determination**: 
+**Problem determination**:
 Check whether the Kubernetes API (`https://api.<cluster-id>.<domain>:port`) is accessible. This helps to verify that the DNS resolution on the bootstrap server is set up correctly.
 6443 is the (API) port used by all nodes to communicate with the control plane (master nodes). For reference see [Network connectivity requirements](https://docs.openshift.com/container-platform/4.11/installing/installing_vsphere/installing-vsphere-installer-provisioned.html#installation-vsphere-installer-network-requirements_installing-vsphere-installer-provisioned).
-  
+
 ```bash
 #$ curl -k -I -v https://api.<cluster-id>.<domain>:port
 
 #The result output hinted at a certificate issue
-[core@v0004369 ~]$ curl -k -I -v https://api.<cluster-id>.<domain>:port 
-* Rebuilt URL to: https://api.<cluster-id>.<domain>:port/ 
+[core@v0004369 ~]$ curl -k -I -v https://api.<cluster-id>.<domain>:port
+* Rebuilt URL to: https://api.<cluster-id>.<domain>:port/
 *  Trying x.x.x.x...
 * TCP_NODELAY set
 * Connected to api.<cluster-id>.<domain> (<ip address>) port 6443 (#0)
@@ -104,12 +113,14 @@ api.<cluster-id>.<domain>:6443
 curl: (35) OpenSSL SSL_connect: SSL_ERROR_SYSCALL in connection to
 api.<cluster-id>.<domain>:6443
 ```
-  
+
 Run the below debug command from the OpenShift installation directory. This command can be used to follow the installation process.
+
 ```bash
 $ openshift-install wait-for bootstrap-complete --log-level debug
 
 #The result output hinted at a certificate issue
+
 [openshift@v0004314 cluster]$ openshift-install wait-for bootstrap-complete
 --log-level debug
 DEBUG OpenShift Installer 4.11.1
@@ -126,10 +137,11 @@ after 2022-09-10T08:45:15Z
 DEBUG Still waiting for the Kubernetes API: Get "https://api.<cluster-id>.<domain>:6443": EOF
 ```
 
-**Issue**: The Ignition config files that the openshift-install program generates contain certificates that expire after 24 hours. Expired certificates cause the installation to fail.  
+**Issue**: The Ignition config files that the openshift-install program generates contain certificates that expire after 24 hours. Expired certificates cause the installation to fail.
 
-**Solution**: 
+**Solution**:
 Verify the validity of the certificate being presented by the bootstrap node.
+
 ```bash
 openssl s_client -connect api-int.cluster.fqdn:22623 | openssl x509 -noout -text
 ```
@@ -139,11 +151,10 @@ Check that all certificates are valid, especially the certificates from which th
 **Note:**
 It is recommended that you use Ignition config files within 12 hours after they are generated because the 24-hour certificate rotates from 16 to 22 hours after the cluster is installed
 
-For reference, please see 
+For reference, please see
+
 * [Creating the Kubernetes manifest and Ignition config files](https://docs.openshift.com/container-platform/4.11/installing/installing_platform_agnostic/installing-platform-agnostic.html#installation-user-infra-generate-k8s-manifest-ignition_installing-platform-agnostic)
 * [Masters and Workers Fail to Ignite Reporting Error 'x509: certificate has expired or not yet valid'](https://access.redhat.com/solutions/4355651)
-
-
 
 ## Ignition fails - connection error "no such host" during the installation process
 
@@ -159,16 +170,17 @@ DEBUG Still waiting for the Kubernetes API: Get "https://api.ocpinstall.gym.lan:
 **Problem determination**:
 To break down the issue and determine the root cause, ssh into the bootstrap machine and check if the bootstrapping process is progressing. In particular, check for the following root causes:
 
-- **Firewall / Proxy settings**: Make sure quay.io is reachable from the bootstrap machine and Redhat images can be pulled. In case of vSphere installation, make sure the bootstrap and master machines can reach vCenter API.
-- **Bootstrapping progress**:
+* **Firewall / Proxy settings**: Make sure quay.io is reachable from the bootstrap machine and Redhat images can be pulled. In case of vSphere installation, make sure the bootstrap and master machines can reach vCenter API.
+* **Bootstrapping progress**:
 
-  - Check the `bootkube.service` log for abnormalities with
+  * Check the `bootkube.service` log for abnormalities with
 
     ```bash
     journalctl -b -f -u bootkube.service
     ```
 
-  - Check podman container logs for abnormalities with
+  * Check podman container logs for abnormalities with
+
     ```bash
     for pod in $(sudo podman ps -a -q); do sudo podman logs $pod; done
     ```
@@ -184,6 +196,7 @@ proxy:
   httpsProxy: <http://user:pw@proxy:8080>
   noProxy: <api, ingress VIP, DHCPrange, intranet>
 ```
+
 Verify that the firewall is not blocking the communications between proxy server and machines.
 
 It is very recommendable to install OCP in a bastion host located inside the same network segment of the installed cluster. By doing this, network issues can be identified timely.
@@ -192,53 +205,55 @@ It is very recommendable to install OCP in a bastion host located inside the sam
 
 **Problem determination**: Determine whether the proxy and firewall settings are setup correctly for the master and worker hosts. The following criteria must be met:
 
-- Master nodes can reach vCenter API to provision worker nodes;
-- In the installation yaml, `machineNetwork` must correspond to the actual IPs assigned to the nodes, otherwise the proxy settings won't get propagated correctly to the nodes.
+* Master nodes can reach vCenter API to provision worker nodes;
+* In the installation yaml, `machineNetwork` must correspond to the actual IPs assigned to the nodes, otherwise the proxy settings won't get propagated correctly to the nodes.
 
 **Issue**: There are two potential issues:
 
-- Master node cannot reach vSphere API to provision worker nodes due to firewall blockage;
-- Apiserver and ingress pods' health checks fail, because the `machineNetwork` does not contain the IPs of the machines. Thus the machines are not under `noProxy` and the health checks arrive at the proxy server.
+* Master node cannot reach vSphere API to provision worker nodes due to firewall blockage;
+* Apiserver and ingress pods' health checks fail, because the `machineNetwork` does not contain the IPs of the machines. Thus the machines are not under `noProxy` and the health checks arrive at the proxy server.
 
 **Solution**:
 Fill out the `machineNetwork` correctly in the install config yaml. In case of DHCP, put the entire DHCP range into `machineNetwork` or under `noProxy` in order to be absolutely sure.
 Check out https://docs.openshift.com/container-platform/4.12/networking/enable-cluster-wide-proxy.html for more detailed instructions.
 
-
 ## Troubleshooting network issues
+
 ```bash
-$ oc get nodes -o wide
-$ oc get events -n openshift-sdn
-$ oc get co
+oc get nodes -o wide
+oc get events -n openshift-sdn
+oc get co
 ```
 
 [Move networking resources to the control plane on vsphere](https://access.redhat.com/solutions/6753541)
 
 [OCP 4 Node not ready after cluster upgrade or node restart](https://access.redhat.com/solutions/5808731)
 
-
 ## Worker nodes are not visible when running oc get nodes
+
 `oc get nodes` only shows master nodes.
 
-**Issue**: The nodes' certificate requests haven't been approved. 
+**Issue**: The nodes' certificate requests haven't been approved.
 
-**Solution**: 
+**Solution**:
 The new worker node(s) will still be missing or in pending state. Add them by signing the respective client and server CSR requests. Run `oc get csr` and then sign each request.
 
 ```bash
 oc get csr
-oc adm certificate approve <csr_name> 
+oc adm certificate approve <csr_name>
 ```
 
 There will be multiple CSRs created per worker, so run the commands above multiple times until the workers show up as ready.
 
 Alternatively, to approve all pending CSRs, run the following command:
-```
+
+```bash
 oc get csr -o go-template='{{range .items}}{{if not .status}}{{.metadata.name}}{{"\n"}}{{end}}{{end}}' | xargs --no-run-if-empty oc adm certificate approve
 ```
 
 After all client and server CSRs have been approved, the machines should have the ready status. Verify this by running the following command:
-```
+
+```bash
 oc get nodes
 ```
 
@@ -246,19 +261,21 @@ oc get nodes
 
 **Issue**: The OVA image has been started prior to cloning.
 
-**Solution**: 
+**Solution**:
 Create a new template for the OVA image and then clone the template as needed. Starting the OVA image prior to cloning will kick off the ignition process and, as a result, the ignition of the templates fails.
 
-
 ## Troubleshooting ingress issues
+
 To check the status of the ingress operator use
+
 ```bash
-$ oc get co
-$ oc get ingresscontroller/default -o yaml -n openshift-ingress-operator
+oc get co
+oc get ingresscontroller/default -o yaml -n openshift-ingress-operator
 ```
 
-Place a nodeSeclector of this deployment on a master node provided that master nodes are running and ready. To verify that masters are unschedulable ensure that 
+Place a nodeSeclector of this deployment on a master node provided that master nodes are running and ready. To verify that masters are unschedulable ensure that
 the masterSchedulable field is set to false.
+
 ```bash
 $ oc edit schedulers.config.openshift.io cluster
 
@@ -275,21 +292,24 @@ spec:
   mastersSchedulable: false
   policy:
     name: ""
-status: {} 
+status: {}
 ```
 
 ## Troubleshooting node startup issues
+
 To monitor machine-config-operator logs in case any node fails to start:
+
 ```bash
-$ oc get pods -n openshift-machine-config-operator
-$ oc logs -f -n openshift-machine-config-operator machine-config-daemon-<XXXX> -c machine-config-daemon
+oc get pods -n openshift-machine-config-operator
+oc logs -f -n openshift-machine-config-operator machine-config-daemon-<XXXX> -c machine-config-daemon
 ```
 
-[OpenShift Container Platform 4: How does Machine Config Pool work? ](https://www.redhat.com/en/blog/openshift-container-platform-4-how-does-machine-config-pool-work#:~:text=What%20is%20a%20Machine%20Config,up%20to%20date%20and%20configured)
-
+[OpenShift Container Platform 4: How does Machine Config Pool work?](https://www.redhat.com/en/blog/openshift-container-platform-4-how-does-machine-config-pool-work)
 
 ## Troubleshooting ICSP related node startup issues
+
 To check the content of `/etc/containers/registries.conf` on each node use
+
 ```bash
 $ oc debug node/<worker or master node>
 #chroot /host
@@ -299,14 +319,14 @@ $ oc debug node/<worker or master node>
 If `/etc/containers/registries.conf` changes, do the nodes purge their internal cache?
 NO - If a new container is deployed and if the image requested is not on node the image will be pull from the “mirror” registry mentioned in /etc/containers/registries. This file is just for crio to download the image to the correct location.
 
-
 ## Resizing the VM disk
 
-https://unix.stackexchange.com/questions/678677/in-an-ubuntu-vm-in-vmware-i-increased-the-hard-disk-space-how-do-i-add-that-to
-
+<https://unix.stackexchange.com/questions/678677/in-an-ubuntu-vm-in-vmware-i-increased-the-hard-disk-space-how-do-i-add-that-to>
 
 ## How to delete/destroy a failed installation
+
 ```bash
-./openshift-install destroy cluster --dir <installation_directory> --log-level info 
+./openshift-install destroy cluster --dir <installation_directory> --log-level info
 ```
+
 [Reference](https://docs.openshift.com/container-platform/4.11/installing/installing_ibm_cloud_public/uninstalling-cluster-ibm-cloud.html)

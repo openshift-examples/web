@@ -1,0 +1,4 @@
+NODE                                    	CAPACITY CPU        	CAPACITY MEMORY     
+control-plane-0.hc1.openshift.pub       	8                   	15954776Ki          
+worker-0-arm.hc1.openshift.pub          	8                   	15954776Ki          
+worker-0-x86.hc1.openshift.pub          	4                   	7927544Ki           

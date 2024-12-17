@@ -2,7 +2,8 @@
 title: Deployments
 linktitle: Deployments
 weight: 4100
-description: TBD
+description: Various deployment example...
+icon: material/folder-play
 ---
 # Deployments
 
@@ -47,130 +48,21 @@ spec:
   - name: generic
 ```
 
-
-## BusyBox Pod
-```yaml
-apiVersion: v1
-kind: Pod
-metadata:
-  name: busybox
-spec:
-  containers:
-    - name: busybox
-      image: busybox
-      command: [ "/bin/sh", "-c", "while true ; do date; sleep 1; done;" ]
-  restartPolicy: Never
-```
-
-## BusyBox Pod with PVC
-```yaml
-apiVersion: v1
-kind: Pod
-metadata:
-  name: busybox-nfs
-spec:
-  containers:
-  - name: busybox-nfs
-    image: busybox
-    command: [ "/bin/sh", "-c", "while true ; do date; sleep 1; done;" ]
-  volumes:
-    - persistentVolumeClaim: nfs
-  restartPolicy: Never
-```
-
-
-## Simple Deployment
+## UBI9 Micro Pod
 
 ```yaml
-oc apply -f - <<EOF
---8<-- "content/deploy/files/simple-deployment.yaml"
-EOF
+--8<-- "content/deploy/ubi-pod.yaml"
 ```
 
-## Simple DeploymentConfig
-```yaml
-apiVersion: v1
-kind: DeploymentConfig
-metadata:
-  name: busybox
-spec:
-  replicas: 1
-  strategy:
-    type: Recreate
-  template:
-    metadata:
-      labels:
-        deploymentconfig: busybox
-    spec:
-      containers:
-      - image: busybox
-        name: busybox
-        command: [ "/bin/sh", "-c", "while true ; do date; sleep 1; done;" ]
-  triggers:
-  - type: ConfigChange
-```
-## Simple DeploymentConfig with hostpath
-```yaml
-#
-#   oc create serviceaccount hostaccess
-#   oc adm policy add-scc-to-user hostaccess -z hostaccess
----
-apiVersion: v1
-kind: DeploymentConfig
-metadata:
-  name: rhel-tools
-spec:
-  replicas: 1
-  strategy:
-    type: Recreate
-  template:
-    metadata:
-      labels:
-        deploymentconfig: rhel-tools
-    spec:
-      serviceAccountName: hostaccess
-      containers:
-        - name: rhel-tools
-          image: rhel7/rhel-tools
-          command: [ "/bin/sh", "-c", "while true ; do date; sleep 1; done;" ]
-          volumeMounts:
-            - name: host
-              mountPath: /host
-      volumes:
-        - name: host
-          hostPath:
-            path: /
-  triggers:
-  - type: ConfigChange
+source: [ubi-pod.yaml]({{ page.canonical_url }}ubi-pod.yaml)
 
-```
-
-## Pod with hostpath
+## UBI9 deployment with pvc
 
 ```yaml
-#
-#   oc create serviceaccount hostaccess
-#   oc adm policy add-scc-to-user hostaccess -z hostaccess
----
-apiVersion: v1
-kind: Pod
-metadata:
-  name: rhel-tools
-spec:
-#  serviceAccountName: hostaccess
-  containers:
-    - name: rhel-tools
-      image: rhel7/rhel-tools
-      command: [ "/bin/sh", "-c", "while true ; do date; sleep 1; done;" ]
-      volumeMounts:
-        - name: host
-          mountPath: /host
-  restartPolicy: Never
-  volumes:
-    - name: host
-      hostPath:
-        path: /
+--8<-- "content/deploy/ubi-deployment-w-pvc.yaml"
 ```
+
+source: [ubi-deployment-w-pvc.yaml]({{ page.canonical_url }}ubi-deployment-w-pvc.yaml)
 
 ## S2I playground
 
@@ -258,45 +150,10 @@ spec:
     type: ImageChange
 ```
 
-## Deployment with limit and request:
-
-```
-apiVersion: v1
-kind: DeploymentConfig
-metadata:
-  name: ubi8
-spec:
-  replicas: 1
-  strategy:
-    type: Recreate
-  template:
-    metadata:
-      labels:
-        deploymentconfig: ubi8
-    spec:
-      containers:
-      - image: ubi8
-        name: container-1
-        command:
-        - /bin/sh
-        - "-c"
-        - |
-          while true ;
-            do date;
-            sleep 1;
-          done;
-        resources:
-          limits:
-            memory: 10Gi
-          requests:
-            memory: 10Gi
-  triggers:
-  - type: ConfigChange
-```
-
-##### Example
+### Example
 
 List of allocatable memory:
+
 ```bash
 $ oc get nodes -o custom-columns=NAME:.metadata.name,MEM-allocatable:.status.allocatable.memory  -l node-role.kubernetes.io/worker
 NAME                                 MEM-allocatable
@@ -309,10 +166,9 @@ worker-3.rbohne.e2e.bos.redhat.com   15270356Ki
     This is allocatable memory on the whole host for Pods.
     The amount of allocatable memory do **NOT** include allocated memory of running Pods!
 
-
 **Request & limit:**
 
-```
+```yaml
 resources:
   limits:
     memory: 32Gi
@@ -324,7 +180,7 @@ resources:
 
 **Request & limit:**
 
-```
+```yaml
 resources:
   limits:
     memory: 10Gi

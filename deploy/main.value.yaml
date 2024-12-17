@@ -1,11 +1,38 @@
 nameOverride: examples-openshift-pub
-replicaCount: 2
+replicaCount: 1
 image:
   repository: quay.io/openshift-examples/web
   pullPolicy: Always
   tag: main
 
 route:
+  enabled: false
   hostOverride: examples.openshift.pub
   annotations:
     kubernetes.io/tls-acme: 'true'
+
+certificate:
+  enabled: true
+  commonName: "examples.openshift.pub"
+  dnsNames:
+    - "examples.openshift.pub"
+  issuerRef:
+    group: cert-manager.io
+    kind: ClusterIssuer
+    name: cloudflare-openshift-pub
+  secretName: examples-openshift-pub
+
+ingress:
+  enabled: true
+  className: ""
+  annotations:
+    route.openshift.io/termination: "edge"
+  hosts:
+    - host: examples.openshift.pub
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls:
+    - secretName: examples-openshift-pub
+      hosts:
+        - examples.openshift.pub

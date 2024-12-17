@@ -30,13 +30,6 @@ spec:
     enabled: false
     ingress:
       enabled: false
-    resources:
-      limits:
-        cpu: 500m
-        memory: 256Mi
-      requests:
-        cpu: 250m
-        memory: 128Mi
     route:
       enabled: false
   ha:
@@ -80,11 +73,6 @@ spec:
       requests:
         cpu: 250m
         memory: 256Mi
-  resourceCustomizations: |
-    route.openshift.io/Route:
-      ignoreDifferences: |
-        jsonPointers:
-        - /status/ingress
   resourceExclusions: |
     - apiGroups:
       - monitoring.coreos.com
