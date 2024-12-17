@@ -15,6 +15,7 @@ Based on
 ???+ warning "Snapshots are very slow!"
 
     Snapshots are coping data via tar .. $source $targert and that is incredible slow. OpenShift Virtualization runs in timeout, for example, during VM cloning via WebUI. Possible solution, create an VM snapshot with an extralong timeout:
+    
     ```yaml
     apiVersion: snapshot.kubevirt.io/v1beta1
     kind: VirtualMachineSnapshot
