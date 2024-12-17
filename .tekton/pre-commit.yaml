@@ -137,6 +137,9 @@ spec:
               image: quay.io/openshift-examples/builder:devel
               imagePullPolicy: Always
               workingDir: $(workspaces.source.path)/pr
+              securityContext:
+                runAsNonRoot: true
+                runAsUser: 65532
               env:
                 - name: PR_COMMITS
                   value: $(params.pr_commits)
