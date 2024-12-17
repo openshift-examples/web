@@ -235,7 +235,7 @@ spec:
           - name: IMAGE
             value: image-registry.openshift-image-registry.svc:5000/$(context.pipelineRun.namespace)/pr-$(params.pull_request_number):latest
           - name: DOCKERFILE
-            value: ./Containerfile
+            value: ./pr/Containerfile
           - name: BUILD_EXTRA_ARGS
             value: "--build-arg BUILDER_IMAGE=image-registry.openshift-image-registry.svc:5000/$(context.pipelineRun.namespace)/pr-$(params.pull_request_number):builder"
           - name: TLSVERIFY
