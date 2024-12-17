@@ -16,9 +16,8 @@ controller:
 
 externalSnapshotter:
   enabled: true
-  # Create volume snapshot CRDs.
   customResourceDefinitions:
-    enabled: false   #if set true, VolumeSnapshot, VolumeSnapshotContent and VolumeSnapshotClass CRDs will be created. Set it false, If they already exist in cluster.
+    enabled: false
 
 ## StorageClass resource example:
 storageClass:
@@ -28,6 +27,6 @@ storageClass:
     storageclass.kubevirt.io/is-default-virt-class: "true"
     storageclass.kubernetes.io/is-default-class: "true"
   parameters:
-    server: 10.32.97.1 
-    share:  /coe_stormshift_ocp1      
+    server: 10.32.97.1
+    share: /coe_stormshift_ocp1
     subDir: ${pvc.metadata.namespace}-${pvc.metadata.name}-${pv.metadata.name}
