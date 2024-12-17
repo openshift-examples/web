@@ -26,7 +26,7 @@ metadata:
     pipelinesascode.tekton.dev/task-3: "[.tekton/task/github-add-comment.yaml]"
 
     # How many runs we want to keep attached to this event
-    pipelinesascode.tekton.dev/max-keep-runs: "5"
+    pipelinesascode.tekton.dev/max-keep-runs: "2"
 spec:
   params:
     # The variable with brackets are special to Pipelines as Code
@@ -43,6 +43,11 @@ spec:
       value: "{{source_branch}}"
     - name: target_branch
       value: "{{target_branch}}"
+    - name: pr_base_sha
+      value: "{{ body.pull_request.base.sha }}"
+    - name: pr_commits
+      value: "{{ body.pull_request.commits }}"
+
   podTemplate:
     nodeSelector:
       kubernetes.io/arch: amd64
@@ -57,86 +62,110 @@ spec:
       - name: revision
       - name: pull_request_number
       - name: git_auth_secret
+      - name: pr_base_sha
+      - name: pr_commits
     workspaces:
       - name: source
       - name: basic-auth
     tasks:
+
+      # - name: debug
+      #   workspaces:
+      #     - name: source
+      #       workspace: source
+      #   params:
+      #     - name: pr_base_sha
+      #       value: $(params.pr_base_sha)
+      #   taskSpec:
+      #     steps:
+      #       - name: debug
+      #         env:
+      #           - name: PR_BASE_SHA
+      #             value: $(params.pr_base_sha)
+      #         image: registry.access.redhat.com/ubi9/ubi
+      #         script: |
+      #           #!/usr/bin/env python3
+      #           import json
+      #           import pprint
+      #           pp = pprint.PrettyPrinter(indent=4)
+      #           pp.pprint(json.loads("""{{ body }}"""))
+      #           exit(0)
+
       - name: fetch-repository-pr
+        # runAfter:
+        #   - debug
         taskRef:
-          name: git-clone
-          kind: ClusterTask
+          resolver: cluster
+          params:
+            - name: kind
+              value: task
+            - name: name
+              value: git-clone
+            - name: namespace
+              value: openshift-pipelines
         workspaces:
           - name: output
             workspace: source
           - name: basic-auth
             workspace: basic-auth
         params:
-          - name: url
+          - name: URL
             value: $(params.repo_url)
-          - name: revision
+          - name: REVISION
             value: $(params.revision)
-          - name: depth
+          - name: DEPTH
             value: 0
-          - name: subdirectory
+          - name: SUBDIRECTORY
             value: pr
-      - name: fetch-repository-main
-        taskRef:
-          name: git-clone
-          kind: ClusterTask
-        workspaces:
-          - name: output
-            workspace: source
-          - name: basic-auth
-            workspace: basic-auth
-        params:
-          - name: url
-            value: $(params.repo_url)
-          - name: revision
-            value: main
-          - name: subdirectory
-            value: main
-          # - name: depth
-          #   value: 1
-      # Customize this task if you like, or just do a taskRef
-      # to one of the hub task.
+
       - name: pre-commit
         runAfter:
           - fetch-repository-pr
-          - fetch-repository-main
         workspaces:
           - name: source
             workspace: source
         params:
-          - name: main_commit
-            value: $(tasks.fetch-repository-main.results.commit)
           - name: pr_commit
-            value: $(tasks.fetch-repository-pr.results.commit)
+            value: $(tasks.fetch-repository-pr.results.COMMIT)
+          - name: pr_commits
+            value: $(params.pr_commits)
         taskSpec:
           workspaces:
             - name: source
           steps:
             - name: pre-commit
               image: quay.io/openshift-examples/builder:devel
+              imagePullPolicy: Always
               workingDir: $(workspaces.source.path)/pr
+              securityContext:
+                runAsNonRoot: true
+                runAsUser: 65532
+              env:
+                - name: PR_COMMITS
+                  value: $(params.pr_commits)
+                - name: PR_COMMIT
+                  value: $(params.pr_commit)
+                - name: WORKSPACE
+                  value: $(workspaces.source.path)
               script: |
                 set -euxo pipefail
 
-                git config --global --add safe.directory $(workspaces.source.path)/pr
+                git config --global --add safe.directory ${WORKSPACE}/pr
 
                 echo -e ' 💀 There was an error during pre-commit / linter:\n\n```' \
-                  > $(workspaces.source.path)/notify-linter-on-failure.txt
+                  > ${WORKSPACE}/notify-linter-on-failure.txt
 
                 pre-commit run --color=never \
-                  --from-ref $(params.main_commit) \
-                  --to-ref $(params.pr_commit) \
+                  --from-ref HEAD~${PR_COMMITS} \
+                  --to-ref ${PR_COMMIT} \
                 | sed -r "s/\x1B\[([0-9]{1,3}(;[0-9]{1,2};?)?)?[mGK]//g" \
-                | tee -a $(workspaces.source.path)/notify-linter-on-failure.txt
+                | tee -a ${WORKSPACE}/notify-linter-on-failure.txt
 
                 RC=$?
                 echo "Return code $RC"
 
                 echo -e '\n```\n' \
-                  > $(workspaces.source.path)/notify-linter-on-failure.txt
+                  > ${WORKSPACE}/notify-linter-on-failure.txt
 
                 exit $?
 
@@ -167,15 +196,21 @@ spec:
         runAfter:
           - github-add-labels
         taskRef:
-          kind: ClusterTask
-          name: openshift-client
-
+          resolver: cluster
+          params:
+            - name: kind
+              value: task
+            - name: name
+              value: openshift-client
+            - name: namespace
+              value: openshift-pipelines
+        workspaces:
       - name: build-builder-image
         params:
           - name: IMAGE
             value: image-registry.openshift-image-registry.svc:5000/$(context.pipelineRun.namespace)/pr-$(params.pull_request_number):builder
           - name: DOCKERFILE
-            value: ./builder.Containerfile
+            value: ./pr/builder.Containerfile
           - name: TLSVERIFY
             value: 'false'
           - name: CONTEXT
@@ -183,8 +218,14 @@ spec:
         runAfter:
           - wait-for-imagestream
         taskRef:
-          kind: ClusterTask
-          name: buildah
+          resolver: cluster
+          params:
+            - name: kind
+              value: task
+            - name: name
+              value: buildah
+            - name: namespace
+              value: openshift-pipelines
         workspaces:
           - name: source
             workspace: source
@@ -194,7 +235,7 @@ spec:
           - name: IMAGE
             value: image-registry.openshift-image-registry.svc:5000/$(context.pipelineRun.namespace)/pr-$(params.pull_request_number):latest
           - name: DOCKERFILE
-            value: ./Containerfile
+            value: ./pr/Containerfile
           - name: BUILD_EXTRA_ARGS
             value: "--build-arg BUILDER_IMAGE=image-registry.openshift-image-registry.svc:5000/$(context.pipelineRun.namespace)/pr-$(params.pull_request_number):builder"
           - name: TLSVERIFY
@@ -204,8 +245,14 @@ spec:
         runAfter:
           - build-builder-image
         taskRef:
-          kind: ClusterTask
-          name: buildah
+          resolver: cluster
+          params:
+            - name: kind
+              value: task
+            - name: name
+              value: buildah
+            - name: namespace
+              value: openshift-pipelines
         workspaces:
           - name: source
             workspace: source

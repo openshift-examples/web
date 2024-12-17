@@ -4,3 +4,4 @@ resources:
   - ci-cd-issues-pr-read-only.yaml
   - quay-push-bot.yaml
   - employee-ocp-production.yaml
+  - web-deploy-key.yaml

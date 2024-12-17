@@ -33,8 +33,9 @@ theme:
   font:
     text: Overpass
     code: Overpass Mono
+  favicon: images/favicon.png
   icon:
-    logo: material/bookmark
+    logo: simple/redhatopenshift
     repo: fontawesome/brands/github
   features:
     - navigation.instant
@@ -48,7 +49,7 @@ extra:
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/rbo
-    - icon: fontawesome/brands/twitter
+    - icon: fontawesome/brands/x-twitter
       link: https://twitter.com/robertbohne
     - icon: fontawesome/brands/linkedin
       link: https://linkedin.com/in/robertbohne
@@ -95,13 +96,19 @@ extra_css:
   - assets/stylesheets/powered-by.css
 
 #  gsed -E "s/\* \[(.+)\]\((.+)\)/- \'\1\': '\2'/" docs/SUMMARY.md
+# :material-folder-plus:
 nav:
   - Cluster installation:
+      - cluster-installation/index.md
       - Air-gapped: cluster-installation/air-gapped.md
+      - SNO on OCP-V: cluster-installation/sno-on-ocpv/index.md
       - VMware/vSphere:
+          - cluster-installation/vmware/index.md
           - "Example installation": cluster-installation/vmware/example/index.md
           - "IPI & Proxy": cluster-installation/vmware/ipi-proxy.md
-          - "MachineSet & UPI": cluster-installation/vmware/machineset-with-upi.md
+          - "MachineSet & UPI": cluster-configuration/MachineSets/VMware-UPI/index.md
+          - "Agent-based non-integrated": cluster-installation/vmware/agent-base-non-integrated/index.md
+      - Hosted Control Plane: cluster-installation/hosted-control-plane.md
       - Nvidia GPU:
           - cluster-installation/gpu/index.md
           - GPU on-prem: cluster-installation/gpu/gpu-on-prem.md
@@ -123,8 +130,11 @@ nav:
       - Cluster entitlement:
           - cluster-configuration/full-cluster-entitlement/index.md
           - Debugging: cluster-configuration/full-cluster-entitlement/debugging.md
+      - External DNS: cluster-configuration/external-dns/index.md
       - Kernel Module: cluster-configuration/build-load-kernel-module/index.md
       - Storage:
+          - cluster-configuration/storage/index.md
+          - NFS CSI Driver: cluster-configuration/storage/csi-driver-nfs/index.md
           - NFS Client provisioner: cluster-configuration/storage/nfs.md
       - NTP: cluster-configuration/ntp.md
       - Monitoring:
@@ -142,6 +152,7 @@ nav:
           - Machine Config Server: cluster-configuration/machine-config/machine-config-server.md
       - MachineSets:
           - Debugging: cluster-configuration/MachineSets/debugging.md
+          - "VMware UPI": cluster-configuration/MachineSets/VMware-UPI/index.md
       - Cluster autoscaler: cluster-configuration/cluster-autoscaling.md
 
   - Cluster lifecycle:
@@ -169,6 +180,7 @@ nav:
 
   - Deploy:
       - deploy/index.md
+      - Keycloak: deploy/keycloak/index.md
       - Liveness probe - WiP: deploy/liveness-probe.md
       - Storage: deploy/storage.md
       - ImageStreams: deploy/imagestreams.md
@@ -224,18 +236,13 @@ nav:
 
   - OpenShift Virtualization:
       - kubevirt/index.md
+      - Templates: kubevirt/template.md
+      - Ansible: kubevirt/ansible/README.md
       - Networking: kubevirt/networking.md
       - Local-storage: kubevirt/local-storage.md
+      - NFS CSI Driver: cluster-configuration/storage/csi-driver-nfs/index.md
 
-  - Quay & Clair: quay.md
   - Certificates: certificate.md
-  - Misc:
-      - misc/index.md
-      - Velero: misc/velero.md
-      - CloudFlare: misc/cloudflare.md
-      - Terraform: misc/terraform.md
-      - ConSol Meetup Notes: misc/meetup-notes.md
-      - Hetzner Lab notes: misc/hetzner-lab.md
 
   - My Lab notes:
       - my-lab/index.md
@@ -243,6 +250,8 @@ nav:
       - Local fedora: my-lab/local-fedora.md
       - SSH: my-lab/ssh.md
       - OCP Remote worker: my-lab/remote-worker.md
+      - Workstation: my-lab/fedora-workstation.md
+
   - OpenShift.tv:
       - openshift-tv/index.md
       - vSphere IPI & disconnected environment: openshift-tv/2021-04-14-vpshere-ipi-disconnected.md

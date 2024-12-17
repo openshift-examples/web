@@ -3,8 +3,8 @@ title: OpenShift Build's
 linktitle: Examples
 weight: 5100
 description: A bunch of example around build...
-tags:
-  - build
+tags:  ['build']
+icon: material/folder-refresh
 ---
 # Build examples
 
@@ -76,7 +76,9 @@ spec:
       name: 'simple-container-build:latest'
 EOF
 ```
+
 ## Container build w/ buildArgs
+
 !!! warning
     Doesn't work:
 
@@ -87,6 +89,7 @@ EOF
       * <https://bugzilla.redhat.com/show_bug.cgi?id=1959415>
 
 Create secret
+
 ```bash
 oc create secret generic build-args \
   --from-literal=PASSWORD=IeNae1eigheBiz8ne
@@ -94,6 +97,7 @@ oc create secret generic build-args \
 oc create configmap build-args \
   --from-literal=USERNAME=foobar24
 ```
+
 Create BuildConfig
 
 ```yaml
@@ -103,6 +107,7 @@ oc apply -f - <<EOF
 --8<-- "content/build/bc_build-args.yaml"
 EOF
 ```
+
 ## Simple context dir
 
 ```yaml hl_lines="14"
@@ -182,7 +187,6 @@ RUN curl -L -O https://bird.network.cz/download/bird-1.6.8.tar.gz && \
     ./configure --disable-client --prefix=/opt/bird-1.6.8 && \
     make install
 
-
 FROM registry.access.redhat.com/ubi8/ubi-minimal AS runner
 COPY --from=builder /opt/bird-1.6.8 /opt/bird-1.6.8
 ENTRYPOINT ["/opt/bird-1.6.8/sbin/bird", "-f"]
@@ -190,15 +194,15 @@ ENTRYPOINT ["/opt/bird-1.6.8/sbin/bird", "-f"]
 
 ## Java / JAR Binary Build
 
- * Drag & Drop in OpenShift 4.8:
+* Drag & Drop in OpenShift 4.8:
 
 <center>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/qds3fqt5Nb0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </center>
 
-
 ### Create a JAR
-```
+
+```bash
 git clone https://github.com/spring-projects/spring-petclinic.git
 cd spring-petclinic
 podman run -ti --rm --user 0 -v $(pwd):/work:Z registry.redhat.io/ubi8/openjdk-11 bash
@@ -208,7 +212,8 @@ exit
 ```
 
 ### Build with ODO
-```
+
+```bash
 odo create java test1 --s2i --binary target/*.jar
 odo push
 ```
@@ -218,21 +223,20 @@ odo push
 
 ### Build with classic BuildConfig
 
-```
+```bash
 oc new-build java --name=java-binary-build --binary=true
 oc start-build bc/java-binary-build \
     --from-file=./target/*.jar \
     --follow
-
 ```
 
 ## Go source-2-image
 
- * via Containerfile: <https://github.com/openshift-examples/container-helper>
- * odo/s2i:  `odo create golang --s2i --git https://github.com/openshift-examples/container-helper.git --port 8080`
+* via Containerfile: <https://github.com/openshift-examples/container-helper>
+* odo/s2i:  `odo create golang --s2i --git https://github.com/openshift-examples/container-helper.git --port 8080`
 
+### BuildConfig
 
-**BuildConfig**
 ```yaml
 oc create is multi-stage
 
@@ -264,7 +268,7 @@ EOF
 
 ## Build and push to quay
 
-#### Create push-secret
+### Create push-secret
 
 ```yaml
 oc create -f - <<EOF
@@ -289,7 +293,6 @@ oc new-build --name=simple-http-server \
 ```
 
 ## Custom build with Buildah
-
 
 ## Add git config
 
