@@ -133,8 +133,8 @@ nav:
       - External DNS: cluster-configuration/external-dns/index.md
       - Kernel Module: cluster-configuration/build-load-kernel-module/index.md
       - Storage:
-          - content/cluster-configuration/storage/index.md
-          - NFS CSI Driver: content/cluster-configuration/storage/csi-driver-nfs/index.md
+          - cluster-configuration/storage/index.md
+          - NFS CSI Driver: cluster-configuration/storage/csi-driver-nfs/index.md
           - NFS Client provisioner: cluster-configuration/storage/nfs.md
       - NTP: cluster-configuration/ntp.md
       - Monitoring:
