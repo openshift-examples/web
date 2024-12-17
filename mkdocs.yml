@@ -240,6 +240,8 @@ nav:
       - Ansible: kubevirt/ansible/README.md
       - Networking: kubevirt/networking.md
       - Local-storage: kubevirt/local-storage.md
+      - NFS CSI Driver: cluster-configuration/storage/csi-driver-nfs/index.md
+      
 
   - Certificates: certificate.md
 
