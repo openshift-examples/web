@@ -77,11 +77,11 @@ spec:
           - name: ssh-directory
             workspace: deploy-key
         params:
-          - name: url
+          - name: URL
             value: $(params.repo_url)
-          - name: revision
+          - name: REVISION
             value: $(params.revision)
-          - name: depth
+          - name: DEPTH
             value: 0
       - name: tag
         params:
@@ -109,8 +109,14 @@ spec:
           - fetch-repository
           - tag
         taskRef:
-          kind: ClusterTask
-          name: buildah
+          resolver: cluster
+          params:
+            - name: kind
+              value: task
+            - name: name
+              value: buildah
+            - name: namespace
+              value: openshift-pipelines
         workspaces:
           - name: source
             workspace: source
@@ -131,8 +137,14 @@ spec:
         runAfter:
           - build-builder-image
         taskRef:
-          kind: ClusterTask
-          name: buildah
+          resolver: cluster
+          params:
+            - name: kind
+              value: task
+            - name: name
+              value: buildah
+            - name: namespace
+              value: openshift-pipelines
         workspaces:
           - name: source
             workspace: source
