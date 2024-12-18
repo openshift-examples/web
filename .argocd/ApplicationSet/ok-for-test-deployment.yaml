@@ -40,6 +40,10 @@ spec:
           kind: "Deployment"
           jqPathExpressions:
             - .spec.template.spec.containers[].image
+        - group: route.openshift.io
+          jqPathExpressions:
+            - .status.ingress
+          kind: Route
       syncPolicy:
         automated:
           prune: true
