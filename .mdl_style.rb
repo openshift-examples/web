@@ -12,3 +12,4 @@ exclude_rule 'MD034'
 exclude_rule 'MD033'
 exclude_rule 'MD007'
 rule 'MD003', :style => :atx
+rule 'MD029', :style => :ordered
