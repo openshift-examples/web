@@ -41,7 +41,7 @@ tags: ['ocp-v', 'kubevirt']
 
 [KubeDescheduler details](https://docs.redhat.com/en/documentation/openshift_container_platform/4.17/html-single/nodes/index#nodes-descheduler-profiles_nodes-descheduler-about)
 
-```yaml hl_lines"8 10"
+```yaml hl_lines="8 10"
 apiVersion: operator.openshift.io/v1
 kind: KubeDescheduler
 metadata:
