@@ -57,38 +57,36 @@ icon: material/new-box
 
 ### Configure a new number of CPUs for a VM
 
-=== "CLI"
 
-    ```
-    # Set the number of CPUs which you'd like to configure
-    export NEW_CPU=8
+```bash
+# Set the number of CPUs which you'd like to configure
+export NEW_CPU=8
 
-    # This loop will configure the new number of CPUs
-    for VM in $(kubectl get vm -o jsonpath='{.items[*].metadata.name}'); do
-        echo "Updating compute resources for VM: $VM"
-        kubectl patch vm "$VM" --type='json' -p="[{'op': 'replace', 'path': '/spec/template/spec/domain/cpu/sockets', 'value': $NEW_CPU}]"
-    done
-    ```
+# This loop will configure the new number of CPUs
+for VM in $(kubectl get vm -o jsonpath='{.items[*].metadata.name}'); do
+    echo "Updating compute resources for VM: $VM"
+    kubectl patch vm "$VM" --type='json' -p="[{'op': 'replace', 'path': '/spec/template/spec/domain/cpu/sockets', 'value': $NEW_CPU}]"
+done
+```
 
 ### Add the OCP Descheduler Annotation to True or False
 
-=== "CLI"
+```bash
+# Set the Descheduler Annotation to True or False
+export DESCHEDULER=True
 
-    ```
-    # Add the OCP Descheduler Annotation to True or False
-    for VM in $(kubectl get vm -o jsonpath='{.items[*].metadata.name}'); do
-        echo "Updating descheduler annotation: $VM"
-        kubectl patch vm "$VM" --type='json' -p="[{'op': 'add', 'path': '/spec/template/metadata/annotations/descheduler.alpha.kubernetes.io~1evict', 'value': 'true'}]"
-    done
-    ```
+# Add the OCP Descheduler Annotation to True or False
+for VM in $(kubectl get vm -o jsonpath='{.items[*].metadata.name}'); do
+    echo "Updating descheduler annotation: $VM"
+    kubectl patch vm "$VM" --type='json' -p="[{'op': 'add', 'path': '/spec/template/metadata/annotations/descheduler.alpha.kubernetes.io~1evict', 'value': '$DESCHEDULER'}]"
+done
+```
 
 ### Create multiple VMs loop
 
-=== "CLI"
-
-    ```
-    for i in $(seq 1 15);  do oc process -n openshift rhel9-server-medium  -p NAME=vm${i} | oc apply -f - ; done;
-    ```
+```bash
+for i in $(seq 1 15);  do oc process -n openshift rhel9-server-medium  -p NAME=vm${i} | oc apply -f - ; done;
+```
 
 ## Containerized Data Importer (CDI) / DataVolume
 
