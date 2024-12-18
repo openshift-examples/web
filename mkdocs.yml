@@ -237,6 +237,7 @@ nav:
   - OpenShift Virtualization:
       - kubevirt/index.md
       - Node Health Check: kubevirt/node-health-check.md
+      - Descheduler: kubevirt/descheduler/index.md
       - Templates: kubevirt/template.md
       - Ansible: kubevirt/ansible/README.md
       - Networking: kubevirt/networking.md
