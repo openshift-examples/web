@@ -57,7 +57,6 @@ icon: material/new-box
 
 ### Configure a new number of CPUs for a VM
 
-
 ```bash
 # Set the number of CPUs which you'd like to configure
 export NEW_CPU=8
