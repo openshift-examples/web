@@ -42,11 +42,8 @@ spec:
       type: Ready
 ```
 
-1. Change the seconds to achieve the fasted VM recovery, according to [OpenShift Virtualization - Fencing and VM High Availability Guide
-](https://access.redhat.com/articles/7057929#test-results-9)
-
-2. Change the seconds to achieve the fasted VM recovery, according to [OpenShift Virtualization - Fencing and VM High Availability Guide
-](https://access.redhat.com/articles/7057929#test-results-9)
+1. Change the seconds to achieve the fasted VM recovery, according to [OpenShift Virtualization - Fencing and VM High Availability Guide](https://access.redhat.com/articles/7057929#test-results-9)
+2. Change the seconds to achieve the fasted VM recovery, according to [OpenShift Virtualization - Fencing and VM High Availability Guide](https://access.redhat.com/articles/7057929#test-results-9)
 
 ### Update `self-node-remediation-automatic-strategy-template`
 
