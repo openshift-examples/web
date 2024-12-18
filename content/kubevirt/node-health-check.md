@@ -9,4 +9,3 @@ tags: ["kubevirt","ocp-v","cnv"]
 ## Resources
 
 * [OpenShift Virtualization - Fencing and VM High Availability Guide](https://access.redhat.com/articles/7057929)
-
