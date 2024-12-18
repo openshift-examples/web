@@ -13,6 +13,20 @@ cd content/kubevirt/
 git submodule add https://github.com/openshift-examples/kubevirt-ansible ansible
 ```
 
+### Run it with public builder
+
+```bash
+podman run -ti --user 0 --rm \
+  -v $(pwd):/opt/app-root/src:z \
+  -p 8080:8080 quay.io/openshift-examples/builder:devel
+```
+
+### Run local pre-commit check
+
+```bash
+./run-local-pre-commit.sh
+```
+
 ### Builder image
 
 ```bash
@@ -23,7 +37,7 @@ podman build \
 
 ```
 
-#### Run it
+#### Run it with local builder image
 
 ```bash
 podman run -ti --user 0 --rm \
