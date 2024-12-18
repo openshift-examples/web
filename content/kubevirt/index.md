@@ -6,6 +6,7 @@ description: Running VM's on OpenShift
 tags: ['cnv', 'kubevirt','ocp-v']
 icon: material/new-box
 ---
+
 # OpenShift Virtualization (CNV/KubeVirt)
 
 ## Example deployments
@@ -51,6 +52,43 @@ icon: material/new-box
         ```bash
         oc apply -f {{ page.canonical_url }}example/boot-from-iso.yaml
         ```
+
+## Useful Commands
+
+### Configure a new number of CPUs for a VM
+
+=== "CLI"
+
+    ```
+    # Set the number of CPUs which you'd like to configure
+    export NEW_CPU=8
+
+    # This loop will configure the new number of CPUs
+    for VM in $(kubectl get vm -o jsonpath='{.items[*].metadata.name}'); do
+        echo "Updating compute resources for VM: $VM"
+        kubectl patch vm "$VM" --type='json' -p="[{'op': 'replace', 'path': '/spec/template/spec/domain/cpu/sockets', 'value': $NEW_CPU}]"
+    done
+    ```
+
+### Add the OCP Descheduler Annotation to True or False
+
+=== "CLI"
+
+    ```
+    # Add the OCP Descheduler Annotation to True or False
+    for VM in $(kubectl get vm -o jsonpath='{.items[*].metadata.name}'); do
+        echo "Updating descheduler annotation: $VM"
+        kubectl patch vm "$VM" --type='json' -p="[{'op': 'add', 'path': '/spec/template/metadata/annotations/descheduler.alpha.kubernetes.io~1evict', 'value': 'true'}]"
+    done
+    ```
+
+### Create multiple VMs loop
+
+=== "CLI"
+
+    ```
+    for i in $(seq 1 15);  do oc process -n openshift rhel9-server-medium  -p NAME=vm${i} | oc apply -f - ; done;
+    ```
 
 ## Containerized Data Importer (CDI) / DataVolume
 
