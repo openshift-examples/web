@@ -4,7 +4,6 @@ linktitle: Node Health Check
 description: OpenShift Virtualization - Fencing and VM High Availability Guide
 tags: ["kubevirt","ocp-v","cnv"]
 ---
-
 # Node Health Check
 
 ## Resources
