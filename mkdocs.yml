@@ -164,6 +164,7 @@ nav:
       - Backup:
           - Etcd: cluster-lifecycle/backup/etcd.md
       - Restore & Recovery: cluster-lifecycle/restore.md
+      - Shutdown: cluster-lifecycle/shutdown.md
 
   - Troubleshooting: troubleshooting/index.md
 
