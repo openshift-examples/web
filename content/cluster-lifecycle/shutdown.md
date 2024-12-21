@@ -24,9 +24,22 @@ Guide to gracefully shut down your cluster.
 
 Check the expiration date of the cluster certificates.
 
-```bash
-oc -n openshift-kube-apiserver-operator get secret kube-apiserver-to-kubelet-signer -o jsonpath='{.metadata.annotations.auth\.openshift\.io/certificate-not-after}'
-```
+=== "Command"
+
+    ```bash
+    oc -n openshift-kube-apiserver-operator \
+      get secret kube-apiserver-to-kubelet-signer \
+      -o jsonpath='{.metadata.annotations.auth\.openshift\.io/certificate-not-after}'
+    ```
+
+=== "Example output"
+
+    ```bash
+    oc -n openshift-kube-apiserver-operator \
+      get secret kube-apiserver-to-kubelet-signer \
+      -o jsonpath='{.metadata.annotations.auth\.openshift\.io/certificate-not-after}'
+    2025-11-20T12:30:34Z
+    ```
 
 !!! Info
 
@@ -37,13 +50,19 @@ oc -n openshift-kube-apiserver-operator get secret kube-apiserver-to-kubelet-sig
 Mark all the nodes in the cluster as unschedulable.
 
 ```bash
-for node in $(oc get nodes -o jsonpath='{.items[*].metadata.name}'); do echo ${node} ; oc adm cordon ${node} ; done
+oc get nodes -o name | xargs oc adm cordon
 ```
 
 Evacuate the pods using the following method:
 
 ```bash
-for node in $(oc get nodes -l node-role.kubernetes.io/worker -o jsonpath='{.items[*].metadata.name}'); do echo ${node} ; oc adm drain ${node} --delete-emptydir-data --ignore-daemonsets=true --timeout=15s --force ; done
+for node in $(oc get nodes -l node-role.kubernetes.io/worker -o name); do
+  echo ${node} ;
+  oc adm drain ${node} \
+    --delete-emptydir-data \
+    --ignore-daemonsets=true \
+    --timeout=15s --force
+done
 ```
 
 ### Shutdown the Nodes
@@ -51,7 +70,9 @@ for node in $(oc get nodes -l node-role.kubernetes.io/worker -o jsonpath='{.item
 Shut down all of the nodes in the cluster.
 
 ```bash
-for node in $(oc get nodes -o jsonpath='{.items[*].metadata.name}'); do oc debug node/${node} -- chroot /host shutdown -h 1; done
+for node in $(oc get nodes -o name); do
+  oc debug ${node} -- chroot /host shutdown -h 1;
+done
 ```
 
 !!! Note
