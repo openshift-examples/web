@@ -1,0 +1,7 @@
+{{$printf_format := "- [ ] %-50s\t%-50s\t%-50s\n" }}
+{{- printf $printf_format "NAMESPACE" "PVC" "SC" -}}
+{{- range .items -}}
+    {{$namespace := .metadata.namespace -}}
+    {{$name := .metadata.name}}
+    {{- printf $printf_format $namespace $name .spec.storageClassName -}}
+{{- end -}}
