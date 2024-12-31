@@ -579,3 +579,21 @@ cluster-restore.sh
 required dependencies not found, please ensure this script is run on a node with a functional etcd static pod
 [root@ocp1-cp-6 core]#
 ```
+
+## Resources
+
+* <https://docs.google.com/presentation/d/1t9MSuM7DxcKAY9F0u_upjOedJRinSURHjpGBLQPt-go/edit#slide=id.g301bdd19e2d_8_0>
+  * <https://www.youtube.com/live/DvKHwz-c11c?si=ve0conc9FRkL10EL&t=740>
+* ETCD-644 - <https://issues.redhat.com/browse/ETCD-644>
+  * <https://github.com/openshift/cluster-etcd-operator/pull/1313>
+  * <https://docs.google.com/document/d/17w9oVIfDjOnEyGonetdReMVEgw1Qe6GQkIvbuIkWfns/edit?tab=t.0>
+* ETCD-293 - <https://issues.redhat.com/browse/ETCD-293>
+* <https://issues.redhat.com/browse/RFE-2573>
+* <https://docs.google.com/document/d/19N0BPwu7HaKlyDJsQt68Mz6boIL0Q0KicJhl4lmk-xo/edit?tab=t.0>
+* <https://issues.redhat.com/browse/OCPPLAN-7568>
+* <https://www.dobrica.sh/notes/Recovering-from-losing-quorum-in-etcd-cluster>
+* <https://access.redhat.com/solutions/5781231> (v4.5)
+* <https://bugzilla.redhat.com/show_bug.cgi?id=1925727> (v4.5)
+* <https://www.redhat.com/en/blog/ocp-disaster-recovery-part-3-recovering-an-openshift-4-ipi-cluster-with-the-loss-of-two-master-nodes>
+  (vsphere ipi)
+* <https://www.redhat.com/en/blog/ocp-disaster-recovery-part-2-recovering-an-openshift-4-ipi-cluster-with-the-loss-of-one-master-node> (vsphere ipi)
