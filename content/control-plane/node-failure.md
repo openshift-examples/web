@@ -154,15 +154,15 @@ Let's restart all control plane nodes...
 * `oc adm node-image create` is only to add worker nodes.
 
 * [OCP 4.17 Release nodes](https://docs.redhat.com/en/documentation/openshift_container_platform/4.17/html/release_notes/ocp-4-17-release-notes#ocp-4-17-etcd-4-5-nodes_release-notes)
-    * [Node scaling for etcd](https://docs.redhat.com/en/documentation/openshift_container_platform/4.17/html-single/scalability_and_performance/#etcd-node-scaling_recommended-etcd-practices)
-        * For more information about how to scale control plane nodes by using the Assisted Installer, see
-          "[Adding hosts with the API](https://docs.redhat.com/en/documentation/assisted_installer_for_openshift_container_platform/2024/html/installing_openshift_container_platform_with_the_assisted_installer/expanding-the-cluster#adding-hosts-with-the-api_expanding-the-cluster)"
-          and
-          "Installing a primary control plane node on a healthy cluster".
+  * [Node scaling for etcd](https://docs.redhat.com/en/documentation/openshift_container_platform/4.17/html-single/scalability_and_performance/#etcd-node-scaling_recommended-etcd-practices)
+    * For more information about how to scale control plane nodes by using the Assisted Installer, see
+      "[Adding hosts with the API](https://docs.redhat.com/en/documentation/assisted_installer_for_openshift_container_platform/2024/html/installing_openshift_container_platform_with_the_assisted_installer/expanding-the-cluster#adding-hosts-with-the-api_expanding-the-cluster)"
+      and
+      "Installing a primary control plane node on a healthy cluster".
 
-          **Link missing!** <https://issues.redhat.com/browse/OSDOCS-13017>
+      **Link missing!** <https://issues.redhat.com/browse/OSDOCS-13017>
 
-          Let's try the old fassion way:
+      Let's try the old fassion way:
 
 ```yaml
 apiVersion: metal3.io/v1alpha1
