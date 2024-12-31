@@ -28,7 +28,7 @@ Tested with OpenShift 4.17
 
 ### Download cluster specific one from Red Hat resources (recommended)
 
-#### via oc 
+#### via oc
 
 ```bash
 % oc -n openshift-machine-config-operator \
@@ -40,7 +40,7 @@ https://rhcos.mirror.openshift.com/art/storage/prod/streams/4.17-9.4/builds/417.
 curl -L -O ...
 ```
 
-#### via openshift-install 
+#### via openshift-install
 
 ```bash
 % openshift-install coreos print-stream-json \

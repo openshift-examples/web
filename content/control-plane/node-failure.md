@@ -13,7 +13,7 @@ etcd commands
 
 * `etcdctl member list -w table`
 * `etcdctl endpoint status --cluster -w table`
-* `etcdctl endpoint health --cluster -w table` 
+* `etcdctl endpoint health --cluster -w table`
 
 ### One control plane node stopeed
 
@@ -96,7 +96,7 @@ Received 0 response(s)
 
 # => It's at the last running control plane node.
 
-# API is down! 
+# API is down!
 
 
 stormshift-ocp1 % ssh -i ~/.ssh/coe-muc -l core 10.32.105.70
@@ -153,17 +153,17 @@ Let's restart all control plane nodes...
 
 
 
-## Let's scale control plane to 5 
+## Let's scale control plane to 5
 
-* `oc adm node-image create` is only to add worker nodes. 
+* `oc adm node-image create` is only to add worker nodes.
 
 * [OCP 4.17 Release nodes](https://docs.redhat.com/en/documentation/openshift_container_platform/4.17/html/release_notes/ocp-4-17-release-notes#ocp-4-17-etcd-4-5-nodes_release-notes)
     * [Node scaling for etcd](https://docs.redhat.com/en/documentation/openshift_container_platform/4.17/html-single/scalability_and_performance/#etcd-node-scaling_recommended-etcd-practices)
-        * For more information about how to scale control plane nodes by using the Assisted Installer, see 
-          "[Adding hosts with the API](https://docs.redhat.com/en/documentation/assisted_installer_for_openshift_container_platform/2024/html/installing_openshift_container_platform_with_the_assisted_installer/expanding-the-cluster#adding-hosts-with-the-api_expanding-the-cluster)" 
-          and 
+        * For more information about how to scale control plane nodes by using the Assisted Installer, see
+          "[Adding hosts with the API](https://docs.redhat.com/en/documentation/assisted_installer_for_openshift_container_platform/2024/html/installing_openshift_container_platform_with_the_assisted_installer/expanding-the-cluster#adding-hosts-with-the-api_expanding-the-cluster)"
+          and
           "Installing a primary control plane node on a healthy cluster".
-            
+
           **Link missing!** <https://issues.redhat.com/browse/OSDOCS-13017>
 
           Let's try the old fassion way:
@@ -427,7 +427,7 @@ sh-5.1#
 ```
 
 => Stopped ocp2-cp-1 as well -> No quorum anymore
-  => k8s/OpenShift API is down! 
+  => k8s/OpenShift API is down!
   => ssh -l core 10.32.105.71...
 
 ```
@@ -484,7 +484,7 @@ Error: unhealthy cluster
 |cp-4 (4)|10.32.105.72|0E:C0:EF:20:69:48|X|X|
 |cp-5 (5)|10.32.105.73|0E:C0:EF:20:69:49|X|X|
 
-Let's start the desaster recory: 
+Let's start the desaster recory:
 
 https://docs.redhat.com/en/documentation/openshift_container_platform/4.17/html-single/backup_and_restore/index#about-dr
 
