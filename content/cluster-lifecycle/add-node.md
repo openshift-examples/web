@@ -20,6 +20,7 @@ Tested with OpenShift 4.17
 ## How to get RHEL CoreOS boot image
 
 ### Download generic Version from Red Hat resources
+
 * Download from [console.redhat.com](https://console.redhat.com/openshift/install/platform-agnostic/user-provisioned) for latest version
 * To download a specific one: <https://mirror.openshift.com/pub/openshift-v4/>
     * x86_64 => <https://mirror.openshift.com/pub/openshift-v4/x86_64/dependencies/rhcos/>
@@ -49,13 +50,13 @@ https://rhcos.mirror.openshift.com/art/storage/prod/streams/4.17-9.4/builds/417.
 
 ```
 
-
 ## Add node in my case
 
 ### Configure DHCP & DNS
 
 DHCP
-```
+
+```config
 host ocp1-cp-4 {
   hardware ethernet 0E:C0:EF:20:69:48;
   fixed-address 10.32.105.72;
@@ -65,7 +66,8 @@ host ocp1-cp-4 {
 ```
 
 DNS
-```
+
+```named
 72.105.32.10.in-addr.arpa. 120  IN      PTR     ocp1-cp-4.stormshift.coe.muc.redhat.com.
 ocp1-cp-4.stormshift.coe.muc.redhat.com. 60 IN A 10.32.105.72
 ```
@@ -73,6 +75,7 @@ ocp1-cp-4.stormshift.coe.muc.redhat.com. 60 IN A 10.32.105.72
 ### At target cluster (stormshift-ocp1)
 
 Get RHCOS and Download it
+
 ```bash
 % oc -n openshift-machine-config-operator     get configmap/coreos-bootimages     -o jsonpath='{.data.stream}'     | jq -r '.architectures.x86_64.artifacts.metal.formats.iso.disk.location'
 https://rhcos.mirror.openshift.com/art/storage/prod/streams/4.17-9.4/builds/417.94.202410090854-0/x86_64/rhcos-417.94.202410090854-0-live.x86_64.iso
@@ -87,11 +90,12 @@ Extract ignition and put it into a Webserver
 |Role|Command|
 |---|---|
 |Control plane|`oc extract -n openshift-machine-api secret/master-user-data-managed --keys=userData --to=- > master.ign`|
-|Worker|`oc extract -n openshift-machine-api secret/worker-user-data-managed --keys=userData --to=- > worker.ign`
+|Worker|`oc extract -n openshift-machine-api secret/worker-user-data-managed --keys=userData --to=- > worker.ign`|
 
 ### At hosting cluster (ISAR)
 
 #### Upload ISO
+
 ```bash
 % oc project stormshift-ocp1-infra
 Now using project "stormshift-ocp1-infra" on server "https://api.isar.coe.muc.redhat.com:6443".
@@ -179,7 +183,6 @@ spec:
 ```
 
 * ToDo: Serial consol does not work
-
 
 #### Install coreos via Console
 

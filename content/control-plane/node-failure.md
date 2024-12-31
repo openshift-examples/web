@@ -15,7 +15,7 @@ etcd commands
 * `etcdctl endpoint status --cluster -w table`
 * `etcdctl endpoint health --cluster -w table`
 
-### One control plane node stopeed
+## One control plane node stopeed
 
 ```bash
 stormshift-ocp1 % oc get nodes
@@ -58,7 +58,6 @@ sh-5.1# etcdctl endpoint health --cluster -w table
 Error: unhealthy cluster
 
 ```
-
 
 ### Two control plane node stopeed
 
@@ -148,10 +147,7 @@ Error: unhealthy cluster
 * OpenShift Console still response but is not really available because it's relying on the API Server.
 * Forward to oauth works but then: `{"error":"server_error","error_description":"The authorization server encountered an unexpected condition that prevented it from fulfilling the request.","state":"3f6e22484bc53d44b94682fef012f597"}`
 
-
 Let's restart all control plane nodes...
-
-
 
 ## Let's scale control plane to 5
 
@@ -167,10 +163,6 @@ Let's restart all control plane nodes...
           **Link missing!** <https://issues.redhat.com/browse/OSDOCS-13017>
 
           Let's try the old fassion way:
-
-
-
-
 
 ```yaml
 apiVersion: metal3.io/v1alpha1
@@ -233,7 +225,6 @@ spec:
 ```bash
 etcd-ocp1-cp-4                 3/4     CrashLoopBackOff   40 (54s ago)   168m
 
-
 oc logs ...
 
 #### attempt 134
@@ -294,8 +285,6 @@ curl -vv \
      -H "Content-type: application/merge-patch+json" \
      -d "${host_patch}"
 
-
-
 oc get bmh,nodes,machine -A
 NAMESPACE               NAME                                    STATE       CONSUMER                    ONLINE   ERROR   AGE
 openshift-machine-api   baremetalhost.metal3.io/ocp1-cp-1       unmanaged   ocp1-nlxjs-master-0         true             48d
@@ -325,10 +314,9 @@ openshift-machine-api   machine.machine.openshift.io/ocp1-nlxjs-worker-0-j9xr2  
 openshift-machine-api   machine.machine.openshift.io/ocp1-nlxjs-worker-0-jfhvn   Running                          48d
 ```
 
-
 Maybe we can change the iso from `oc adm node..`
 
-```
+```bash
 coreos-installer iso ignition show node.x86_64.iso  | jq | grep -A5 -B5 worker
         "mode": 420
       },
@@ -348,10 +336,9 @@ echo eyJjYV9jZXJ0aWZpY2F0ZSI6IkxTMHRMUzFDUlVkSlRpQkRSVkpVU1VaSlEwRlVSUzB0TFMwdEN
   "url": "https://10.32.105.64:22623/config/worker"
 ```
 
+### Five node master failure test
 
-#### Five node master failure test
-
-```
+```bash
  oc rsh etcd-ocp1-cp-1
 sh-5.1#  etcdctl member list -w table
 +------------------+---------+-----------+---------------------------+---------------------------+------------+
@@ -385,10 +372,10 @@ sh-5.1# etcdctl endpoint health --cluster -w table
 +---------------------------+--------+-------------+-------+
 ```
 
- => Stopped ocp1-cp-4 and ocp1-cp-5 -> Still a quorum ( no big deal)
+=> Stopped ocp1-cp-4 and ocp1-cp-5 -> Still a quorum ( no big deal)
 
- ```
- sh-5.1# etcdctl member list -w table
+```shell
+% sh-5.1# etcdctl member list -w table
 +------------------+---------+-----------+---------------------------+---------------------------+------------+
 |        ID        | STATUS  |   NAME    |        PEER ADDRS         |       CLIENT ADDRS        | IS LEARNER |
 +------------------+---------+-----------+---------------------------+---------------------------+------------+
@@ -430,7 +417,7 @@ sh-5.1#
   => k8s/OpenShift API is down!
   => ssh -l core 10.32.105.71...
 
-```
+```shell
 [root@ocp1-cp-3 ~]# crictl  ps --name etcdctl
 CONTAINER           IMAGE                                                              CREATED             STATE               NAME                ATTEMPT             POD ID              POD
 7c1862dfece7e       2e2e5aecbcfc3161ff18f627dc4ff74b8500e825290c94f86cecfc1abe0841b1   3 days ago          Running             etcdctl             0                   d88510b37e130       etcd-ocp1-cp-3
@@ -490,8 +477,8 @@ https://docs.redhat.com/en/documentation/openshift_container_platform/4.17/html-
 
 Prepare DHCP & DNS
 
-|Node|IP|Mac|Leader|API VIP|
-|---|---|---|---|---|
+|Node|IP|Mac|
+|---|---|---|
 |cp-6 (6)|10.32.105.74|0E:C0:EF:20:69:4A|
 
 Start / Boot like described in add-node.md
@@ -536,8 +523,6 @@ snapshot_2024-12-31_090451__POSSIBLY_DIRTY__.db                        100%  265
 % scp -r -i ~/.ssh/coe-muc /tmp/assets core@10.32.105.74:~/
 static_kuberesources_2024-12-31_090451__POSSIBLY_DIRTY__.tar.gz        100%   97KB 646.0KB/s   00:00
 snapshot_2024-12-31_090451__POSSIBLY_DIRTY__.db                        100%  265MB   4.5MB/s   00:58
-
-
 
 ssh -i ~/.ssh/coe-muc core@10.32.105.74
 Warning: Permanently added '10.32.105.74' (ED25519) to the list of known hosts.
@@ -593,12 +578,4 @@ cluster-restore.sh
 [root@ocp1-cp-6 core]# sudo -E /usr/local/bin/cluster-restore.sh /home/core/assets/backup/
 required dependencies not found, please ensure this script is run on a node with a functional etcd static pod
 [root@ocp1-cp-6 core]#
-
-
-
-
-
-
 ```
-
-

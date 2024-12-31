@@ -1,8 +1,7 @@
 ---
-title: New Page
-linktitle: New Page
-description: Some information
-tags: ['tagA','tagB']
+title: Control plane
+linktitle: Control plane
+description: Control plane
+tags: ['control-plane']
 ---
-
-# Some information
+# Control plane
