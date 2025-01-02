@@ -55,7 +55,7 @@ EOF
 
 ### Wait of pod completion
 
-```
+```bash
 $ kubectl logs check-entitlement
 # Check available repos
         Label: rhocp-4.6-for-rhel-8-x86_64-debug-rpms
@@ -79,7 +79,7 @@ X-Akamai-Request-ID: 103c4687
 
 ## ImagePullBackOff of nvidia-driver-daemonset-* pods
 
-```
+```bash
 $ oc describe pods -l app=nvidia-driver-daemonset  | grep image
   Normal   Pulling         116s (x4 over 3m36s)  kubelet, compute-0  Pulling image "nvidia/driver:440.64.00-rhel8.2"
   Warning  Failed          112s (x4 over 3m31s)  kubelet, compute-0  Failed to pull image "nvidia/driver:440.64.00-rhel8.2": rpc error: code = Unknown desc = Error reading manifest 440.64.00-rhel8.2 in docker.io/nvidia/driver: manifest unknown: manifest unknown
@@ -88,7 +88,7 @@ $ oc describe pods -l app=nvidia-driver-daemonset  | grep image
 
 Double check if the image is available:
 
-```
+```bash
 $ curl -s https://registry.hub.docker.com/v1/repositories/nvidia/driver/tags | jq -r ' .[] | .name' | grep rhel8
 418.87.01--rhel8
 418.87.01-4.18.0-80.11.2.el8_0.x86_64-rhel8
@@ -214,7 +214,7 @@ spec:
 
 From nvidia-driver-daemonset, from (Server Version: 4.4.12, 4.18.0-147.20.1.el8_1.x86_64):
 
-```
+```bash
 ...
 Installing Linux kernel headers...
 + dnf -q -y install kernel-headers-4.18.0-147.20.1.el8_1.x86_64 kernel-devel-4.18.0-147.20.1.el8_1.x86_64
@@ -230,7 +230,7 @@ Error: Unable to find a match: kernel-headers-4.18.0-147.20.1.el8_1.x86_64 kerne
 
 Get OS Version of OpenShift Release
 
-```
+```bash
 $ oc adm release info 4.5.3 -o jsonpath="{.displayVersions.machine-os.Version}"
 45.82.202007171855-0
 ```
@@ -246,7 +246,7 @@ Red Hat Internal Links:
 
 ## Check entitlements
 
-```
+```bash
 # rct cat-cert export/entitlement_certificates/xxxxx.pem | grep rhel-8-for-x86_64-baseos-eus-rpms
         Label: rhel-8-for-x86_64-baseos-eus-rpms
 
