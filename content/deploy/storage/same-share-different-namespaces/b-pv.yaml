@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  creationTimestamp: null
+  labels:
+    type: shared-nfs
+  name: b-coe-isos
+spec:
+  accessModes:
+  - ReadWriteMany
+  capacity:
+    storage: 500Gi
+  nfs:
+    path: /coe_iso
+    server: 10.32.97.1
+  persistentVolumeReclaimPolicy: Retain
+
