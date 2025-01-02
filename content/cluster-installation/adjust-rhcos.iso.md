@@ -6,7 +6,6 @@ description: TBD
 tags: ['rhcos', 'coreos']
 render_macros: false
 ---
-
 # How to adjust the an RHEL CoreOS ISO
 
 Prerequisites
@@ -39,12 +38,12 @@ coreos-installer iso customize \
 
 Option: double check ignition:
 
-```
+```bash
 coreos-installer iso ignition show ready-to-install-at-sda.iso
 ```
 
 ### Prepare usb stick
 
-```
+```bash
 dd if=ready-to-install-at-sda.iso of=/dev/$USB_DISK status=progress
 ```
