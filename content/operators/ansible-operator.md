@@ -3,7 +3,7 @@ title: Ansible Operator
 linktitle: Ansible Operator
 weight: 12200
 description: TBD
-ignore_macros: true
+render_macros: false
 ---
 ## Ansible Operator example
 

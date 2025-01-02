@@ -3,7 +3,7 @@ title: Troubleshooting
 linktitle: Troubleshooting
 description: Troubleshooting
 tags: ['troubleshooting']
-ignore_macros: true
+render_macros: false
 icon: material/card-search
 ---
 

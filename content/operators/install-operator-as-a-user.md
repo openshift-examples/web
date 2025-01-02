@@ -3,7 +3,7 @@ title: Install Operator as a User - WiP
 linktitle: Install Operator as a User - WiP
 weight: 12400
 description: TBD
-ignore_macros: true
+render_macros: false
 ---
 # WIP: Install Operator as a User
 
