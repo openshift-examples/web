@@ -1,0 +1,87 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: storage-exposer
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: storage-exposer
+  template:
+    metadata:
+      labels:
+        app: storage-exposer
+    spec:
+      automountServiceAccountToken: false
+      volumes:
+        - name: docroot
+          persistentVolumeClaim:
+            claimName: coe-isos
+      containers:
+      - image: registry.access.redhat.com/ubi8/nginx-120
+        name: nginx
+        resources:
+          limits:
+            ephemeral-storage: 40Mi
+            cpu: 0.5
+            memory: "512Mi"
+          requests:
+            ephemeral-storage: 20Mi
+            cpu: 0.5
+            memory: "512Mi"
+        volumeMounts:
+          - name: docroot
+            mountPath: /opt/app-root/src/
+        env:
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+        command:
+          - /bin/sh
+          - -c
+          - |
+            echo "location / { autoindex on; }" > ${NGINX_DEFAULT_CONF_PATH}/index-on.conf
+
+            /usr/libexec/s2i/run
+
+  triggers:
+  - type: ConfigChange
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: storage-exposer
+  name: storage-exposer
+spec:
+  ports:
+  - name: 8080-8080
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: storage-exposer
+  sessionAffinity: None
+  type: ClusterIP
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  labels:
+    app: storage-exposer
+  name: storage-exposer
+spec:
+  port:
+    targetPort: 8080
+  to:
+    kind: "Service"
+    name: storage-exposer
+    weight: null
+  tls:
+    termination: Edge
+    insecureEdgeTerminationPolicy: Redirect
+
