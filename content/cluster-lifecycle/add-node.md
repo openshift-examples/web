@@ -89,10 +89,21 @@ curl -L -O https://rhcos.mirror.openshift.com/art/storage/prod/streams/4.17-9.4/
 
 Extract ignition and put it into a Webserver
 
-|Role|Command|
-|---|---|
-|Control plane|`oc extract -n openshift-machine-api secret/master-user-data-managed --keys=userData --to=- > master.ign`|
-|Worker|`oc extract -n openshift-machine-api secret/worker-user-data-managed --keys=userData --to=- > worker.ign`|
+Control plane node ignition:
+
+```shell
+oc extract -n openshift-machine-api \
+  secret/master-user-data-managed \
+  --keys=userData --to=- > cp.ign
+```
+
+Worker node ignition:
+
+```shell
+oc extract -n openshift-machine-api \
+  secret/worker-user-data-managed \
+  --keys=userData --to=- > worker.ign
+```
 
 ### At hosting cluster (ISAR)
 
