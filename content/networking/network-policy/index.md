@@ -14,7 +14,7 @@ Official documentation: [About network policy
 
 1. Based on labeling or annotations
 2. Empty label selector match all
-2. Rules for allowing
+3. Rules for allowing
     * Ingress -&gt; who can connect to this POD
     * Egress -&gt; where can this POD connect to
 4. **Rules**
@@ -27,5 +27,5 @@ Official documentation: [About network policy
 
 Please check
 
- * [OVNKubernetes](OVNKubernetes)
- * [OpenShiftSDN](OpenShiftSDN)
+* [OVNKubernetes](OVNKubernetes.md)
+* [OpenShiftSDN](OpenShiftSDN.md)
