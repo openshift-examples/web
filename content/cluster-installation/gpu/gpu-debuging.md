@@ -3,15 +3,17 @@ title: GPU debugging
 linktitle: GPU debugging
 weight: 1610
 description: Know Issues and debugging around gpu
-tags:
-  - GPU
+tags: ['GPU']
 ---
 # Know-Issues / Debugging
 
 ## Check entitlement
 
 ```bash
-kubectl run check-entitlement  --image=registry.access.redhat.com/ubi8  --command -- /bin/sh -c 'sleep infinity'
+kubectl run check-entitlement  \
+  --image=registry.access.redhat.com/ubi8  \
+  --command -- /bin/sh -c 'sleep infinity'
+
 kubectl exec -ti check-entitlement -- bash
 
 rct cat-cert /etc/pki/entitlement-host/entitlement.pem | grep 'Label: rhocp'
@@ -232,10 +234,8 @@ $ oc adm release info 4.5.3 -o jsonpath="{.displayVersions.machine-os.Version}"
 
 Red Hat Internal Links:
 [OpenShift Release page](https://openshift-release.apps.ci.l2s4.p1.openshiftapps.com/releasestream/4-stable/release/4.5.3)
-=> [45.82.202007171855-0]((https://releases-rhcos-art.cloud.privileged.psi.redhat.com/?release=45.82.202007171855-0&stream=releases%2Frhcos-4.5#45.82.202007171855-0))
+=> [45.82.202007171855-0](https://releases-rhcos-art.cloud.privileged.psi.redhat.com/?release=45.82.202007171855-0&stream=releases%2Frhcos-4.5#45.82.202007171855-0)
 => [OS Content](https://releases-rhcos-art.cloud.privileged.psi.redhat.com/contents.html?stream=releases%2Frhcos-4.5&release=45.82.202007171855-0)
-
-
 
 ### Problems with OpenShift 4.5.x
 
