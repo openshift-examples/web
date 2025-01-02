@@ -19,7 +19,6 @@ kubectl exec -ti check-entitlement -- bash
 rct cat-cert /etc/pki/entitlement-host/entitlement.pem | grep 'Label: rhocp'
 ```
 
-
 ```yaml
 kubectl apply -f - <<EOF
 apiVersion: v1
@@ -106,7 +105,6 @@ $ curl -s https://registry.hub.docker.com/v1/repositories/nvidia/driver/tags | j
 How the GPU operator build the Image tag:
 1) All fields of `clusterpolicy.spec.driver`
 2) OS Version of the node in case of OpenShift it use the node labels `feature.node.kubernetes.io/system-os_release.VERSION_ID` and `feature.node.kubernetes.io/system-os_release.ID` [Source](https://github.com/NVIDIA/gpu-operator/blob/master/pkg/controller/clusterpolicy/object_controls.go#L178-L196) If you like to check the node labels please run: `oc get nodes -L feature.node.kubernetes.io/system-os_release.VERSION_ID -L feature.node.kubernetes.io/system-os_release.ID`
-
 
 ### **Solution use a local image copy with matching tag**
 
@@ -208,8 +206,7 @@ spec:
 
 ### Problems with OCP >=4.4.11
 
- * [Enable OpenShift Extended Update Support](https://gitlab.com/nvidia/container-images/driver/-/issues/9)
-
+* [Enable OpenShift Extended Update Support](https://gitlab.com/nvidia/container-images/driver/-/issues/9)
 
 From nvidia-driver-daemonset, from (Server Version: 4.4.12, 4.18.0-147.20.1.el8_1.x86_64):
 ```
