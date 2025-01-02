@@ -9,6 +9,8 @@ tags: ['node', 'v4.17']
 
 Tested with OpenShift 4.17
 
+Doc bug to improve RH Documentation: [OSDOCS-13020](https://issues.redhat.com/browse/OSDOCS-13020)
+
 ## Documentation
 
 |Documetation|Notes|
