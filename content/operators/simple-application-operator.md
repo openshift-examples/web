@@ -45,6 +45,7 @@ oc delete pods -l name=simple-application-operator
 ```
 
 # Build csv
+
 Version operator-sdk version: "v0.15.2",
 
 ```bash
@@ -67,7 +68,7 @@ INFO[0000] Created deploy/olm-catalog/simple-application-operator/0.1.0/simple-a
 INFO[0000] Created deploy/olm-catalog/simple-application-operator/simple-application-operator.package.yaml
 ```
 
-# Prepare bundle - Ugly! Why? TODO!
+# Prepare bundle
 
 ```bash
 rm -rf prep-bundle
