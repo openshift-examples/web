@@ -9,11 +9,25 @@ tags: ['etcd','control-plane']
 
 Just some stupid tests with OpenShift 4.17.6
 
-etcd commands
+Useful etcd commands
 
-* `etcdctl member list -w table`
-* `etcdctl endpoint status --cluster -w table`
-* `etcdctl endpoint health --cluster -w table`
+* Member list
+
+  ```shell
+  etcdctl member list -w table
+  ```
+
+* Endpoint status
+
+  ```shell
+  etcdctl endpoint status --cluster -w table
+  ```
+
+* Endpoint health
+
+  ```shell
+  etcdctl endpoint health --cluster -w table
+  ```
 
 ## One control plane node stopeed
 
@@ -560,7 +574,7 @@ CONTAINER           IMAGE                                                       
 [root@ocp1-cp-6 ~]# ip -o address | egrep '<api_vip>|<ingress_vip>'
 [root@ocp1-cp-6 ~]# ip -o address | egrep '10.32'
 5: br-ex    inet 10.32.105.74/20 brd 10.32.111.255 scope global dynamic noprefixroute br-ex\       valid_lft 10270sec preferred_lft 10270sec
-[root@ocp1-cp-6 ~]# sudo -E /usr/local/bin/cluster-restore.sh /home/core/assets/backup/
+[root@ocp1-cp-6 ~]# [root@ocp1-cp-6 ~]# sudo -E /usr/local/bin/cluster-restore.sh /home/core/assets/backup/
 sudo: /usr/local/bin/cluster-restore.sh: command not found
 [root@ocp1-cp-6 ~]# ls /usr/local/bin/
 configure-ip-forwarding.sh  kubenswrapper  nm-clean-initrd-state.sh  recover-kubeconfig.sh  wait-for-br-ex-up.sh
@@ -582,9 +596,10 @@ required dependencies not found, please ensure this script is run on a node with
 
 ## Resources
 
+* <https://issues.redhat.com/browse/OCPSTRAT-539>
 * <https://docs.google.com/presentation/d/1t9MSuM7DxcKAY9F0u_upjOedJRinSURHjpGBLQPt-go/edit#slide=id.g301bdd19e2d_8_0>
   * <https://www.youtube.com/live/DvKHwz-c11c?si=ve0conc9FRkL10EL&t=740>
-* ETCD-644 - <https://issues.redhat.com/browse/ETCD-644>
+* ETCD-654 - <https://issues.redhat.com/browse/ETCD-654>
   * <https://github.com/openshift/cluster-etcd-operator/pull/1313>
   * <https://docs.google.com/document/d/17w9oVIfDjOnEyGonetdReMVEgw1Qe6GQkIvbuIkWfns/edit?tab=t.0>
 * ETCD-293 - <https://issues.redhat.com/browse/ETCD-293>
