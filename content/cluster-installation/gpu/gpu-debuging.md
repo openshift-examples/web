@@ -53,7 +53,7 @@ status: {}
 EOF
 ```
 
-**Wait of pod completion**
+### Wait of pod completion
 
 ```
 $ kubectl logs check-entitlement
@@ -75,7 +75,6 @@ X-Cache: TCP_HIT from a95-101-79-92.deploy.akamaitechnologies.com (AkamaiGHost/1
 Connection: keep-alive
 EJ-HOST: authorizer-prod-dc-us-west-19-mpfsw
 X-Akamai-Request-ID: 103c4687
-
 ```
 
 ## ImagePullBackOff of nvidia-driver-daemonset-* pods
@@ -101,7 +100,7 @@ $ curl -s https://registry.hub.docker.com/v1/repositories/nvidia/driver/tags | j
 440.64.00-1.0.0-rhel8
 ```
 
-**Image is missing**
+### Image is missing
 
 How the GPU operator build the Image tag:
 1) All fields of `clusterpolicy.spec.driver`
@@ -118,7 +117,7 @@ oc -n gpu-operator-resources import-image \
   --reference-policy=local --confirm
 ```
 
-Update the clusterpolicy/cluster-policy  `oc edit clusterpolicy/cluster-policy ` to
+Update the clusterpolicy/cluster-policy  `oc edit clusterpolicy/cluster-policy` to
 
 ```yaml
 spec:
@@ -138,6 +137,7 @@ The package [kernel-headers-4.18.0-193.23.1.el8_2.x86_64](https://access.redhat.
 * rhocp-4.3-for-rhel-8-x86_64-rpms
 
 Try to install by hand:
+
 ```bash
 $ oc debug nvidia-driver-daemonset-95bfc
 Starting pod/nvidia-driver-daemonset-95bfc-debug, command was: nvidia-driver init
@@ -148,6 +148,7 @@ Error: Unable to find a match: kernel-headers-4.18.0-193.23.1.el8_2.x86_64 kerne
 sh-4.4# dnf install --enablerepo=rhocp-4.5-for-rhel-8-x86_64-rpms -q -y kernel-headers-4.18.0-193.23.1.el8_2.x86_64 kernel-devel-4.18.0-193.23.1.el8_2.x86_6
 sh-4.4#
 ```
+
 Adding `--enablerepo=rhocp-4.5-for-rhel-8-x86_64-rpms` solve the problem, let's patch the driver image.
 
 ### **Patching driver image**
@@ -195,7 +196,7 @@ spec:
 EOF
 ```
 
-Update the clusterpolicy/cluster-policy  `oc edit clusterpolicy/cluster-policy ` to
+Update the clusterpolicy/cluster-policy  `oc edit clusterpolicy/cluster-policy` to
 
 ```yaml
 spec:
@@ -225,7 +226,7 @@ Error: Unable to find a match: kernel-headers-4.18.0-147.20.1.el8_1.x86_64 kerne
 |---|---|---|---|
 |`4.4.5` |`44.81.202005180831-0`|`4.18.0-147.8.1.el8_1.x86_64`|[rhel-8-for-x86_64-baseos-rpms,...](https://access.redhat.com/downloads/content/kernel-headers/4.18.0-147.8.1.el8_1/x86_64/fd431d51/package)|
 |`4.4.12`|`44.81.202007070223-0`|`4.18.0-147.20.1.el8_1.x86_64`|[rhel-8-for-x86_64-baseos-**eus**-rpms (8.1)](https://access.redhat.com/downloads/content/kernel-headers/4.18.0-147.8.1.el8_1/x86_64/fd431d51/package)|
-|`4.5.2`|`45.82.202007141718-0`|`4.18.0-193.13.2.el8_2.x86_64`|[rhel-8-for-x86_64-baseos-rpms,...](https://access.redhat.com/downloads/content/kernel-headers/4.18.0-193.13.2.el8_2/x86_64/fd431d51/package)
+|`4.5.2`|`45.82.202007141718-0`|`4.18.0-193.13.2.el8_2.x86_64`|[rhel-8-for-x86_64-baseos-rpms,...](https://access.redhat.com/downloads/content/kernel-headers/4.18.0-193.13.2.el8_2/x86_64/fd431d51/package)|
 
 Get OS Version of OpenShift Release
 
@@ -255,4 +256,5 @@ Red Hat Internal Links:
 # rct cat-cert export/entitlement_certificates/xxxxx.pem | grep SKU
         SKU: SER0419
 ```
+
 [Source](https://community.ibm.com/community/user/storage/blogs/gero-schmidt1/2021/05/10/how-to-install-the-nvidia-gpu-operator-on-openshif)
