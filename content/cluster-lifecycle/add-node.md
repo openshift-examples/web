@@ -204,3 +204,101 @@ curl -L -O http://10.32.96.31/stormshift-ocp1-master.ign
 sudo coreos-installer install -i stormshift-ocp1-master.ign /dev/vda
 sudo reboot
 ```
+
+
+#### Wait for and approve CSR
+
+
+```shell
+oc get csr | awk '/Pending/ { print $1 }' | xargs oc adm certificate approve
+```
+
+#### In case of control-plane node
+
+Let's create BareMetalHost object and MachineObject
+
+```yaml
+apiVersion: metal3.io/v1alpha1
+kind: BareMetalHost
+metadata:
+  name: ocp1-cp-5
+  namespace: openshift-machine-api
+spec:
+  automatedCleaningMode: metadata
+  bootMACAddress: 0E:C0:EF:20:69:49
+  bootMode: legacy
+  customDeploy:
+    method: install_coreos
+  externallyProvisioned: true
+  online: true
+  userData:
+    name: master-user-data-managed
+    namespace: openshift-machine-api
+```
+
+```yaml
+apiVersion: machine.openshift.io/v1beta1
+kind: Machine
+metadata:
+  annotations:
+    machine.openshift.io/instance-state: externally provisioned
+    metal3.io/BareMetalHost: openshift-machine-api/ocp1-cp-5
+  labels:
+    machine.openshift.io/cluster-api-cluster: ocp1-nlxjs
+    machine.openshift.io/cluster-api-machine-role: master
+    machine.openshift.io/cluster-api-machine-type: master
+  name: ocp1-cp-5
+  namespace: openshift-machine-api
+spec:
+  metadata: {}
+  providerSpec:
+    value:
+      apiVersion: baremetal.cluster.k8s.io/v1alpha1
+      customDeploy:
+        method: install_coreos
+      hostSelector: {}
+      image:
+        checksum: ""
+        url: ""
+      kind: BareMetalMachineProviderSpec
+      metadata:
+        creationTimestamp: null
+      userData:
+        name: master-user-data-managed
+```
+
+
+#### Patch BareMetalHost status:
+
+
+Open API proxy in on terminal
+```shell
+oc proxy
+```
+
+Patch object in another terminal
+
+```shell
+export HOST_PROXY_API_PATH="http://127.0.0.1:8001/apis/metal3.io/v1alpha1/namespaces/openshift-machine-api/baremetalhosts"
+
+read -r -d '' host_patch << EOF
+{
+  "status": {
+    "hardware": {
+      "nics": [
+        {
+          "ip": "10.32.105.72",
+          "mac": "0E:C0:EF:20:69:47"
+        }
+      ]
+    }
+  }
+}
+EOF
+
+curl -vv \
+     -X PATCH \
+     "${HOST_PROXY_API_PATH}/ocp1-cp-5/status" \
+     -H "Content-type: application/merge-patch+json" \
+     -d "${host_patch}"
+```
