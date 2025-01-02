@@ -1,0 +1,27 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: skopeo
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: skopeo
+  template:
+    metadata:
+      labels:
+        app: skopeo
+    spec:
+      serviceAccountName: builder
+      automountServiceAccountToken: true
+      containers:
+        - image: registry.access.redhat.com/ubi9/skopeo:latest
+          name: skopeo
+          command:
+            - /bin/sh
+            - -c
+            - |
+                sleep infinity
