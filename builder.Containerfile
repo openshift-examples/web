@@ -2,7 +2,7 @@
 # Build: podman build --target builder -t mkdocs:local --no-cache .
 # Run: podman run -ti --rm -v $(pwd):/opt/app-root/src:z -p 8080:8080 mkdocs:local
 #
-FROM registry.access.redhat.com/ubi9/python-39:latest AS builder
+FROM registry.access.redhat.com/ubi9/python-312:latest AS builder
 LABEL "io.openshift.s2i.build.image"="registry.access.redhat.com/ubi9/python-39:latest" \
       "io.openshift.s2i.build.commit.author"="Robert Bohne <robert.bohne@redhat.com>"
 
