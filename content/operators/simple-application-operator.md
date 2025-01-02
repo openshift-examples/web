@@ -3,7 +3,7 @@ title: Simple Application Operator - WiP
 linktitle: Simple Application Operator - WiP
 weight: 12600
 description: TBD
-ignore_macros: true
+render_macros: false
 ---
 
 # Draft/WIP Simple example ansible operator
