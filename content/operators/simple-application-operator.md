@@ -8,7 +8,7 @@ render_macros: false
 
 # Draft/WIP Simple example ansible operator
 
-```
+```bash
 operator-sdk new simple-application-operator \
   --api-version=simple.application.openshift.pub/v1  \
   --kind=SimpleApp \
@@ -37,7 +37,8 @@ oc create -f deploy/crds/simple.application.openshift.pub_v1_simpleapp_cr.yaml
 ```
 
 # Redeploy
-```
+
+```bash
 operator-sdk build quay.io/rbo/demo-http-operator:latest
 docker push quay.io/rbo/demo-http-operator:latest
 oc delete pods -l name=simple-application-operator
@@ -46,7 +47,7 @@ oc delete pods -l name=simple-application-operator
 # Build csv
 Version operator-sdk version: "v0.15.2",
 
-```
+```bash
 operator-sdk generate csv \
   --csv-version 0.1.0 \
   --operator-name simple-application-operator \
@@ -54,31 +55,34 @@ operator-sdk generate csv \
 ```
 
 **???**
-```
+
+```bash
 ./operator-sdk-v0.12.0-x86_64-apple-darwin olm-catalog gen-csv --csv-version 0.1.0
 INFO[0000] Generating CSV manifest version 0.1.0
 INFO[0000] Fill in the following required fields in file deploy/olm-catalog/simple-application-operator/0.1.0/simple-application-operator.v0.1.0.clusterserviceversion.yaml:
-	spec.keywords
-	spec.maintainers
-	spec.provider
+  spec.keywords
+  spec.maintainers
+  spec.provider
 INFO[0000] Created deploy/olm-catalog/simple-application-operator/0.1.0/simple-application-operator.v0.1.0.clusterserviceversion.yaml
 INFO[0000] Created deploy/olm-catalog/simple-application-operator/simple-application-operator.package.yaml
 ```
 
 # Prepare bundle - Ugly! Why? TODO!
 
-```
+```bash
 rm -rf prep-bundle
 mkdir prep-bundle/
 cp -v  deploy/*yaml deploy/crds/*crd.yaml deploy/olm-catalog/*/*/*.clusterserviceversion.yaml prep-bundle/
 ```
 
 # Build bundle
+
 An Operator Bundle is built as a scratch (non-runnable) container image that contains operator manifests and specific metadata in designated directories inside the image.
 [Source](https://github.com/operator-framework/operator-registry/blob/master/docs/design/operator-bundle.md#operator-bundle-overview)
 
 ## Options 1) use operator sdk (v0.15.2) bundle create
-```
+
+```bash
 operator-sdk bundle create \
     --package simple-application-operator \
     --channels stable,beta \
@@ -93,7 +97,7 @@ docker push quay.io/rbo/demo-http-bundle:v0.1.0
 
 [Documention](https://github.com/operator-framework/operator-registry/blob/master/docs/design/operator-bundle.md#build-bundle-image)
 
-```
+```bash
 ./opm alpha bundle build \
     --directory prep-bundle/ \
     --tag quay.io/rbo/demo-http-bundle:v0.1.0 \
@@ -101,11 +105,11 @@ docker push quay.io/rbo/demo-http-bundle:v0.1.0
     --channels stable,beta \
     --default stable
 docker push quay.io/rbo/demo-http-bundle:v0.1.0
-
 ```
 
 # OPM - put manifest into bundle
-```
+
+```bash
 ./opm index add --container-tool docker --bundles quay.io/rbo/demo-http-bundle:v0.1.0 --tag  quay.io/rbo/demo-http-catalog-index:v0.0.1
 INFO[0000] building the index                            bundles="[quay.io/rbo/demo-http-operator:v0.1.0]"
 INFO[0000] running docker pull                           img="quay.io/rbo/demo-http-operator:v0.1.0"
@@ -114,10 +118,12 @@ INFO[0002] loading Bundle quay.io/rbo/demo-http-operator:v0.1.0  img="quay.io/rb
 INFO[0002] found annotations file searching for csv      dir=bundle_tmp261748450 file=bundle_tmp261748450/metadata load=annotations
 FATA[0002] permissive mode disabled                      bundles="[quay.io/rbo/demo-http-operator:v0.1.0]" error="error loading bundle from image: no csv found in bundle"
 ```
+
 https://github.com/operator-framework/operator-registry/releases/download/v1.5.9/darwin-amd64-opm
 
 **FAIL WITH:  **
-```
+
+```bash
 FROM quay.io/operator-framework/upstream-registry-builder AS builder
 ....
 Error: error building at STEP "COPY --from=builder /build/bin/opm /opm": no files found matching "/var/lib/containers/storage/overlay/f33d0f91af5f71963c55a31f7b941fb4da13585df10bcdd7b49b182cbfd50ba9/merged/build/bin/opm": no such file or directory
@@ -125,7 +131,8 @@ Error: error building at STEP "COPY --from=builder /build/bin/opm /opm": no file
 ```
 
 Work-a-round
-```
+
+```bash
 ./opm index add --container-tool docker --binary-image quay.io/operator-framework/upstream-registry-builder --bundles quay.io/rbo/demo-http-bundle:v0.1.0 --tag  quay.io/rbo/demo-http-catalog-index:v0.0.1 --generate
 # Change index.Dockerfile
 # - COPY --from=builder /build/bin/opm /opm
@@ -136,7 +143,8 @@ docker push quay.io/rbo/demo-http-catalog-index:v0.0.1
 ```
 
 # Test catalog index
-```
+
+```bash
 docker run -p 50051:50051 -ti quay.io/rbo/demo-http-catalog-index:v0.0.1
 
 grpcurl -plaintext  localhost:50051 api.Registry/ListPackages
@@ -155,10 +163,9 @@ grpcurl -plaintext -d '{"name":"simple-application-operator"}' localhost:50051 a
   ],
   "defaultChannelName": "stable"
 }
-
 ```
-# Add to OpenShift
 
+# Add to OpenShift
 
 # Notes & Resources
 
