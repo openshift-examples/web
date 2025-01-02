@@ -88,6 +88,7 @@ $ oc describe pods -l app=nvidia-driver-daemonset  | grep image
 ```
 
 Double check if the image is available:
+
 ```
 $ curl -s https://registry.hub.docker.com/v1/repositories/nvidia/driver/tags | jq -r ' .[] | .name' | grep rhel8
 418.87.01--rhel8
@@ -109,6 +110,7 @@ How the GPU operator build the Image tag:
 ### **Solution use a local image copy with matching tag**
 
 Create local image copy with matching tag:
+
 ```bash
 oc -n gpu-operator-resources import-image \
   nvidia-driver:440.64.00-rhel8.2 \
@@ -117,6 +119,7 @@ oc -n gpu-operator-resources import-image \
 ```
 
 Update the clusterpolicy/cluster-policy  `oc edit clusterpolicy/cluster-policy ` to
+
 ```yaml
 spec:
 ...
@@ -129,12 +132,10 @@ spec:
 
 ## Error: Unable to find a match: kernel-headers-4.18.0-193.23.1.el8_2.x86_64 kernel-devel-4.18.0-193.23.1.el8_2.x86_64
 
-The package [kernel-headers-4.18.0-193.23.1.el8_2.x86_64](https://access.redhat.com/downloads/content/kernel-headers/4.18.0-193.23.1.el8_2/x86_64/fd431d51/package)
- is only available in repo:
- * rhocp-4.5-for-rhel-8-x86_64-rpms
- * rhocp-4.3-for-rhel-8-x86_64-rpms
+The package [kernel-headers-4.18.0-193.23.1.el8_2.x86_64](https://access.redhat.com/downloads/content/kernel-headers/4.18.0-193.23.1.el8_2/x86_64/fd431d51/package) is only available in repo:
 
-rhocp-4.5-for-rhel-8-x86_64-rpms
+* rhocp-4.5-for-rhel-8-x86_64-rpms
+* rhocp-4.3-for-rhel-8-x86_64-rpms
 
 Try to install by hand:
 ```bash
@@ -160,6 +161,7 @@ Fork the repo [https://gitlab.com/nvidia/container-images/driver](https://gitlab
 Adjust the script `rhel8/nvidia-driver` in your fork.
 
 Build the container image:
+
 ```bash
 oc create -n gpu-operator-resources is/nvidia-driver
 oc apply -n gpu-operator-resources -f - <<EOF
@@ -194,6 +196,7 @@ EOF
 ```
 
 Update the clusterpolicy/cluster-policy  `oc edit clusterpolicy/cluster-policy ` to
+
 ```yaml
 spec:
 ...
@@ -209,6 +212,7 @@ spec:
 * [Enable OpenShift Extended Update Support](https://gitlab.com/nvidia/container-images/driver/-/issues/9)
 
 From nvidia-driver-daemonset, from (Server Version: 4.4.12, 4.18.0-147.20.1.el8_1.x86_64):
+
 ```
 ...
 Installing Linux kernel headers...
@@ -224,6 +228,7 @@ Error: Unable to find a match: kernel-headers-4.18.0-147.20.1.el8_1.x86_64 kerne
 |`4.5.2`|`45.82.202007141718-0`|`4.18.0-193.13.2.el8_2.x86_64`|[rhel-8-for-x86_64-baseos-rpms,...](https://access.redhat.com/downloads/content/kernel-headers/4.18.0-193.13.2.el8_2/x86_64/fd431d51/package)
 
 Get OS Version of OpenShift Release
+
 ```
 $ oc adm release info 4.5.3 -o jsonpath="{.displayVersions.machine-os.Version}"
 45.82.202007171855-0
@@ -249,6 +254,5 @@ Red Hat Internal Links:
 
 # rct cat-cert export/entitlement_certificates/xxxxx.pem | grep SKU
         SKU: SER0419
-
 ```
 [Source](https://community.ibm.com/community/user/storage/blogs/gero-schmidt1/2021/05/10/how-to-install-the-nvidia-gpu-operator-on-openshif)
