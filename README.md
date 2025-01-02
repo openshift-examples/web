@@ -30,11 +30,12 @@ podman run -ti --user 0 --rm \
 ### Builder image
 
 ```bash
-podman build \
-  -t mkdocs:builder \
+export IMAGE='quay.io/openshift-examples/builder:devel'
+podman build --platform linux/amd64,linux/arm64  \
+  --manifest ${IMAGE} \
   --no-cache \
   -f builder.Containerfile .
-
+podman manifest push ${IMAGE}
 ```
 
 #### Run it with local builder image
