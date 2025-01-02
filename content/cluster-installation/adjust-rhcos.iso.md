@@ -4,7 +4,7 @@ linktitle: Adjust RHCOS.ISO
 weight: 1900
 description: TBD
 tags: ['rhcos', 'coreos']
-ignore_macros: true
+render_macros: false
 ---
 
 # How to adjust the an RHEL CoreOS ISO
