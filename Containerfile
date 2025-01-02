@@ -10,7 +10,7 @@ USER 1001
 
 RUN /usr/libexec/s2i/assemble
 
-FROM registry.access.redhat.com/ubi9/nginx-120:latest
+FROM registry.access.redhat.com/ubi9/nginx-124:latest
 USER root
 
 # RUN dnf -y update \
