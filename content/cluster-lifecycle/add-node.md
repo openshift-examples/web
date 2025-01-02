@@ -205,9 +205,7 @@ sudo coreos-installer install -i stormshift-ocp1-master.ign /dev/vda
 sudo reboot
 ```
 
-
 #### Wait for and approve CSR
-
 
 ```shell
 oc get csr | awk '/Pending/ { print $1 }' | xargs oc adm certificate approve
@@ -267,11 +265,10 @@ spec:
         name: master-user-data-managed
 ```
 
-
-#### Patch BareMetalHost status:
-
+#### Patch BareMetalHost status
 
 Open API proxy in on terminal
+
 ```shell
 oc proxy
 ```
