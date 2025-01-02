@@ -6,7 +6,6 @@ tags: ['troubleshooting']
 render_macros: false
 icon: material/card-search
 ---
-
 # Troubleshooting
 
 ## The openshift-console is not coming up #1
@@ -38,7 +37,7 @@ FailedScheduling: 0/7 nodes are available: 3 nodes had taint, that the pod didnâ
 **Solution**: Allocate more physical or virtual CPU or use the Cluster Resource Override Operator to override the ratio between requests and limits set on containers/ pods:
 
 1. Install the [Cluster Resource Override Operator](https://docs.openshift.com/container-platform/4.10/nodes/clusters/nodes-cluster-overcommit.html)
-1. Add the below custom resource definition
+2. Add the below custom resource definition
 
 ```bash
 apiVersion: operator.autoscaling.openshift.io/v1

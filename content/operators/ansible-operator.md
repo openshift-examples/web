@@ -7,7 +7,7 @@ render_macros: false
 ---
 ## Ansible Operator example
 
-#### Resources:
+### Resources
 
 * [OperatorSDK](https://github.com/operator-framework/operator-sdk/) \( [Example](https://github.com/operator-framework/operator-sdk/#create-and-deploy-an-app-operator) \)
 
@@ -29,7 +29,6 @@ make docker-build docker-push \
 
 make deploy \
   IMG="quay.io/openshift-examples/ansible-example-operator:latest"
-
 
 kubectl get pods -n sample-operator-system --watch
 
@@ -61,4 +60,3 @@ make deploy \
 ```bash
 make undeploy
 ```
-
