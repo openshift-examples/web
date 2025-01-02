@@ -11,7 +11,7 @@ Official documentation: [https://docs.openshift.com/container-platform/4.3/opera
 
 ## Setup htpasswd auth \(Optional\)
 
-###  Create htpasswd secret
+### Create htpasswd secret
 
 ```text
 oc create -f - <<EOF
@@ -148,9 +148,6 @@ $ grpcurl -plaintext -d '{"name":"simple-application-operator"}' localhost:50051
   ],
   "defaultChannelName": "stable"
 }
-
-
-
 ```
 
 ```yaml
@@ -166,10 +163,8 @@ spec:
   source: application-catalog
   sourceNamespace: simple-application-operator
 EOF
-
 ```
 
 ## ToDo
 
 * [ ] Create doc bug: `The Subscription "etcd" is invalid: spec.sourceNamespace: Required value`
-

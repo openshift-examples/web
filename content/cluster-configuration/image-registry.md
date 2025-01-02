@@ -5,10 +5,9 @@ weight: 19000
 description: Some stuff about the OpenShift 4 image registry
 render_macros: false
 ---
-
 # Image Registry
 
-## Use ReadWriteOnce volumes - new in 4.4!
+## Use ReadWriteOnce volumes - new in 4.4
 
 !!! note
     Only available since OpenShift version 4.4.0
@@ -24,7 +23,7 @@ render_macros: false
 
 Documentation bug for official documentation: [https://bugzilla.redhat.com/show_bug.cgi?id=1826292](https://bugzilla.redhat.com/show_bug.cgi?id=1826292)
 
-#### On vSphere with cloud provider integration:
+### On vSphere with cloud provider integration
 
 --8<-- "content/cluster-configuration/image-registry/vsphere-registry.md"
 
@@ -123,7 +122,4 @@ caused by: Head https://minio-service.minio.svc.cluster.local:9000/: dial tcp 17
     Reason:                Error
     Status:                True
 [...snipped...]
-
-
 ```
-
