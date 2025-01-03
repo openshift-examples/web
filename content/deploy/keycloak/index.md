@@ -174,7 +174,7 @@ cbd4f....
 
 * Fill out the form in your Keycloak instance:
 
-    * Copy the **Redirect URI** and paste it into Google's  **Authorised redirect URIs** part, details: [Red Hat SSO - via Google¶](/cluster-configuration/authentication/redhat-sso/)
+    * Copy the **Redirect URI** and paste it into Google's  **Authorised redirect URIs** part, details: [Red Hat SSO - via Google](../../cluster-configuration/authentication/redhat-sso.md)
 
     * Copy & Paste **Client ID** and **Client Secret** from Google to Keycloak
 
