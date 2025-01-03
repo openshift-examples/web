@@ -162,6 +162,7 @@ nav:
   - Cluster lifecycle:
       - cluster-lifecycle/index.md
       - Over-the-Air Upgrades: cluster-lifecycle/oat-upgrades.md
+      - Add node: cluster-lifecycle/add-node.md
       - Monitoring:
           - Metrics: cluster-lifecycle/monitoring/metrics.md
       - cloud.redhat.com: cluster-lifecycle/cloud-redhat-com.md
@@ -169,6 +170,10 @@ nav:
           - Etcd: cluster-lifecycle/backup/etcd.md
       - Restore & Recovery: cluster-lifecycle/restore.md
       - Shutdown: cluster-lifecycle/shutdown.md
+
+  - Control plane:
+      - control-plane/index.md
+      - Node failure: control-plane/node-failure/index.md
 
   - Troubleshooting: troubleshooting/index.md
 
