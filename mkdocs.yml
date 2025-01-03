@@ -265,4 +265,13 @@ nav:
       - vSphere IPI & disconnected environment: openshift-tv/2021-04-14-vpshere-ipi-disconnected.md
   - Tags: tags.md
 
+not_in_nav: |
+    /README.md
+    /impressum.md
+    /cluster-configuration/image-registry/vsphere-registry.md
+    /cluster-configuration/monitoring/alertmanager/microsoft-teams-receiver.md
+    /cluster-installation/windows-container/on-prem/index.md
+    /networking/sr-iov/deployment-sriov-eno4.md
+    /networking/sr-iov/sriov.md
+
 docs_dir: content/
