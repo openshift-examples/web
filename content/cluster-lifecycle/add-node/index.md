@@ -2,9 +2,8 @@
 title: Add Node to an existing cluster
 linktitle: Add Node
 description: Add Node to an existing cluster
-tags: ['node', 'v4.17']
+tags: ['node', 'v4.17','control-plane']
 ---
-
 # Add Node to an existing cluster
 
 Tested with OpenShift 4.17
@@ -53,6 +52,16 @@ https://rhcos.mirror.openshift.com/art/storage/prod/streams/4.17-9.4/builds/417.
 ```
 
 ## Add node in my case
+
+Node overview
+
+|Node|IP|Mac|
+|---|---|---|
+|cp-1 (0)|10.32.105.69|0E:C0:EF:20:69:45|
+|cp-2 (1)|10.32.105.70|0E:C0:EF:20:69:46|
+|cp-3 (2)|10.32.105.71|0E:C0:EF:20:69:47|
+|cp-4 (4)|10.32.105.72|0E:C0:EF:20:69:48|
+|cp-5 (5)|10.32.105.73|0E:C0:EF:20:69:49|
 
 ### Configure DHCP & DNS
 
@@ -129,70 +138,7 @@ Uploading rhcos-417.94.202410090854-0-live.x86_64.iso completed successfully
 #### Create VM
 
 ```yaml
-apiVersion: kubevirt.io/v1
-kind: VirtualMachine
-metadata:
-  name: ocp1-cp-4
-  namespace: stormshift-ocp1-infra
-spec:
-  dataVolumeTemplates:
-    - metadata:
-        creationTimestamp: null
-        name: ocp1-cp-4-root
-      spec:
-        source:
-          blank: {}
-        storage:
-          accessModes:
-            - ReadWriteMany
-          resources:
-            requests:
-              storage: 120Gi
-          storageClassName: coe-netapp-san
-  running: true
-  template:
-    metadata:
-      creationTimestamp: null
-    spec:
-      architecture: amd64
-      domain:
-        cpu:
-          cores: 8
-        devices:
-          disks:
-            - bootOrder: 1
-              disk:
-                bus: virtio
-              name: root
-            - bootOrder: 2
-              cdrom:
-                bus: sata
-              name: cdrom
-          interfaces:
-            - bridge: {}
-              macAddress: '0E:C0:EF:20:69:48'
-              model: virtio
-              name: coe
-        machine:
-          type: pc-q35-rhel9.4.0
-        memory:
-          guest: 16Gi
-        resources:
-          limits:
-            memory: 16706Mi
-          requests:
-            memory: 16Gi
-      networks:
-        - multus:
-            networkName: coe-bridge
-          name: coe
-      volumes:
-        - name: cdrom
-          persistentVolumeClaim:
-            claimName: rhcos-417-94-202410090854-0-live
-        - dataVolume:
-            name: ocp1-cp-4-root
-          name: root
+--8<-- "content/cluster-lifecycle/add-node/ocp1-cp-4-vm.yaml"
 ```
 
 * ToDo: Serial consol does not work
@@ -200,8 +146,8 @@ spec:
 #### Install coreos via Console
 
 ```bash
-curl -L -O http://10.32.96.31/stormshift-ocp1-master.ign
-sudo coreos-installer install -i stormshift-ocp1-master.ign /dev/vda
+curl -L -O http://10.32.96.31/stormshift-ocp1-cp.ign
+sudo coreos-installer install -i stormshift-ocp1-cp.ign /dev/vda
 sudo reboot
 ```
 
@@ -216,53 +162,11 @@ oc get csr | awk '/Pending/ { print $1 }' | xargs oc adm certificate approve
 Let's create BareMetalHost object and MachineObject
 
 ```yaml
-apiVersion: metal3.io/v1alpha1
-kind: BareMetalHost
-metadata:
-  name: ocp1-cp-5
-  namespace: openshift-machine-api
-spec:
-  automatedCleaningMode: metadata
-  bootMACAddress: 0E:C0:EF:20:69:49
-  bootMode: legacy
-  customDeploy:
-    method: install_coreos
-  externallyProvisioned: true
-  online: true
-  userData:
-    name: master-user-data-managed
-    namespace: openshift-machine-api
+--8<-- "content/cluster-lifecycle/add-node/ocp1-cp-4-bmh.yaml"
 ```
 
 ```yaml
-apiVersion: machine.openshift.io/v1beta1
-kind: Machine
-metadata:
-  annotations:
-    machine.openshift.io/instance-state: externally provisioned
-    metal3.io/BareMetalHost: openshift-machine-api/ocp1-cp-5
-  labels:
-    machine.openshift.io/cluster-api-cluster: ocp1-nlxjs
-    machine.openshift.io/cluster-api-machine-role: master
-    machine.openshift.io/cluster-api-machine-type: master
-  name: ocp1-cp-5
-  namespace: openshift-machine-api
-spec:
-  metadata: {}
-  providerSpec:
-    value:
-      apiVersion: baremetal.cluster.k8s.io/v1alpha1
-      customDeploy:
-        method: install_coreos
-      hostSelector: {}
-      image:
-        checksum: ""
-        url: ""
-      kind: BareMetalMachineProviderSpec
-      metadata:
-        creationTimestamp: null
-      userData:
-        name: master-user-data-managed
+--8<-- "content/cluster-lifecycle/add-node/ocp1-cp-4-machine.yaml"
 ```
 
 #### Patch BareMetalHost status
@@ -285,7 +189,7 @@ read -r -d '' host_patch << EOF
       "nics": [
         {
           "ip": "10.32.105.72",
-          "mac": "0E:C0:EF:20:69:47"
+          "mac": "0E:C0:EF:20:69:48"
         }
       ]
     }
@@ -295,7 +199,7 @@ EOF
 
 curl -vv \
      -X PATCH \
-     "${HOST_PROXY_API_PATH}/ocp1-cp-5/status" \
+     "${HOST_PROXY_API_PATH}/ocp1-cp-4/status" \
      -H "Content-type: application/merge-patch+json" \
      -d "${host_patch}"
 ```
