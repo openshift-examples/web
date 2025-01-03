@@ -4,9 +4,118 @@ linktitle: Networking
 weight: 14100
 description: TBD
 ---
+
 # Networking
 
-## Create bridge on main interface
+An OpenShift cluster is configured using an overlay software-defined network (SDN) for both the Pod and Service networks. By default, VMs are configured with connectivity to the SDN and have the same features/connectivity as Pod-based applications.
+
+Host-level networking configurations are created and applied using the NMstate operator. This includes the ability to report the current configuration options, such as bonds, bridges, and VLAN tags to help segregate networking resources, as well as apply desired-state configuration for those entities.
+
+![network_bond](Network_bond.png)
+
+## Bonded NICs for Management and SDN
+
+The initial bond interface, consisting of two adapters bonded together with an IP address on the machine network specified and configured at install time, is used for the SDN, management traffic between the node and the control plane (and administrator access), and live migration traffic. During installation, use the [host network interface configuration options](https://docs.openshift.com/container-platform/4.15/installing/installing_bare_metal_ipi/ipi-install-installation-workflow.html#configuring-host-network-interfaces-in-the-install-config-yaml-file_ipi-install-installation-workflow) to configure the bond and set the IP address needed.
+
+## Additional dedicated Network Interfaces for traffic types
+
+The following is a sample NMstate configuration making use of two adapters on the host to create a bonded interface in the LACP (802.1ad) run mode. The bonds are intended to be used for isolating network traffic for different purposes. This provides the advantage of avoiding noisy neighbor scenarios for some interfaces that may have a large impact, for example a backup for a virtual machine consuming significant network throughput impacting ODF or etcd traffic on a shared interface.
+
+```yaml
+apiVersion: nmstate.io/v1
+kind: NodeNetworkConfigurationPolicy
+metadata:
+  annotations:
+    description: a bond for VM traffic and VLANs
+  name: bonding-policy
+spec:
+  desiredState:
+    interfaces:
+      - link-aggregation:
+          mode: 802.3ad
+          port:
+            - enp6s0f0
+            - enp6s0f1
+        name: bond1
+        state: up
+        type: bond
+```
+
+## Example VM Network Configuration
+
+An example configuration for VM network connectivity is below, note that the bond configuration should be a part of the same NodeNetworkConfigurationPolicy to ensure they are configured together.
+
+```yaml
+apiVersion: nmstate.io/v1
+kind: NodeNetworkConfigurationPolicy
+metadata:
+  name: ovs-br1-vlan-trunk
+spec:
+  nodeSelector:
+    node-role.kubernetes.io/worker: ''
+  desiredState:
+    interfaces:
+    - name: ovs-br1
+      description: |-
+        A dedicated OVS bridge with bond2 as a port
+        allowing all VLANs and untagged traffic
+      type: ovs-bridge
+      state: up
+      bridge:
+        allow-extra-patch-ports: true
+        options:
+          stp: true
+        port:
+        - name: bond2
+    ovn:
+      bridge-mappings:
+      - localnet: vlan-2024
+        bridge: ovs-br1
+        state: present
+      - localnet: vlan-1993
+        bridge: ovs-br1
+        state: present
+---
+apiVersion: k8s.cni.cncf.io/v1
+kind: NetworkAttachmentDefinition
+metadata:
+  annotations:
+    description: VLAN 2024 connection for VMs
+  name: vlan-2024
+  namespace: default
+spec:
+  config: |-
+    {
+      "cniVersion": "0.3.1",
+      "name": "vlan-2024",
+      "type": "ovn-k8s-cni-overlay",
+      "topology": "localnet",
+      "netAttachDefName": "default/vlan-2024",
+      "vlanID": 2024,
+      "ipam": {}
+    }
+---
+apiVersion: k8s.cni.cncf.io/v1
+kind: NetworkAttachmentDefinition
+metadata:
+  annotations:
+    description: VLAN 1993 connection for VMs
+  name: vlan-1993
+  namespace: default
+spec:
+  config: |-
+    {
+      "cniVersion": "0.3.1",
+      "name": "vlan-1993",
+      "type": "ovn-k8s-cni-overlay",
+      "topology": "localnet",
+      "netAttachDefName": "default/vlan-1993",
+      "vlanID": 1993,
+      "ipam": {}
+    }
+```
+
+## Create a bridge on the main interface
 
 All nodes on which the configuration is executed are restarted.
 
