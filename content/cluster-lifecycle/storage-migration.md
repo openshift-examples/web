@@ -2,11 +2,18 @@
 title: Storage Migration (Container)
 linktitle: Storage Migration
 description: Storage Migration for container workload
-tags: ['pvc','storage','MTC']
+tags: ['pvc','storage','MTC','v4.17']
 ---
 # Storage Migration for container workload
 
 * Install Migration Toolkit for Containers Operator
+
+Versions:
+
+|Component|Version|
+|---|---|
+|OpenShift|4.17.7|
+|Migration Toolkit for Containers Operator|1.8.5|
 
 ## Created MigPlan
 
@@ -79,7 +86,7 @@ spec:
         - mountPath: /src
           name: src
         - mountPath: /dst
-          name: dst         
+          name: dst
   volumes:
     - name: src
       persistentVolumeClaim:
@@ -90,12 +97,3 @@ spec:
 ```
 
 oc rsh $(oc wait --for=condition=Ready pod -l app=tools -o name )
-
-### Tested with following versions:
-
-Versions:
-|Component|Version|
-|---|---|
-|OpenShift|4.17.7|
-|Migration Toolkit for Containers Operator|1.8.5|
-
