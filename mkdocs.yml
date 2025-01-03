@@ -154,6 +154,7 @@ nav:
       - MachineConfig:
           - cluster-configuration/machine-config/index.md
           - Machine Config Server: cluster-configuration/machine-config/machine-config-server.md
+          - Kubelet Configs : cluster-configuration/machine-config/kubelet-configs.md
       - MachineSets:
           - Debugging: cluster-configuration/MachineSets/debugging.md
           - "VMware UPI": cluster-configuration/MachineSets/VMware-UPI/index.md
