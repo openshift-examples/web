@@ -67,7 +67,6 @@ spec:
 ### Test Pod
 
 ```yaml
-
 apiVersion: v1
 kind: Pod
 metadata:
@@ -96,4 +95,6 @@ spec:
         claimName: registry-storage-ocs-mig-7jrm
 ```
 
+```bash
 oc rsh $(oc wait --for=condition=Ready pod -l app=tools -o name )
+```
