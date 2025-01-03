@@ -2,7 +2,7 @@
 title: Node failure test
 linktitle: Node failure
 description: Let's switch off some control plane nodes.
-tags: ['etcd','control-plane']
+tags: ['etcd','control-plane','v4.17']
 ---
 
 # Node failure test
