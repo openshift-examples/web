@@ -2,7 +2,7 @@
 title: Cluster configuration
 linktitle: Cluster configuration
 description: Cluster configuration
-icon: material/folder-cog
+icon: material/folder-wrench
 hide: ['toc']
 ---
 # Cluster configuration
