@@ -82,7 +82,10 @@ plugins:
       enable_creation_date: true
       fallback_to_build_date: false
       type: timeago
-  - git-authors
+  - git-authors:
+      exclude:
+        - kubevirt/ansible/README.md
+        - networking/network-policy/network-policy-demo/README.md
   - tags:
       tags_file: tags.md
   - macros:
@@ -138,6 +141,7 @@ nav:
           - NFS Client provisioner: cluster-configuration/storage/nfs.md
       - NTP: cluster-configuration/ntp.md
       - Monitoring:
+          - cluster-configuration/monitoring/index.md
           - Alertmanager:
               - cluster-configuration/monitoring/alertmanager/index.md
               - Debug receiver: cluster-configuration/monitoring/alertmanager/debug-receiver.md
@@ -229,7 +233,7 @@ nav:
       - Custom Resource Definition (CRD): operators/custom-ressource-definition.md
       - Air-gapped OLM >= 4.6: operators/air-gapped-4.6.md
       - Air-gapped OperatorHub - pre 4.6: operators/air-gapped-pre-4.6.md
-      - Air-gapped oc-mirror: content/operators/oc-mirror.md
+      - Air-gapped oc-mirror: operators/oc-mirror.md
       - Ansible Operator: operators/ansible-operator.md
       - OperatorHub: operators/operatorhub.md
       - Install Operator as a User - WiP: operators/install-operator-as-a-user.md
