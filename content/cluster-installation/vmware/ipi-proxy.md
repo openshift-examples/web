@@ -38,7 +38,7 @@ update-ca-trust
 ## **Optional** Reverse proxy for vCenter in a different Network
 
 * Install nginx
-* [Create certificates](/certificate/#general-own-root-ca-and-certificate)
+* [Create certificates](../../certificate.md#general-own-root-ca-and-certificate)
 
 Nginx configuration:
 
