@@ -9,6 +9,8 @@ tags:
 
 # Machine Config
 
+Create MachineConfig objects that modify files, systemd unit files, and other operating system features running on OpenShift Container Platform nodes. OpenShift Container Platform supports Ignition specification version 3.2. All new machine configs you create going forward should be based on Ignition specification version 3.2.
+
 ## Force Machine Config
 
 Inspired by <https://bugzilla.redhat.com/show_bug.cgi?id=1766513>
