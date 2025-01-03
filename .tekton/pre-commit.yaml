@@ -119,6 +119,8 @@ spec:
                 echo -e ' 💀 There was an error during pre-commit / linter:\n\n```' \
                   > ${WORKSPACE}/notify-linter-on-failure.txt
 
+                export PRE_COMMIT_HOME=/tmp/
+
                 pre-commit run --color=never \
                   --from-ref origin/main \
                   --to-ref HEAD \
