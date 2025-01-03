@@ -162,7 +162,7 @@ nav:
   - Cluster lifecycle:
       - cluster-lifecycle/index.md
       - Over-the-Air Upgrades: cluster-lifecycle/oat-upgrades.md
-      - Add node: cluster-lifecycle/add-node.md
+      - Add node: cluster-lifecycle/add-node/index.md
       - Monitoring:
           - Metrics: cluster-lifecycle/monitoring/metrics.md
       - cloud.redhat.com: cluster-lifecycle/cloud-redhat-com.md
