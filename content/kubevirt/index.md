@@ -9,6 +9,8 @@ icon: material/new-box
 
 # OpenShift Virtualization (CNV/KubeVirt)
 
+OpenShift Virtualization is a fully developed virtualization solution utilizing the type-1 KVM hypervisor from Red Hat Enterprise Linux with the powerful features and capabilities of OpenShift for managing hypervisor nodes, virtual machines, and their consumers.
+
 ## Example deployments
 
 ??? example "Tiny RHEL 9 VM with pod bridge network"
@@ -158,13 +160,64 @@ podman push ${REGISTRY}/cnv/iis:latest
 oc apply -f https://raw.githubusercontent.com/openshift-examples/web/master/content/kubevirt/iis-template.yaml
 ```
 
+## Resource Capacity Calculation
+
+At a high level, the process is to determine the amount of virtualization resources needed (VM sizes, overhead, burst capacity, failover capacity), add that to the amount of resources needed for cluster services (logging, metrics, ODF/ACM/ACS if hosted in the same cluster, etc.) and customer workload (hosted control planes, other Pods deployed to the hardware, etc.), then find a balance of node size vs node count.
+
+* *Source: [Red Hat Architecting OpenShift Virtualization](https://redhatquickcourses.github.io/architect-the-ocpvirt/Red%20Hat%20OpenShift%20Virtualization%20-%20Architecting%20OpenShift%20Virtualization/1/chapter5/section4.html)*
+
+### CPU capacity calculation
+
+```code
+Formula
+
+(((physical_cpu_cores - odf_requirements - control_plane_requirements) * node_count * overcommitment_ratio) * (1 -ha_reserve_percent)) * (1 - spare_capacity_percent)
+```
+
+* `physical_cpu_cores` = the number of physical cores available on the node.
+* `odf_requirements` = the amount of resources reserved for ODF. A value of 32 cores was used for the example architectures.
+* `control_plane_requirements` = the amount of CPU reserved for the control plane workload. A value of 4 cores was used for the example architectures.
+* `node_count` = the number of nodes with this geometry. For small, all nodes were equal. For medium, the nodes are mixed-purpose, so the previous steps would need to be repeated for each node type, taking into account the appropriate node type.
+* `overcommitment_ratio` = the amount of CPU overcommitment. A ratio of 4:1 was used for this document.
+* `spare_capacity` = the amount of capacity reserved for spare/burst. A value of 10% was used for this document.
+* `ha_reserve_percent` = the amount of capacity reserved for recovering workload lost in the event of node failure. For the small example, a value of 25% was used, allowing for one node to fail. For the medium example, a value of 20% was used, allowing for two nodes to fail.
+
+### Memory capacity calculation
+
+```code
+Formula
+
+((total_node_memory - odf_requirements - control_plane_requirements) * soft_eviction_threshold_percent * node_count) * (1 - ha_reserve_percent)
+```
+
+* `total_node_memory` = the total physical memory installed on the node.
+* `odf_requirements` = the amount of memory assigned to ODF. A value of 72GiB was used for the example architectures in this document.
+* `control_plane_requirements` = the amount of memory reserved for the control plane functions. A value of 24GiB was used for the example architectures.
+* `soft_eviction_threshold_percent` = the value at which soft eviction is triggered to rebalance resource utilization on the node. Unless all nodes in the cluster exceed this value, it’s expected that the node will be below this utilization. A value of 90% was used for this document.
+* `node_count` = the number of nodes with this geometry. For small, all nodes were equal. For medium, the nodes are mixed-purpose, so the previous steps would need to be repeated for each node type, taking into account the appropriate node type.
+* `ha_reserve_percent` = the amount of capacity reserved for recovering workload lost in the event of node failure. For the small example, a value of 25% was used, allowing for one node to fail. For the medium example, a value of 20% was used, allowing for two nodes to fail.
+
+### ODF capacity calculation
+
+```code
+Formula
+
+(((disk_size * disk_count) * node_count) / replica_count) * (1 - utilization_percent)
+```
+
+* `disk_size` = the size of the disk(s) used. 4TB and 8TB disks were used in the example architectures.
+* `disk_count` = the number of disks of disk_size in the node.
+* `node_count` = the number of nodes with this geometry. For small, all nodes were equal. For medium, the nodes are mixed-purpose, so the previous steps would need to be repeated for each node type taking into account the appropriate node type.
+* `replica_count` = the number of copies ODF stores of the data for protection/resiliency. A value of 3 was used for this document.
+* `utilization_percent` = the desired threshold of capacity used in the ODF instance. A value of 65% was used for this document.
+
 ## Resources and useful articles
 
-- [Deploying Vms On Kubernetes Glusterfs Kubevirt](https://kubevirt.io/2018/Deploying-VMs-on-Kubernetes-GlusterFS-KubeVirt.html)
-- [Kubevirt Network Deep Dive](https://kubevirt.io/2018/KubeVirt-Network-Deep-Dive.html)
-- [Upstream containerized-data-importer](https://github.com/kubevirt/containerized-data-importer)
-- [Deploy openSUSE Leap15 VM in Kubernetes using KubeVirt](http://panosgeorgiadis.com/blog/2018/03/15/deploy-opensuse-leap15-vm-in-kubernetes-using-kubevirt/)
-- [Kubernetes and Virtualization: kubevirt will let you spawn virtual machine on your cluster!](https://medium.com/@alezzandro/kubernetes-and-virtualization-kubevirt-will-let-you-spawn-virtual-machine-on-your-cluster-e809914cc783)
-- Very old, please double check: [Know Issue: No IP address in VM after pod deletion #1646](https://github.com/kubevirt/kubevirt/issues/1646)
-- <https://developers.redhat.com/blog/2018/10/22/introduction-to-linux-interfaces-for-virtual-networking/>
-- <https://www.praqma.com/stories/debugging-kubernetes-networking/>
+* [Deploying Vms On Kubernetes Glusterfs Kubevirt](https://kubevirt.io/2018/Deploying-VMs-on-Kubernetes-GlusterFS-KubeVirt.html)
+* [Kubevirt Network Deep Dive](https://kubevirt.io/2018/KubeVirt-Network-Deep-Dive.html)
+* [Upstream containerized-data-importer](https://github.com/kubevirt/containerized-data-importer)
+* [Deploy openSUSE Leap15 VM in Kubernetes using KubeVirt](http://panosgeorgiadis.com/blog/2018/03/15/deploy-opensuse-leap15-vm-in-kubernetes-using-kubevirt/)
+* [Kubernetes and Virtualization: kubevirt will let you spawn virtual machine on your cluster!](https://medium.com/@alezzandro/kubernetes-and-virtualization-kubevirt-will-let-you-spawn-virtual-machine-on-your-cluster-e809914cc783)
+* Very old, please double check: [Know Issue: No IP address in VM after pod deletion #1646](https://github.com/kubevirt/kubevirt/issues/1646)
+* <https://developers.redhat.com/blog/2018/10/22/introduction-to-linux-interfaces-for-virtual-networking/>
+* <https://www.praqma.com/stories/debugging-kubernetes-networking/>
