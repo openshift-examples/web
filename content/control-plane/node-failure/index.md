@@ -163,6 +163,51 @@ Error: unhealthy cluster
 
 Let's restart all control plane nodes...
 
+## Let's try to recover 
+
+[5.3.2. Restoring to a previous cluster state](https://docs.redhat.com/en/documentation/openshift_container_platform/4.17/html-single/backup_and_restore/index#dr-restoring-cluster-state)
+
+```bash
+ssh -l core -i ~/.ssh/coe-muc 10.32.105.69
+Warning: Permanently added '10.32.105.69' (ED25519) to the list of known hosts.
+Red Hat Enterprise Linux CoreOS 417.94.202409121747-0
+  Part of OpenShift 4.17, RHCOS is a Kubernetes-native operating system
+  managed by the Machine Config Operator (`clusteroperator/machine-config`).
+
+WARNING: Direct SSH access to machines is not recommended; instead,
+make configuration changes via `machineconfig` objects:
+  https://docs.openshift.com/container-platform/4.17/architecture/architecture-rhcos.html
+
+---
+[core@ocp1-cp-1 ~]$ sudo su -
+[root@ocp1-cp-1 ~]# /usr/local/bin/cluster-backup.sh /home/core/assets/backup
+Certificate /etc/kubernetes/static-pod-certs/configmaps/etcd-all-bundles/server-ca-bundle.crt is missing. Checking in different directory
+Certificate /etc/kubernetes/static-pod-resources/etcd-certs/configmaps/etcd-all-bundles/server-ca-bundle.crt found!
+Error from server (Timeout): the server was unable to return a response in the time allotted, but may still be processing the request (get clusteroperators.config.openshift.io kube-apiserver)
+Could not find the status of the kube-apiserver. Check if the API server is running. Pass the --force flag to skip checks.
+[root@ocp1-cp-1 ~]# /usr/local/bin/cluster-backup.sh --force /home/core/assets/backup
+Certificate /etc/kubernetes/static-pod-certs/configmaps/etcd-all-bundles/server-ca-bundle.crt is missing. Checking in different directory
+Certificate /etc/kubernetes/static-pod-resources/etcd-certs/configmaps/etcd-all-bundles/server-ca-bundle.crt found!
+found latest kube-apiserver: /etc/kubernetes/static-pod-resources/kube-apiserver-pod-8
+found latest kube-controller-manager: /etc/kubernetes/static-pod-resources/kube-controller-manager-pod-7
+found latest kube-scheduler: /etc/kubernetes/static-pod-resources/kube-scheduler-pod-9
+found latest etcd: /etc/kubernetes/static-pod-resources/etcd-pod-10
+c27666c790f13b36bd24596ce2ed4019ad28a7731caf80dee22e0b9e350aa500
+etcdctl version: 3.5.14
+API version: 3.5
+{"level":"info","ts":"2025-01-03T17:32:14.828011Z","caller":"snapshot/v3_snapshot.go:65","msg":"created temporary db file","path":"/home/core/assets/backup/snapshot_2025-01-03_173213__POSSIBLY_DIRTY__.db.part"}
+{"level":"info","ts":"2025-01-03T17:32:14.841889Z","logger":"client","caller":"v3@v3.5.14/maintenance.go:212","msg":"opened snapshot stream; downloading"}
+{"level":"info","ts":"2025-01-03T17:32:14.841991Z","caller":"snapshot/v3_snapshot.go:73","msg":"fetching snapshot","endpoint":"https://10.32.105.69:2379"}
+{"level":"info","ts":"2025-01-03T17:32:16.157632Z","logger":"client","caller":"v3@v3.5.14/maintenance.go:220","msg":"completed snapshot read; closing"}
+{"level":"info","ts":"2025-01-03T17:32:16.647389Z","caller":"snapshot/v3_snapshot.go:88","msg":"fetched snapshot","endpoint":"https://10.32.105.69:2379","size":"103 MB","took":"1 second ago"}
+{"level":"info","ts":"2025-01-03T17:32:16.647626Z","caller":"snapshot/v3_snapshot.go:97","msg":"saved","path":"/home/core/assets/backup/snapshot_2025-01-03_173213__POSSIBLY_DIRTY__.db"}
+Snapshot saved at /home/core/assets/backup/snapshot_2025-01-03_173213__POSSIBLY_DIRTY__.db
+{"hash":2857966835,"revision":47208,"totalKey":15071,"totalSize":102907904}
+snapshot db and kube resources are successfully saved to /home/core/assets/backup
+
+```
+
+
 ## Let's scale control plane to 5
 
 * `oc adm node-image create` is only to add worker nodes.
