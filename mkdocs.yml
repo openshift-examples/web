@@ -253,7 +253,7 @@ nav:
       - Templates: kubevirt/template.md
       - Ansible: kubevirt/ansible/README.md
       - Networking: kubevirt/networking/index.md
-      - Local-storage: kubevirt/local-storage.md
+      - Storage: kubevirt/storage.md
       - NFS CSI Driver: kubevirt/nfs-csi-driver.md
 
   - Certificates: certificate.md
