@@ -11,7 +11,9 @@ An OpenShift cluster is configured using an overlay software-defined network (SD
 
 Host-level networking configurations are created and applied using the NMstate operator. This includes the ability to report the current configuration options, such as bonds, bridges, and VLAN tags to help segregate networking resources, as well as apply desired-state configuration for those entities.
 
-![network_bond](Network_bond.png)
+* *Source: [Red Hat Architecting OpenShift Virtualization](https://redhatquickcourses.github.io/architect-the-ocpvirt/Red%20Hat%20OpenShift%20Virtualization%20-%20Architecting%20OpenShift%20Virtualization/1/chapter5/section2.html)*
+
+![network_bond](network_bond.png)
 
 ## Bonded NICs for Management and SDN
 
