@@ -41,7 +41,7 @@ spec:
           containerDisk:
             image: quay.io/containerdisks/fedora:41
         - name: cloudinit
-          cloudInitNoCloud: 
+          cloudInitNoCloud:
             networkData: |
               version: 2
               ethernets:
