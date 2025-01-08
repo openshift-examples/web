@@ -163,7 +163,7 @@ Error: unhealthy cluster
 
 Let's restart all control plane nodes...
 
-## Let's try to recover 
+## Let's try to recover
 
 [5.3.2. Restoring to a previous cluster state](https://docs.redhat.com/en/documentation/openshift_container_platform/4.17/html-single/backup_and_restore/index#dr-restoring-cluster-state)
 
@@ -204,9 +204,8 @@ API version: 3.5
 Snapshot saved at /home/core/assets/backup/snapshot_2025-01-03_173213__POSSIBLY_DIRTY__.db
 {"hash":2857966835,"revision":47208,"totalKey":15071,"totalSize":102907904}
 snapshot db and kube resources are successfully saved to /home/core/assets/backup
-
+[root@ocp1-cp-1 ~]#
 ```
-
 
 ## Let's scale control plane to 5
 
