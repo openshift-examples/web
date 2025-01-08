@@ -1,0 +1,72 @@
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: fedora
+spec:
+  runStrategy: Always
+  template:
+    spec:
+      domain:
+        devices:
+          disks:
+            - disk:
+                bus: virtio
+              name: containerdisk
+            - disk:
+                bus: virtio
+              name: cloudinit
+          rng: {}
+          interfaces:
+            - bridge: {}
+              model: virtio
+              name: coe
+        features:
+          acpi: {}
+          smm:
+            enabled: true
+        firmware:
+          bootloader:
+            efi:
+              secureBoot: true
+        resources:
+          requests:
+            memory: 1Gi
+      terminationGracePeriodSeconds: 180
+      networks:
+        - multus:
+            networkName: coe
+          name: coe
+      volumes:
+        - name: containerdisk
+          containerDisk:
+            image: quay.io/containerdisks/fedora:41
+        - name: cloudinit
+          cloudInitNoCloud: 
+            networkData: |
+              version: 2
+              ethernets:
+                eth0:
+                  dhcp4: true
+            userData: |-
+              #cloud-config
+
+              users:
+                - name: coe
+                  lock_passwd: false
+                  # redhat // mkpasswd --method=SHA-512 --rounds=4096
+                  hashed_passwd: "$6$rounds=4096$kmUERoUZHwzYfQMJ$G70T2Qg24d0XUhu.GTCH7Ia1F0B/B48JqIFdzVfigeMgfG5nsxp3dEWFKokfXGmhuetFXl4l41L8t1AZgEDW0."
+                  sudo: ['ALL=(ALL) NOPASSWD:ALL']
+                  chpasswd: { expire: False }
+                  groups: wheel
+                  shell: /bin/bash
+                  ssh_authorized_keys:
+                    - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEQM82o2imwpHyGVO7DxCNbdE0ZWnkp6oxdawb7/MOCT coe-muc
+
+              packages:
+                - httpd
+
+              # install puppet (and dependencies); make sure apache and postgres
+              # both start at boot-time
+              runcmd:
+                - [ systemctl, enable, httpd.service ]
+                - [ systemctl, start, httpd.service ]
