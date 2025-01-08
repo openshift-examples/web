@@ -3,6 +3,8 @@ title: Networking
 linktitle: Networking
 weight: 14100
 description: TBD
+icon: material/tournament
+tags: ['v4.17','cnv', 'kubevirt','ocp-v','networking']
 ---
 
 # Networking
@@ -174,6 +176,72 @@ spec:
   }'
 EOF
 ```
+
+## Localnet example
+
+* Tested with OpenShift 4.17.0
+* [Blog post: Red Hat OpenShift Virtualization: Configuring virtual machines to use external networks](https://www.redhat.com/en/blog/access-external-networks-with-openshift-virtualization)
+
+### Configure localnet via NNCP
+
+=== "OC"
+
+    ```bash
+    oc apply -f {{ page.canonical_url }}localnet-nncp.yaml
+    ```
+
+    ```bash
+    % oc get nncp,nnce
+    NAME                                                     STATUS      REASON
+    nodenetworkconfigurationpolicy.nmstate.io/localnet-coe   Available   SuccessfullyConfigured
+
+    NAME                                                                      STATUS      STATUS AGE   REASON
+    nodenetworkconfigurationenactment.nmstate.io/ocp1-worker-1.localnet-coe   Available   2s           SuccessfullyConfigured
+    nodenetworkconfigurationenactment.nmstate.io/ocp1-worker-2.localnet-coe   Available   9s           SuccessfullyConfigured
+    nodenetworkconfigurationenactment.nmstate.io/ocp1-worker-3.localnet-coe   Available   8s           SuccessfullyConfigured
+    ```
+
+=== "localnet-nncp.yaml"
+
+    ```yaml
+    --8<-- "content/kubevirt/networking/localnet-nncp.yaml"
+    ```
+
+### Apply localnet-demo
+
+#### Create new project
+
+```bash
+oc new project localnet-demo
+```
+
+#### Create net-attach-def
+
+=== "OC"
+
+    ```bash
+    oc apply -f {{ page.canonical_url }}localnet-net-attach-def.yaml
+    ```
+
+=== "localnet-net-attach-def.yaml"
+
+    ```yaml
+    --8<-- "content/kubevirt/networking/localnet-net-attach-def.yaml"
+    ```
+
+#### Attach Fedora VM
+
+=== "OC"
+
+    ```bash
+    oc apply -f {{ page.canonical_url }}localnet-fedora-vm.yaml
+    ```
+
+=== "localnet-fedora-vm.yaml"
+
+    ```yaml
+    --8<-- "content/kubevirt/networking/localnet-fedora-vm.yaml"
+    ```
 
 ## Debugging purpose
 
