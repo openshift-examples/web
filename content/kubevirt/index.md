@@ -55,6 +55,20 @@ OpenShift Virtualization is a fully developed virtualization solution utilizing 
         oc apply -f {{ page.canonical_url }}example/boot-from-iso.yaml
         ```
 
+??? example "Example Fedora with httpd cloud-init and network"
+
+    === "localnet-fedora-vm.yaml"
+
+        ```yaml
+        --8<-- "content/kubevirt/networking/localnet-fedora-vm.yaml"
+        ```
+
+    === "oc apply -f ...."
+
+        ```bash
+        oc apply -f {{ page.canonical_url }}networking/localnet-fedora-vm.yaml
+        ```
+
 ## Useful Commands
 
 ### Configure a new number of CPUs for a VM
