@@ -432,7 +432,7 @@ Contiue with steps in docs (kubelet restart, ovn-kubernetes, csr,...)
 === "ocp1-cp-4-vm.yaml"
 
     ```yaml
-    --8<-- "content/control-plane/node-failure/ocp1-cp-4-vm.yaml"
+    --8<-- "content/control-plane/lost-quorum/ocp1-cp-4-vm.yaml"
     ```
 
 Connect to console an run:
@@ -476,7 +476,7 @@ oc get csr | awk '/Pending/ { print $1 }' | xargs oc adm certificate approve
 === "ocp1-cp-4-bmh.yaml"
 
     ```yaml
-    --8<-- "content/control-plane/node-failure/ocp1-cp-4-bmh.yaml"
+    --8<-- "content/control-plane/lost-quorum/ocp1-cp-4-bmh.yaml"
     ```
 
 ??? quote "oc get bmh -n openshift-machine-api"
@@ -506,7 +506,7 @@ oc get csr | awk '/Pending/ { print $1 }' | xargs oc adm certificate approve
 === "ocp1-cp-4-machine.yaml"
 
     ```yaml
-    --8<-- "content/control-plane/node-failure/ocp1-cp-4-machine.yaml"
+    --8<-- "content/control-plane/lost-quorum/ocp1-cp-4-machine.yaml"
     ```
 
 ??? quote "oc get machine -n openshift-machine-api"
@@ -817,7 +817,7 @@ stormshift-ocp1 #
 === "ocp1-cp-5-vm.yaml"
 
     ```yaml
-    --8<-- "content/control-plane/node-failure/ocp1-cp-5-vm.yaml"
+    --8<-- "content/control-plane/lost-quorum/ocp1-cp-5-vm.yaml"
     ```
 
 Connect to console an run:
@@ -861,7 +861,7 @@ oc get csr | awk '/Pending/ { print $1 }' | xargs oc adm certificate approve
 === "ocp1-cp-5-bmh.yaml"
 
     ```yaml
-    --8<-- "content/control-plane/node-failure/ocp1-cp-5-bmh.yaml"
+    --8<-- "content/control-plane/lost-quorum/ocp1-cp-5-bmh.yaml"
     ```
 
 ??? quote "oc get bmh -n openshift-machine-api"
@@ -890,7 +890,7 @@ oc get csr | awk '/Pending/ { print $1 }' | xargs oc adm certificate approve
 === "ocp1-cp-5-machine.yaml"
 
     ```yaml
-    --8<-- "content/control-plane/node-failure/ocp1-cp-5-machine.yaml"
+    --8<-- "content/control-plane/lost-quorum/ocp1-cp-5-machine.yaml"
     ```
 
 ??? quote "oc get machine -n openshift-machine-api"
