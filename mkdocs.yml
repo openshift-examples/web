@@ -174,7 +174,7 @@ nav:
 
   - Control plane:
       - control-plane/index.md
-      - Node failure: control-plane/node-failure/index.md
+      - Restoring etcd quorum: control-plane/lost-quorum/index.md
 
   - Troubleshooting: troubleshooting/index.md
 

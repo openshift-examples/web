@@ -1,14 +1,17 @@
 ---
-title: Node failure test
-linktitle: Node failure
+title: Restoring etcd quorum (lost quorum)
+linktitle: Restoring etcd quorum (lost quorum)
 description: Let's switch off some control plane nodes.
 tags: ['etcd','control-plane','v4.17']
 ---
 
 # Control plane node failure test
 
-* Just some stupid tests with OpenShift 4.17
-* **With [OCPSTRAT-539](https://issues.redhat.com/browse/OCPSTRAT-539) there will be a improvement of the process. Hopefully, land in 4.18!**
+Let's test how to restore a control-plane from a lost quorum. Losing the majority of control plane nodes leads to a quorum loss
+
+Tested with OpenShift Cluster Version 4.17.0.
+
+**With [OCPSTRAT-539](https://issues.redhat.com/browse/OCPSTRAT-539) there will be a improvement of the process. Hopefully, land in 4.18!**
 
 Useful etcd commands
 
@@ -62,7 +65,7 @@ Test Workload
     +---------------------------+------------------+---------+---------+-----------+------------+-----------+------------+--------------------+--------+
     ```
 
-## One control plane node stopeed
+## One control plane node stopped
 
 Date CET: `2025-01-08 15:06:37 +0100`
 
@@ -133,7 +136,7 @@ Test Workload
     stormshift-ocp1 #
     ```
 
-## Two control plane nodes stopeed
+## Two control plane nodes stopped
 
 Date CET: `2025-01-08 15:16:06 +0100`
 
@@ -156,7 +159,7 @@ Test Workload
 |---|---|---|---|---|
 |`2025-01-08 13:51:23 +0000`|🟢 🔴|🟢 🟢*|🟢 🟢|🟢 🟢|
 
-* OpenShift Web console is "available" but without API useless and not really available.
+* OpenShift Web console is available. But the React application cannot connect to Kubernetes/OpenShift API any more.
 * Control plane is read-only == offline / not available
 * Workload is still running as expected
 
@@ -308,7 +311,7 @@ Important points:
     [root@ocp1-cp-1 ~]#
     ```
 
-    Accordint to monitoring, API was online at `2025-01-08 15:44:01`
+    According to monitoring, API was online at `2025-01-08 15:44:01`
 
 ??? quote "oc get nodes (stormshift-ocp1)"
 
@@ -413,7 +416,7 @@ Contiue with steps in docs (kubelet restart, ovn-kubernetes, csr,...)
 * ✅ DNS (A / PTR) done
 * ✅ DHCP done
 * ✅ RHCOS Live ISO Uploaded (rhcos-417.94.202410090854-0-live.x86_64.iso)
-* ✅ control plane igntion exported and available at `http://10.32.96.31/stormshift-ocp1-cp.ign`
+* ✅ control plane ignition file exported and available at `http://10.32.96.31/stormshift-ocp1-cp.ign`
 
 ### Add cp-4
 
@@ -677,7 +680,7 @@ Patch object in another terminal
     stormshift-ocp1 #
     ```
 
-Let's delete the old control-plane artifacts
+Delete the old control-plane artifacts.
 
 #### Delete two old control plane artifacts
 
