@@ -1084,24 +1084,25 @@ Patch object in another terminal
 
 Still persist.
 
-```bash
-stormshift-ocp1 # oc -n openshift-ovn-kubernetes delete pod -l app=ovnkube-control-plane --wait=false
-pod "ovnkube-control-plane-78c675bd69-vlx6k" deleted
-pod "ovnkube-control-plane-78c675bd69-wt8dc" deleted
-stormshift-ocp1 #
-stormshift-ocp1 # oc -n openshift-ovn-kubernetes get pod -l app=ovnkube-control-plane
+??? quote "Details about crashed Pods"
 
-NAME                                     READY   STATUS             RESTARTS      AGE
-ovnkube-control-plane-78c675bd69-cvcfm   2/2     Running            1 (37s ago)   39s
-ovnkube-control-plane-78c675bd69-thp9d   1/2     CrashLoopBackOff   2 (20s ago)   39s
+    ```bash
+    stormshift-ocp1 # oc -n openshift-ovn-kubernetes delete pod -l app=ovnkube-control-plane --wait=false
+    pod "ovnkube-control-plane-78c675bd69-vlx6k" deleted
+    pod "ovnkube-control-plane-78c675bd69-wt8dc" deleted
+    stormshift-ocp1 #
+    stormshift-ocp1 # oc -n openshift-ovn-kubernetes get pod -l app=ovnkube-control-plane
 
-stormshift-ocp1 # oc -n openshift-ovn-kubernetes get pod -l app=ovnkube-control-plane -o wide
-NAME                                     READY   STATUS             RESTARTS        AGE   IP             NODE        NOMINATED NODE   READINESS GATES
-ovnkube-control-plane-78c675bd69-cvcfm   1/2     NotReady           10 (115s ago)   19m   10.32.105.73   ocp1-cp-5   <none>           <none>
-ovnkube-control-plane-78c675bd69-thp9d   1/2     CrashLoopBackOff   12 (48s ago)    19m   10.32.105.72   ocp1-cp-4   <none>           <none>
-stormshift-ocp1 #
+    NAME                                     READY   STATUS             RESTARTS      AGE
+    ovnkube-control-plane-78c675bd69-cvcfm   2/2     Running            1 (37s ago)   39s
+    ovnkube-control-plane-78c675bd69-thp9d   1/2     CrashLoopBackOff   2 (20s ago)   39s
 
-```
+    stormshift-ocp1 # oc -n openshift-ovn-kubernetes get pod -l app=ovnkube-control-plane -o wide
+    NAME                                     READY   STATUS             RESTARTS        AGE   IP             NODE        NOMINATED NODE   READINESS GATES
+    ovnkube-control-plane-78c675bd69-cvcfm   1/2     NotReady           10 (115s ago)   19m   10.32.105.73   ocp1-cp-5   <none>           <none>
+    ovnkube-control-plane-78c675bd69-thp9d   1/2     CrashLoopBackOff   12 (48s ago)    19m   10.32.105.72   ocp1-cp-4   <none>           <none>
+    stormshift-ocp1 #
+    ```
 
 Try to restart kubelet on ocp1-cp-5 and ocp1-cp-4, doesn't help. Let's reboot the nodes.
 
