@@ -1074,8 +1074,47 @@ stormshift-ocp1 # oc -n openshift-ovn-kubernetes get pod -l app=ovnkube-control-
 NAME                                     READY   STATUS             RESTARTS      AGE
 ovnkube-control-plane-78c675bd69-cvcfm   2/2     Running            1 (37s ago)   39s
 ovnkube-control-plane-78c675bd69-thp9d   1/2     CrashLoopBackOff   2 (20s ago)   39s
+
+stormshift-ocp1 # oc -n openshift-ovn-kubernetes get pod -l app=ovnkube-control-plane -o wide
+NAME                                     READY   STATUS             RESTARTS        AGE   IP             NODE        NOMINATED NODE   READINESS GATES
+ovnkube-control-plane-78c675bd69-cvcfm   1/2     NotReady           10 (115s ago)   19m   10.32.105.73   ocp1-cp-5   <none>           <none>
+ovnkube-control-plane-78c675bd69-thp9d   1/2     CrashLoopBackOff   12 (48s ago)    19m   10.32.105.72   ocp1-cp-4   <none>           <none>
 stormshift-ocp1 #
+
 ```
+
+Try to restart kubelet on ocp1-cp-5 and ocp1-cp-4, doesn't help. Let's reboot the nodes.
+
+Restart of ocp1-cp-5 done, still CrashLoopBackOff.
+
+Solution: [ovnkube-control-plane crashes on restart after adding an OVN-Kubernetes NAD for localnet topology](https://access.redhat.com/solutions/7095785)
+
+??? info "Fix ovnkube-control-plane crashes"
+
+    ```bash
+    stormshift-ocp1 # oc get net-attach-def -A
+    NAMESPACE       NAME   AGE
+    localnet-demo   coe    23h
+    stormshift-ocp1 # oc get net-attach-def -n localnet-demo coe -o yaml | yq 'del(.metadata.creationTimestamp)| del(.metadata.generation)|del(.metadata.resourceVersion)|del(.metadata.uid)' > localnet-demo.yaml
+    stormshift-ocp1 # oc delete  net-attach-def -n localnet-demo coe
+    networkattachmentdefinition.k8s.cni.cncf.io "coe" deleted
+    stormshift-ocp1 # oc -n openshift-ovn-kubernetes get pod -l app=ovnkube-control-plane -o wide
+    NAME                                     READY   STATUS             RESTARTS          AGE   IP             NODE        NOMINATED NODE   READINESS GATES
+    ovnkube-control-plane-78c675bd69-7v7qm   1/2     CrashLoopBackOff   210 (3m5s ago)    17h   10.32.105.69   ocp1-cp-1   <none>           <none>
+    ovnkube-control-plane-78c675bd69-bzs6c   1/2     CrashLoopBackOff   210 (2m10s ago)   17h   10.32.105.73   ocp1-cp-5   <none>           <none>
+    stormshift-ocp1 # oc -n openshift-ovn-kubernetes delete pod -l app=ovnkube-control-plane --wait=false
+    pod "ovnkube-control-plane-78c675bd69-7v7qm" deleted
+    pod "ovnkube-control-plane-78c675bd69-bzs6c" deleted
+    stormshift-ocp1 # oc -n openshift-ovn-kubernetes get pod -l app=ovnkube-control-plane -o wide
+    NAME                                     READY   STATUS    RESTARTS   AGE   IP             NODE        NOMINATED NODE   READINESS GATES
+    ovnkube-control-plane-78c675bd69-c5j7l   2/2     Running   0          14s   10.32.105.73   ocp1-cp-5   <none>           <none>
+    ovnkube-control-plane-78c675bd69-qlwzn   2/2     Running   0          14s   10.32.105.72   ocp1-cp-4   <none>           <none>
+    stormshift-ocp1 # oc create -f localnet-demo.yaml
+    networkattachmentdefinition.k8s.cni.cncf.io/coe created
+    stormshift-ocp1 #
+    ```
+
+    ** Workload / VM was not available during the timeframe of delete net-attach-def!**
 
 ## Docud nodes
 
