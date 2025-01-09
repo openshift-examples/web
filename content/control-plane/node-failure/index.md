@@ -7,7 +7,8 @@ tags: ['etcd','control-plane','v4.17']
 
 # Control plane node failure test
 
-Just some stupid tests with OpenShift 4.17
+* Just some stupid tests with OpenShift 4.17
+* **With [OCPSTRAT-539](https://issues.redhat.com/browse/OCPSTRAT-539) there will be a improvement of the process. Hopefully, land in 4.18!**
 
 Useful etcd commands
 
@@ -48,7 +49,7 @@ Test Workload
 |---|---|---|---|---|
 |`2025-01-08 13:51:23 +0000`|🟢 🟢|🟢 🟢|🟢 🟢|🟢 🟢|
 
-??? info "etcdctl endpoint status --cluster -w table"
+??? quote "etcdctl endpoint status --cluster -w table"
 
     ```bash
     sh-5.1#   etcdctl endpoint status --cluster -w table
@@ -84,7 +85,7 @@ Test Workload
 |---|---|---|---|---|
 |`2025-01-08 13:51:23 +0000`|🟢 🟢|🟢 🟢|🟢 🟢|🟢 🟢|
 
-??? info "etcdctl endpoint status --cluster -w table"
+??? quote "etcdctl endpoint status --cluster -w table"
 
     ```bash
     sh-5.1# etcdctl endpoint status --cluster -w table
@@ -99,7 +100,7 @@ Test Workload
     sh-5.1#
     ```
 
-??? info "etcdctl endpoint health  -w table"
+??? quote "etcdctl endpoint health  -w table"
 
     ```bash
     sh-5.1# etcdctl endpoint health --cluster -w table
@@ -118,7 +119,7 @@ Test Workload
     sh-5.1#
     ```
 
-??? info "oc get nodes (stormshift-ocp1)"
+??? quote "oc get nodes (stormshift-ocp1)"
 
     ```bash
     stormshift-ocp1 # oc get nodes
@@ -159,7 +160,7 @@ Test Workload
 * Control plane is read-only == offline / not available
 * Workload is still running as expected
 
-??? info "etcdctl endpoint status --cluster -w table"
+??? quote "etcdctl endpoint status --cluster -w table"
 
     etcd pods are not available via API anymore!
 
@@ -182,7 +183,7 @@ Test Workload
     +---------------------------+------------------+---------+---------+-----------+------------+-----------+------------+--------------------+-----------------------+
     ```
 
-??? info "etcdctl endpoint health  -w table"
+??? quote "etcdctl endpoint health  -w table"
 
     ```bash
     [root@ocp1-cp-1 /]# etcdctl endpoint health  -w table
@@ -200,7 +201,7 @@ Test Workload
     [root@ocp1-cp-1 /]#
     ```
 
-??? info "oc get nodes (stormshift-ocp1)"
+??? quote "oc get nodes (stormshift-ocp1)"
 
     ```bash
     stormshift-ocp1 # oc get nodes
@@ -218,7 +219,7 @@ Documentation: [5.1.1. Backing up etcd data](https://docs.redhat.com/en/document
 
 You have to run the backup script wiht `--force` because API is not available.
 
-??? info "/usr/local/bin/cluster-backup.sh"
+??? quote "/usr/local/bin/cluster-backup.sh"
 
     ```bash
     [root@ocp1-cp-1 ~]# date +"%F %T %z"
@@ -258,7 +259,7 @@ Important points:
 
 * A healthy control plane host to use as the recovery host.
 
-??? info "Point 6. check keepalived"
+??? quote "Point 6. check keepalived"
 
     ```bash
     [root@ocp1-cp-1 ~]# date +"%F %T %z"
@@ -268,7 +269,7 @@ Important points:
     [root@ocp1-cp-1 ~]#
     ```
 
-??? info "Point 8. cluster-restore.sh"
+??? quote "Point 8. cluster-restore.sh"
 
     ```bash
     [root@ocp1-cp-1 ~]# date +"%F %T %z"
@@ -309,7 +310,7 @@ Important points:
 
     Accordint to monitoring, API was online at `2025-01-08 15:44:01`
 
-??? info "oc get nodes (stormshift-ocp1)"
+??? quote "oc get nodes (stormshift-ocp1)"
 
     ```bash
     stormshift-ocp1 # oc get nodes
@@ -323,7 +324,7 @@ Important points:
     stormshift-ocp1 #
     ```
 
-??? info "etcdctl endpoint status..."
+??? quote "etcdctl endpoint status..."
 
     ```bash
     sh-5.1# env | grep ETCDCTL
@@ -351,7 +352,7 @@ Important points:
     +---------------------------+------------------+---------+---------+-----------+------------+-----------+------------+--------------------+--------+
     ```
 
-??? info "etcdctl endpoint health  -w table"
+??? quote "etcdctl endpoint health  -w table"
 
     ```bash
     sh-5.1# env | grep ETCDCTL
@@ -445,7 +446,7 @@ Approve CSR at `stormshift-ocp1`
 oc get csr | awk '/Pending/ { print $1 }' | xargs oc adm certificate approve
 ```
 
-??? info "oc get nodes (stormshift-ocp1)"
+??? quote "oc get nodes (stormshift-ocp1)"
 
     ```bash
     stormshift-ocp1 # oc get nodes
@@ -467,6 +468,17 @@ oc get csr | awk '/Pending/ { print $1 }' | xargs oc adm certificate approve
     ```bash
     stormshift-ocp1 # oc apply -f ocp1-cp-4-bmh.yaml
     baremetalhost.metal3.io/ocp1-cp-4 created
+    ```
+
+=== "ocp1-cp-4-bmh.yaml"
+
+    ```yaml
+    --8<-- "content/control-plane/node-failure/ocp1-cp-4-bmh.yaml"
+    ```
+
+??? quote "oc get bmh -n openshift-machine-api"
+
+    ```bash
     stormshift-ocp1 # oc get bmh -n openshift-machine-api
     NAME            STATE       CONSUMER                    ONLINE   ERROR   AGE
     ocp1-cp-1       unmanaged   ocp1-g6vbv-master-0         true             22h
@@ -479,12 +491,6 @@ oc get csr | awk '/Pending/ { print $1 }' | xargs oc adm certificate approve
     stormshift-ocp1 #
     ```
 
-=== "ocp1-cp-4-bmh.yaml"
-
-    ```yaml
-    --8<-- "content/control-plane/node-failure/ocp1-cp-4-bmh.yaml"
-    ```
-
 #### Machine
 
 === "oc apply..."
@@ -492,6 +498,17 @@ oc get csr | awk '/Pending/ { print $1 }' | xargs oc adm certificate approve
     ```
     stormshift-ocp1 # oc apply -f ocp1-cp-4-machine.yaml
     machine.machine.openshift.io/ocp1-cp-4 created
+    ```
+
+=== "ocp1-cp-4-machine.yaml"
+
+    ```yaml
+    --8<-- "content/control-plane/node-failure/ocp1-cp-4-machine.yaml"
+    ```
+
+??? quote "oc get machine -n openshift-machine-api"
+
+    ```bash
     stormshift-ocp1 # oc get machine -n openshift-machine-api
     NAME                        PHASE         TYPE   REGION   ZONE   AGE
     ocp1-cp-4                   Provisioned                          2m29s
@@ -504,12 +521,6 @@ oc get csr | awk '/Pending/ { print $1 }' | xargs oc adm certificate approve
     stormshift-ocp1 #
     ```
 
-=== "ocp1-cp-4-machine.yaml"
-
-    ```yaml
-    --8<-- "content/control-plane/node-failure/ocp1-cp-4-machine.yaml"
-    ```
-
 #### Link Machine & BareMetalHost
 
 Open API proxy in on terminal
@@ -520,32 +531,34 @@ oc proxy
 
 Patch object in another terminal
 
-```shell
-export HOST_PROXY_API_PATH="http://127.0.0.1:8001/apis/metal3.io/v1alpha1/namespaces/openshift-machine-api/baremetalhosts"
+??? quote "Patch the status field of bmh object"
 
-read -r -d '' host_patch << EOF
-{
-  "status": {
-    "hardware": {
-      "nics": [
-        {
-          "ip": "10.32.105.72",
-          "mac": "0E:C0:EF:20:69:48"
+    ```shell
+    export HOST_PROXY_API_PATH="http://127.0.0.1:8001/apis/metal3.io/v1alpha1/namespaces/openshift-machine-api/baremetalhosts"
+
+    read -r -d '' host_patch << EOF
+    {
+    "status": {
+        "hardware": {
+        "nics": [
+            {
+            "ip": "10.32.105.72",
+            "mac": "0E:C0:EF:20:69:48"
+            }
+        ]
         }
-      ]
     }
-  }
-}
-EOF
+    }
+    EOF
 
-curl -vv \
-     -X PATCH \
-     "${HOST_PROXY_API_PATH}/ocp1-cp-4/status" \
-     -H "Content-type: application/merge-patch+json" \
-     -d "${host_patch}"
-```
+    curl -vv \
+        -X PATCH \
+        "${HOST_PROXY_API_PATH}/ocp1-cp-4/status" \
+        -H "Content-type: application/merge-patch+json" \
+        -d "${host_patch}"
+    ```
 
-??? info "oc get bmh,machine -n openshift-machine-api"
+??? quote "oc get bmh,machine -n openshift-machine-api"
 
     ```bash
     stormshift-ocp1 # oc get bmh,machine -n openshift-machine-api
@@ -571,7 +584,7 @@ curl -vv \
 
 #### Validate etcd
 
-??? info "etcdctl..."
+??? quote "etcdctl..."
 
     ```bash
     oc rsh etcd-ocp1-cp-1
@@ -616,7 +629,7 @@ curl -vv \
     ETCDCTL_CERT=/etc/kubernetes/static-pod-certs/secrets/etcd-all-certs/etcd-peer-ocp1-cp-1.crt
     ```
 
-??? info "oc get pods -n openshift-etcd -o wide"
+??? quote "oc get pods -n openshift-etcd -o wide"
 
     ```bash
     stormshift-ocp1 # oc get pods -n openshift-etcd -o wide
@@ -668,7 +681,12 @@ Let's delete the old control-plane artifacts
 
 #### Delete two old control plane artifacts
 
-Date 2025-01-08 16:37:12 +0100
+* Date: `2025-01-08 16:37:12 +0100`
+
+???+ tip
+
+    During this process, the API is not availale from time to time. Because of reconfiguration of etcd.
+    I would recommend to do the cleanup at the end. After the recovery of all control plane nodes.
 
 ```bash
 stormshift-ocp1 # oc delete node/ocp1-cp-2 node/ocp1-cp-3
@@ -677,58 +695,56 @@ node "ocp1-cp-3" deleted
 stormshift-ocp1 #
 ```
 
-=> Short downtime of the API!
+??? quote "oc get -n openshift-machine-api bmh,machine"
 
-```bash
-stormshift-ocp1 # oc get -n openshift-machine-api bmh,machine
-NAME                                    STATE       CONSUMER                    ONLINE   ERROR   AGE
-baremetalhost.metal3.io/ocp1-cp-1       unmanaged   ocp1-g6vbv-master-0         true             22h
-baremetalhost.metal3.io/ocp1-cp-4       unmanaged   ocp1-cp-4                   true             30m
-baremetalhost.metal3.io/ocp1-worker-1   unmanaged   ocp1-g6vbv-worker-0-jmj97   true             22h
-baremetalhost.metal3.io/ocp1-worker-2   unmanaged   ocp1-g6vbv-worker-0-wnbqv   true             22h
-baremetalhost.metal3.io/ocp1-worker-3   unmanaged   ocp1-g6vbv-worker-0-zszgr   true             22h
+    ```bash
+    stormshift-ocp1 # oc get -n openshift-machine-api bmh,machine
+    NAME                                    STATE       CONSUMER                    ONLINE   ERROR   AGE
+    baremetalhost.metal3.io/ocp1-cp-1       unmanaged   ocp1-g6vbv-master-0         true             22h
+    baremetalhost.metal3.io/ocp1-cp-4       unmanaged   ocp1-cp-4                   true             30m
+    baremetalhost.metal3.io/ocp1-worker-1   unmanaged   ocp1-g6vbv-worker-0-jmj97   true             22h
+    baremetalhost.metal3.io/ocp1-worker-2   unmanaged   ocp1-g6vbv-worker-0-wnbqv   true             22h
+    baremetalhost.metal3.io/ocp1-worker-3   unmanaged   ocp1-g6vbv-worker-0-zszgr   true             22h
 
-NAME                                                     PHASE     TYPE   REGION   ZONE   AGE
-machine.machine.openshift.io/ocp1-cp-4                   Running                          30m
-machine.machine.openshift.io/ocp1-g6vbv-master-0         Running                          22h
-machine.machine.openshift.io/ocp1-g6vbv-worker-0-jmj97   Running                          22h
-machine.machine.openshift.io/ocp1-g6vbv-worker-0-wnbqv   Running                          22h
-machine.machine.openshift.io/ocp1-g6vbv-worker-0-zszgr   Running                          22h
-stormshift-ocp1 #
-```
+    NAME                                                     PHASE     TYPE   REGION   ZONE   AGE
+    machine.machine.openshift.io/ocp1-cp-4                   Running                          30m
+    machine.machine.openshift.io/ocp1-g6vbv-master-0         Running                          22h
+    machine.machine.openshift.io/ocp1-g6vbv-worker-0-jmj97   Running                          22h
+    machine.machine.openshift.io/ocp1-g6vbv-worker-0-wnbqv   Running                          22h
+    machine.machine.openshift.io/ocp1-g6vbv-worker-0-zszgr   Running                          22h
+    stormshift-ocp1 #
+    ```
 
-=> API is gone
+??? quote "oc get pods -n openshift-etcd"
 
-```bash
-stormshift-ocp1 # oc get pods -n openshift-etcd
-NAME                           READY   STATUS      RESTARTS   AGE
-etcd-guard-ocp1-cp-1           1/1     Running     0          22h
-etcd-guard-ocp1-cp-4           1/1     Running     0          13m
-etcd-ocp1-cp-1                 4/4     Running     0          23s
-etcd-ocp1-cp-4                 4/4     Running     0          13m
-installer-10-ocp1-cp-1         0/1     Completed   0          22h
-installer-12-ocp1-cp-4         0/1     Completed   0          18m
-installer-15-ocp1-cp-1         0/1     Completed   0          2m43s
-installer-15-ocp1-cp-4         1/1     Running     0          9s
-installer-9-ocp1-cp-1          0/1     Completed   0          22h
-revision-pruner-10-ocp1-cp-1   0/1     Completed   0          22h
-revision-pruner-10-ocp1-cp-4   0/1     Completed   0          19m
-revision-pruner-11-ocp1-cp-1   0/1     Completed   0          18m
-revision-pruner-11-ocp1-cp-4   0/1     Completed   0          18m
-revision-pruner-12-ocp1-cp-1   0/1     Completed   0          18m
-revision-pruner-12-ocp1-cp-4   0/1     Completed   0          18m
-revision-pruner-13-ocp1-cp-1   0/1     Completed   0          12m
-revision-pruner-13-ocp1-cp-4   0/1     Completed   0          12m
-revision-pruner-14-ocp1-cp-1   0/1     Completed   0          12m
-revision-pruner-14-ocp1-cp-4   0/1     Completed   0          12m
-revision-pruner-15-ocp1-cp-1   0/1     Completed   0          2m44s
-revision-pruner-15-ocp1-cp-4   0/1     Completed   0          2m41s
-revision-pruner-9-ocp1-cp-1    0/1     Completed   0          22h
-```
+    ```bash
+    stormshift-ocp1 # oc get pods -n openshift-etcd
+    NAME                           READY   STATUS      RESTARTS   AGE
+    etcd-guard-ocp1-cp-1           1/1     Running     0          22h
+    etcd-guard-ocp1-cp-4           1/1     Running     0          13m
+    etcd-ocp1-cp-1                 4/4     Running     0          23s
+    etcd-ocp1-cp-4                 4/4     Running     0          13m
+    installer-10-ocp1-cp-1         0/1     Completed   0          22h
+    installer-12-ocp1-cp-4         0/1     Completed   0          18m
+    installer-15-ocp1-cp-1         0/1     Completed   0          2m43s
+    installer-15-ocp1-cp-4         1/1     Running     0          9s
+    installer-9-ocp1-cp-1          0/1     Completed   0          22h
+    revision-pruner-10-ocp1-cp-1   0/1     Completed   0          22h
+    revision-pruner-10-ocp1-cp-4   0/1     Completed   0          19m
+    revision-pruner-11-ocp1-cp-1   0/1     Completed   0          18m
+    revision-pruner-11-ocp1-cp-4   0/1     Completed   0          18m
+    revision-pruner-12-ocp1-cp-1   0/1     Completed   0          18m
+    revision-pruner-12-ocp1-cp-4   0/1     Completed   0          18m
+    revision-pruner-13-ocp1-cp-1   0/1     Completed   0          12m
+    revision-pruner-13-ocp1-cp-4   0/1     Completed   0          12m
+    revision-pruner-14-ocp1-cp-1   0/1     Completed   0          12m
+    revision-pruner-14-ocp1-cp-4   0/1     Completed   0          12m
+    revision-pruner-15-ocp1-cp-1   0/1     Completed   0          2m44s
+    revision-pruner-15-ocp1-cp-4   0/1     Completed   0          2m41s
+    revision-pruner-9-ocp1-cp-1    0/1     Completed   0          22h
+    ```
 
-=> API is back
-
-??? info "etcdctl..."
+??? quote "etcdctl..."
 
     ```bash
     oc rsh etcd-ocp1-cp-1
@@ -779,21 +795,10 @@ revision-pruner-9-ocp1-cp-1    0/1     Completed   0          22h
 ???+ warning "Cluster alert:"
 
     **NoOvnClusterManagerLeader**
-    Networking control plane is degraded. Networking configuration updates applied to the cluster will not be
-    implemented while there is no OVN Kubernetes cluster manager leader. Existing workloads should continue to have connectivity.
-    OVN-Kubernetes control plane is not functional.
 
-## Status at 2025-01-08 16:47:38 +0100
+    > Networking control plane is degraded. Networking configuration updates applied to the cluster will not be implemented while there is no OVN Kubernetes cluster manager leader. Existing workloads should continue to have connectivity. OVN-Kubernetes control plane is not functional.
 
-|Node|IP|Mac|Leader|API VIP|
-|---|---|---|---|---|
-|cp-1 (0)|10.32.105.69|0E:C0:EF:20:69:45|✅|✅|
-|cp-4 (4)|10.32.105.72|0E:C0:EF:20:69:48|⚪️|⚪️|
-|cp-5 (5)|10.32.105.73|0E:C0:EF:20:69:49|🛠️|🛠️|
-
-|API<br/>(ping/https)|WebUI<br/>(ping/https)|App <br/>(ping/https)|VM<br/>(ping/https)|
-|---|---|---|---|
-|🟢 🟢|🟢 🟢|🟢 🟢|🟢 🟢|
+    Let's handle that later, first recovery the whole control plane!
 
 ### Add cp-5
 
@@ -826,7 +831,7 @@ Approve CSR at `stormshift-ocp1`
 oc get csr | awk '/Pending/ { print $1 }' | xargs oc adm certificate approve
 ```
 
-??? info "oc get nodes (stormshift-ocp1)"
+??? quote "oc get nodes (stormshift-ocp1)"
 
     ```bash
     stormshift-ocp1 # oc get nodes
@@ -848,6 +853,17 @@ oc get csr | awk '/Pending/ { print $1 }' | xargs oc adm certificate approve
     ```bash
     stormshift-ocp1 # oc apply -f ocp1-cp-5-bmh.yaml
     baremetalhost.metal3.io/ocp1-cp-5 created
+    ```
+
+=== "ocp1-cp-5-bmh.yaml"
+
+    ```yaml
+    --8<-- "content/control-plane/node-failure/ocp1-cp-5-bmh.yaml"
+    ```
+
+??? quote "oc get bmh -n openshift-machine-api"
+
+    ```bash
     stormshift-ocp1 # oc get bmh -n openshift-machine-api
     NAME            STATE       CONSUMER                    ONLINE   ERROR   AGE
     ocp1-cp-1       unmanaged   ocp1-g6vbv-master-0         true             22h
@@ -859,12 +875,6 @@ oc get csr | awk '/Pending/ { print $1 }' | xargs oc adm certificate approve
     stormshift-ocp1 #
     ```
 
-=== "ocp1-cp-5-bmh.yaml"
-
-    ```yaml
-    --8<-- "content/control-plane/node-failure/ocp1-cp-5-bmh.yaml"
-    ```
-
 #### Machine (cp-5)
 
 === "oc apply..."
@@ -872,6 +882,17 @@ oc get csr | awk '/Pending/ { print $1 }' | xargs oc adm certificate approve
     ```
     stormshift-ocp1 # oc apply -f ocp1-cp-5-machine.yaml
     machine.machine.openshift.io/ocp1-cp-5 created
+    ```
+
+=== "ocp1-cp-5-machine.yaml"
+
+    ```yaml
+    --8<-- "content/control-plane/node-failure/ocp1-cp-5-machine.yaml"
+    ```
+
+??? quote "oc get machine -n openshift-machine-api"
+
+    ```bash
     stormshift-ocp1 # oc get machine -n openshift-machine-api
     NAME                        PHASE         TYPE   REGION   ZONE   AGE
     ocp1-cp-4                   Running                              45m
@@ -881,12 +902,6 @@ oc get csr | awk '/Pending/ { print $1 }' | xargs oc adm certificate approve
     ocp1-g6vbv-worker-0-wnbqv   Running                              22h
     ocp1-g6vbv-worker-0-zszgr   Running                              22h
     stormshift-ocp1 #
-    ```
-
-=== "ocp1-cp-5-machine.yaml"
-
-    ```yaml
-    --8<-- "content/control-plane/node-failure/ocp1-cp-5-machine.yaml"
     ```
 
 #### Link Machine & BareMetalHost (cp-5)
@@ -899,32 +914,34 @@ oc proxy
 
 Patch object in another terminal
 
-```shell
-export HOST_PROXY_API_PATH="http://127.0.0.1:8001/apis/metal3.io/v1alpha1/namespaces/openshift-machine-api/baremetalhosts"
+??? quote "Patch the status field of bmh object"
 
-read -r -d '' host_patch << EOF
-{
-  "status": {
-    "hardware": {
-      "nics": [
-        {
-          "ip": "10.32.105.73",
-          "mac": "0E:C0:EF:20:69:49"
+    ```shell
+    export HOST_PROXY_API_PATH="http://127.0.0.1:8001/apis/metal3.io/v1alpha1/namespaces/openshift-machine-api/baremetalhosts"
+
+    read -r -d '' host_patch << EOF
+    {
+    "status": {
+        "hardware": {
+        "nics": [
+            {
+            "ip": "10.32.105.73",
+            "mac": "0E:C0:EF:20:69:49"
+            }
+        ]
         }
-      ]
     }
-  }
-}
-EOF
+    }
+    EOF
 
-curl -vv \
-     -X PATCH \
-     "${HOST_PROXY_API_PATH}/ocp1-cp-5/status" \
-     -H "Content-type: application/merge-patch+json" \
-     -d "${host_patch}"
-```
+    curl -vv \
+        -X PATCH \
+        "${HOST_PROXY_API_PATH}/ocp1-cp-5/status" \
+        -H "Content-type: application/merge-patch+json" \
+        -d "${host_patch}"
+    ```
 
-??? info "oc get bmh,machine -n openshift-machine-api"
+??? quote "oc get bmh,machine -n openshift-machine-api"
 
     ```bash
     stormshift-ocp1 # oc get bmh,machine -n openshift-machine-api
@@ -948,7 +965,7 @@ curl -vv \
 
 ### Validate etcd again
 
-??? info "Check etcd rollout..."
+??? quote "Check etcd rollout..."
 
     ```bash
     stormshift-ocp1 # oc get pods -n openshift-etcd
@@ -1022,7 +1039,7 @@ curl -vv \
 
 => Wait until all etcd member are at revision 19
 
-??? info "etcdctl ..."
+??? quote "etcdctl ..."
 
     ```bash
     sh-5.1# etcdctl endpoint health  -w table
@@ -1089,7 +1106,7 @@ Restart of ocp1-cp-5 done, still CrashLoopBackOff.
 
 Solution: [ovnkube-control-plane crashes on restart after adding an OVN-Kubernetes NAD for localnet topology](https://access.redhat.com/solutions/7095785)
 
-??? info "Fix ovnkube-control-plane crashes"
+??? quote "Fix ovnkube-control-plane crashes"
 
     ```bash
     stormshift-ocp1 # oc get net-attach-def -A
@@ -1114,31 +1131,4 @@ Solution: [ovnkube-control-plane crashes on restart after adding an OVN-Kubernet
     stormshift-ocp1 #
     ```
 
-    ** Workload / VM was not available during the timeframe of delete net-attach-def!**
-
-## Docud nodes
-
-"A healthy control plane host to use as the recovery host."
-Is not healthy, its available and preview etcd was running
-
-"Stop the static pods on any other control plane nodes."
-Bold "other control plane nodes"
-
-## Resources
-
-* <https://issues.redhat.com/browse/OCPSTRAT-539>
-* <https://docs.google.com/presentation/d/1t9MSuM7DxcKAY9F0u_upjOedJRinSURHjpGBLQPt-go/edit#slide=id.g301bdd19e2d_8_0>
-  * <https://www.youtube.com/live/DvKHwz-c11c?si=ve0conc9FRkL10EL&t=740>
-* ETCD-654 - <https://issues.redhat.com/browse/ETCD-654>
-  * <https://github.com/openshift/cluster-etcd-operator/pull/1313>
-  * <https://docs.google.com/document/d/17w9oVIfDjOnEyGonetdReMVEgw1Qe6GQkIvbuIkWfns/edit?tab=t.0>
-* ETCD-293 - <https://issues.redhat.com/browse/ETCD-293>
-* <https://issues.redhat.com/browse/RFE-2573>
-* <https://docs.google.com/document/d/19N0BPwu7HaKlyDJsQt68Mz6boIL0Q0KicJhl4lmk-xo/edit?tab=t.0>
-* <https://issues.redhat.com/browse/OCPPLAN-7568>
-* <https://www.dobrica.sh/notes/Recovering-from-losing-quorum-in-etcd-cluster>
-* <https://access.redhat.com/solutions/5781231> (v4.5)
-* <https://bugzilla.redhat.com/show_bug.cgi?id=1925727> (v4.5)
-* <https://www.redhat.com/en/blog/ocp-disaster-recovery-part-3-recovering-an-openshift-4-ipi-cluster-with-the-loss-of-two-master-nodes>
-  (vsphere ipi)
-* <https://www.redhat.com/en/blog/ocp-disaster-recovery-part-2-recovering-an-openshift-4-ipi-cluster-with-the-loss-of-one-master-node> (vsphere ipi)
+    **Workload / VM was not available during the timeframe of delete net-attach-def!**
