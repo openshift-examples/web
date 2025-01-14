@@ -1,0 +1,33 @@
+apiVersion: v1alpha1
+kind: AgentConfig
+rendezvousIP: 192.168.8.2
+metadata:
+  name: edge-gateway
+hosts:
+  - hostname: edge-gateway
+    role: master
+    interfaces:
+      - name: enp2s0
+        macAddress: 84:8b:cd:4d:15:f9
+    networkConfig:
+      interfaces:
+        - name: enp2s0
+          type: ethernet
+          state: up
+          mac-address: 84:8b:cd:4d:15:f9
+          ipv4:
+            enabled: true
+            address:
+              - ip: 192.168.8.2
+                prefix-length: 24
+            dhcp: false
+      dns-resolver:
+        config:
+          server:
+            - 192.168.8.1
+      routes:
+        config:
+          - destination: 0.0.0.0/0
+            next-hop-address: 192.168.8.1
+            next-hop-interface: enp2s0
+            table-id: 254
