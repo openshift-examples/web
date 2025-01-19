@@ -51,7 +51,7 @@ https://rhcos.mirror.openshift.com/art/storage/prod/streams/4.17-9.4/builds/417.
 
 ```
 
-## Add node in my case
+## Add control-plane node
 
 Node overview
 
@@ -203,3 +203,27 @@ curl -vv \
      -H "Content-type: application/merge-patch+json" \
      -d "${host_patch}"
 ```
+
+## Add worker node
+
+* *I added two interfaces to the VM for bonding tests*
+* *nodes-config.yaml does not match to vm example!!*
+
+??? quote "nodes-config.yaml for a BareMetal node"
+
+    ```yaml
+    --8<-- "content/cluster-lifecycle/add-node/nodes-config.yaml"
+    ```
+
+Create & upload iso:
+
+```bash
+oc adm node-image create nodes-config.yaml
+virtctl image-upload dv  extra-worker-1-iso  --size=2Gi --storage-class coe-netapp-nas --image-path node.x86_64.iso
+```
+
+??? quote "Example VM definition extra-worker-1.yaml"
+
+    ```yaml
+    --8<-- "content/cluster-lifecycle/add-node/extra-worker-1.yaml"
+    ```
