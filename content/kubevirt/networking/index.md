@@ -177,7 +177,7 @@ spec:
 EOF
 ```
 
-## Localnet example
+## Example: Localnet
 
 * Tested with OpenShift 4.17.0
 * [Blog post: Red Hat OpenShift Virtualization: Configuring virtual machines to use external networks](https://www.redhat.com/en/blog/access-external-networks-with-openshift-virtualization)
@@ -241,6 +241,105 @@ oc new project localnet-demo
 
     ```yaml
     --8<-- "content/kubevirt/networking/localnet-fedora-vm.yaml"
+    ```
+
+## Example: Bonding -> VLAN -> LocalNet & Bridge
+
+* Tested with OpenShift 4.17.11
+
+![bonding-vlan-localnet-bridge](bonding-vlan-localnet-bridge.png)
+
+??? quote "NMState for initial setup / add-node"
+
+    ```yaml
+    hosts:
+    - hostname: inf49
+      rootDeviceHints:
+        deviceName: /dev/sda
+      interfaces:
+        - macAddress: b4:99:ba:b4:49:d2
+          name: enp3s0f0
+        - macAddress: 00:1b:21:b5:6a:20
+          name: ens2f0
+        - macAddress: 00:1b:21:b5:6a:21
+          name: ens2f1
+      networkConfig:
+        interfaces:
+          - name: enp3s0f0
+            type: ethernet
+            ipv6:
+              enabled: false
+            ipv4:
+              enabled: false
+          - name: bond0.32
+            type: vlan
+            state: up
+            ipv4:
+              enabled: true
+              dhcp: true
+            ipv6:
+              enabled: false
+            vlan:
+              base-iface: bond0
+              id: 32
+          - name: bond0
+            type: bond
+            state: up
+            link-aggregation:
+              mode: active-backup
+              options:
+                primary: ens2f0
+                miimon: '140'
+              port:
+              - ens2f0
+              - ens2f1
+    ```
+
+??? quote "NodeNetworkConfigurationPolicy (NNCP), create linux bridge connected to bond0"
+
+    ```yaml
+    apiVersion: nmstate.io/v1
+    kind: NodeNetworkConfigurationPolicy
+    metadata:
+      name: coe-bridge
+    spec:
+      desiredState:
+        interfaces:
+        - bridge:
+            options:
+              stp:
+                enabled: false
+            port:
+            - name: bond0
+          name: coe-bridge
+          state: up
+          type: linux-bridge
+      nodeSelector:
+        bond0-available: "true"
+    ```
+
+??? quote "net-attach-def connect to bridge"
+
+    ```yaml
+    apiVersion: k8s.cni.cncf.io/v1
+    kind: NetworkAttachmentDefinition
+    metadata:
+      annotations:
+        k8s.v1.cni.cncf.io/resourceName: bridge.network.kubevirt.io/coe-bridge
+      name: vlan1004
+      namespace: coe-bridge-test
+    spec:
+      config: |-
+        {
+            "cniVersion": "0.3.1",
+            "name": "vlan1004",
+            "type": "bridge",
+            "bridge": "coe-bridge",
+            "ipam": {},
+            "macspoofchk": false,
+            "preserveDefaultVlan": false,
+            "vlan": 1004
+        }
     ```
 
 ## Debugging purpose
