@@ -110,3 +110,22 @@ Allocatable:
   hugepages-2Mi:                          0
   memory:                                 1028260784Ki
 ```
+
+## Create a virtual machine
+
+![Configuration](pci-passthrough-config.png)
+
+```yaml
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+spec:
+  template:
+    spec:
+      domain:
+        devices:
+          hostDevices:
+            - deviceName: cisco.com/VIC_1225
+              name: hostDevices-jade-booby-35
+```
+
+![lspci](pci-passthrough-lspci.png)
