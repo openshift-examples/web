@@ -45,7 +45,7 @@ sh-5.1# lspci -nnk -d '1137:0043'
 sh-5.1#
 ```
 
-# MachineConfig to achieve Point 1,2 and 3.
+# MachineConfig to achieve Point 1,2 and 3
 
 ```yaml
 apiVersion: machineconfiguration.openshift.io/v1
@@ -96,8 +96,8 @@ spec:
 
 # Check the node
 
-```
- oc describe node/ucs57 | grep -A10 'Allocatable:'
+```shell
+$ oc describe node/ucs57 | grep -A10 'Allocatable:'
 Allocatable:
   bridge.network.kubevirt.io/coe-bridge:  1k
   cisco.com/VIC_1225:                     4
