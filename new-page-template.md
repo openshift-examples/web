@@ -6,7 +6,7 @@ tags: ['tagA','tagB','v4.17']
 ---
 # Some information
 
-Official documentation: 
+Official documentation:
 
 Tested with:
 
