@@ -2,9 +2,18 @@
 title: New Page
 linktitle: New Page
 description: Some information
-tags: ['tagA','tagB']
+tags: ['tagA','tagB','v4.17']
 ---
 # Some information
+
+Official documentation: 
+
+Tested with:
+
+|Component|Version|
+|---|---|
+|OpenShift|v4.17.14|
+|OpenShift Virt|v4.17.4|
 
 ## Content
 
