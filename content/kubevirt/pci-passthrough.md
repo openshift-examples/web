@@ -16,7 +16,7 @@ tags: ['cnv','kubevirt','v4.17']
 |OpenShift|v4.17.14|
 |OpenShift Virt|v4.17.4|
 
-# High-level flow
+## High-level flow
 
 1) Enable iommu
 2) Configure vfio-pci
@@ -45,7 +45,7 @@ sh-5.1# lspci -nnk -d '1137:0043'
 sh-5.1#
 ```
 
-# MachineConfig to achieve Point 1,2 and 3
+## MachineConfig to achieve Point 1,2 and 3
 
 ```yaml
 apiVersion: machineconfiguration.openshift.io/v1
@@ -84,7 +84,7 @@ spec:
     - rd.driver.blacklist=enic
 ```
 
-# KubeVirt / OpenShift Virtualization configuration changes to achive point 4
+## KubeVirt / OpenShift Virtualization configuration changes to achive point 4
 
 ```yaml
 spec:
@@ -94,7 +94,7 @@ spec:
       resourceName: cisco.com/VIC_1225
 ```
 
-# Check the node
+## Check the node
 
 ```shell
 $ oc describe node/ucs57 | grep -A10 'Allocatable:'
