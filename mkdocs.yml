@@ -169,6 +169,7 @@ nav:
       - cloud.redhat.com: cluster-lifecycle/cloud-redhat-com.md
       - Backup:
           - Etcd: cluster-lifecycle/backup/etcd.md
+      - Storage migration: cluster-lifecycle/storage-migration.md
       - Restore & Recovery: cluster-lifecycle/restore.md
       - Shutdown: cluster-lifecycle/shutdown.md
 
