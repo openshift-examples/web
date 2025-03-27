@@ -23,7 +23,7 @@ The initial bond interface, consisting of two adapters bonded together with an I
 
 ## Additional dedicated Network Interfaces for traffic types
 
-The following is a sample NMstate configuration making use of two adapters on the host to create a bonded interface in the LACP (802.1ad) run mode. The bonds are intended to be used for isolating network traffic for different purposes. This provides the advantage of avoiding noisy neighbor scenarios for some interfaces that may have a large impact, for example a backup for a virtual machine consuming significant network throughput impacting ODF or etcd traffic on a shared interface.
+The following is a sample NMstate configuration making use of two adapters on the host to create a bonded interface in the LACP (802.3ad) run mode. The bonds are intended to be used for isolating network traffic for different purposes. This provides the advantage of avoiding noisy neighbor scenarios for some interfaces that may have a large impact, for example a backup for a virtual machine consuming significant network throughput impacting ODF or etcd traffic on a shared interface.
 
 ```yaml
 apiVersion: nmstate.io/v1
