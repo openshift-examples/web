@@ -1,0 +1,29 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ubi-micro
+  labels:
+    app: ubi-micro
+    app.openshift.io/runtime: redhat
+    app.kubernetes.io/part-of: ubi-micro
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: ubi-micro
+  template:
+    metadata:
+      labels:
+        app: ubi-micro
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - name: tools
+          image: registry.access.redhat.com/ubi9/ubi-micro:latest
+          command:
+            - "/bin/sh"
+            - "-c"
+            - "sleep infinity"
