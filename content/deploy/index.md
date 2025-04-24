@@ -52,37 +52,37 @@ spec:
 
 ??? example "Pod"
 
-    === "rhel-support-tools-pod.yaml"
+    === "run-rhel-support-tools-pod.yaml"
 
         ```yaml
-        --8<-- "content/deploy/rhel-support-tools-pod.yaml"
+        --8<-- "content/deploy/run-rhel-support-tools-pod.yaml"
         ```
 
     === "oc apply -f ...."
 
         ```bash
-        oc apply -f {{ page.canonical_url }}rhel-support-tools-pod.yaml
+        oc apply -f {{ page.canonical_url }}run-rhel-support-tools-pod.yaml
         ```
 
-    source: [rhel-support-tools-pod.yaml]({{ page.canonical_url }}rhel-support-tools-pod.yaml)
+    source: [run-rhel-support-tools-pod.yaml]({{ page.canonical_url }}run-rhel-support-tools-pod.yaml)
 
 ??? example "Deployment"
 
-    === "rhel-support-tools-deployment.yaml"
+    === "run-rhel-support-tools-deployment.yaml"
 
         ```yaml
-        --8<-- "content/deploy/rhel-support-tools-deployment.yaml"
+        --8<-- "content/deploy/run-rhel-support-tools-deployment.yaml"
         ```
 
     === "oc apply -f ...."
 
         ```bash
-        oc apply -f {{ page.canonical_url }}rhel-support-tools-deployment.yaml
+        oc apply -f {{ page.canonical_url }}run-rhel-support-tools-deployment.yaml
         ```
 
-    source: [rhel-support-tools-deployment.yaml]({{ page.canonical_url }}rhel-support-tools-deployment.yaml)
+    source: [run-rhel-support-tools-deployment.yaml]({{ page.canonical_url }}run-rhel-support-tools-deployment.yaml)
 
-## UBI9 Micro Pod
+## Run a ubi-micro
 
 === Deployment
 
