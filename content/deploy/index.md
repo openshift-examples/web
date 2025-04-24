@@ -84,15 +84,37 @@ spec:
 
 ## Run a ubi-micro
 
-=== Deployment
+??? example "Pod"
 
-=== Pod
+    === "run-ubi-micro-pod.yaml"
 
-```yaml
---8<-- "content/deploy/ubi-pod.yaml"
-```
+        ```yaml
+        --8<-- "content/deploy/run-ubi-micro-pod.yaml"
+        ```
 
-source: [ubi-pod.yaml]({{ page.canonical_url }}ubi-pod.yaml)
+    === "oc apply -f ...."
+
+        ```bash
+        oc apply -f {{ page.canonical_url }}run-ubi-micro-pod.yaml
+        ```
+
+    source: [run-ubi-micro-pod.yaml]({{ page.canonical_url }}run-ubi-micro-pod.yaml)
+
+??? example "Deployment"
+
+    === "run-ubi-micro-deployment.yaml"
+
+        ```yaml
+        --8<-- "content/deploy/run-ubi-micro-deployment.yaml"
+        ```
+
+    === "oc apply -f ...."
+
+        ```bash
+        oc apply -f {{ page.canonical_url }}run-ubi-micro-deployment.yaml
+        ```
+
+    source: [run-ubi-micro-deployment.yaml]({{ page.canonical_url }}run-ubi-micro-deployment.yaml)
 
 ## UBI9 deployment with pvc
 
