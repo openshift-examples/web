@@ -48,7 +48,45 @@ spec:
   - name: generic
 ```
 
+## [Run Red Hat Enterprise Linux Support Tools](https://catalog.redhat.com/search?q=support-tools&partnerName=Red%20Hat&p=1)
+
+??? example "Pod"
+
+    === "rhel-support-tools-pod.yaml"
+
+        ```yaml
+        --8<-- "content/deploy/rhel-support-tools-pod.yaml"
+        ```
+
+    === "oc apply -f ...."
+
+        ```bash
+        oc apply -f {{ page.canonical_url }}rhel-support-tools-pod.yaml
+        ```
+
+    source: [rhel-support-tools-pod.yaml]({{ page.canonical_url }}rhel-support-tools-pod.yaml)
+
+??? example "Deployment"
+
+    === "rhel-support-tools-deployment.yaml"
+
+        ```yaml
+        --8<-- "content/deploy/rhel-support-tools-deployment.yaml"
+        ```
+
+    === "oc apply -f ...."
+
+        ```bash
+        oc apply -f {{ page.canonical_url }}rhel-support-tools-deployment.yaml
+        ```
+
+    source: [rhel-support-tools-deployment.yaml]({{ page.canonical_url }}rhel-support-tools-deployment.yaml)
+
 ## UBI9 Micro Pod
+
+=== Deployment
+
+=== Pod
 
 ```yaml
 --8<-- "content/deploy/ubi-pod.yaml"
