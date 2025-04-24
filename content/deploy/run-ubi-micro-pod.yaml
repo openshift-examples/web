@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: ubi
+  generateName: ubi-micro-
 spec:
   containers:
-    - name: ubi
+    - name: ubi-micro
       image: registry.access.redhat.com/ubi9/ubi-micro:latest
       command:
         - "/bin/sh"
