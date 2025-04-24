@@ -4,8 +4,8 @@ metadata:
   name: ubi
 spec:
   containers:
-    - name: registry.access.redhat.com/ubi9/ubi-micro:latest
-      image: ubi
+    - name: ubi
+      image: registry.access.redhat.com/ubi9/ubi-micro:latest
       command:
         - "/bin/sh"
         - "-c"
