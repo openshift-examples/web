@@ -1,0 +1,11 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simple-http-server
+spec:
+  template:
+    spec:
+      containers:
+      - image: image-registry.openshift-image-registry.svc:5000/rbohne-test2/simple-http-server@sha256:f8e6fa6ecd3ace3e79ac697f7596bcadacf081671a870e771a1ac067a451cc34
+        imagePullPolicy: IfNotPresent
+        name: simple-http-server-second
