@@ -31,6 +31,7 @@ podman run -ti --user 0 --rm \
 
 ```bash
 export IMAGE='quay.io/openshift-examples/builder:devel'
+podman manifest rm ${IMAGE}
 podman build --platform linux/amd64,linux/arm64  \
   --manifest ${IMAGE} \
   --no-cache \
@@ -43,7 +44,7 @@ podman manifest push ${IMAGE}
 ```bash
 podman run -ti --user 0 --rm \
   -v $(pwd):/opt/app-root/src:z \
-  -p 8080:8080 mkdocs:builder
+  -p 8080:8080 ${IMAGE}
 ```
 
 ## Stargazers over time
