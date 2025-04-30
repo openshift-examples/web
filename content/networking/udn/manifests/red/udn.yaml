@@ -1,0 +1,12 @@
+apiVersion: k8s.ovn.org/v1
+kind: UserDefinedNetwork
+metadata:
+  name: namespace-scoped
+spec:
+  topology: Layer2
+  layer2:
+    role: Primary
+    subnets:
+      - 192.0.2.0/24
+    ipam:
+      lifecycle: Persistent
