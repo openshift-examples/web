@@ -23,8 +23,6 @@ Tested with:
 |OpenShift|v4.18.8|
 |OpenShift Virt|v4.18.2|
 
-## DrawIO testing
-
 ![](overview.drawio)
 
 ## Namespaces
@@ -35,3 +33,16 @@ Tested with:
 |blue|UDN|`198.51.100.0/24`|
 |green|CUDN|`203.0.113.0/24`|
 |yellow|CUDN|`203.0.113.0/24`|
+
+## Testing
+
+* Network Policy
+* Services
+* Ingress
+* Direct access
+* VM Live Migration
+* S-UDN
+* MultiNetworkPolicy
+* Layer2
+* Layer3
+* Local -> 4.19!
