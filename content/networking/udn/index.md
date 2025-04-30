@@ -8,7 +8,7 @@ tags: ['UDN','v4.18']
 
 Official documentation:
 
-* [16.2.1. About user-defined networks ](https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/networking/multiple-networks#about-user-defined-networks)
+* [16.2.1. About user-defined networks](https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/networking/multiple-networks#about-user-defined-networks)
 
 Resources:
 
