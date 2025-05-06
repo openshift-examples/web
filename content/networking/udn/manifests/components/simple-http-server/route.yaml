@@ -1,0 +1,24 @@
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: simple-http-server
+  annotations:
+    haproxy.router.openshift.io/balance: roundrobin
+  labels:
+    app: simple-http-server
+    app.kubernetes.io/component: simple-http-server
+    app.kubernetes.io/instance: simple-http-server
+    app.kubernetes.io/name: simple-http-server
+    app.kubernetes.io/part-of: simple-http-server-app
+    app.openshift.io/runtime-version: latest
+spec:
+  to:
+    kind: Service
+    name: simple-http-server
+    weight: 100
+  port:
+    targetPort: 8080-tcp
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
+  wildcardPolicy: None

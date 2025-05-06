@@ -1,12 +1,13 @@
 apiVersion: k8s.ovn.org/v1
 kind: UserDefinedNetwork
 metadata:
-  name: namespace-scoped
+  name: udn-2
 spec:
-  topology: Layer2
-  layer2:
+  topology: Layer3
+  layer3:
     role: Primary
     subnets:
-      - 192.0.2.0/24
+      - cidr: 10.255.0.0/16
+        hostSubnet: 24
     ipam:
       lifecycle: Persistent
