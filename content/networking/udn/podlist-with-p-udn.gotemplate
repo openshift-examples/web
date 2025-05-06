@@ -1,0 +1,16 @@
+[
+{{- range $i, $v := .items -}}
+  {{- if eq .kind "Pod" -}}
+    {{$namespace := .metadata.namespace -}}
+    {{$pod_name := .metadata.name}}
+    {{$udn := index .metadata.annotations "k8s.v1.cni.cncf.io/network-status" }}
+    {{ if $i}},{{end}}
+    {
+      "namespace": "{{ $namespace }}",
+      "name": "{{ $pod_name }}",
+      "node": "{{.spec.nodeName}}",
+      "udn": {{ $udn }}
+    }
+  {{- end -}}
+{{- end -}}
+]

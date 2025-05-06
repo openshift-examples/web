@@ -16,6 +16,10 @@ spec:
       app: agnhost
   template:
     metadata:
+      annotations:
+        k8s.ovn.org/open-default-ports: |
+          - protocol: tcp
+            port: 9000
       labels:
         app: agnhost
     spec:
