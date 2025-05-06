@@ -1,0 +1,21 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: simple-http-server
+  labels:
+    app: simple-http-server
+    app.kubernetes.io/component: simple-http-server
+    app.kubernetes.io/instance: simple-http-server
+    app.kubernetes.io/name: simple-http-server
+    app.kubernetes.io/part-of: simple-http-server-app
+    app.openshift.io/runtime-version: latest
+spec:
+  ports:
+    - name: 8080-tcp
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+  type: ClusterIP
+  selector:
+    app: simple-http-server
+    deployment: simple-http-server

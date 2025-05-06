@@ -1,0 +1,67 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: simple-http-server
+  labels:
+    app: simple-http-server
+    app.kubernetes.io/component: simple-http-server
+    app.kubernetes.io/instance: simple-http-server
+    app.kubernetes.io/name: simple-http-server
+    app.kubernetes.io/part-of: simple-http-server-app
+    app.openshift.io/runtime: other-linux
+    app.openshift.io/runtime-namespace: simple-http
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: simple-http-server
+  template:
+    metadata:
+      labels:
+        app: simple-http-server
+        deployment: simple-http-server
+      annotations:
+        k8s.ovn.org/open-default-ports: |
+          - protocol: tcp
+            port: 8080
+    spec:
+      containers:
+        - resources: {}
+          readinessProbe:
+            httpGet:
+              path: /readiness-probe
+              port: 8080
+              scheme: HTTP
+            timeoutSeconds: 1
+            periodSeconds: 1
+            successThreshold: 1
+            failureThreshold: 1
+          terminationMessagePath: /dev/termination-log
+          name: simple-http-server
+          livenessProbe:
+            httpGet:
+              path: /liveness-probe
+              port: 8080
+              scheme: HTTP
+            timeoutSeconds: 1
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 1
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          imagePullPolicy: Always
+          terminationMessagePolicy: File
+          image: 'quay.io/openshift-examples/simple-http-server:latest'
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600

@@ -1,6 +1,8 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: green
+namespace: namespace-1
+commonLabels:
+  tentant: tentant-1
 resources:
   - ../../base/
   - udn.yaml
@@ -8,3 +10,4 @@ resources:
 components:
   - ../../components/agnhost/
   - ../../components/rhel-support-tools/
+  - ../../components/simple-http-server/
