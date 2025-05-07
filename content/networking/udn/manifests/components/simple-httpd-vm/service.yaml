@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: simple-httpd-vm
+  name: simple-httpd-vm
+spec:
+  ports:
+    - name: 80-tcp
+      port: 80
+      protocol: TCP
+      targetPort: 80
+  selector:
+    kubevirt.io/vm: simple-httpd-vm
