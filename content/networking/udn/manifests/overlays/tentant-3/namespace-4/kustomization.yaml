@@ -10,3 +10,4 @@ components:
   - ../../../components/agnhost/
   - ../../../components/rhel-support-tools/
   - ../../../components/simple-http-server/
+  - ../../../components/simple-httpd-vm/
