@@ -6,7 +6,7 @@ description: TBD
 ---
 # Red Hat SSO - via Google
 
-## Official documentation:
+## Official documentation
 
 * [OpenShift 4 - latest](https://docs.openshift.com/container-platform/latest/authentication/identity_providers/configuring-google-identity-provider.html)
 
@@ -37,6 +37,7 @@ oc create secret generic google-secret \
 ### Update OAuth Config
 
 #### oauth.yaml
+
 ```yaml
 apiVersion: config.openshift.io/v1
 kind: OAuth
@@ -70,3 +71,14 @@ oc delete secrets kubeadmin -n kube-system
 oc adm policy remove-cluster-role-from-group self-provisioner system:authenticated system:authenticated:oauth
 ```
 
+Or the respective manifest:
+
+```yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  annotations:
+    rbac.authorization.kubernetes.io/autoupdate: "false"
+  name: self-provisioners
+subjects: null
+```
