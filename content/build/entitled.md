@@ -128,7 +128,7 @@ In case you want to roll out automaticly for every new project, please use the p
 === "sharedsecret-allow-namespace.yaml"
 
     ```yaml
-    --8<-- "content/build/entitled/sharedsecret-allow-namespace.yaml
+    --8<-- "content/build/entitled/sharedsecret-allow-namespace.yaml"
     ```
 
 ## Let's create a build
@@ -136,7 +136,7 @@ In case you want to roll out automaticly for every new project, please use the p
 === "build.yaml"
 
     ```yaml
-    --8<-- "content/build/entitled/build.yaml
+    --8<-- "content/build/entitled/build.yaml"
     ```
 
 === "OC"
@@ -150,7 +150,7 @@ In case you want to roll out automaticly for every new project, please use the p
 === "build.yaml"
 
     ```yaml
-    --8<-- "content/build/entitled/build-run.yaml
+    --8<-- "content/build/entitled/build-run.yaml"
     ```
 
 === "OC"
