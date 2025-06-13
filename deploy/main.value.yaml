@@ -3,7 +3,7 @@ replicaCount: 2
 image:
   repository: quay.io/openshift-examples/web
   pullPolicy: Always
-  tag: sha256:8112d77d84e87f597a87e272b5c1496cff7d97f2c42a7c34c0a98e6840c87cdd
+  tag: sha256:f0cb5fbff21ab4c8365ecf6eb4da55503825370e732b627c55c77acf75c2cb7e
 
 route:
   enabled: false
