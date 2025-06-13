@@ -243,6 +243,7 @@ nav:
       - Router sharding: networking/services-routes/router-sharding.md
       - Egress IP testing: networking/egress-ip.md
       - Kubernetes iptables chains: networking/k8s-iptables-chains.md
+      - LLDPd: networking/lldpd/index.md
 
   - Operators:
       - operators/index.md
