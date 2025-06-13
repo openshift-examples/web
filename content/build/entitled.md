@@ -147,7 +147,7 @@ In case you want to roll out automaticly for every new project, please use the p
 
 ## Start the build
 
-=== "build.yaml"
+=== "build-run.yaml"
 
     ```yaml
     --8<-- "content/build/entitled/build-run.yaml"
