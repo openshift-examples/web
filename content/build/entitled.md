@@ -75,6 +75,8 @@ Or copy the entitlement from a subscribed Red Hat Enterprise Linux - this is not
 
 ## Prerequisites to run an entitled build
 
+### Install Operator
+
 * **Install Builds for Red Hat OpenShift Operator (tested with v1.4.0)**
 
 ### Share the entitlement secrets
@@ -91,7 +93,7 @@ Or copy the entitlement from a subscribed Red Hat Enterprise Linux - this is not
     --8<-- "content/build/entitled/sharedsecret.yaml"
     ```
 
-#### Add the permissions to share the secret
+### Add the permissions to share the secret
 
 === "OC"
 
@@ -113,9 +115,9 @@ Or copy the entitlement from a subscribed Red Hat Enterprise Linux - this is not
     oc new-project entitled-build-demo
     ```
 
-### Allow access to shared secrets
+## Allow access to shared secrets
 
-In case you want to rollout automaticly for every new project:
+In case you want to roll out automaticly for every new project, please use the project request tempalte.
 
 === "OC"
 
