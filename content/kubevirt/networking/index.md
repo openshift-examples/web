@@ -212,7 +212,7 @@ EOF
 #### Create new project
 
 ```bash
-oc new project localnet-demo
+oc new-project localnet-demo
 ```
 
 #### Create net-attach-def
@@ -340,6 +340,126 @@ oc new project localnet-demo
             "preserveDefaultVlan": false,
             "vlan": 1004
         }
+    ```
+
+## Example: Firewalling (Isolation)
+
+### Enable MultiNetworkPolicy
+
+<https://docs.redhat.com/en/documentation/openshift_container_platform/4.17/html/networking/multiple-networks#nw-multi-network-policy-enable_configuring-multi-network-policy>
+
+```shell
+oc patch network.operator.openshift.io cluster \
+  --type=merge \
+  -p '{"spec":{"useMultiNetworkPolicy":true}}'
+```
+
+Wait for the rollout / configuration
+
+```shell
+$ oc get co/network
+NAME      VERSION   AVAILABLE   PROGRESSING   DEGRADED   SINCE   MESSAGE
+network   4.18.17   True        True          False      3d17h   DaemonSet "/openshift-ovn-kubernetes/ovnkube-node" update is rolling out (3 out of 6 updated)
+```
+
+### Create two VM's with coe network connect
+
+=== "OC"
+
+    ```bash
+    oc apply -f {{ page.canonical_url }}localnet-fedora-vm.yaml
+    ```
+
+=== "localnet-fedora-vm.yaml"
+
+    ```yaml
+    --8<-- "content/kubevirt/networking/localnet-fedora-vm.yaml"
+    ```
+
+### Let's apply some MultiNetworkPolicy
+
+
+=== "deny-by-default"
+
+    ```yaml
+    apiVersion: k8s.cni.cncf.io/v1beta1
+    kind: MultiNetworkPolicy
+    metadata:
+      name: deny-by-default
+      namespace: localnet-demo
+      annotations:
+        k8s.v1.cni.cncf.io/policy-for: coe
+    spec:
+      podSelector: {}
+      policyTypes:
+      - Ingress
+      - Egress
+      ingress: []
+      egress:  []
+    ```
+
+=== "allow-dns-and-default-gateway"
+
+    ```yaml
+    apiVersion: k8s.cni.cncf.io/v1beta1
+    kind: MultiNetworkPolicy
+    metadata:
+      name: allow-dns-and-default-gateway
+      namespace: localnet-demo
+      annotations:
+        k8s.v1.cni.cncf.io/policy-for: coe
+    spec:
+      podSelector: {}
+      policyTypes:
+      - Egress
+      egress: 
+      - to:
+        - ipBlock:
+            cidr: 10.32.96.1/32
+        - ipBlock:
+            cidr: 10.32.96.31/32
+        - ipBlock:
+            cidr: 10.32.111.254/32
+    ```
+
+=== "allow-ingress"
+
+    ```yaml
+    apiVersion: k8s.cni.cncf.io/v1beta1
+    kind: MultiNetworkPolicy
+    metadata:
+      name: allow-ingress
+      namespace: localnet-demo
+      annotations:
+        k8s.v1.cni.cncf.io/policy-for: coe
+    spec:
+      podSelector: {}
+      policyTypes:
+        - Ingress
+      ingress: 
+        - from:
+          - ipBlock:
+              cidr: 0.0.0.0/0
+    ```
+
+=== "allow-egress"
+
+    ```yaml
+    apiVersion: k8s.cni.cncf.io/v1beta1
+    kind: MultiNetworkPolicy
+    metadata:
+      name: allow-egress
+      namespace: localnet-demo
+      annotations:
+        k8s.v1.cni.cncf.io/policy-for: coe
+    spec:
+      podSelector: {}
+      policyTypes:
+        - Egress
+      egress: 
+        - to:
+          - ipBlock:
+              cidr: 0.0.0.0/0
     ```
 
 ## Debugging purpose
