@@ -13,6 +13,7 @@ tags: ["kubevirt","ocp-v","cnv"]
 ## Installation & configuration
 
 * Install Operator "Node Health Check Operator"
+* Install Operator "Self Node Remediation Operator"
 
 ### Start operator for worker nodes
 
@@ -86,3 +87,102 @@ spec:
         or OCP/OKD version 4.13+.
         Automatic will choose the most appropriate strategy during runtime.
     ```
+
+## Example
+
+* Start a RHEL VM with network access
+* Provide `~/bin/l`
+
+  ```shell
+  #!/usr/bin/env bash
+
+  (echo "# $@"; exec "$@") |  ts '[%Y-%m-%d %H:%M:%S]'  | tee -a /tmp/app.log
+  ````
+
+* Run: `l ping $VM_IP`
+* Run: `oc get pods -o wide --watch | ts '[%Y-%m-%d %H:%M:%S]' | tee -a /tmp/app.log`
+* Watch the log `tail -f /tmp/app.log`
+* Stop the VM where the node is running: `l virtctl stop --force --grace-period=0  ocp1-worker-0`
+
+### app.log
+
+```log
+[2025-06-16 19:00:01] # oc get vm,vmi
+[2025-06-16 19:00:01] NAME                              AGE   STATUS    READY
+[2025-06-16 19:00:01] virtualmachine.kubevirt.io/rhel   14m   Running   True
+[2025-06-16 19:00:01]
+[2025-06-16 19:00:01] NAME                                      AGE     PHASE     IP                              NODENAME        READY
+[2025-06-16 19:00:01] virtualmachineinstance.kubevirt.io/rhel   6m49s   Running   2620:52:0:2060:63:97ff:fe00:b   ocp1-worker-0   True
+[2025-06-16 19:00:13] # oc get vm,vmi
+[2025-06-16 19:00:14] NAME                                       AGE     STATUS    READY
+[2025-06-16 19:00:14] virtualmachine.kubevirt.io/ocp1-cp-0       3d19h   Running   True
+[2025-06-16 19:00:14] virtualmachine.kubevirt.io/ocp1-cp-1       3d19h   Running   True
+[2025-06-16 19:00:14] virtualmachine.kubevirt.io/ocp1-cp-2       3d19h   Running   True
+[2025-06-16 19:00:14] virtualmachine.kubevirt.io/ocp1-worker-0   3d19h   Running   True
+[2025-06-16 19:00:14] virtualmachine.kubevirt.io/ocp1-worker-1   3d19h   Running   True
+[2025-06-16 19:00:14] virtualmachine.kubevirt.io/ocp1-worker-2   3d19h   Running   True
+[2025-06-16 19:00:14]
+[2025-06-16 19:00:14] NAME                                               AGE     PHASE     IP             NODENAME   READY
+[2025-06-16 19:00:14] virtualmachineinstance.kubevirt.io/ocp1-cp-0       3d19h   Running   10.32.105.66   storm2     True
+[2025-06-16 19:00:14] virtualmachineinstance.kubevirt.io/ocp1-cp-1       3d9h    Running   10.32.105.67   ucs57      True
+[2025-06-16 19:00:14] virtualmachineinstance.kubevirt.io/ocp1-cp-2       3d19h   Running   10.32.105.68   storm6     True
+[2025-06-16 19:00:14] virtualmachineinstance.kubevirt.io/ocp1-worker-0   3d12h   Running   10.32.105.69   ucs55      True
+[2025-06-16 19:00:14] virtualmachineinstance.kubevirt.io/ocp1-worker-1   3d12h   Running   10.32.105.70   storm3     True
+[2025-06-16 19:00:14] virtualmachineinstance.kubevirt.io/ocp1-worker-2   3d12h   Running   10.32.105.71   ucs56      True
+[2025-06-16 19:01:34] # ping 10.32.111.147
+[2025-06-16 19:01:34] PING 10.32.111.147 (10.32.111.147): 56 data bytes
+[2025-06-16 19:01:34] 64 bytes from 10.32.111.147: icmp_seq=0 ttl=57 time=52.220 ms
+[..snipped..]
+[2025-06-16 19:01:39] # virtctl stop --force ocp1-worker-0
+[2025-06-16 19:01:40] 64 bytes from 10.32.111.147: icmp_seq=6 ttl=57 time=52.835 ms
+[..snipped..]
+[2025-06-16 19:02:02] 64 bytes from 10.32.111.147: icmp_seq=28 ttl=57 time=51.931 ms
+[2025-06-16 19:02:02] # virtctl stop --force --grace-period=0 ocp1-worker-0
+[2025-06-16 19:02:03] VM ocp1-worker-0 was scheduled to stop
+[2025-06-16 19:02:04] Request timeout for icmp_seq 29
+[..snipped..]
+[2025-06-16 19:02:57] Request timeout for icmp_seq 82
+[2025-06-16 19:02:58] virt-launcher-rhel-hc2ds   1/1     Running             0          9m46s   10.131.0.36   ocp1-worker-0   <none>           1/1
+[2025-06-16 19:02:58] Request timeout for icmp_seq 83
+[2025-06-16 19:02:59] Request timeout for icmp_seq 84
+[2025-06-16 19:02:59] virt-launcher-rhel-hc2ds   1/1     Terminating         0          9m47s   10.131.0.36   ocp1-worker-0   <none>           1/1
+[2025-06-16 19:03:00] Request timeout for icmp_seq 85
+[..snipped..]
+[2025-06-16 19:04:38] Request timeout for icmp_seq 183
+[2025-06-16 19:04:39] virt-launcher-rhel-hc2ds   1/1     Terminating         0          11m     10.131.0.36   ocp1-worker-0   <none>           1/1
+[2025-06-16 19:04:39] Request timeout for icmp_seq 184
+[..snipped..]
+[2025-06-16 19:06:42] Request timeout for icmp_seq 306
+[2025-06-16 19:06:42] virt-launcher-rhel-hc2ds   1/1     Failed              0          13m     10.131.0.36   ocp1-worker-0   <none>           1/1
+[2025-06-16 19:06:43] Request timeout for icmp_seq 307
+[2025-06-16 19:06:43] virt-launcher-rhel-hc2ds   1/1     Failed              0          13m     10.131.0.36   ocp1-worker-0   <none>           1/1
+[2025-06-16 19:06:43] virt-launcher-rhel-hc2ds   1/1     Failed              0          13m     10.131.0.36   ocp1-worker-0   <none>           1/1
+[2025-06-16 19:06:44] Request timeout for icmp_seq 308
+[..snipped..]
+[2025-06-16 19:07:30] Request timeout for icmp_seq 354
+[2025-06-16 19:07:31] virt-launcher-rhel-rhf6h   0/1     Pending             0          2s      <none>        <none>          <none>           0/1
+[2025-06-16 19:07:31] virt-launcher-rhel-rhf6h   0/1     Pending             0          2s      <none>        ocp1-worker-1   <none>           0/1
+[2025-06-16 19:07:31] virt-launcher-rhel-rhf6h   0/1     Pending             0          2s      <none>        ocp1-worker-1   <none>           0/1
+[2025-06-16 19:07:31] Request timeout for icmp_seq 355
+[2025-06-16 19:07:32] Request timeout for icmp_seq 356
+[2025-06-16 19:07:33] virt-launcher-rhel-rhf6h   0/1     Pending             0          4s      <none>        ocp1-worker-1   <none>           0/1
+[2025-06-16 19:07:33] Request timeout for icmp_seq 357
+[2025-06-16 19:07:34] virt-launcher-rhel-rhf6h   0/1     ContainerCreating   0          5s      <none>        ocp1-worker-1   <none>           0/1
+[2025-06-16 19:07:34] Request timeout for icmp_seq 358
+[2025-06-16 19:07:35] Request timeout for icmp_seq 359
+[2025-06-16 19:07:35] virt-launcher-rhel-rhf6h   0/1     ContainerCreating   0          6s      <none>        ocp1-worker-1   <none>           1/1
+[2025-06-16 19:07:36] Request timeout for icmp_seq 360
+[..snipped..]
+[2025-06-16 19:07:54] Request timeout for icmp_seq 378
+[2025-06-16 19:07:54] virt-launcher-rhel-rhf6h   0/1     ContainerCreating   0          25s     <none>        ocp1-worker-1   <none>           1/1
+[2025-06-16 19:07:55] virt-launcher-rhel-rhf6h   1/1     Running             0          26s     10.128.2.71   ocp1-worker-1   <none>           1/1
+[2025-06-16 19:07:55] virt-launcher-rhel-rhf6h   1/1     Running             0          26s     10.128.2.71   ocp1-worker-1   <none>           1/1
+[2025-06-16 19:07:55] Request timeout for icmp_seq 379
+[..snipped..]
+[2025-06-16 19:09:41] Request timeout for icmp_seq 484
+[2025-06-16 19:09:41] 64 bytes from 10.32.111.147: icmp_seq=485 ttl=57 time=51.578 ms
+[2025-06-16 19:09:42] 64 bytes from 10.32.111.147: icmp_seq=486 ttl=57 time=51.141 ms
+[2025-06-16 19:09:43] 64 bytes from 10.32.111.147: icmp_seq=487 ttl=57 time=51.136 ms
+[2025-06-16 19:09:44] 64 bytes from 10.32.111.147: icmp_seq=488 ttl=57 time=51.472 ms
+..
+```
