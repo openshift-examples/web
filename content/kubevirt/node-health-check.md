@@ -97,7 +97,7 @@ spec:
   #!/usr/bin/env bash
 
   (echo "# $@"; exec "$@") |  ts '[%Y-%m-%d %H:%M:%S]'  | tee -a /tmp/app.log
-  ````
+  ```
 
 * Run: `l ping $VM_IP`
 * Run: `oc get pods -o wide --watch | ts '[%Y-%m-%d %H:%M:%S]' | tee -a /tmp/app.log`
