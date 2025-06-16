@@ -378,7 +378,6 @@ network   4.18.17   True        True          False      3d17h   DaemonSet "/ope
 
 ### Let's apply some MultiNetworkPolicy
 
-
 === "deny-by-default"
 
     ```yaml
@@ -412,7 +411,7 @@ network   4.18.17   True        True          False      3d17h   DaemonSet "/ope
       podSelector: {}
       policyTypes:
       - Egress
-      egress: 
+      egress:
       - to:
         - ipBlock:
             cidr: 10.32.96.1/32
@@ -436,7 +435,7 @@ network   4.18.17   True        True          False      3d17h   DaemonSet "/ope
       podSelector: {}
       policyTypes:
         - Ingress
-      ingress: 
+      ingress:
         - from:
           - ipBlock:
               cidr: 0.0.0.0/0
@@ -456,7 +455,7 @@ network   4.18.17   True        True          False      3d17h   DaemonSet "/ope
       podSelector: {}
       policyTypes:
         - Egress
-      egress: 
+      egress:
         - to:
           - ipBlock:
               cidr: 0.0.0.0/0
