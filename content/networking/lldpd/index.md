@@ -14,7 +14,7 @@ Tested with:
 
 ## Create project/namespace
 
-INFO:
+!!! info Node selector
     Empty node selector, to run the lldpd on all nodes
 
 === "OC"
