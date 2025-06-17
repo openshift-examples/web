@@ -120,6 +120,7 @@ nav:
           - "MachineSet & UPI": cluster-configuration/MachineSets/VMware-UPI/index.md
           - "Agent-based non-integrated": cluster-installation/vmware/agent-base-non-integrated/index.md
       - Hosted Control Plane: cluster-installation/hosted-control-plane.md
+      - Appliance: cluster-installation/appliance/index.md
       - Nvidia GPU:
           - cluster-installation/gpu/index.md
           - GPU on-prem: cluster-installation/gpu/gpu-on-prem.md
