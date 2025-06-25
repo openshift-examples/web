@@ -2,7 +2,7 @@
 title: User-defined networks
 linktitle: User-defined networks
 description: User-defined networks (UDN)
-tags: ['UDN','v4.18']
+tags: ['UDN','v4.19']
 ---
 # User-defined networks (UDN)
 
@@ -22,8 +22,8 @@ Tested with:
 
 |Component|Version|
 |---|---|
-|OpenShift|v4.18.8|
-|OpenShift Virt|v4.18.2|
+|OpenShift|v4.19.1|
+|OpenShift Virt|v4.19.0|
 
 ![](overview.drawio)
 
@@ -36,56 +36,95 @@ Tested with:
 |tanent-3|namespace-3|blue|CUDN (cudn-3)|`203.0.113.0/24`|
 |tanent-4|namespace-4|orange|CUDN (cudn-3)|`203.0.113.0/24`|
 
+
 ## Deploy
 
-```shell
-oc apply -k overlays/tentant-1
-oc apply -k overlays/tentant-2
-oc apply -k overlays/tentant-3
-```
+=== ":material-keyboard: Command"
 
-```shell
-$ oc get namespaces -l tentant -L tentant
-NAME          STATUS   AGE     TENTANT
-namespace-1   Active   4m1s    tentant-1
-namespace-2   Active   3m51s   tentant-2
-namespace-3   Active   3m14s   tentant-3
-namespace-4   Active   3m13s   tentant-3
+  ```shell
+  oc apply -k {{ config.repo_url }}/content/{{ page.url }}manifests/overlays/tentant-1
+  oc apply -k {{ config.repo_url }}/content/{{ page.url }}manifests/overlays/tentant-2
+  oc apply -k {{ config.repo_url }}/content/{{ page.url }}manifests/overlays/tentant-3
+  ```
 
-$ oc get pods -o go-template-file=podlist-with-p-udn.gotemplate -A -l tentant  | jq ' (.[] | [.node,.namespace, .udn[1].ips[0], .udn[0].ips[0], .name]) | @tsv' -r
-ocp1-worker-0   namespace-1     192.0.2.10      10.131.0.201    agnhost-7f79bb7dc-t8rfg
-ocp1-worker-0   namespace-1     192.0.2.9       10.131.0.202    rhel-support-tools-7c89889f94-wq2gj
-ocp1-worker-1   namespace-1     192.0.2.17      10.128.3.55     simple-http-server-bb9ccffd4-74j47
-ocp1-worker-2   namespace-1     192.0.2.11      10.129.2.131    simple-http-server-bb9ccffd4-jq4bb
-ocp1-worker-0   namespace-1     192.0.2.16      10.131.0.223    simple-http-server-bb9ccffd4-xll6x
-ocp1-worker-2   namespace-1     192.0.2.19      10.129.2.143    virt-launcher-simple-httpd-vm-5wxpj
-ocp1-worker-0   namespace-2     10.255.2.6      10.131.0.220    agnhost-59964fb864-hp46z
-ocp1-worker-0   namespace-2     10.255.2.8      10.131.0.221    rhel-support-tools-7cfb68d78f-89jkl
-ocp1-worker-0   namespace-2     10.255.2.7      10.131.0.222    simple-http-server-7c567b8c4c-2pph6
-ocp1-worker-1   namespace-2     10.255.3.4      10.128.3.54     simple-http-server-7c567b8c4c-brqtl
-ocp1-worker-2   namespace-2     10.255.0.4      10.129.2.137    simple-http-server-7c567b8c4c-mjgwc
-ocp1-worker-1   namespace-2     10.255.3.8      10.128.3.62     virt-launcher-simple-httpd-vm-w6hwn
-ocp1-worker-2   namespace-3     203.0.113.22    10.129.2.135    agnhost-f4b987769-kcmvs
-ocp1-worker-0   namespace-3     203.0.113.25    10.131.0.207    rhel-support-tools-5b999555b4-w2qv5
-ocp1-worker-2   namespace-3     203.0.113.23    10.129.2.134    simple-http-server-6b84977478-7kkhd
-ocp1-worker-1   namespace-3     203.0.113.29    10.128.3.56     simple-http-server-6b84977478-pbj4d
-ocp1-worker-0   namespace-3     203.0.113.30    10.131.0.224    simple-http-server-6b84977478-wn6kl
-ocp1-worker-0   namespace-3     203.0.113.39    10.131.1.39     virt-launcher-simple-httpd-vm-h8xr7
-ocp1-worker-0   namespace-4     203.0.113.26    10.131.0.203    agnhost-f4b987769-vxtl7
-ocp1-worker-0   namespace-4     203.0.113.24    10.131.0.204    rhel-support-tools-5b999555b4-5kgbs
-ocp1-worker-0   namespace-4     203.0.113.33    10.131.0.225    simple-http-server-6b84977478-mqhj4
-ocp1-worker-2   namespace-4     203.0.113.21    10.129.2.133    simple-http-server-6b84977478-rnc2c
-ocp1-worker-1   namespace-4     203.0.113.35    10.128.3.57     simple-http-server-6b84977478-v7xhz
-ocp1-worker-2   namespace-4     203.0.113.40    10.129.2.142    virt-launcher-simple-httpd-vm-lk4rc
-$ oc get vmi -l tentant -A
-NAMESPACE     NAME              AGE     PHASE     IP             NODENAME        READY
-namespace-1   simple-httpd-vm   93s     Running   192.0.2.19     ocp1-worker-2   True
-namespace-2   simple-httpd-vm   87s     Running   10.255.3.8     ocp1-worker-1   True
-namespace-3   simple-httpd-vm   2m43s   Running   203.0.113.39   ocp1-worker-0   True
-namespace-4   simple-httpd-vm   2m42s   Running   203.0.113.40   ocp1-worker-2   True
-```
+## Gather information
 
-* Why is ip's of UDN nocht in pod status `podIPs` ?
+### Namespace
+
+=== ":material-keyboard: Command"
+
+    ```shell
+    oc get namespaces -l tentant -L tentant
+    ```
+
+=== ":material-monitor: Output"
+
+    ```shell
+    $ oc get namespaces -l tentant -L tentant
+    NAME          STATUS   AGE     TENTANT
+    namespace-1   Active   4m1s    tentant-1
+    namespace-2   Active   3m51s   tentant-2
+    namespace-3   Active   3m14s   tentant-3
+    namespace-4   Active   3m13s   tentant-3
+    ```
+
+### Pods
+
+=== ":material-keyboard: Command"
+
+    ```shell
+    oc get pods -o go-template-file=podlist-with-p-udn.gotemplate -A -l tentant  | jq ' (.[] | [.node,.namespace, .udn[1].ips[0], .udn[0].ips[0], .name])| @tsv' -r
+    ```
+
+=== ":material-monitor: Output"
+
+    ```shell
+    $ oc get pods -o go-template-file=podlist-with-p-udn.gotemplate -A -l tentant  | jq ' (.[] | [.node,.namespace, .udn[1].ips[0], .udn[0].ips[0], .name])| @tsv' -r
+
+    ocp1-worker-2   namespace-1     192.0.2.21      10.129.2.17     agnhost-9d56666c9-f8mjj
+    ocp1-worker-2   namespace-1     192.0.2.22      10.129.2.16     rhel-support-tools-86bf5b4d7d-6p96k
+    ocp1-worker-1   namespace-1     192.0.2.15      10.128.2.56     simple-http-server-794b76798d-74hn9
+    ocp1-worker-0   namespace-1     192.0.2.25      10.131.0.67     simple-http-server-794b76798d-h7lsm
+    ocp1-worker-2   namespace-1     192.0.2.14      10.129.2.11     simple-http-server-794b76798d-nl2qh
+    ocp1-worker-2   namespace-1     192.0.2.13      10.129.2.27     virt-launcher-simple-httpd-vm-q7mh4
+    ocp1-worker-2   namespace-2     10.255.3.9      10.129.2.21     agnhost-957d4f456-gc2wf
+    ocp1-worker-2   namespace-2     10.255.3.6      10.129.2.20     rhel-support-tools-9cb87db57-tqr2q
+    ocp1-worker-0   namespace-2     10.255.5.5      10.131.0.68     simple-http-server-645945f9-2rp6t
+    ocp1-worker-1   namespace-2     10.255.2.4      10.128.2.57     simple-http-server-645945f9-2v5jb
+    ocp1-worker-2   namespace-2     10.255.3.4      10.129.2.13     simple-http-server-645945f9-622d6
+    ocp1-worker-2   namespace-2     10.255.3.13     10.129.2.26     virt-launcher-simple-httpd-vm-222c2
+    ocp1-worker-2   namespace-3     203.0.113.50    10.129.2.15     agnhost-6d845f6977-nhfzc
+    ocp1-worker-2   namespace-3     203.0.113.59    10.129.2.22     rhel-support-tools-5455498cbd-6j9gv
+    ocp1-worker-2   namespace-3     203.0.113.42    10.129.2.12     simple-http-server-657fb44bfd-8nx28
+    ocp1-worker-0   namespace-3     203.0.113.51    10.131.0.66     simple-http-server-657fb44bfd-c878t
+    ocp1-worker-1   namespace-3     203.0.113.44    10.128.2.58     simple-http-server-657fb44bfd-l9zdx
+    ocp1-worker-2   namespace-3     203.0.113.23    10.129.2.24     virt-launcher-simple-httpd-vm-x4t6n
+    ocp1-worker-2   namespace-4     203.0.113.55    10.129.2.18     agnhost-6d845f6977-c9449
+    ocp1-worker-2   namespace-4     203.0.113.56    10.129.2.19     rhel-support-tools-5455498cbd-bd725
+    ocp1-worker-1   namespace-4     203.0.113.60    10.128.2.59     simple-http-server-657fb44bfd-5qv9v
+    ocp1-worker-0   namespace-4     203.0.113.41    10.131.0.65     simple-http-server-657fb44bfd-6hg4c
+    ocp1-worker-2   namespace-4     203.0.113.43    10.129.2.14     simple-http-server-657fb44bfd-djgql
+    ocp1-worker-2   namespace-4     203.0.113.24    10.129.2.23     virt-launcher-simple-httpd-vm-99p7x
+    ```
+
+### VirtualMachineInstances (VMI)
+
+=== ":material-keyboard: Command"
+
+    ```shell
+    oc get vmi -l tentant -A
+    ```
+
+=== ":material-monitor: Output"
+
+    ```shell
+    $ oc get vmi -l tentant -A
+    NAMESPACE     NAME              AGE     PHASE     IP             NODENAME        READY
+    namespace-1   simple-httpd-vm   5m30s   Running   192.0.2.13     ocp1-worker-2   True
+    namespace-2   simple-httpd-vm   5m32s   Running   10.255.3.13    ocp1-worker-2   True
+    namespace-3   simple-httpd-vm   5m37s   Running   203.0.113.23   ocp1-worker-2   True
+    namespace-4   simple-httpd-vm   5m39s   Running   203.0.113.24   ocp1-worker-2   True
+    ```
 
 ## Testing
 
@@ -171,8 +210,8 @@ r.local
 curl: (7) Failed to connect to simple-httpd-vm.namespace-3.svc.cluster.local port 80: Connection refused
 ```
 
-* ❌ Pod -> Service -> VM with L2Bridge in UDN
-* ✅ Pod -> Service -> Pod
+* ❌ Pod :arrow_right: Service :arrow_right: VM with L2Bridge in UDN
+* ✅ Pod :arrow_right: Service :arrow_right: Pod
 
 ### ✅ Ingress
 
@@ -230,3 +269,9 @@ simple-httpd-vm   67m   Running   203.0.113.41   ocp1-worker-2   True
 * Tentant 2 is Layer 3
 
 ### ⏱️ Localnet (Available with 4.19)
+
+TBD 
+
+## ❓ Open question
+
+* Why UDN ip is not represented in pod status ips?

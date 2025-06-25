@@ -7,7 +7,7 @@ site_url: https://examples.openshift.pub
 # Repository
 repo_name: openshift-examples/web
 repo_url: https://github.com/openshift-examples/web
-edit_uri: edit/master/content/
+edit_uri: edit/main/content/
 # Copyright
 copyright: <a href="/impressum/">Impressum</a>
 
@@ -78,6 +78,9 @@ markdown_extensions:
       check_paths: true
   - meta
   - attr_list
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
 
 plugins:
   - search
