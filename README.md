@@ -32,6 +32,7 @@ podman run -ti --user 0 --rm \
 ```bash
 export IMAGE='quay.io/openshift-examples/builder:devel'
 podman manifest rm ${IMAGE}
+podman rmi ${IMAGE}
 podman build --platform linux/amd64,linux/arm64  \
   --manifest ${IMAGE} \
   --no-cache \
