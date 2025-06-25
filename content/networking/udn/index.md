@@ -36,7 +36,6 @@ Tested with:
 |tanent-3|namespace-3|blue|CUDN (cudn-3)|`203.0.113.0/24`|
 |tanent-4|namespace-4|orange|CUDN (cudn-3)|`203.0.113.0/24`|
 
-
 ## Deploy
 
 === ":material-keyboard: Command"
@@ -270,7 +269,7 @@ simple-httpd-vm   67m   Running   203.0.113.41   ocp1-worker-2   True
 
 ### ⏱️ Localnet (Available with 4.19)
 
-TBD 
+TBD
 
 ## ❓ Open question
 
