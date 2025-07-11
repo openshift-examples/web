@@ -125,6 +125,28 @@ grpcurl -plaintext  localhost:50051 api.Registry/ListBundles | jq '{"packageName
 }
 ```
 
+#### Visulize version graph
+
+* Download opm tool: <https://github.com/operator-framework/operator-registry>
+
+Minimum `~/.config/containers/policy.json`
+
+```json
+{
+    "default": [{"type": "insecureAcceptAnything"}]
+}
+```
+
+```shell
+cat << EOF > ./mermaid.json
+{ "maxTextSize": 300000 }
+EOF
+
+opm alpha render-graph -p kubevirt-hyperconverged mirror-registry.disco.coe.muc.redhat.com:5000/disco/redhat/redhat-operator-index:v4.17 | podman run --rm -i -v "$PWD":/data ghcr.io/mermaid-js/mermaid-cli/mermaid-cli -c /data/mermaid.json -o /data/operatorhubio-catalog.svg
+```
+
+![Image title](operatorhubio-catalog.svg)
+
 ### `constraints not satisfiable: subscription....`
 
 Try:
