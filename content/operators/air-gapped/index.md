@@ -6,6 +6,8 @@ tags: ['OLM','air-gapped','v4.17','v4.18','v4.19','operators']
 ---
 # Air-gapped/Disconnected
 
+* Support Sparse Manifests <https://issues.redhat.com/browse/OCPSTRAT-1808>
+
 ## ImageSetConfiguration examples (oc mirror v2)
 
 **Syncronize only the latest version of the Operator!!**
