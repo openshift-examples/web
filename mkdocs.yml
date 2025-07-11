@@ -248,9 +248,7 @@ nav:
   - Operators:
       - operators/index.md
       - Custom Resource Definition (CRD): operators/custom-ressource-definition.md
-      - Air-gapped OLM >= 4.6: operators/air-gapped-4.6.md
-      - Air-gapped OperatorHub - pre 4.6: operators/air-gapped-pre-4.6.md
-      - Air-gapped oc-mirror: operators/oc-mirror.md
+      - Air-gapped/Disconnected: operators/air-gapped/index.md
       - Ansible Operator: operators/ansible-operator.md
       - OperatorHub: operators/operatorhub.md
       - Install Operator as a User - WiP: operators/install-operator-as-a-user.md
