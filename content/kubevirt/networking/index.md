@@ -247,7 +247,7 @@ oc new-project localnet-demo
 
 * Tested with OpenShift 4.17.11
 
-![bonding-vlan-localnet-bridge](bonding-vlan-localnet-bridge.png)
+![bonding-vlan-localnet-bridge](bonding-vlan-localnet-bridge.drawio)
 
 ??? quote "NMState for initial setup / add-node"
 
@@ -339,6 +339,94 @@ oc new-project localnet-demo
             "macspoofchk": false,
             "preserveDefaultVlan": false,
             "vlan": 1004
+        }
+    ```
+
+## Example: OVN Bonding (balance-slb) (OVN)
+
+* Tested with OpenShift 4.18.13
+
+![bond-balance-slb](bond-balance-slb.drawio)
+
+!!! WARNING
+
+    Balance-slb is only supported with "OVN Bonding" and not with Linux Bonds!
+
+??? quote "NodeNetworkConfigurationPolicy, bond1"
+
+    ```yaml
+    apiVersion: nmstate.io/v1
+    kind: NodeNetworkConfigurationPolicy
+    metadata:
+      name: bond1
+    spec:
+      desiredState:
+        interfaces:
+        - ipv4:
+            enabled: false
+          ipv6:
+            enabled: false
+          name: enp2s0
+          state: up
+          type: ethernet
+        - ipv4:
+            enabled: false
+          ipv6:
+            enabled: false
+          name: enp3s0
+          state: up
+          type: ethernet
+        - bridge:
+            allow-extra-patch-ports: true
+            port:
+            - name: patch-phy-to-ex
+            - link-aggregation:
+                mode: balance-slb
+                port:
+                - name: enp2s0
+                - name: enp3s0
+              name: ovs-bond
+          ipv4:
+            dhcp: false
+            enabled: false
+          ipv6:
+            dhcp: false
+            enabled: false
+          name: br-pub
+          state: up
+          type: ovs-bridge
+        ovn:
+          bridge-mappings:
+          - bridge: br-pub
+            localnet: localnet-pub
+            state: present
+      nodeSelector:
+        kubernetes.io/hostname: ocp1-worker-0
+    ```
+
+??? quote "NetworkAttachmentDefinition"
+
+    Via YAML or WebUI
+
+    ![localnet-net-attach-def](localnet-net-attach-def.png)
+
+    ```yaml
+    apiVersion: k8s.cni.cncf.io/v1
+    kind: NetworkAttachmentDefinition
+    metadata:
+      annotations:
+        k8s.ovn.org/network-id: '7'
+        k8s.ovn.org/network-name: localnet-pub
+      name: nad-localnet-pub
+      namespace: bonding-test
+    spec:
+      config: |-
+        {
+            "cniVersion": "0.4.0",
+            "name": "localnet-pub",
+            "type": "ovn-k8s-cni-overlay",
+            "netAttachDefName": "bonding-test/nad-localnet-pub",
+            "topology": "localnet"
         }
     ```
 
