@@ -136,6 +136,8 @@ Follow: [Optional MetalLB Configuration Steps](https://hypershift.pages.dev/how-
 
 ??? example "Ingress Service & DNS"
 
+  with RFE [Enable preallocation of a predictable NodePort for Ingress](https://issues.redhat.com/browse/RFE-6869) it would be much easier.
+
     ```yaml
     apiVersion: v1
     kind: Service
