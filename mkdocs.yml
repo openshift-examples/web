@@ -119,7 +119,9 @@ nav:
           - "IPI & Proxy": cluster-installation/vmware/ipi-proxy.md
           - "MachineSet & UPI": cluster-configuration/MachineSets/VMware-UPI/index.md
           - "Agent-based non-integrated": cluster-installation/vmware/agent-base-non-integrated/index.md
-      - Hosted Control Plane: cluster-installation/hosted-control-plane.md
+      - Hosted Control Plane:
+          - cluster-installation/hosted-control-plane/index.md
+          - KubeVirt Networking: cluster-installation/hosted-control-plane/kubevirt-networking.md
       - Nvidia GPU:
           - cluster-installation/gpu/index.md
           - GPU on-prem: cluster-installation/gpu/gpu-on-prem.md
