@@ -134,9 +134,11 @@ Follow: [Optional MetalLB Configuration Steps](https://hypershift.pages.dev/how-
       - 192.168.203.31-192.168.203.35
     ```
 
-??? example "Ingress Service & DNS"
+### Ingress Service
 
-  with RFE [Enable preallocation of a predictable NodePort for Ingress](https://issues.redhat.com/browse/RFE-6869) it would be much easier.
+with RFE [Enable preallocation of a predictable NodePort for Ingress](https://issues.redhat.com/browse/RFE-6869) it would be much easier.
+
+??? example "Service/router-loadbalancer-default"
 
     ```yaml
     apiVersion: v1
@@ -165,19 +167,23 @@ Follow: [Optional MetalLB Configuration Steps](https://hypershift.pages.dev/how-
     EOF
     ```
 
-    ```shell
-    [cloud-user@router ~]$ oc get svc -n openshift-ingress router-loadbalancer-default
-    NAME                          TYPE           CLUSTER-IP       EXTERNAL-IP      PORT(S)                      AGE
-    router-loadbalancer-default   LoadBalancer   172.31.241.155   192.168.203.31   80:31572/TCP,443:30706/TCP   2m22s
-    [cloud-user@router ~]$
+### DNS
 
-    [cloud-user@router ~]$ oc get ingresscontroller -n openshift-ingress-operator default -o jsonpath="{.spec.domain}";echo
-    apps.hcp1.apps.rhine.coe.muc.redhat.com
-    [cloud-user@router ~]$
-    ```
+Fetch information from hosted cluster:
 
-    Add A record:
+```shell
+[cloud-user@router ~]$ oc get svc -n openshift-ingress router-loadbalancer-default
+NAME                          TYPE           CLUSTER-IP       EXTERNAL-IP      PORT(S)                      AGE
+router-loadbalancer-default   LoadBalancer   172.31.241.155   192.168.203.31   80:31572/TCP,443:30706/TCP   2m22s
+[cloud-user@router ~]$
 
-    ```
-    *.apps.hcp1.apps.rhine.coe.muc.redhat.com. IN A 192.168.203.31
-    ```
+[cloud-user@router ~]$ oc get ingresscontroller -n openshift-ingress-operator default -o jsonpath="{.spec.domain}";echo
+apps.hcp1.apps.rhine.coe.muc.redhat.com
+[cloud-user@router ~]$
+```
+
+Create an `A` record based on the information:
+
+```bind
+*.apps.hcp1.apps.rhine.coe.muc.redhat.com. IN A 192.168.203.31
+```
