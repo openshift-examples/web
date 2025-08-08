@@ -8,17 +8,17 @@ tags: ['HostedControlPlane', 'hcp', 'hypershift', 'cnv', 'kubevirt', 'ocp-v']
 
 ## Introduction
 
-This guide demonstrates how to configure advanced networking for Hosted Control Plane (HCP) clusters running on KubeVirt infrastructure. It covers the setup of VLAN-isolated networks, bridge interfaces, and MetalLB load balancing to provide production-ready networking for guest OpenShift clusters.
+This guide demonstrates how to configure advanced networking for Hosted Control Plane (HCP) clusters running on KubeVirt infrastructure. It covers the setup of VLAN-isolated networks, bridge interfaces, and MetalLB load balancing to provide networking for guest OpenShift clusters.
 
 ## Use Case
 
 This configuration addresses scenarios where you need to:
 
-- **Isolate hosted clusters** using dedicated VLANs for security and network segmentation
-- **Provide external connectivity** for hosted cluster workloads through dedicated network interfaces
-- **Enable load balancing** with MetalLB for ingress traffic to hosted clusters
-- **Support multiple hosted clusters** on the same management cluster with proper network isolation
-- **Integrate with existing enterprise networks** that require VLAN tagging and specific IP ranges
+* **Isolate hosted clusters** using dedicated VLANs for security and network segmentation
+* **Provide external connectivity** for hosted cluster workloads through dedicated network interfaces
+* **Enable load balancing** with MetalLB for ingress traffic to hosted clusters
+* **Support multiple hosted clusters** on the same management cluster with proper network isolation
+* **Integrate with existing enterprise networks** that require VLAN tagging and specific IP ranges
 
 This approach is particularly useful in enterprise environments where network isolation, compliance requirements, and integration with existing network infrastructure are critical for running multiple tenant clusters.
 
