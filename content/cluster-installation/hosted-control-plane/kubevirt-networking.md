@@ -164,7 +164,6 @@ with RFE [Enable preallocation of a predictable NodePort for Ingress](https://is
         ingresscontroller.operator.openshift.io/deployment-ingresscontroller: default
       sessionAffinity: None
       type: LoadBalancer
-    EOF
     ```
 
 ### DNS
