@@ -7,16 +7,16 @@ tags: ['HostedControlPlane','hcp','hypershift']
 
 # Hosted Control Plane
 
-<https://docs.google.com/document/d/1EUaKD_0JGPPPAD7rAshfXUVfAOzTqmU5qx_60Hl_NE0/edit>
-
-<https://github.com/gqlo/blogs/blob/main/hosted-control-plane-with-the-kubevirt-provider.md>
+Upstream documation: <https://hypershift-docs.netlify.app/>
+Downstream documentation: <https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html/hosted_control_planes/index>
 
 ## Platform
 
 ### Platform - KubeVirt
 
-```bash
+Quick'n'dirty notes:
 
+```bash
 export PULL_SECRET=${HOME}/redhat-pullsecret-rh-ee-rbohne.json
 export KUBEVIRT_CLUSTER_NAME=oat23
 export TRUSTED_BUNDLE=${HOME}/Devel/gitlab.consulting.redhat.com/coe-lab/certificates/ca-bundle-v1.pem
@@ -39,7 +39,6 @@ kubevirt \
   --release-image=quay.io/openshift-release-dev/ocp-release:4.14.1-x86_64
   # --render
   # Optional - add --render to show yaml
-
 ```
 
 #### Export kubeconfig
@@ -107,7 +106,7 @@ Here a container solution bases on [openshift-4-loadbalancer](https://github.com
 
 # Trouble shooting
 
-<https://hypershift-docs.netlify.app/how-to/troubleshooting/>
+<https://hypershift-docs.netlify.app/how-to/troubleshooting-general/>
 
 ```bash
 export KUBEVIRT_CLUSTER_NAME=lenggries3
