@@ -7,8 +7,8 @@ tags: ['HostedControlPlane','hcp','hypershift']
 
 # Hosted Control Plane
 
-Upstream documation: <https://hypershift-docs.netlify.app/>
-Downstream documentation: <https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html/hosted_control_planes/index>
+* Upstream documation: <https://hypershift-docs.netlify.app/>
+* Downstream documentation: <https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html/hosted_control_planes/index>
 
 ## Platform
 
