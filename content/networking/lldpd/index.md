@@ -109,7 +109,7 @@ Tested with:
     -------------------------------------------------------------------------------
     ```
 
-??? example "Run daemonset/lldpd lldpcli show neighbors"
+??? example "Run lldp neighbors at switch"
 
     ```shell
     arista-rj45#show lldp neighbors
