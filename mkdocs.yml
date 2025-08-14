@@ -273,6 +273,7 @@ nav:
 
   - My Lab notes:
       - my-lab/index.md
+      - Routing with RHEL: my-lab/rhel-router.md
       - Hetzner Storage Box: my-lab/storage-box.md
       - Local fedora: my-lab/local-fedora.md
       - SSH: my-lab/ssh.md
