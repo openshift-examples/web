@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: volumesnapshotquota
+spec:
+  hard:
+    count/volumesnapshots.snapshot.storage.k8s.io: 1
+    count/virtualmachinesnapshots.snapshot.kubevirt.io: 1
+    # count/virtualmachines.kubevirt.io: 1
