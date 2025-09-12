@@ -1,0 +1,30 @@
+name: pr-close
+
+on:
+  pull_request:
+    types:
+      - closed
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: 3.12
+          cache: 'pip'
+      - name: Install Dependencies
+        run: |
+          pip install -r requirements.txt
+      - name: Setup Docs Deploy
+        run: |
+          git config --global user.name "Docs Deploy"
+          git config --global user.email "docs.deploy@example.co.uk"
+      - name: Build Docs Website
+        run: mike delete --push pr-${{ github.event.pull_request.number }}
