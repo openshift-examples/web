@@ -74,3 +74,7 @@ oc label namespace/rbohne-egress egress=coe
 10.32.96.44 - - [31/Aug/2025:11:54:00 +0200] "GET / HTTP/1.1" 301 247 "-" "curl/7.76.1"
 10.32.105.72 - - [31/Aug/2025:11:56:31 +0200] "GET / HTTP/1.1" 301 247 "-" "curl/7.76.1"
 ```
+
+sh-5.1# ip -br a show dev br-ex
+br-ex            UNKNOWN        10.32.105.69/20 169.254.0.2/17 10.32.105.72/32
+sh-5.1#
