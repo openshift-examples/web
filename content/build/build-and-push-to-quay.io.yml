@@ -39,10 +39,10 @@ spec:
   successfulBuildsHistoryLimit: 5
   triggers:
   - github:
-      secret: LS3w3ffQQnfo1wHppGNb
+      secret: xxxxx
     type: GitHub
   - generic:
-      secret: DwLQHkv6rINSHRpukF-Y
+      secret: xxxxx
     type: Generic
   - type: ConfigChange
   - type: ImageChange
