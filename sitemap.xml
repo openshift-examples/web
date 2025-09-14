@@ -393,6 +393,10 @@
          <lastmod>2025-09-14</lastmod>
     </url>
     <url>
+         <loc>https://examples.openshift.pub/kubevirt/ansible/</loc>
+         <lastmod>2025-09-14</lastmod>
+    </url>
+    <url>
          <loc>https://examples.openshift.pub/kubevirt/application-aware-quota/</loc>
          <lastmod>2025-09-14</lastmod>
     </url>
@@ -458,6 +462,10 @@
     </url>
     <url>
          <loc>https://examples.openshift.pub/networking/network-policy/OpenShiftSDN/</loc>
+         <lastmod>2025-09-14</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.openshift.pub/networking/network-policy/network-policy-demo/</loc>
          <lastmod>2025-09-14</lastmod>
     </url>
     <url>

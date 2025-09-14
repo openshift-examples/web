@@ -1,0 +1,64 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    upload_host: https://cdi-uploadproxy-openshift-cnv.apps.isar.coe.muc.redhat.com
+    namespace: demo-cluster-disco
+  tasks:
+
+    # https://github.com/kubevirt/containerized-data-importer/blob/main/doc/upload.md
+
+    - name: Create DataVolume
+      # register: my_var_with_return_value
+      kubernetes.core.k8s:
+        state: present
+        definition:
+          apiVersion: cdi.kubevirt.io/v1beta1
+          kind: DataVolume
+          metadata:
+            name: customer-iso
+            namespace: "{{ namespace }}"
+          spec:
+            source:
+                upload: {}
+            pvc:
+              accessModes:
+                - ReadWriteMany
+              storageClassName: ocs-storagecluster-cephfs
+              resources:
+                requests:
+                  storage: 2Gi
+
+    - name: Upload token
+      register: my_var_with_return_value
+      kubernetes.core.k8s:
+        state: present
+        definition:
+          apiVersion: upload.cdi.kubevirt.io/v1beta1
+          kind: UploadTokenRequest
+          metadata:
+            name: customer-iso-upload-token
+            namespace: "{{ namespace }}"
+          spec:
+            pvcName: customer-iso
+
+# curl -v --insecure -H "Authorization: Bearer $TOKEN" --data-binary @tests/images/cirros-qcow2.img https://$(minikube ip):31001/v1beta1/upload
+#
+    # - name: Show token
+    #   debug:
+    #     msg: "curl -v --insecure -H 'Authorization: Bearer  {{ my_var_with_return_value.result.status.token }}' --data-binary @/var/home/rbohne/Downloads/beryllium-1-i386.hybrid.iso https://{{ upload_host }}/v1beta1/upload "
+
+    - name: Upload beryllium-1-i386.hybrid.iso
+      ansible.builtin.uri:
+        url: "{{ upload_host }}/v1beta1/upload"
+        method: POST
+        validate_certs: false
+        headers:
+          Authorization: "Bearer  {{ my_var_with_return_value.result.status.token }}"
+        src: /var/home/rbohne/Downloads/beryllium-1-i386.hybrid.iso
+
+
+
+
+

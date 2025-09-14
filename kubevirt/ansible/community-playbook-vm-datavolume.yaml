@@ -1,0 +1,56 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    namespace: demo-cluster-disco
+  tasks:
+
+    - name: VM
+      community.kubevirt.kubevirt_vm:
+        state: running
+        name: beryllium
+        namespace: "{{ namespace }}"
+        memory: 4Gi
+        cpu_cores: 4
+        interfaces:
+          - bridge: {}
+            # macAddress: 02:d8:6d:00:00:12
+            model: virtio
+            name: coe
+            network:
+              multus:
+                networkName: coe-bridge
+          - bridge: {}
+            # macAddress: 02:d8:6d:00:00:13
+            model: virtio
+            name: disco
+            network:
+              multus:
+                networkName: coe-br-vlan-69
+        datavolumes:
+          - name: beryllium-root
+            pvc:
+              accessModes:
+                - ReadWriteMany
+              storageClassName: coe-netapp-nas
+              storage: 80Gi
+            source:
+              blank: {}
+        disks:
+          # - name: root
+          #   bootOrder: 1
+          #   volume:
+          #     dataVolume:
+          #       name: beryllium-root
+          #   # persistentVolumeClaim:
+          #   #   claimName: beryllium-rootdisk
+          #   disk:
+          #     bus: virtio
+          - name: cdrom
+            bootOrder: 2
+            volume:
+              persistentVolumeClaim:
+                claimName: beryllium-1-i386-hybrid
+            cdrom:
+              bus: sata

@@ -1,0 +1,8 @@
+---
+collections:
+
+  # https://github.com/ansible-collections/community.kubevirt
+  # community.kubevirt is UNMAINTAINED, new module: kubevirt.core
+  - community.kubevirt
+
+  - kubevirt.core

@@ -1,0 +1,33 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    upload_host: https://cdi-uploadproxy-openshift-cnv.apps.isar.coe.muc.redhat.com
+    namespace: demo-cluster-disco
+  tasks:
+    # virtctl image-upload pvc foo --size 2Gi --storage-class coe-netapp-nas --image-path ~/Downloads/beryllium-1-i386.hybrid.iso
+
+    # community.kubevirt is UNMAINTAINED!
+    #   kubevirt_pvc & kubevirt_cdi_upload works not stable
+    #   at least in my env.
+    #
+    - name: Prepare pvc
+      community.kubevirt.kubevirt_pvc:
+        name: beryllium-1-i386-hybrid3
+        namespace: "{{ namespace  }}"
+        size: 2Gi
+        access_modes:
+          - ReadWriteMany
+        cdi_source:
+          upload: yes
+
+    # https://docs.ansible.com/ansible/2.9/modules/kubevirt_cdi_upload_module.html
+    - name: Upload
+      community.kubevirt.kubevirt_cdi_upload:
+        pvc_namespace: "{{ namespace }}"
+        pvc_name: beryllium-1-i386-hybrid3
+        upload_host: "{{ upload_host }}"
+        upload_host_validate_certs: false
+        path: /var/home/rbohne/Downloads/beryllium-1-i386.hybrid.iso
+
