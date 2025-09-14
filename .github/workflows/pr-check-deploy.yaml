@@ -1,0 +1,39 @@
+name: pr
+
+on:
+  pull_request:
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+jobs:
+  pre-commit-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: 3.12
+          cache: 'pip'
+      - name: pre-commit
+        uses: pre-commit/action@v3.0.1
+        with:
+          extra_args: "--from-ref origin/main --to-ref HEAD"
+      - name: Install Dependencies
+        run: |
+          pip install -r requirements.txt
+      - name: Setup Docs Deploy
+        run: |
+          git config --global user.name "Docs Deploy"
+          git config --global user.email "docs.deploy@example.co.uk"
+      - name: Build Docs Website
+        run: mike deploy --update-aliases --push pr-${{ github.event.pull_request.number }}
+      - uses: mshick/add-pr-comment@v2
+        with:
+          message: |
+            Thanks, please check
+              https://rbo.github.io/mkdocs-materials-github-actions/pr-${{ github.event.pull_request.number }}/
+            before merge.
