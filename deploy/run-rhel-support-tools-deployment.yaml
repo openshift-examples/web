@@ -1,0 +1,29 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rhel-support-tools
+  labels:
+    app: rhel-support-tools
+    app.openshift.io/runtime: redhat
+    app.kubernetes.io/part-of: rhel-support-tools
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: rhel-support-tools
+  template:
+    metadata:
+      labels:
+        app: rhel-support-tools
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - name: tools
+          image: registry.redhat.io/rhel9/support-tools:latest
+          command:
+            - "/bin/sh"
+            - "-c"
+            - "sleep infinity"

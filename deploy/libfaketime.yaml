@@ -1,0 +1,72 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: libfaketime
+  labels:
+    app: libfaketime
+    app.kubernetes.io/component: libfaketime
+    app.kubernetes.io/instance: libfaketime
+    app.kubernetes.io/name: libfaketime
+    app.kubernetes.io/part-of: libfaketime-app
+    app.openshift.io/runtime: other-linux
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: libfaketime
+  template:
+    metadata:
+      labels:
+        app: libfaketime
+    spec:
+      volumes:
+      - name: libfaketime
+        emptyDir: {}
+      initContainers:
+        - name: build-libfaketime
+          image: registry.redhat.io/rhel8/gcc-toolset-11-toolchain:11-6
+          env:
+            - name: VERSION
+              value: 0.9.9
+          volumeMounts:
+            - mountPath: /libfaketime/
+              name: libfaketime
+          command:
+            - /bin/sh
+            - -c
+            - |
+              set -x
+              cd /tmp/
+              curl -# -L -O https://github.com/wolfcw/libfaketime/archive/refs/tags/v${VERSION}.tar.gz
+              tar xzvf v${VERSION}.tar.gz
+              cd libfaketime-${VERSION}/
+              PREFIX=/libfaketime/ make install
+      containers:
+        - name: date
+          image: registry.access.redhat.com/ubi8/ubi-micro
+          env:
+            - name: LD_PRELOAD
+              value: /libfaketime/lib/faketime/libfaketime.so.1
+            - name: FAKETIME
+              value: "-365d"
+          command:
+            - /bin/sh
+            - '-c'
+            - |
+              while true; do
+                date
+                sleep 1
+              done;
+          volumeMounts:
+            - mountPath: /libfaketime/
+              name: libfaketime
+          imagePullPolicy: Always
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler
+  strategy:
+    type: Recreate
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600

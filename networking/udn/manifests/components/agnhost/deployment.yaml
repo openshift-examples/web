@@ -1,0 +1,35 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: agnhost
+  labels:
+    app: agnhost
+    app.openshift.io/runtime: go-gopher
+    app.kubernetes.io/part-of: agnhost
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: agnhost
+  template:
+    metadata:
+      annotations:
+        k8s.ovn.org/open-default-ports: |
+          - protocol: tcp
+            port: 9000
+      labels:
+        app: agnhost
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - args:
+            - "netexec"
+            - "--http-port"
+            - "9000"
+          # https://github.com/kubernetes/kubernetes/tree/master/test/images/agnhost
+          image: registry.k8s.io/e2e-test-images/agnhost:2.45
+          imagePullPolicy: IfNotPresent
+          name: agnhost-container

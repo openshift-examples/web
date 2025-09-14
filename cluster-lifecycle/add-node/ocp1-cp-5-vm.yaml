@@ -1,0 +1,65 @@
+---
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: ocp1-cp-5
+  namespace: stormshift-ocp1-infra
+spec:
+  dataVolumeTemplates:
+    - metadata:
+        creationTimestamp: null
+        name: ocp1-cp-5-root
+      spec:
+        source:
+          blank: {}
+        storage:
+          accessModes:
+            - ReadWriteMany
+          resources:
+            requests:
+              storage: 120Gi
+          storageClassName: coe-netapp-san
+  running: true
+  template:
+    metadata:
+      creationTimestamp: null
+    spec:
+      architecture: amd64
+      domain:
+        cpu:
+          cores: 8
+        devices:
+          disks:
+            - bootOrder: 1
+              disk:
+                bus: virtio
+              name: root
+            - bootOrder: 2
+              cdrom:
+                bus: sata
+              name: cdrom
+          interfaces:
+            - bridge: {}
+              macAddress: '0E:C0:EF:20:69:48'
+              model: virtio
+              name: coe
+        machine:
+          type: pc-q35-rhel9.4.0
+        memory:
+          guest: 16Gi
+        resources:
+          limits:
+            memory: 16706Mi
+          requests:
+            memory: 16Gi
+      networks:
+        - multus:
+            networkName: coe-bridge
+          name: coe
+      volumes:
+        - name: cdrom
+          persistentVolumeClaim:
+            claimName: rhcos-417-94-202410090854-0-live
+        - dataVolume:
+            name: ocp1-cp-5-root
+          name: root
