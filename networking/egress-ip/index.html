@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="TBD">
+        <meta name="description" content="Egress IP demo">
       
       
         <meta name="author" content="Robert Bohne">
@@ -26,7 +26,7 @@
     
     
       
-        <title>Egress IP testing - OpenShift Examples</title>
+        <title>Egress IP - OpenShift Examples</title>
       
     
     
@@ -91,7 +91,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#egress-ip-testing" class="md-skip">
+        <a href="#some-information" class="md-skip">
           Skip to content
         </a>
       
@@ -127,7 +127,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Egress IP testing
+              Egress IP
             
           </span>
         </div>
@@ -3279,6 +3279,8 @@
         
       
         
+          
+        
       
         
       
@@ -3630,7 +3632,7 @@
           
   
   <span class="md-ellipsis">
-    Egress IP testing
+    Egress IP
   </span>
   
 
@@ -3641,7 +3643,7 @@
         
   
   <span class="md-ellipsis">
-    Egress IP testing
+    Egress IP
   </span>
   
 
@@ -3661,84 +3663,27 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#test-environment" class="md-nav__link">
+  <a href="#prepare-cluster" class="md-nav__link">
     <span class="md-ellipsis">
-      Test environment
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Test environment">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#external-http-server" class="md-nav__link">
-    <span class="md-ellipsis">
-      External HTTP server
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#container-for-testing" class="md-nav__link">
-    <span class="md-ellipsis">
-      Container for testing
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#ip-addresses-to-use" class="md-nav__link">
-    <span class="md-ellipsis">
-      IP addresses to use
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#basic-egress-ip-test" class="md-nav__link">
-    <span class="md-ellipsis">
-      Basic egress IP test
+      Prepare cluster
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#failover-with-single-node" class="md-nav__link">
+  <a href="#deployment" class="md-nav__link">
     <span class="md-ellipsis">
-      Failover with single node
+      Deployment
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Failover with single node">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#failover-with-2-nodes" class="md-nav__link">
-    <span class="md-ellipsis">
-      Failover with 2+ nodes
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#automated-management-of-egress-ips" class="md-nav__link">
+  <a href="#check-ip-on-the-node" class="md-nav__link">
     <span class="md-ellipsis">
-      Automated Management of Egress IPs
+      Check IP on the node
     </span>
   </a>
   
@@ -3746,6 +3691,29 @@
       
     </ul>
   
+</nav>
+
+<hr/>
+<nav class="md-nav md-nav--secondary" aria-label="toc.title">
+  <label class="md-nav__title" for="__toc">
+    <span class="md-nav__icon md-icon"></span>
+    Tags
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+    <li class="md-nav__item">
+      <a href="/tags.html#Egress" class="md-nav__link">
+        Egress
+      </a>
+    </li>
+    
+    <li class="md-nav__item">
+      <a href="/tags.html#v4.19" class="md-nav__link">
+        v4.19
+      </a>
+    </li>
+    
+  </ul>
 </nav>
 
       
@@ -4632,84 +4600,27 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#test-environment" class="md-nav__link">
+  <a href="#prepare-cluster" class="md-nav__link">
     <span class="md-ellipsis">
-      Test environment
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Test environment">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#external-http-server" class="md-nav__link">
-    <span class="md-ellipsis">
-      External HTTP server
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#container-for-testing" class="md-nav__link">
-    <span class="md-ellipsis">
-      Container for testing
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#ip-addresses-to-use" class="md-nav__link">
-    <span class="md-ellipsis">
-      IP addresses to use
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#basic-egress-ip-test" class="md-nav__link">
-    <span class="md-ellipsis">
-      Basic egress IP test
+      Prepare cluster
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#failover-with-single-node" class="md-nav__link">
+  <a href="#deployment" class="md-nav__link">
     <span class="md-ellipsis">
-      Failover with single node
+      Deployment
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Failover with single node">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#failover-with-2-nodes" class="md-nav__link">
-    <span class="md-ellipsis">
-      Failover with 2+ nodes
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#automated-management-of-egress-ips" class="md-nav__link">
+  <a href="#check-ip-on-the-node" class="md-nav__link">
     <span class="md-ellipsis">
-      Automated Management of Egress IPs
+      Check IP on the node
     </span>
   </a>
   
@@ -4717,6 +4628,29 @@
       
     </ul>
   
+</nav>
+
+<hr/>
+<nav class="md-nav md-nav--secondary" aria-label="toc.title">
+  <label class="md-nav__title" for="__toc">
+    <span class="md-nav__icon md-icon"></span>
+    Tags
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+    <li class="md-nav__item">
+      <a href="/tags.html#Egress" class="md-nav__link">
+        Egress
+      </a>
+    </li>
+    
+    <li class="md-nav__item">
+      <a href="/tags.html#v4.19" class="md-nav__link">
+        v4.19
+      </a>
+    </li>
+    
+  </ul>
 </nav>
 
                   </div>
@@ -4729,210 +4663,124 @@
               <article class="md-content__inner md-typeset">
                 
                   
+  
+<nav class="md-tags" >
+  
+    
+    
+    
+      <a href="../../tags/#egress" class="md-tag">Egress</a>
+    
+  
+    
+    
+    
+      <a href="../../tags/#v419" class="md-tag">v4.19</a>
+    
+  
+</nav>
+
 
   
   
 
 
-<h1 id="egress-ip-testing">Egress IP testing<a class="headerlink" href="#egress-ip-testing" title="Permanent link">&para;</a></h1>
-<p>Namespace egress IP is a good way to fine tune access to services external to OpenShift, like databases. By default containers running on OpenShift will get IP from underlying node when they connect external services. This means that you without feature like egress IP you have to open firewall to external services from all OpenShift cluster nodes....this is not a good and security solution for production use.</p>
-<p>With namespace egress IP you define IP address that all workload in namespace will have when they connect outside OpenShift. Official documentation can be found in <a href="https://docs.openshift.com/container-platform/4.3/networking/openshift_sdn/assigning-egress-ips.html">here</a></p>
-<p>Following tests have been executed in OCP 4.3 cluster running on Hetzner bare metal host, <a href="https://github.com/RedHat-EMEA-SSA-Team/hetzner-ocp4">more info</a></p>
-<p>What you need to provided examples</p>
-<ul>
-<li>some exernal service that has access log that shows request IP</li>
-<li>range or set of IP addresses that you can use in your environments</li>
-<li>container for testing, curl is enough</li>
-</ul>
-<h2 id="test-environment">Test environment<a class="headerlink" href="#test-environment" title="Permanent link">&para;</a></h2>
-<p>Tests use Hetzner environment (CentOS 8) so if you rung tests in other env, you might need to change some commands.</p>
-<h3 id="external-http-server">External HTTP server<a class="headerlink" href="#external-http-server" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1"></a>$ sudo yum install -y httpd
+<h1 id="some-information">Some information<a class="headerlink" href="#some-information" title="Permanent link">&para;</a></h1>
+<p>Official documentation: <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html/ovn-kubernetes_network_plugin/configuring-egress-ips-ovn">https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html/ovn-kubernetes_network_plugin/configuring-egress-ips-ovn</a></p>
+<p>Tested with:</p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Version</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OpenShift</td>
+<td>v4.19.14</td>
+</tr>
+</tbody>
+</table>
+<h2 id="prepare-cluster">Prepare cluster<a class="headerlink" href="#prepare-cluster" title="Permanent link">&para;</a></h2>
+<div class="language-shell highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-0-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-0-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-0-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-0-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-0-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-0-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-0-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-0-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-0-10">10</a></span>
+<span class="normal"><a href="#__codelineno-0-11">11</a></span>
+<span class="normal"><a href="#__codelineno-0-12">12</a></span>
+<span class="normal"><a href="#__codelineno-0-13">13</a></span>
+<span class="normal"><a href="#__codelineno-0-14">14</a></span>
+<span class="normal"><a href="#__codelineno-0-15">15</a></span>
+<span class="normal"><a href="#__codelineno-0-16">16</a></span>
+<span class="normal"><a href="#__codelineno-0-17">17</a></span>
+<span class="normal"><a href="#__codelineno-0-18">18</a></span>
+<span class="normal"><a href="#__codelineno-0-19">19</a></span>
+<span class="normal"><a href="#__codelineno-0-20">20</a></span>
+<span class="normal"><a href="#__codelineno-0-21">21</a></span>
+<span class="normal"><a href="#__codelineno-0-22">22</a></span>
+<span class="normal"><a href="#__codelineno-0-23">23</a></span>
+<span class="normal"><a href="#__codelineno-0-24">24</a></span>
+<span class="normal"><a href="#__codelineno-0-25">25</a></span>
+<span class="normal"><a href="#__codelineno-0-26">26</a></span>
+<span class="normal"><a href="#__codelineno-0-27">27</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1"></a>%<span class="w"> </span>oc<span class="w"> </span>get<span class="w"> </span>nodes<span class="w"> </span>-l<span class="w"> </span>node-role.kubernetes.io/worker
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2"></a>NAME<span class="w">                       </span>STATUS<span class="w">   </span>ROLES<span class="w">    </span>AGE<span class="w">   </span>VERSION
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3"></a>ocp1-worker-0<span class="w">              </span>Ready<span class="w">    </span>worker<span class="w">   </span>79d<span class="w">   </span>v1.32.5
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4"></a>ocp1-worker-1<span class="w">              </span>Ready<span class="w">    </span>worker<span class="w">   </span>79d<span class="w">   </span>v1.32.5
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5"></a>ocp1-worker-2<span class="w">              </span>Ready<span class="w">    </span>worker<span class="w">   </span>79d<span class="w">   </span>v1.32.5
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6"></a>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7"></a>%<span class="w"> </span>oc<span class="w"> </span>label<span class="w"> </span>node/ocp1-worker-0<span class="w">  </span>k8s.ovn.org/egress-assignable<span class="o">=</span><span class="s2">&quot;&quot;</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8"></a>node/ocp1-worker-0<span class="w"> </span>labeled
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9"></a>%<span class="w"> </span>oc<span class="w"> </span>label<span class="w"> </span>node/ocp1-worker-1<span class="w">  </span>k8s.ovn.org/egress-assignable<span class="o">=</span><span class="s2">&quot;&quot;</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10"></a>node/ocp1-worker-1<span class="w"> </span>labeled
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11"></a>%<span class="w"> </span>oc<span class="w"> </span>label<span class="w"> </span>node/ocp1-worker-2<span class="w">  </span>k8s.ovn.org/egress-assignable<span class="o">=</span><span class="s2">&quot;&quot;</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12"></a>node/ocp1-worker-2<span class="w"> </span>labeled
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13"></a>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14"></a>oc<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>-<span class="w"> </span><span class="s">&lt;&lt;EOF</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15"></a><span class="s">heredoc&gt; apiVersion: k8s.ovn.org/v1</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16"></a><span class="s">kind: EgressIP</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17"></a><span class="s">metadata:</span>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18"></a><span class="s">  name: egress-coe</span>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19"></a><span class="s">spec:</span>
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20"></a><span class="s">  egressIPs:</span>
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21"></a><span class="s">  - 10.32.105.72</span>
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22"></a><span class="s">  - 10.32.105.73</span>
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23"></a><span class="s">  namespaceSelector:</span>
+</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24"></a><span class="s">    matchLabels:</span>
+</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25"></a><span class="s">      egress: coe</span>
+</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26"></a><span class="s">heredoc&gt; EOF</span>
+</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27"></a>egressip.k8s.ovn.org/egress-coe<span class="w"> </span>created
 </span></code></pre></div></td></tr></table></div>
-<p>You myst change binding port to 8080 since 80 is in use. Modify httpd.conf and change Listen 80 to Listen 8080</p>
-<div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1"></a>$ vi /etc/httpd/conf/httpd.conf
+<h2 id="deployment">Deployment<a class="headerlink" href="#deployment" title="Permanent link">&para;</a></h2>
+<div class="language-shell highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1">1</a></span>
+<span class="normal"><a href="#__codelineno-1-2">2</a></span>
+<span class="normal"><a href="#__codelineno-1-3">3</a></span>
+<span class="normal"><a href="#__codelineno-1-4">4</a></span>
+<span class="normal"><a href="#__codelineno-1-5">5</a></span>
+<span class="normal"><a href="#__codelineno-1-6">6</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1"></a>oc<span class="w"> </span>new-project<span class="w"> </span>rbohne-egress
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2"></a>oc<span class="w"> </span>deploy<span class="w"> </span>-k<span class="w"> </span>simple-nginx...
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3"></a>oc<span class="w"> </span>rsh<span class="w"> </span>deployment/simple-nginx
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4"></a>curl<span class="w"> </span><span class="nv">$WEBSERVER</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5"></a>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6"></a>oc<span class="w"> </span>label<span class="w"> </span>namespace/rbohne-egress<span class="w"> </span><span class="nv">egress</span><span class="o">=</span>coe
 </span></code></pre></div></td></tr></table></div>
-<div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1"></a>$ sudo systemctl start httpd
+<div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1">1</a></span>
+<span class="normal"><a href="#__codelineno-2-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1"></a>10.32.96.44 - - [31/Aug/2025:11:54:00 +0200] &quot;GET / HTTP/1.1&quot; 301 247 &quot;-&quot; &quot;curl/7.76.1&quot;
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2"></a>10.32.105.72 - - [31/Aug/2025:11:56:31 +0200] &quot;GET / HTTP/1.1&quot; 301 247 &quot;-&quot; &quot;curl/7.76.1&quot;
 </span></code></pre></div></td></tr></table></div>
-<p>Create test HTML page</p>
-<div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1">1</a></span>
+<h2 id="check-ip-on-the-node">Check IP on the node<a class="headerlink" href="#check-ip-on-the-node" title="Permanent link">&para;</a></h2>
+<div class="language-shell highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1">1</a></span>
 <span class="normal"><a href="#__codelineno-3-2">2</a></span>
-<span class="normal"><a href="#__codelineno-3-3">3</a></span>
-<span class="normal"><a href="#__codelineno-3-4">4</a></span>
-<span class="normal"><a href="#__codelineno-3-5">5</a></span>
-<span class="normal"><a href="#__codelineno-3-6">6</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1"></a>$ cat &gt; /var/www/html/index.html &lt;&lt; EOF
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2"></a>&lt;html&gt;
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3"></a>&lt;head/&gt;
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4"></a>&lt;body&gt;OK&lt;/body&gt;
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5"></a>&lt;/html&gt;
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6"></a>EOF
+<span class="normal"><a href="#__codelineno-3-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1"></a>sh-5.1#<span class="w"> </span>ip<span class="w"> </span>-br<span class="w"> </span>a<span class="w"> </span>show<span class="w"> </span>dev<span class="w"> </span>br-ex
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2"></a>br-ex<span class="w">            </span>UNKNOWN<span class="w">        </span><span class="m">10</span>.32.105.69/20<span class="w"> </span><span class="m">169</span>.254.0.2/17<span class="w"> </span><span class="m">10</span>.32.105.72/32
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3"></a>sh-5.1#
 </span></code></pre></div></td></tr></table></div>
-<p>Test that you page works</p>
-<div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1"></a>$ curl http://localhost:8080/index.html
-</span></code></pre></div></td></tr></table></div>
-<h3 id="container-for-testing">Container for testing<a class="headerlink" href="#container-for-testing" title="Permanent link">&para;</a></h3>
-<p>Create project and build and deploy container for testing</p>
-<div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1">1</a></span>
-<span class="normal"><a href="#__codelineno-5-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1"></a>$ oc new-project egress-ip
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2"></a>$ oc new-app golang~https://github.com/sclorg/golang-ex.git
-</span></code></pre></div></td></tr></table></div>
-<p>Once container is running (<code>oc get po -w</code>), you can can testing connecting to external http server. In my env I can use gateway as address since Hetzner host acts as environment gateway. I could also use external hostname registered to my host.</p>
-<div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-6-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1"></a>$ oc rsh dc/golang-ex curl http://192.168.50.1:8080/index.html
-</span></code></pre></div></td></tr></table></div>
-<p>Output should be something like this in response</p>
-<div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-7-1">1</a></span>
-<span class="normal"><a href="#__codelineno-7-2">2</a></span>
-<span class="normal"><a href="#__codelineno-7-3">3</a></span>
-<span class="normal"><a href="#__codelineno-7-4">4</a></span>
-<span class="normal"><a href="#__codelineno-7-5">5</a></span>
-<span class="normal"><a href="#__codelineno-7-6">6</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1"></a>&lt;html&gt;
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2"></a>&lt;head/&gt;
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3"></a>&lt;body&gt;
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4"></a>OK
-</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5"></a>&lt;/body&gt;
-</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6"></a>&lt;/html&gt;
-</span></code></pre></div></td></tr></table></div>
-<p>And httpd server should have something like this in access log (<code>tail -10 /var/log/httpd/access_log</code>)</p>
-<div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-8-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1"></a>192.168.50.14 - - [19/Feb/2020:11:31:00 +0100] &quot;GET /index.html HTTP/1.1&quot; 200 41 &quot;-&quot; &quot;curl/7.29.0&quot;
-</span></code></pre></div></td></tr></table></div>
-<p>IP adress 192.168.50.14 belongs to node where container is running</p>
-<div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-9-1">1</a></span>
-<span class="normal"><a href="#__codelineno-9-2">2</a></span>
-<span class="normal"><a href="#__codelineno-9-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1"></a>$ oc get po -o custom-columns=NAME:.spec.containers[0].name,NODE:.spec.nodeName,POD_IP:.status.podIP,HOST_IP:.status.hostIP
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2"></a>NAME        NODE        POD_IP        HOST_IP
-</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3"></a>golang-ex   compute-1   10.128.2.15   192.168.50.14
-</span></code></pre></div></td></tr></table></div>
-<h3 id="ip-addresses-to-use">IP addresses to use<a class="headerlink" href="#ip-addresses-to-use" title="Permanent link">&para;</a></h3>
-<p>In hetzner environment there is 192.168.50.0/24 network reserved for OpenShift. OpenShift only use addresses between 192.168.50.2 - 192.168.50.15 so we take range from 192.168.50.128/25 for testing egress IP (192.168.50.128-255)</p>
-<h2 id="basic-egress-ip-test">Basic egress IP test<a class="headerlink" href="#basic-egress-ip-test" title="Permanent link">&para;</a></h2>
-<p>Setting egress IP contains two steps. Adding egress IP range and egress IPs to hostsubnet and then adding namespace egress IP to netnamespace object.</p>
-<p>First I'll set above mentioned range to node compute-0</p>
-<div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-10-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1"></a>oc patch hostsubnet compute-0 --type=merge -p &#39;{&quot;egressCIDRs&quot;: [&quot;192.168.50.128/25&quot;]}&#39;
-</span></code></pre></div></td></tr></table></div>
-<p>Set egress IP for namespace</p>
-<div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-11-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1"></a>oc patch netnamespace egress-ip --type=merge -p &#39;{&quot;egressIPs&quot;: [&#39;192.168.50.128&#39;]}&#39;
-</span></code></pre></div></td></tr></table></div>
-<p>To egress IP really work, you need to have IP address linked to NIC un underlying info. OpenShift SDN is managed by several operators. These operatos apply changes to hostsubnet to underlying nodes, in this compute-0</p>
-<div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-12-1">1</a></span>
-<span class="normal"><a href="#__codelineno-12-2">2</a></span>
-<span class="normal"><a href="#__codelineno-12-3">3</a></span>
-<span class="normal"><a href="#__codelineno-12-4">4</a></span>
-<span class="normal"><a href="#__codelineno-12-5">5</a></span>
-<span class="normal"><a href="#__codelineno-12-6">6</a></span>
-<span class="normal"><a href="#__codelineno-12-7">7</a></span>
-<span class="normal"><a href="#__codelineno-12-8">8</a></span>
-<span class="normal"><a href="#__codelineno-12-9">9</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1"></a>$ ssh core@192.168.50.13 ip a show dev ens3
-</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2"></a>2: ens3: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc fq_codel state UP group default qlen 1000
-</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3"></a>    link/ether 52:54:00:a8:32:0d brd ff:ff:ff:ff:ff:ff
-</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4"></a>    inet 192.168.50.13/24 brd 192.168.50.255 scope global dynamic noprefixroute ens3
-</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5"></a>       valid_lft 2597sec preferred_lft 2597sec
-</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6"></a>    inet 192.168.50.128/24 brd 192.168.50.255 scope global secondary ens3:eip
-</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7"></a>       valid_lft forever preferred_lft forever
-</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8"></a>    inet6 fe80::328e:ab4e:72e3:39cc/64 scope link noprefixroute
-</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9"></a>       valid_lft forever preferred_lft forever
-</span></code></pre></div></td></tr></table></div>
-<p>From the output you can see that egress IP range from hostsubnet definition</p>
-<p>Now if is test again, access log should have request from IP that we just defined.</p>
-<div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-13-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1"></a>oc rsh dc/golang-ex curl http://192.168.50.1:8080/index.html
-</span></code></pre></div></td></tr></table></div>
-<div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-14-1">1</a></span>
-<span class="normal"><a href="#__codelineno-14-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1"></a>...
-</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2"></a>192.168.50.128 - - [19/Feb/2020:12:02:35 +0100] &quot;GET /index.html HTTP/1.1&quot; 200 41 &quot;-&quot; &quot;curl/7.29.0&quot;
-</span></code></pre></div></td></tr></table></div>
-<h2 id="failover-with-single-node">Failover with single node<a class="headerlink" href="#failover-with-single-node" title="Permanent link">&para;</a></h2>
-<p>In previous example we assigned egress IP range to only single node. What happens if that node goes doen?</p>
-<div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-15-1">1</a></span>
-<span class="normal"><a href="#__codelineno-15-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1"></a>virsh list
-</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2"></a>virsh shutdown ocp4-compute-0
-</span></code></pre></div></td></tr></table></div>
-<p>Now node that had our egress IP address in NIC is down.</p>
-<div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-16-1">1</a></span>
-<span class="normal"><a href="#__codelineno-16-2">2</a></span>
-<span class="normal"><a href="#__codelineno-16-3">3</a></span>
-<span class="normal"><a href="#__codelineno-16-4">4</a></span>
-<span class="normal"><a href="#__codelineno-16-5">5</a></span>
-<span class="normal"><a href="#__codelineno-16-6">6</a></span>
-<span class="normal"><a href="#__codelineno-16-7">7</a></span>
-<span class="normal"><a href="#__codelineno-16-8">8</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1"></a>$ oc get nodes
-</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2"></a>NAME        STATUS                     ROLES           AGE   VERSION
-</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3"></a>compute-0   NotReady                   worker          44h   v1.17.1
-</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4"></a>compute-1   Ready                      worker          44h   v1.17.1
-</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5"></a>compute-2   Ready                      worker          44h   v1.17.1
-</span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6"></a>master-0    Ready,SchedulingDisabled   master,worker   44h   v1.17.1
-</span><span id="__span-16-7"><a id="__codelineno-16-7" name="__codelineno-16-7"></a>master-1    Ready,SchedulingDisabled   master,worker   44h   v1.17.1
-</span><span id="__span-16-8"><a id="__codelineno-16-8" name="__codelineno-16-8"></a>master-2    Ready,SchedulingDisabled   master,worker   44h   v1.17.1
-</span></code></pre></div></td></tr></table></div>
-<p>Now lets run test again.</p>
-<div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-17-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1"></a>oc rsh dc/golang-ex curl http://192.168.50.1:8080/index.html
-</span></code></pre></div></td></tr></table></div>
-<p>Test fails since there is not network that can carry request out.</p>
-<h3 id="failover-with-2-nodes">Failover with 2+ nodes<a class="headerlink" href="#failover-with-2-nodes" title="Permanent link">&para;</a></h3>
-<p>How to fix this, attach that egress range to 2+ nodes.</p>
-<div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-18-1">1</a></span>
-<span class="normal"><a href="#__codelineno-18-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1"></a>oc patch hostsubnet compute-1 --type=merge -p &#39;{&quot;egressCIDRs&quot;: [&quot;192.168.50.128/25&quot;]}&#39;
-</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2"></a>oc patch hostsubnet compute-2 --type=merge -p &#39;{&quot;egressCIDRs&quot;: [&quot;192.168.50.128/25&quot;]}&#39;
-</span></code></pre></div></td></tr></table></div>
-<p>Check that all nods are running and Ready and check that all computes nodes have egress CIDR defined</p>
-<div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-19-1">1</a></span>
-<span class="normal"><a href="#__codelineno-19-2">2</a></span>
-<span class="normal"><a href="#__codelineno-19-3">3</a></span>
-<span class="normal"><a href="#__codelineno-19-4">4</a></span>
-<span class="normal"><a href="#__codelineno-19-5">5</a></span>
-<span class="normal"><a href="#__codelineno-19-6">6</a></span>
-<span class="normal"><a href="#__codelineno-19-7">7</a></span>
-<span class="normal"><a href="#__codelineno-19-8">8</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1"></a>$ oc get hostsubnet
-</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2"></a>NAME        HOST        HOST IP         SUBNET          EGRESS CIDRS          EGRESS IPS
-</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3"></a>compute-0   compute-0   192.168.50.13   10.129.2.0/23   [192.168.50.128/25]
-</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4"></a>compute-1   compute-1   192.168.50.14   10.128.2.0/23   [192.168.50.128/25]   [192.168.50.128]
-</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5"></a>compute-2   compute-2   192.168.50.15   10.131.0.0/23   [192.168.50.128/25]
-</span><span id="__span-19-6"><a id="__codelineno-19-6" name="__codelineno-19-6"></a>master-0    master-0    192.168.50.10   10.130.0.0/23
-</span><span id="__span-19-7"><a id="__codelineno-19-7" name="__codelineno-19-7"></a>master-1    master-1    192.168.50.11   10.128.0.0/23
-</span><span id="__span-19-8"><a id="__codelineno-19-8" name="__codelineno-19-8"></a>master-2    master-2    192.168.50.12   10.129.0.0/23
-</span></code></pre></div></td></tr></table></div>
-<p>Openshift second terminal and run our test in a loop</p>
-<div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-20-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1"></a>while true; do oc rsh dc/golang-ex curl http://192.168.50.1:8080/index.html ;sleep 2; done
-</span></code></pre></div></td></tr></table></div>
-<p>Next shutdown node where egress IP is bound, in my case it is compute-1.</p>
-<p>Once OpenShift notices that node with egress IP is down, IP will be moved to new node that has egress range defined.</p>
-<div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-21-1"> 1</a></span>
-<span class="normal"><a href="#__codelineno-21-2"> 2</a></span>
-<span class="normal"><a href="#__codelineno-21-3"> 3</a></span>
-<span class="normal"><a href="#__codelineno-21-4"> 4</a></span>
-<span class="normal"><a href="#__codelineno-21-5"> 5</a></span>
-<span class="normal"><a href="#__codelineno-21-6"> 6</a></span>
-<span class="normal"><a href="#__codelineno-21-7"> 7</a></span>
-<span class="normal"><a href="#__codelineno-21-8"> 8</a></span>
-<span class="normal"><a href="#__codelineno-21-9"> 9</a></span>
-<span class="normal"><a href="#__codelineno-21-10">10</a></span>
-<span class="normal"><a href="#__codelineno-21-11">11</a></span>
-<span class="normal"><a href="#__codelineno-21-12">12</a></span>
-<span class="normal"><a href="#__codelineno-21-13">13</a></span>
-<span class="normal"><a href="#__codelineno-21-14">14</a></span>
-<span class="normal"><a href="#__codelineno-21-15">15</a></span>
-<span class="normal"><a href="#__codelineno-21-16">16</a></span>
-<span class="normal"><a href="#__codelineno-21-17">17</a></span>
-<span class="normal"><a href="#__codelineno-21-18">18</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1"></a>$ oc get hostsubnet
-</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2"></a>NAME        HOST        HOST IP         SUBNET          EGRESS CIDRS          EGRESS IPS
-</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3"></a>compute-0   compute-0   192.168.50.13   10.129.2.0/23   [192.168.50.128/25]
-</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4"></a>compute-1   compute-1   192.168.50.14   10.128.2.0/23   [192.168.50.128/25]
-</span><span id="__span-21-5"><a id="__codelineno-21-5" name="__codelineno-21-5"></a>compute-2   compute-2   192.168.50.15   10.131.0.0/23   [192.168.50.128/25]   [192.168.50.128]
-</span><span id="__span-21-6"><a id="__codelineno-21-6" name="__codelineno-21-6"></a>master-0    master-0    192.168.50.10   10.130.0.0/23
-</span><span id="__span-21-7"><a id="__codelineno-21-7" name="__codelineno-21-7"></a>master-1    master-1    192.168.50.11   10.128.0.0/23
-</span><span id="__span-21-8"><a id="__codelineno-21-8" name="__codelineno-21-8"></a>master-2    master-2    192.168.50.12   10.129.0.0/23
-</span><span id="__span-21-9"><a id="__codelineno-21-9" name="__codelineno-21-9"></a>
-</span><span id="__span-21-10"><a id="__codelineno-21-10" name="__codelineno-21-10"></a>$ ssh core@192.168.50.15 ip a show dev ens3
-</span><span id="__span-21-11"><a id="__codelineno-21-11" name="__codelineno-21-11"></a>2: ens3: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc fq_codel state UP group default qlen 1000
-</span><span id="__span-21-12"><a id="__codelineno-21-12" name="__codelineno-21-12"></a>    link/ether 52:54:00:a8:32:0f brd ff:ff:ff:ff:ff:ff
-</span><span id="__span-21-13"><a id="__codelineno-21-13" name="__codelineno-21-13"></a>    inet 192.168.50.15/24 brd 192.168.50.255 scope global dynamic noprefixroute ens3
-</span><span id="__span-21-14"><a id="__codelineno-21-14" name="__codelineno-21-14"></a>       valid_lft 3195sec preferred_lft 3195sec
-</span><span id="__span-21-15"><a id="__codelineno-21-15" name="__codelineno-21-15"></a>    inet 192.168.50.128/24 brd 192.168.50.255 scope global secondary ens3:eip
-</span><span id="__span-21-16"><a id="__codelineno-21-16" name="__codelineno-21-16"></a>       valid_lft forever preferred_lft forever
-</span><span id="__span-21-17"><a id="__codelineno-21-17" name="__codelineno-21-17"></a>    inet6 fe80::2758:fcdc:4046:5765/64 scope link noprefixroute
-</span><span id="__span-21-18"><a id="__codelineno-21-18" name="__codelineno-21-18"></a>       valid_lft forever preferred_lft forever
-</span></code></pre></div></td></tr></table></div>
-<h2 id="automated-management-of-egress-ips">Automated Management of Egress IPs<a class="headerlink" href="#automated-management-of-egress-ips" title="Permanent link">&para;</a></h2>
-<p>Egress IP management can be automated with Operator based approach. Here is a blog post about implementing that.</p>
-<p><a href="https://www.openshift.com/blog/fully-automated-management-of-egress-ips-with-the-egressip-ipam-operator/">Fully Automated Management of Egress IPs with the egressip-ipam-operator</a></p>
 <hr>
 <div class="md-source-file">
   <span class="md-source-file__fact">
@@ -4940,13 +4788,13 @@
       <span class="md-icon" title="Last update">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 14h-2V8h2zm2-13H9v2h6zM5 13a6.995 6.995 0 0 1 13.79-1.66l.6-.6c.32-.32.71-.53 1.11-.64a8.6 8.6 0 0 0-1.47-2.71l1.42-1.42c-.45-.51-.9-.97-1.41-1.41L17.62 6c-1.55-1.26-3.5-2-5.62-2a9 9 0 0 0-9 9c0 4.63 3.5 8.44 8 8.94v-2.02c-3.39-.49-6-3.39-6-6.92m8 6.96V22h2.04l6.13-6.12-2.04-2.05zm9.85-6.49-1.32-1.32c-.2-.2-.53-.2-.72 0l-.98.98 2.04 2.04.98-.98c.2-.19.2-.52 0-.72"/></svg>
       </span>
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago"><span class="timeago" datetime="2020-12-06T17:52:40+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date">2020-12-06</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago"><span class="timeago" datetime="2025-09-24T14:23:56+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date">2025-09-24</span>
 
       
         <span class="md-icon" title="Created">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11 8h2v6h-2zm4-7H9v2h6zm-3 19c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7c.7 0 1.36.13 2 .35V13c0-2.12-.74-4.07-1.97-5.61l1.42-1.42c-.45-.51-.9-.97-1.41-1.41L17.62 6c-1.55-1.26-3.5-2-5.62-2a9 9 0 0 0 0 18c.59 0 1.16-.06 1.71-.17-.31-.58-.53-1.23-.63-1.92-.36.05-.71.09-1.08.09m8-2v-3h-2v3h-3v2h3v3h2v-3h3v-2z"/></svg>
         </span>
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago"><span class="timeago" datetime="2020-03-24T08:31:27+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date">2020-03-24</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago"><span class="timeago" datetime="2025-08-31T09:57:16+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date">2025-08-31</span>
       
 
       
@@ -4958,10 +4806,6 @@
       <span>Contributors:</span><span>
         <a href="mailto:robert.bohne@redhat.com" class="md-author" title="Robert Bohne">
           <img src="https://www.gravatar.com/avatar/6a667d65f2e33ca8b495e24d738bf6af7137f648b52d0179762add099092b4b0?s=25" alt="Robert Bohne">
-        </a>
-      </span><span>
-        <a href="mailto:tahonen@redhat.com" class="md-author" title="Tero Ahonen">
-          <img src="https://www.gravatar.com/avatar/3b8ac220220c580bc8eb6d49161738d339e1c1833ab0ccecc55a73c21a615bfa?s=25" alt="Tero Ahonen">
         </a>
       </span>
   </span>
