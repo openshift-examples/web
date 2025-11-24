@@ -1,0 +1,13 @@
+oc new-project bouvier
+oc new-app quay.io/openshift-examples/simple-http-server:micro --name patty
+oc create route edge patty --service=patty
+oc new-app quay.io/openshift-examples/simple-http-server:micro --name selma
+oc create route edge selma --service=selma
+
+oc new-project simpson
+oc new-app quay.io/openshift-examples/simple-http-server:micro --name homer
+oc create route edge homer --service=homer
+
+oc new-app quay.io/openshift-examples/simple-http-server:micro --name marge
+oc create route edge marge --service=marge
+

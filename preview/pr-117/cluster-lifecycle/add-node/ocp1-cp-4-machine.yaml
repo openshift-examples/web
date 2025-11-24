@@ -1,0 +1,29 @@
+---
+apiVersion: machine.openshift.io/v1beta1
+kind: Machine
+metadata:
+  annotations:
+    machine.openshift.io/instance-state: externally provisioned
+    metal3.io/BareMetalHost: openshift-machine-api/ocp1-cp-4
+  labels:
+    machine.openshift.io/cluster-api-cluster: ocp1-nlxjs
+    machine.openshift.io/cluster-api-machine-role: master
+    machine.openshift.io/cluster-api-machine-type: master
+  name: ocp1-cp-4
+  namespace: openshift-machine-api
+spec:
+  metadata: {}
+  providerSpec:
+    value:
+      apiVersion: baremetal.cluster.k8s.io/v1alpha1
+      customDeploy:
+        method: install_coreos
+      hostSelector: {}
+      image:
+        checksum: ""
+        url: ""
+      kind: BareMetalMachineProviderSpec
+      metadata:
+        creationTimestamp: null
+      userData:
+        name: master-user-data-managed

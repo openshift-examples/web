@@ -1,0 +1,44 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: debug-receiver
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: debug-receiver
+  template:
+    metadata:
+      labels:
+        app: debug-receiver
+    spec:
+      containers:
+      - image: registry.access.redhat.com/ubi8/python-38:latest
+        name: python
+        command:
+          - /bin/sh
+          - -c
+          - |
+            pip install pyserv
+            serv 9393
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: debug-receiver
+  name: debug-receiver
+spec:
+  ports:
+  - name: alert-debug-receiver
+    port: 9393
+    protocol: TCP
+    targetPort: 9393
+  selector:
+    app: debug-receiver
+  sessionAffinity: None
+  type: ClusterIP

@@ -1,0 +1,117 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  creationTimestamp: null
+  name: clusters
+spec: {}
+status: {}
+---
+apiVersion: v1
+data:
+  ca-bundle.crt: |
+    xxx
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: user-ca-bundle
+  namespace: clusters
+---
+apiVersion: hypershift.openshift.io/v1beta1
+kind: HostedCluster
+metadata:
+  creationTimestamp: null
+  name: hcp-2003-2
+  namespace: clusters
+spec:
+  additionalTrustBundle:
+    name: user-ca-bundle
+  autoscaling: {}
+  configuration: {}
+  controllerAvailabilityPolicy: HighlyAvailable
+  dns:
+    baseDomain: ""
+  etcd:
+    managed:
+      storage:
+        persistentVolume:
+          size: 8Gi
+          storageClassName: ocs-storagecluster-ceph-rbd
+        type: PersistentVolume
+    managementType: Managed
+  fips: false
+  infraID: hcp-2003-2-t4x5c
+  networking:
+    clusterNetwork:
+      - cidr: 10.132.0.0/14
+    networkType: OVNKubernetes
+    serviceNetwork:
+      - cidr: 172.31.0.0/16
+  olmCatalogPlacement: management
+  platform:
+    kubevirt:
+      baseDomainPassthrough: true
+    type: KubeVirt
+  pullSecret:
+    name: hcp-2003-2-pull-secret
+  release:
+    image: quay.io/openshift-release-dev/ocp-release:4.18.13-x86_64
+  secretEncryption:
+    aescbc:
+      activeKey:
+        name: hcp-2003-2-etcd-encryption-key
+    type: aescbc
+  services:
+    - service: APIServer
+      servicePublishingStrategy:
+        type: Route
+    - service: Ignition
+      servicePublishingStrategy:
+        type: Route
+    - service: Konnectivity
+      servicePublishingStrategy:
+        type: Route
+    - service: OAuthServer
+      servicePublishingStrategy:
+        type: Route
+  sshKey:
+    name: hcp-2003-2-ssh-key
+status:
+  controlPlaneEndpoint:
+    host: ""
+    port: 0
+---
+apiVersion: hypershift.openshift.io/v1beta1
+kind: NodePool
+metadata:
+  creationTimestamp: null
+  name: hcp-2003-2
+  namespace: clusters
+spec:
+  arch: amd64
+  clusterName: hcp-2003-2
+  management:
+    autoRepair: false
+    upgradeType: Replace
+  nodeDrainTimeout: 0s
+  nodeVolumeDetachTimeout: 0s
+  platform:
+    kubevirt:
+      additionalNetworks:
+        - name: default/br-vlan-2003
+      attachDefaultNetwork: false
+      compute:
+        cores: 8
+        memory: 16Gi
+      networkInterfaceMultiqueue: Enable
+      rootVolume:
+        persistent:
+          size: 120Gi
+          storageClass: ocs-storagecluster-ceph-rbd-virtualization
+        type: Persistent
+    type: KubeVirt
+  release:
+    image: quay.io/openshift-release-dev/ocp-release:4.18.13-x86_64
+  replicas: 2
+status:
+  replicas: 0
+---
