@@ -35,5 +35,5 @@ jobs:
         with:
           message: |
             Thanks, please check
-              https://rbo.github.io/mkdocs-materials-github-actions/pr-${{ github.event.pull_request.number }}/
+              https://rbo.github.io/openshift-examples-web/pr-${{ github.event.pull_request.number }}/
             before merge.
