@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: nuc-led-kernel-module
+spec:
+  updateStrategy:
+    type: OnDelete
+  selector:
+    matchLabels:
+      name: nuc-led-kernel-module
+  template:
+    metadata:
+      labels:
+        name: nuc-led-kernel-module
+    spec:
+      tolerations:
+        - operator: Exists
+      hostname: nuc-led-kernel-module
+      serviceAccount: privileged
+      serviceAccountName: privileged
+      volumes:
+      - name: etc-pki-entitlement
+        secret:
+          defaultMode: 420
+          secretName: etc-pki-entitlement
+      containers:
+        - name: rhel
+          image: registry.access.redhat.com/ubi8/s2i-base:latest
+          lifecycle:
+            preStop:
+              exec:
+                command:
+                  - /usr/bin/bash
+                  - -c
+                  - |
+                    set -euxo pipefail
+                    rmmod nuc_led
+          command:
+            - /usr/bin/bash
+            - -c
+            - |
+
+              set -euxo pipefail
+
+              rm /etc/rhsm-host
+
+              dnf install -y gcc-toolset-10-gcc kernel-devel \
+                             kernel-headers kernel-modules \
+                             elfutils-libelf-devel
+
+
+              git clone https://github.com/nomego/intel_nuc_led
+              cd intel_nuc_led
+
+              make
+              make install
+              modprobe nuc_led
+
+              while true; do
+                date
+                cat  /proc/acpi/nuc_led
+                sleep 60
+              done
+
+              sleep infinity
+
+          securityContext:
+            privileged: true
+            runAsUser: 0
+
+          volumeMounts:
+          - mountPath: /etc/pki/entitlement
+            name: etc-pki-entitlement

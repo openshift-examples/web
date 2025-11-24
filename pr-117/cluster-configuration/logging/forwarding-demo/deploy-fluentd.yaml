@@ -1,0 +1,51 @@
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: fluentd-log
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 100Gi
+  storageClassName: managed-nfs-storage
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fluentd
+spec:
+  selector:
+    matchLabels:
+      app: fluentd
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: fluentd
+    spec:
+      containers:
+        - name: fluentd
+          image: docker.io/fluent/fluentd:v1.3-debian-1
+          ports:
+            - containerPort: 24224
+          volumeMounts:
+          - mountPath: /fluentd/log
+            name: fluentd-log
+      volumes:
+      - name: fluentd-log
+        persistentVolumeClaim:
+          claimName: fluentd-log
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fluentd
+spec:
+  selector:
+    app: fluentd
+  ports:
+    - protocol: TCP
+      port: 24224
+      targetPort: 24224
