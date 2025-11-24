@@ -9,3 +9,4 @@ git+https://github.com/fralau/mkdocs_macros_plugin.git@v1.3.7
 pre-commit==4.0.1
 mkdocs-git-authors-plugin==0.9.2
 mkdocs-drawio==1.8.2
+mike==2.1.3
