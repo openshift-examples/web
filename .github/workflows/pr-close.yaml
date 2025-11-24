@@ -1,13 +1,15 @@
-name: publish (main & releases)
+name: pr-close
+
 on:
-  push:
-    branches:
-      - main
-      - 'releases/**'
+  pull_request:
+    types:
+      - closed
+
 permissions:
   contents: write
+
 jobs:
-  deploy:
+  cleanup:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -25,4 +27,4 @@ jobs:
           git config --global user.name "Docs Deploy"
           git config --global user.email "docs.deploy@example.co.uk"
       - name: Build Docs Website
-        run: mkdocs gh-deploy
+        run: mike delete --push pr-${{ github.event.pull_request.number }}
