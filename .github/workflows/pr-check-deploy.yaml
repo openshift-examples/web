@@ -35,5 +35,5 @@ jobs:
         with:
           message: |
             Thanks, please check
-              https://rbo.github.io/openshift-examples-web/preview/pr-${{ github.event.pull_request.number }}/
+            🌍 https://examples.openshift.pub/preview/pr-${{ github.event.pull_request.number }}/
             before merge.
