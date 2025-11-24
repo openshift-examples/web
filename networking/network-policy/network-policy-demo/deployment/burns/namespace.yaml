@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  annotations:
-    openshift.io/description: "Home of Charles Montgomery Burns"
-    openshift.io/display-name: "Burns"
-  name: burns
-spec: {}
