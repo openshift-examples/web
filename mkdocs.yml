@@ -59,6 +59,10 @@ extra_javascript:
   - javascripts/drawio-reload.js
 # Extensions
 markdown_extensions:
+  - pymdownx.emoji:
+      options:
+        custom_icons:
+          - overrides/.icons
   - admonition
   - pymdownx.details
   - pymdownx.highlight:
@@ -259,7 +263,7 @@ nav:
       - Cluster Configurator: operators/cluster-configurator.md
       - Simple Application Operator - WiP: operators/simple-application-operator.md
 
-  - OpenShift Virtualization:
+  - Virtualization:
       - kubevirt/index.md
       - Application Aware Quota: kubevirt/application-aware-quota/index.md
       - PCI passthrough: kubevirt/pci-passthrough.md
