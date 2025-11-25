@@ -1,0 +1,28 @@
+.md-footer-powered-by {
+    margin: auto .6rem;
+    padding: .4rem 0;
+    color: var(--md-default-bg-color--lighter);
+    font-size: .64rem;
+}
+
+.md-footer-copyright {
+    text-align: center
+}
+
+
+.md-grid {
+    max-width: initial;
+}
+
+.md-source-file__fact {
+    align-items: center;
+    color: var(--md-default-fg-color--light);
+    display: inline-flex;
+    font-size: .68rem;
+    gap: .3rem;
+}
+
+.md-typeset .md-author img {
+    border-radius: 100%;
+    display: block;
+}

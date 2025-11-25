@@ -1,0 +1,41 @@
+hosts:
+  - hostname: inf49
+    rootDeviceHints:
+      deviceName: /dev/sda
+    interfaces:
+      - macAddress: b4:99:ba:b4:49:d2
+        name: enp3s0f0
+      - macAddress: 00:1b:21:b5:6a:20
+        name: ens2f0
+      - macAddress: 00:1b:21:b5:6a:21
+        name: ens2f1
+    networkConfig:
+      interfaces:
+        - name: enp3s0f0
+          type: ethernet
+          ipv6:
+            enabled: false
+          ipv4:
+            enabled: false
+        - name: bond0.32
+          type: vlan
+          state: up
+          ipv4:
+            enabled: true
+            dhcp: true
+          ipv6:
+            enabled: false
+          vlan:
+            base-iface: bond0
+            id: 32
+        - name: bond0
+          type: bond
+          state: up
+          link-aggregation:
+            mode: active-backup
+            options:
+              primary: ens2f0
+              miimon: '140'
+            port:
+              - ens2f0
+              - ens2f1

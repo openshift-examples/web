@@ -1,0 +1,35 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: build-args
+  labels:
+    name: build-args
+spec:
+  triggers:
+    - type: ConfigChange
+  source:
+    contextDir: "buildArgs/"
+    type: Git
+    git:
+      uri: 'https://github.com/openshift-examples/container-build.git'
+  strategy:
+    type: Docker
+    dockerStrategy:
+      dockerfilePath: "Containerfile"
+      buildArgs:
+        - name: VERSION
+          value: staging
+        - name: USERNAME
+          valueFrom:
+            configMapKeyRef:
+              key: USERNAME
+              name: build-args
+        - name: PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: PASSWORD
+              name: build-args
+  output:
+    to:
+      kind: ImageStreamTag
+      name: 'build-args:latest'
