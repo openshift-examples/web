@@ -8,43 +8,34 @@
 
 Create a new submodule
 
-```bash
+```shell
 cd content/kubevirt/
 git submodule add https://github.com/openshift-examples/kubevirt-ansible ansible
 ```
 
-### Run it with public builder
+### Run local
 
-```bash
-podman run -ti --user 0 --rm \
-  -v $(pwd):/opt/app-root/src:z \
-  -p 8080:8080 quay.io/openshift-examples/builder:devel
+```shell
+./run-local.sh
 ```
 
-### Run local pre-commit check
+Run local pre-commit via: `./run-local-pre-commit.sh`
 
-```bash
-./run-local-pre-commit.sh
-```
+### Build & push new builder image
 
-### Builder image
+```shell
+export VERSION=$(date +%Y%m%d%H%M)
+export IMAGE=quay.io/openshift-examples/builder:${VERSION}
 
-```bash
-export IMAGE='quay.io/openshift-examples/builder:devel'
 podman manifest rm ${IMAGE}
-podman build --platform linux/amd64,linux/arm64  \
+
+podman build \
+  --platform linux/amd64,linux/arm64 \
   --manifest ${IMAGE} \
   --no-cache \
   -f builder.Containerfile .
+
 podman manifest push ${IMAGE}
-```
-
-#### Run it with local builder image
-
-```bash
-podman run -ti --user 0 --rm \
-  -v $(pwd):/opt/app-root/src:z \
-  -p 8080:8080 ${IMAGE}
 ```
 
 ## Stargazers over time
