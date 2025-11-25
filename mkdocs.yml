@@ -212,6 +212,9 @@ nav:
       - S2I - R shiny: build/s2i-r-shiny.md
       - Universal Base Images: build/universal-base-image.md
 
+  - Lightspeed:
+      - lightspeed/index.md
+
   - Deploy:
       - deploy/index.md
       - Keycloak: deploy/keycloak/index.md
