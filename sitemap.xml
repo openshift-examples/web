@@ -2,534 +2,534 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://examples.openshift.pub/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/certificate/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/impressum/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/build/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/build/entitled/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/build/jenkins/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/build/s2i-r-shiny/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/build/universal-base-image/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/build/pipeline/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/build/pipeline/buildpacks/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/client/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/cluster-configuration/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/cluster-configuration/cluster-autoscaling/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/cluster-configuration/image-registry/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/cluster-configuration/ntp/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/cluster-configuration/MachineSets/debugging/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/cluster-configuration/MachineSets/VMware-UPI/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/cluster-configuration/authentication/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/cluster-configuration/authentication/activedirectory-ldap/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/cluster-configuration/authentication/auth-basic-authentication/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/cluster-configuration/authentication/redhat-sso/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/cluster-configuration/authentication/token/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/cluster-configuration/authentication/client-certificate/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/cluster-configuration/build-load-kernel-module/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/cluster-configuration/external-dns/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/cluster-configuration/full-cluster-entitlement/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/cluster-configuration/full-cluster-entitlement/debugging/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/cluster-configuration/image-registry/vsphere-registry/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/cluster-configuration/logging/forwarding-demo/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/cluster-configuration/machine-config/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/cluster-configuration/machine-config/kubelet-configs/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/cluster-configuration/machine-config/machine-config-server/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/cluster-configuration/monitoring/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/cluster-configuration/monitoring/alertmanager/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/cluster-configuration/monitoring/alertmanager/debug-receiver/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/cluster-configuration/monitoring/alertmanager/github-receiver/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/cluster-configuration/monitoring/alertmanager/microsoft-teams-receiver/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/cluster-configuration/monitoring/alertmanager/telegram-receiver/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/cluster-configuration/storage/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/cluster-configuration/storage/nfs/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/cluster-configuration/storage/csi-driver-nfs/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/cluster-installation/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/cluster-installation/adjust-rhcos.iso/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/cluster-installation/air-gapped/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/cluster-installation/gpu/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/cluster-installation/gpu/gpu-debuging/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/cluster-installation/gpu/gpu-on-aws/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/cluster-installation/gpu/gpu-on-prem/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/cluster-installation/hosted-control-plane/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/cluster-installation/hosted-control-plane/kubevirt-networking/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/cluster-installation/sno-on-ocpv/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/cluster-installation/vmware/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/cluster-installation/vmware/ipi-proxy/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/cluster-installation/vmware/agent-base-non-integrated/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/cluster-installation/vmware/example/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/cluster-installation/windows-container/VMware-ipi/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/cluster-installation/windows-container/dev-prev/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/cluster-installation/windows-container/on-prem/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/cluster-lifecycle/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/cluster-lifecycle/cloud-redhat-com/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/cluster-lifecycle/oat-upgrades/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/cluster-lifecycle/restore/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/cluster-lifecycle/shutdown/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/cluster-lifecycle/storage-migration/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/cluster-lifecycle/add-node/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/cluster-lifecycle/backup/etcd/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/cluster-lifecycle/monitoring/metrics/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/control-plane/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/control-plane/lost-quorum/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/deploy/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/deploy/eap-cluster/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/deploy/faketime/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/deploy/imagestreams/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/deploy/initcontainers/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/deploy/jar/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/deploy/liveness-probe/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/deploy/nginx-reverse-proxy/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/deploy/ops-container/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/deploy/quota/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/deploy/scale-down-deploymentconfigs/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/deploy/scc-anyuid/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/deploy/statefulset/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/deploy/storage/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/deploy/autoscaling/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/deploy/keycloak/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/deploy/monitoring/workload/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/deploy/workload/gitlab-runner/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/deploy/workload/grafana-oauth/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/deploy/workload/jfrog-artifactory-enterprise-operator-air-gapped/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/deploy/workload/own-apache-container/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/deploy/workload/quake3/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/gitops/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/kubevirt/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/kubevirt/nfs-csi-driver/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/kubevirt/node-health-check/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/kubevirt/pci-passthrough/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/kubevirt/storage/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/kubevirt/template/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/kubevirt/application-aware-quota/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/kubevirt/descheduler/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/kubevirt/networking/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/my-lab/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/my-lab/fedora-workstation/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/my-lab/local-fedora/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/my-lab/remote-worker/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/my-lab/ssh/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/my-lab/storage-box/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/networking/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/networking/k8s-iptables-chains/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/networking/multus/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/networking/egress-ip/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/networking/lldpd/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/networking/network-policy/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/networking/network-policy/OVNKubernetes/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/networking/network-policy/OpenShiftSDN/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/networking/services-routes/route-encryption/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/networking/services-routes/router-sharding/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/networking/services-routes/service-serving-certificate-secrets/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/networking/sr-iov/deployment-sriov-eno4/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/networking/sr-iov/sriov/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/networking/udn/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/openshift-tv/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/openshift-tv/2021-04-14-vpshere-ipi-disconnected/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/operators/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/operators/ansible-operator/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/operators/cluster-configurator/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/operators/custom-ressource-definition/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/operators/install-operator-as-a-user/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/operators/operatorhub/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/operators/simple-application-operator/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/operators/air-gapped/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/troubleshooting/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
     <url>
          <loc>https://examples.openshift.pub/tags/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-11-26</lastmod>
     </url>
 </urlset>
