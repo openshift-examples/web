@@ -11,6 +11,10 @@ icon: redhat/Technology_icon-Red_Hat-OpenShift_Virtualization-Standard-RGB
 
 OpenShift Virtualization is a fully developed virtualization solution utilizing the type-1 KVM hypervisor from Red Hat Enterprise Linux with the powerful features and capabilities of OpenShift for managing hypervisor nodes, virtual machines, and their consumers.
 
+## Usefull resources:
+
+* [OpenShift Virtualization cookbook](https://redhatquickcourses.github.io/ocp-virt-cookbook/ocp-virt-cookbook/1/index.html)
+
 ## Example deployments
 
 ??? example "Tiny RHEL 9 VM with pod bridge network"
