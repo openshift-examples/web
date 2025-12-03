@@ -266,6 +266,9 @@ nav:
   - Virtualization:
       - kubevirt/index.md
       - Application Aware Quota: kubevirt/application-aware-quota/index.md
+      - LiveMigration:
+          - kubevirt/livemigration/index.md
+          - Cross Cluster: kubevirt/livemigration/cclm.md
       - PCI passthrough: kubevirt/pci-passthrough.md
       - Node Health Check: kubevirt/node-health-check.md
       - Descheduler: kubevirt/descheduler/index.md
