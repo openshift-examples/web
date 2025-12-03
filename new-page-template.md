@@ -3,6 +3,7 @@ title: New Page
 linktitle: New Page
 description: Some information
 tags: ['tagA','tagB','v4.17']
+icon: redhat/Technology_icon-Red_Hat-OpenShift_Virtualization-Standard-RGB
 ---
 # Some information
 
