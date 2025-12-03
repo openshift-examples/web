@@ -96,3 +96,11 @@ Tested with:
 |---|---|
 |OpenShift|v4.17.14|
 |OpenShift Virt|v4.17.4|
+
+
+- Cross-cluster VM live migration (TP)
+- Light Speed
+    - anyuid
+    - Ingress encrypte anntionation
+    - Deployment - RWO & Node anti afitnity ✅
+    - Pod Logs permissions denied 
