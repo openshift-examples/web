@@ -10,7 +10,6 @@ icon: redhat/Technology_icon-Red_Hat-Ansible_Lightspeed-Standard-RGB
 Resources:
  * <https://developers.redhat.com/articles/2025/11/05/use-openshift-lightspeed-locally-served-llms>
 
-
 ```yaml
 apiVersion: ols.openshift.io/v1alpha1
 kind: OLSConfig
