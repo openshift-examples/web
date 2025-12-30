@@ -193,6 +193,10 @@ nav:
       - control-plane/index.md
       - Restoring etcd quorum: control-plane/lost-quorum/index.md
 
+  - Storage:
+      - storage/index.md
+      - IBM Fussion Access SAN: storage/ibm-fusion-access-san/index.md
+
   - Troubleshooting: troubleshooting/index.md
 
   - Client: client/index.md
