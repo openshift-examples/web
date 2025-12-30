@@ -1,0 +1,88 @@
+---
+# Important for DNS
+#  https://kubevirt.io/user-guide/docs/latest/using-virtual-machines/dns.html
+# At my lab env, it did not work very clean
+kind: Service
+apiVersion: v1
+metadata:
+  name: vm
+spec:
+  clusterIP: None
+  selector:
+    expose: "me"
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+---
+apiVersion: kubevirt.io/v1alpha2
+kind: VirtualMachine
+metadata:
+  generation: 1
+  labels:
+    expose: "me"
+    flavor.template.cnv.io/medium: "true"
+    os.template.cnv.io/rhel7.0: "true"
+    template.cnv.ui: default_rhel-high-performance
+    workload.template.cnv.io/high-performance: "true"
+  name: rhel7
+spec:
+  running: true
+  template:
+    metadata:
+      creationTimestamp: null
+    spec:
+      hostname: "rhel7"
+      subdomain: "vm"
+      domain:
+        cpu:
+          cores: 2
+          dedicatedCpuPlacement: true
+          model: host-model
+        devices:
+          autoattachGraphicsDevice: false
+          disks:
+          - bootOrder: 1
+            disk:
+              bus: virtio
+            name: rootdisk
+            volumeName: storage
+          - disk:
+              bus: virtio
+            name: cloudinitdisk
+            volumeName: cloudinitdisk
+          interfaces:
+          - bridge: {}
+            name: eth0
+          rng: {}
+        machine:
+          type: ""
+        resources:
+          requests:
+            memory: 4G
+      networks:
+      - name: eth0
+        pod: {}
+      terminationGracePeriodSeconds: 0
+      volumes:  
+      - name: storage
+        persistentVolumeClaim:
+          claimName: box
+      - cloudInitNoCloud:
+          userData: |
+            #cloud-config
+
+            runcmd:
+              # because of  https://github.com/kubevirt/kubevirt/issues/1646
+              - sed -i 's/^HWADDR/#HWADDR/' /etc/sysconfig/network-scripts/ifcfg-eth0
+
+            users:
+              - name: root
+                # passwd: shadow... 
+                #ssh-authorized-keys: >-
+                #  ssh-rsa ....
+            hostname: rhel7
+        name: cloudinitdisk
+status:
+  created: true
+  ready: true
