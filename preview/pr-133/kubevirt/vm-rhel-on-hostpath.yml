@@ -1,0 +1,72 @@
+apiVersion: kubevirt.io/v1alpha2
+kind: VirtualMachine
+metadata:
+  generation: 1
+  labels:
+    flavor.template.cnv.io/medium: "true"
+    os.template.cnv.io/rhel7.0: "true"
+    template.cnv.ui: default_rhel-high-performance
+    workload.template.cnv.io/high-performance: "true"
+  name: rhel7
+  namespace: ""
+  resourceVersion: ""
+  selfLink: /apis/kubevirt.io/v1alpha2/namespaces/ocp311/virtualmachines/rhel7
+  uid: ""
+spec:
+  running: true
+  template:
+    metadata:
+      creationTimestamp: null
+    spec:
+      domain:
+        cpu:
+          cores: 2
+          dedicatedCpuPlacement: true
+          model: host-model
+        devices:
+          autoattachGraphicsDevice: false
+          disks:
+          - bootOrder: 1
+            disk:
+              bus: virtio
+            name: rootdisk
+            volumeName: rootdisk
+          - disk:
+              bus: virtio
+            name: cloudinitdisk
+            volumeName: cloudinitdisk
+          interfaces:
+          - bridge: {}
+            name: eth0
+          rng: {}
+        machine:
+          type: ""
+        resources:
+          requests:
+            memory: 4G
+      networks:
+      - name: eth0
+        pod: {}
+      terminationGracePeriodSeconds: 0
+      volumes:
+      # Create disk.img via:
+      #    qemu-img convert -O raw rhel-server-7.6-x86_64-kvm.qcow2 /mnt/local-storage/pv001/disk.img
+      - name: rootdisk
+        hostDisk:
+          capacity: 10Gi
+          path: /mnt/local-storage/local/disk1/disk.img
+          type: DiskOrCreate
+        serviceAccount:
+          serviceAccountName: hostaccess
+      - cloudInitNoCloud:
+          userData: |
+            #cloud-config
+            users:
+              - name: root
+                #ssh-authorized-keys: >-
+                #  ssh-rsa ...
+            hostname: rhel7
+        name: cloudinitdisk
+status:
+  created: true
+  ready: true

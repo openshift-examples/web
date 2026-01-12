@@ -1,0 +1,13 @@
+apiVersion: k8s.cni.cncf.io/v1
+kind: NetworkAttachmentDefinition
+metadata:
+  name: coe
+  namespace: localnet-demo
+spec:
+  config: '{
+            "name":"localnet-coe",
+            "type":"ovn-k8s-cni-overlay",
+            "cniVersion":"0.4.0",
+            "topology":"localnet",
+            "netAttachDefName":"localnet-demo/coe"
+          }'

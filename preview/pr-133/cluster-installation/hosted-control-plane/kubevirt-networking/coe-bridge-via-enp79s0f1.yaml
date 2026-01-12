@@ -1,0 +1,46 @@
+apiVersion: nmstate.io/v1
+kind: NodeNetworkConfigurationPolicy
+metadata:
+  name: coe-bridge-via-enp79s0f1
+spec:
+  desiredState:
+    interfaces:
+      - name: enp79s0f1.2003
+        type: vlan
+        state: up
+        vlan:
+          base-iface: enp79s0f1
+          id: 2003
+        ipv4:
+          enabled: false
+        ipv6:
+          enabled: false
+      - bridge:
+          options:
+            stp:
+              enabled: false
+          port:
+            - name: enp79s0f1.2003
+        description: Linux Brige info COE Network via enp79s0f1.2003
+        ipv4:
+          enabled: true
+          dhcp: true
+        ipv6:
+          enabled: false
+        name: br-vlan-2003
+        state: up
+        type: linux-bridge
+      - bridge:
+          options:
+            stp:
+              enabled: false
+          port:
+            - name: enp79s0f1
+        description: Linux Brige info COE Network via enp79s0f1
+        ipv4:
+          enabled: false
+        name: coe-bridge
+        state: up
+        type: linux-bridge
+  nodeSelector:
+    coe.muc.redhat.com/second-nic: enp79s0f1
