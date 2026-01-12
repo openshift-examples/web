@@ -13,6 +13,10 @@
          <lastmod>2026-01-12</lastmod>
     </url>
     <url>
+         <loc>https://examples.openshift.pub/tags/</loc>
+         <lastmod>2026-01-12</lastmod>
+    </url>
+    <url>
          <loc>https://examples.openshift.pub/build/</loc>
          <lastmod>2026-01-12</lastmod>
     </url>
@@ -533,11 +537,15 @@
          <lastmod>2026-01-12</lastmod>
     </url>
     <url>
-         <loc>https://examples.openshift.pub/troubleshooting/</loc>
+         <loc>https://examples.openshift.pub/storage/</loc>
          <lastmod>2026-01-12</lastmod>
     </url>
     <url>
-         <loc>https://examples.openshift.pub/tags/</loc>
+         <loc>https://examples.openshift.pub/storage/ibm-fusion-access-san/</loc>
+         <lastmod>2026-01-12</lastmod>
+    </url>
+    <url>
+         <loc>https://examples.openshift.pub/troubleshooting/</loc>
          <lastmod>2026-01-12</lastmod>
     </url>
 </urlset>
