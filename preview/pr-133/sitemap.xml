@@ -13,6 +13,10 @@
          <lastmod>2026-01-12</lastmod>
     </url>
     <url>
+         <loc>https://examples.openshift.pub/pr-133/tags/</loc>
+         <lastmod>2026-01-12</lastmod>
+    </url>
+    <url>
          <loc>https://examples.openshift.pub/pr-133/build/</loc>
          <lastmod>2026-01-12</lastmod>
     </url>
@@ -542,10 +546,6 @@
     </url>
     <url>
          <loc>https://examples.openshift.pub/pr-133/troubleshooting/</loc>
-         <lastmod>2026-01-12</lastmod>
-    </url>
-    <url>
-         <loc>https://examples.openshift.pub/pr-133/tags/</loc>
          <lastmod>2026-01-12</lastmod>
     </url>
 </urlset>
