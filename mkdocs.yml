@@ -105,7 +105,9 @@ plugins:
       border: 0         # increase or decrease the border / margin around your diagrams (default: 5)
   - mike:
       deploy_prefix: preview
-
+  - privacy:
+      links_attr_map:
+        target: _blank
 hooks:
   - hooks/sha256_filter.py
 
