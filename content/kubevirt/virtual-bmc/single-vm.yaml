@@ -1,0 +1,40 @@
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  labels:
+    kubevirt.io/vm: single-vm
+  name: single-vm
+spec:
+  dataVolumeTemplates:
+    - apiVersion: cdi.kubevirt.io/v1beta1
+      kind: DataVolume
+      metadata:
+        name: single-vm-root
+      spec:
+        source:
+          blank: {}
+        storage:
+          resources:
+            requests:
+              storage: 30Gi
+  runStrategy: Manual
+  template:
+    metadata:
+      labels:
+        kubevirt.io/vm: single-vm
+        tentant: tentant
+    spec:
+      domain:
+        devices:
+          disks:
+            - disk:
+                bus: virtio
+              name: rootdisk
+        resources:
+          requests:
+            memory: 1024Mi
+      terminationGracePeriodSeconds: 0
+      volumes:
+        - dataVolume:
+            name: single-vm-root
+          name: rootdisk
