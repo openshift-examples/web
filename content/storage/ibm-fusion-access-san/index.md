@@ -138,6 +138,8 @@ oc create secret -n ibm-fusion-access generic fusion-pullsecret \
 
 ### If Secure Boot is enabled: provide signing key
 
+Create the key pair in the earlier section [If Secure Boot is enabled: Create and roll out your signing key](#if-secure-boot-is-enabled-create-and-roll-out-your-signing-key), then create the following secrets:
+
 * Private key
 
     ```shell
