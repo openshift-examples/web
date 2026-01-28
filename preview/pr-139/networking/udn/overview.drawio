@@ -1,0 +1,125 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/26.2.15 Chrome/134.0.6998.205 Electron/35.2.1 Safari/537.36" version="26.2.15">
+  <diagram id="hq0ZFgXizS2Q_lVKa3BS" name="Page-1">
+    <mxGraphModel dx="1538" dy="1065" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" background="none" math="0" shadow="1">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="VCeAXUKX6xFAu75omCcL-28" value="" style="rounded=1;whiteSpace=wrap;html=1;shadow=0;fontFamily=Red Hat Text;" parent="1" vertex="1">
+          <mxGeometry x="20" y="50" width="190" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="VCeAXUKX6xFAu75omCcL-29" value="Tentant 1" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;labelBackgroundColor=none;fontFamily=Red Hat Text;fillColor=default;strokeColor=default;shadow=0;" parent="1" vertex="1">
+          <mxGeometry x="81.46000000000001" y="40" width="60" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="VCeAXUKX6xFAu75omCcL-47" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;shadow=0;fontFamily=Red Hat Text;" parent="1" vertex="1">
+          <mxGeometry x="30" y="80" width="170" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="VCeAXUKX6xFAu75omCcL-48" value="namespace-1&amp;nbsp;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;labelBackgroundColor=none;fontFamily=Red Hat Text;fillColor=#f8cecc;strokeColor=#b85450;shadow=0;" parent="1" vertex="1">
+          <mxGeometry x="47.708333333333336" y="70" width="127.5" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="VCeAXUKX6xFAu75omCcL-33" value="udn-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;fontFamily=Red Hat Text;shadow=0;" parent="1" vertex="1">
+          <mxGeometry x="92.08" y="110" width="45.84" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="VCeAXUKX6xFAu75omCcL-90" value="" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;startFill=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;shadow=0;fontFamily=Red Hat Text;" parent="1" source="VCeAXUKX6xFAu75omCcL-33" target="VCeAXUKX6xFAu75omCcL-138" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="155.0000000000001" y="120" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="VCeAXUKX6xFAu75omCcL-34" value="" style="aspect=fixed;html=1;dashed=0;whitespace=wrap;verticalLabelPosition=bottom;verticalAlign=top;fillColor=#2875E2;strokeColor=#ffffff;points=[[0.005,0.63,0],[0.1,0.2,0],[0.9,0.2,0],[0.5,0,0],[0.995,0.63,0],[0.72,0.99,0],[0.5,1,0],[0.28,0.99,0]];shape=mxgraph.kubernetes.icon2;kubernetesLabel=1;prIcon=pod;shadow=0;fontFamily=Red Hat Text;" parent="1" vertex="1">
+          <mxGeometry x="44.00333333333334" y="99" width="35.42" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="VCeAXUKX6xFAu75omCcL-36" value="" style="endArrow=none;html=1;rounded=0;exitX=0.995;exitY=0.63;exitDx=0;exitDy=0;exitPerimeter=0;startFill=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;shadow=0;fontFamily=Red Hat Text;" parent="1" source="VCeAXUKX6xFAu75omCcL-34" target="VCeAXUKX6xFAu75omCcL-33" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="136.25" y="410" as="sourcePoint" />
+            <mxPoint x="207.08333333333334" y="360" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="VCeAXUKX6xFAu75omCcL-104" value="" style="rounded=1;whiteSpace=wrap;html=1;shadow=0;fontFamily=Red Hat Text;" parent="1" vertex="1">
+          <mxGeometry x="20" y="180" width="190" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="VCeAXUKX6xFAu75omCcL-105" value="Tentant 2" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;labelBackgroundColor=none;fontFamily=Red Hat Text;fillColor=default;strokeColor=default;shadow=0;" parent="1" vertex="1">
+          <mxGeometry x="81.46000000000001" y="170" width="60" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="VCeAXUKX6xFAu75omCcL-106" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;align=left;shadow=0;fontFamily=Red Hat Text;" parent="1" vertex="1">
+          <mxGeometry x="30" y="210" width="170" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="VCeAXUKX6xFAu75omCcL-107" value="namespace-2" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;labelBackgroundColor=none;fontFamily=Red Hat Text;fillColor=#d5e8d4;strokeColor=#82b366;shadow=0;" parent="1" vertex="1">
+          <mxGeometry x="47.708333333333336" y="200" width="127.5" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="VCeAXUKX6xFAu75omCcL-108" value="udn-2" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;fontFamily=Red Hat Text;shadow=0;" parent="1" vertex="1">
+          <mxGeometry x="92.08" y="240" width="45.84" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="VCeAXUKX6xFAu75omCcL-109" value="" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;startFill=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;shadow=0;fontFamily=Red Hat Text;" parent="1" target="VCeAXUKX6xFAu75omCcL-140" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="138" y="248" as="sourcePoint" />
+            <mxPoint x="160" y="248" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="VCeAXUKX6xFAu75omCcL-110" value="" style="aspect=fixed;html=1;dashed=0;whitespace=wrap;verticalLabelPosition=bottom;verticalAlign=top;fillColor=#2875E2;strokeColor=#ffffff;points=[[0.005,0.63,0],[0.1,0.2,0],[0.9,0.2,0],[0.5,0,0],[0.995,0.63,0],[0.72,0.99,0],[0.5,1,0],[0.28,0.99,0]];shape=mxgraph.kubernetes.icon2;kubernetesLabel=1;prIcon=pod;shadow=0;fontFamily=Red Hat Text;" parent="1" vertex="1">
+          <mxGeometry x="44.00333333333334" y="229" width="35.42" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="VCeAXUKX6xFAu75omCcL-112" value="" style="endArrow=none;html=1;rounded=0;exitX=0.995;exitY=0.63;exitDx=0;exitDy=0;exitPerimeter=0;startFill=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;shadow=0;fontFamily=Red Hat Text;" parent="1" source="VCeAXUKX6xFAu75omCcL-110" target="VCeAXUKX6xFAu75omCcL-108" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="136.25" y="540" as="sourcePoint" />
+            <mxPoint x="207.08333333333334" y="490" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="VCeAXUKX6xFAu75omCcL-113" value="" style="rounded=1;whiteSpace=wrap;html=1;shadow=0;fontFamily=Red Hat Text;" parent="1" vertex="1">
+          <mxGeometry x="224" y="50" width="190" height="240" as="geometry" />
+        </mxCell>
+        <mxCell id="VCeAXUKX6xFAu75omCcL-114" value="Tentant 3" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;labelBackgroundColor=none;fontFamily=Red Hat Text;fillColor=default;strokeColor=default;shadow=0;" parent="1" vertex="1">
+          <mxGeometry x="285.46000000000004" y="40" width="60" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="VCeAXUKX6xFAu75omCcL-115" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontFamily=Red Hat Text;align=center;shadow=0;" parent="1" vertex="1">
+          <mxGeometry x="234" y="80" width="170" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="VCeAXUKX6xFAu75omCcL-116" value="namespace-3" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;labelBackgroundColor=none;fontFamily=Red Hat Text;fillColor=#dae8fc;strokeColor=#6c8ebf;shadow=0;" parent="1" vertex="1">
+          <mxGeometry x="251.70833333333334" y="70" width="127.5" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="VCeAXUKX6xFAu75omCcL-117" value="cudn-3" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;fontFamily=Red Hat Text;shadow=0;" parent="1" vertex="1">
+          <mxGeometry x="260" y="166" width="120" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="VCeAXUKX6xFAu75omCcL-132" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;startFill=0;curved=1;exitX=0.995;exitY=0.63;exitDx=0;exitDy=0;exitPerimeter=0;shadow=0;fontFamily=Red Hat Text;" parent="1" source="VCeAXUKX6xFAu75omCcL-119" target="VCeAXUKX6xFAu75omCcL-117" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="VCeAXUKX6xFAu75omCcL-119" value="" style="aspect=fixed;html=1;dashed=0;whitespace=wrap;verticalLabelPosition=bottom;verticalAlign=top;fillColor=#2875E2;strokeColor=#ffffff;points=[[0.005,0.63,0],[0.1,0.2,0],[0.9,0.2,0],[0.5,0,0],[0.995,0.63,0],[0.72,0.99,0],[0.5,1,0],[0.28,0.99,0]];shape=mxgraph.kubernetes.icon2;kubernetesLabel=1;prIcon=pod;shadow=0;fontFamily=Red Hat Text;" parent="1" vertex="1">
+          <mxGeometry x="248.00333333333333" y="99" width="35.42" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="VCeAXUKX6xFAu75omCcL-136" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;curved=1;endArrow=none;startFill=0;shadow=0;fontFamily=Red Hat Text;" parent="1" source="VCeAXUKX6xFAu75omCcL-137" target="VCeAXUKX6xFAu75omCcL-117" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="359.403" y="131" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="VCeAXUKX6xFAu75omCcL-124" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;shadow=0;fontFamily=Red Hat Text;" parent="1" vertex="1">
+          <mxGeometry x="234" y="200" width="170" height="71" as="geometry" />
+        </mxCell>
+        <mxCell id="VCeAXUKX6xFAu75omCcL-125" value="namespace-4&amp;nbsp;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;labelBackgroundColor=none;fontFamily=Red Hat Text;fillColor=#ffe6cc;strokeColor=#d79b00;shadow=0;" parent="1" vertex="1">
+          <mxGeometry x="255.24833333333333" y="261" width="127.5" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="VCeAXUKX6xFAu75omCcL-135" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.467;entryY=1.017;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.995;exitY=0.63;exitDx=0;exitDy=0;exitPerimeter=0;curved=1;endArrow=none;startFill=0;shadow=0;fontFamily=Red Hat Text;" parent="1" source="VCeAXUKX6xFAu75omCcL-128" target="VCeAXUKX6xFAu75omCcL-117" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="VCeAXUKX6xFAu75omCcL-128" value="" style="aspect=fixed;html=1;dashed=0;whitespace=wrap;verticalLabelPosition=bottom;verticalAlign=top;fillColor=#2875E2;strokeColor=#ffffff;points=[[0.005,0.63,0],[0.1,0.2,0],[0.9,0.2,0],[0.5,0,0],[0.995,0.63,0],[0.72,0.99,0],[0.5,1,0],[0.28,0.99,0]];shape=mxgraph.kubernetes.icon2;kubernetesLabel=1;prIcon=pod;shadow=0;fontFamily=Red Hat Text;" parent="1" vertex="1">
+          <mxGeometry x="248.00333333333333" y="216" width="35.42" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="VCeAXUKX6xFAu75omCcL-137" value="VM" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Red Hat Text;fillColor=#0050ef;fontColor=#ffffff;strokeColor=#FFFFFF;shadow=0;" parent="1" vertex="1">
+          <mxGeometry x="350" y="103" width="30" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="VCeAXUKX6xFAu75omCcL-138" value="VM" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Red Hat Text;fillColor=#0050ef;fontColor=#ffffff;strokeColor=#FFFFFF;shadow=0;" parent="1" vertex="1">
+          <mxGeometry x="160" y="105" width="30" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="VCeAXUKX6xFAu75omCcL-140" value="VM" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Red Hat Text;fillColor=#0050ef;fontColor=#ffffff;strokeColor=#FFFFFF;shadow=0;" parent="1" vertex="1">
+          <mxGeometry x="160" y="233" width="30" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="VCeAXUKX6xFAu75omCcL-144" value="VM" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Red Hat Text;fillColor=#0050ef;fontColor=#ffffff;strokeColor=#FFFFFF;shadow=0;" parent="1" vertex="1">
+          <mxGeometry x="349.21" y="220" width="30" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="VCeAXUKX6xFAu75omCcL-145" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=0.469;exitY=0.958;exitDx=0;exitDy=0;exitPerimeter=0;curved=1;endArrow=none;startFill=0;shadow=0;fontFamily=Red Hat Text;" parent="1" source="VCeAXUKX6xFAu75omCcL-117" target="VCeAXUKX6xFAu75omCcL-144" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="293" y="251" as="sourcePoint" />
+            <mxPoint x="326" y="196" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
