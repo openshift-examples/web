@@ -2,13 +2,20 @@
 title: Air-gapped installation
 linktitle: Air-gapped
 weight: 1800
-description: TBD
-tags:
-  - air-gapped
-  - disconnected
-  - restricted-network
+description: An example air-gapped installation
+icon: material/lan-disconnect
+tags: ['air-gapped', 'disconnected', 'restricted-network']
 ---
 # Air-gapped installation
+
+Official documentation:
+
+Tested with:
+
+|Component|Version|
+|---|---|
+|OpenShift|v4.20.8|
+|OpenShift Virt|v4.20.8|
 
 ## Download oc client
 
@@ -16,9 +23,27 @@ Download oc client from [cloud.redhat.com](https://cloud.redhat.com/openshift/) 
 
 ## Create mirror registry
 
-This follows the official documentation: [Creating a mirror registry for installation in a restricted network](https://docs.openshift.com/container-platform/latest/installing/install_config/installing-restricted-networks-preparations.html). **It is just a short wrap up for me.**
+This follows the official documentation: [Chapter 4. Creating a mirror registry with mirror registry for Red Hat OpenShift](https://docs.redhat.com/en/documentation/openshift_container_platform/4.20/html/disconnected_environments/installing-mirroring-creating-registry). **It is just a short wrap up for me.**
 
-### Install & prepare image registry
+
+### Install mirror-registry
+
+```shell
+```
+
+
+### Download Red Hat pull secret
+
+Download Red Hat pull secret and store it in `redhat-pullsecret.json`
+
+
+
+## Apendix
+
+### Docker running a docker registry
+
+Not needed anymore with the mirror-registry, but might be still usefull.
+
 ```bash
 yum -y install podman httpd-tools
 
@@ -82,6 +107,7 @@ systemctl enable --now mirror-registry.service
 systemctl status mirror-registry.service
 ```
 
+
 Configure firewall for Centos or RHEL
 ```
 firewall-cmd --zone=public --permanent --add-port=5000/tcp
@@ -98,92 +124,6 @@ Create mirror registry pullsecret
 ```
 podman login --authfile mirror-registry-pullsecret.json host.compute.local:5000
 ```
-
-### Download Red Hat pull secret
-
-Download Red Hat pull secret and store it in `redhat-pullsecret.json`
-
-### Mirror images
-
-Merge  mirror-registry-pullsecret.json & redhat-pullsecret.json
-```
-jq -s '{"auths": ( .[0].auths + .[1].auths ) }' mirror-registry-pullsecret.json redhat-pullsecret.json > pullsecret.json
-```
-
-Mirror images:
-```
-export OCP_RELEASE=$(oc version -o json  --client | jq -r '.releaseClientVersion')
-export LOCAL_REGISTRY='host.compute.local:5000'
-export LOCAL_REPOSITORY='ocp4/openshift4'
-export PRODUCT_REPO='openshift-release-dev'
-export LOCAL_SECRET_JSON='pullsecret.json'
-export RELEASE_NAME="ocp-release"
-export ARCHITECTURE=x86_64
-# export REMOVABLE_MEDIA_PATH=<path>
-
-# Try run:
-
-oc adm -a ${LOCAL_SECRET_JSON} release mirror \
-     --from=quay.io/${PRODUCT_REPO}/${RELEASE_NAME}:${OCP_RELEASE}-${ARCHITECTURE} \
-     --to=${LOCAL_REGISTRY}/${LOCAL_REPOSITORY} \
-     --to-release-image=${LOCAL_REGISTRY}/${LOCAL_REPOSITORY}:${OCP_RELEASE}-${ARCHITECTURE} --dry-run
-
-oc adm -a ${LOCAL_SECRET_JSON} release mirror \
-     --from=quay.io/${PRODUCT_REPO}/${RELEASE_NAME}:${OCP_RELEASE}-${ARCHITECTURE} \
-     --to=${LOCAL_REGISTRY}/${LOCAL_REPOSITORY} \
-     --to-release-image=${LOCAL_REGISTRY}/${LOCAL_REPOSITORY}:${OCP_RELEASE}-${ARCHITECTURE}
-
-```
-
-Save the output:
-```
-info: Mirroring completed in 57.1s (81.95MB/s)
-
-Success
-Update image:  host.compute.local:5000/ocp4/openshift4:4.2.0
-Mirror prefix: host.compute.local:5000/ocp4/openshift4
-
-To use the new mirrored repository to install, add the following section to the install-config.yaml:
-
-imageContentSources:
-- mirrors:
-  - host.compute.local:5000/ocp4/openshift4
-  source: quay.io/openshift-release-dev/ocp-release
-- mirrors:
-  - host.compute.local:5000/ocp4/openshift4
-  source: quay.io/openshift-release-dev/ocp-v4.0-art-dev
-
-
-To use the new mirrored repository for upgrades, use the following to create an ImageContentSourcePolicy:
-
-apiVersion: operator.openshift.io/v1alpha1
-kind: ImageContentSourcePolicy
-metadata:
-  name: example
-spec:
-  repositoryDigestMirrors:
-  - mirrors:
-    - host.compute.local:5000/ocp4/openshift4
-    source: quay.io/openshift-release-dev/ocp-release
-  - mirrors:
-    - host.compute.local:5000/ocp4/openshift4
-    source: quay.io/openshift-release-dev/ocp-v4.0-art-dev
-```
-
-Extract openshift-install command
-```
-oc adm release extract -a pullsecret.json --command=openshift-install "${LOCAL_REGISTRY}/${LOCAL_REPOSITORY}:${OCP_RELEASE}-${ARCHITECTURE}"
-```
-
-Check openshift-install version:
-```
-$ ./openshift-install version
-./openshift-install 4.5.2
-built from commit 6336a4b3d696dd898eed192e4188edbac99e8c27
-release image host.compute.local:5000/ocp4/openshift4@sha256:8f923b7b8efdeac619eb0e7697106c1d17dd3d262c49d8742b38600417cf7d1d
-```
-
-
 
 ## Ressources
 
