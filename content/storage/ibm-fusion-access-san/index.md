@@ -24,6 +24,7 @@ Tested with:
 * IBM Entitlement key to allow your OpenShift cluster to pull images from IBM Registry: <https://myibm.ibm.com/products-services/containerlibrary>
 * OpenShift cluster with at least three worker nodes, each with ~32 GB memory
     * All nodes (at least 3) need a shared disk (via iSCSI, FC, or shared disks in a KVM lab).
+    * RHEL 10 capable nodes (suppport of x86-64-v3). If not some Pods crash with `Fatal glibc error: CPU does not support x86-64-v3`
 * Access to a container registry for the GPFS kernel modules
     * Internal registry (requires registry storage)
     * External registry, for example quay.io with a private repository
