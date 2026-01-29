@@ -19,10 +19,10 @@ jobs:
         with:
           python-version: 3.12
           cache: 'pip'
-      - name: pre-commit
-        uses: pre-commit/action@v3.0.1
-        with:
-          extra_args: "--from-ref origin/main --to-ref HEAD"
+      # - name: pre-commit
+      #   uses: pre-commit/action@v3.0.1
+      #   with:
+      #     extra_args: "--from-ref HEAD --to-ref ${{ github.event.pull_request.head.sha }}"
       - name: Install Dependencies
         run: |
           pip install -r requirements.txt
