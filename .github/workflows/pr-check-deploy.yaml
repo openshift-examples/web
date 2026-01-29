@@ -1,7 +1,7 @@
 name: pr
 
 on:
-  pull_request:
+  pull_request_target:
 
 permissions:
   contents: write
@@ -14,7 +14,8 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-          token: ${{ secrets.PAT_TOKEN }}
+          ref: ${{ github.event.pull_request.head.sha }}
+
       - uses: actions/setup-python@v6
         with:
           python-version: 3.12
