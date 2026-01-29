@@ -7,7 +7,7 @@ permissions:
   contents: read
 
 jobs:
-  pre-commit-and-deploy:
+  pre-commit:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
