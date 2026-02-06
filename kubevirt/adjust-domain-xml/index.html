@@ -6,37 +6,37 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="VMware example installation (UPI, Static IP, non-integrated)">
+        <meta name="description" content="Adjust domain.xml via sidecar hook to add a WWN to a disk">
       
       
         <meta name="author" content="Robert Bohne">
       
       
-        <link rel="canonical" href="https://examples.openshift.pub/cluster-installation/vmware/example/">
+        <link rel="canonical" href="https://examples.openshift.pub/kubevirt/adjust-domain-xml/">
       
       
-        <link rel="prev" href="../">
+        <link rel="prev" href="../nfs-csi-driver/">
       
       
-        <link rel="next" href="../ipi-proxy/">
+        <link rel="next" href="../../certificate/">
       
       
         
       
       
-      <link rel="icon" href="../../../images/favicon.png">
+      <link rel="icon" href="../../images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
     
     
       
-        <title>VMware example installation (UPI, Static IP, non-integrated) - OpenShift Examples</title>
+        <title>Adjust domain.xml - OpenShift Examples</title>
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -50,22 +50,22 @@
         
         
         
-        <link rel="stylesheet" href="../../../assets/external/fonts.googleapis.com/css.aaf87032.css">
+        <link rel="stylesheet" href="../../assets/external/fonts.googleapis.com/css.aaf87032.css">
         <style>:root{--md-text-font:"Overpass";--md-code-font:"Overpass Mono"}</style>
       
     
     
-      <link rel="stylesheet" href="../../../css/timeago.css">
+      <link rel="stylesheet" href="../../css/timeago.css">
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/powered-by.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/powered-by.css">
     
-    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
     
     
-   <link href="../../../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+   <link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
     html.glightbox-open { overflow: initial; height: 100%; }
     .gslide-title { margin-top: 0px; user-select: text; }
     .gslide-desc { color: #666; user-select: text; }
@@ -74,7 +74,7 @@
     .gdesc-inner { font-size: 0.75rem; }
     body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color);}
     body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color);}
-    body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}</style> <script src="../../../assets/javascripts/glightbox.min.js"></script></head>
+    body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}</style> <script src="../../assets/javascripts/glightbox.min.js"></script></head>
   
   
     
@@ -93,7 +93,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#example-installation-at-my-vmware-lab" class="md-skip">
+        <a href="#adjust-domainxml-to-add-a-wwn-to-a-disk" class="md-skip">
           Skip to content
         </a>
       
@@ -109,7 +109,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../.." title="OpenShift Examples" class="md-header__button md-logo" aria-label="OpenShift Examples" data-md-component="logo">
+    <a href="../.." title="OpenShift Examples" class="md-header__button md-logo" aria-label="OpenShift Examples" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.665 11.812a11.1 11.1 0 0 0-1.08-3.966L24 6.599a11 11 0 0 0-.943-1.595l-1.601.583a11.015 11.015 0 0 0-19.945 7.258l1.604-.584q.077.924.305 1.822L0 15.335a11.2 11.2 0 0 0 1.721 3.731l1.812-.659c3.526 4.95 10.398 6.106 15.349 2.58a11 11 0 0 0 3.599-4.332 10.9 10.9 0 0 0 .991-5.497zm-4.74-2.635a7.18 7.18 0 0 1 .895 4.032l1.809-.657a7 7 0 0 1-.646 2.471 7.166 7.166 0 0 1-9.514 3.472 7.1 7.1 0 0 1-2.092-1.49l-1.813.66a7.2 7.2 0 0 1-1.903-3.667l3.426-1.242a7.1 7.1 0 0 1-.111-1.896H6.97l-1.604.583a7.14 7.14 0 0 1 10.156-5.929v-.006a7.1 7.1 0 0 1 2.082 1.483l1.599-.582.006.005c.441.454.82.965 1.128 1.518z"/></svg>
@@ -129,7 +129,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              VMware example installation (UPI, Static IP, non-integrated)
+              Adjust domain.xml
             
           </span>
         </div>
@@ -245,7 +245,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../.." title="OpenShift Examples" class="md-nav__button md-logo" aria-label="OpenShift Examples" data-md-component="logo">
+    <a href="../.." title="OpenShift Examples" class="md-nav__button md-logo" aria-label="OpenShift Examples" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.665 11.812a11.1 11.1 0 0 0-1.08-3.966L24 6.599a11 11 0 0 0-.943-1.595l-1.601.583a11.015 11.015 0 0 0-19.945 7.258l1.604-.584q.077.924.305 1.822L0 15.335a11.2 11.2 0 0 0 1.721 3.731l1.812-.659c3.526 4.95 10.398 6.106 15.349 2.58a11 11 0 0 0 3.599-4.332 10.9 10.9 0 0 0 .991-5.497zm-4.74-2.635a7.18 7.18 0 0 1 .895 4.032l1.809-.657a7 7 0 0 1-.646 2.471 7.166 7.166 0 0 1-9.514 3.472 7.1 7.1 0 0 1-2.092-1.49l-1.813.66a7.2 7.2 0 0 1-1.903-3.667l3.426-1.242a7.1 7.1 0 0 1-.111-1.896H6.97l-1.604.583a7.14 7.14 0 0 1 10.156-5.929v-.006a7.1 7.1 0 0 1 2.082 1.483l1.599-.582.006.005c.441.454.82.965 1.128 1.518z"/></svg>
@@ -272,8 +272,6 @@
       
   
   
-    
-  
   
   
     
@@ -301,15 +299,15 @@
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../" class="md-nav__link ">
+            <a href="../../cluster-installation/" class="md-nav__link ">
               
   
   
@@ -335,7 +333,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_1">
             <span class="md-nav__icon md-icon"></span>
             
@@ -355,7 +353,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../air-gapped/" class="md-nav__link">
+      <a href="../../cluster-installation/air-gapped/" class="md-nav__link">
         
   
   
@@ -383,7 +381,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../sno-on-ocpv/" class="md-nav__link">
+      <a href="../../cluster-installation/sno-on-ocpv/" class="md-nav__link">
         
   
   
@@ -408,8 +406,6 @@
                 
   
   
-    
-  
   
   
     
@@ -431,15 +427,15 @@
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_4" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_4" >
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../" class="md-nav__link ">
+            <a href="../../cluster-installation/vmware/" class="md-nav__link ">
               
   
   
@@ -465,7 +461,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_4_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_1_4">
             <span class="md-nav__icon md-icon"></span>
             
@@ -482,37 +478,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Example installation
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../cluster-installation/vmware/example/" class="md-nav__link">
         
   
   
@@ -528,242 +497,6 @@
   
 
       </a>
-      
-        
-<nav class="md-nav md-nav--secondary" aria-label="toc.title">
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      On this page
-    </label>
-    <ul class="md-nav__list" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#architecture" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Architecture
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#setup-lb-virtual-machine" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Setup LB virtual machine
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Setup LB virtual machine">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#install-rhel-8" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Install RHEL 8
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#enable-repos" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Enable repos:
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#install-tmux" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Install tmux
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#update" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Update
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#install-setup-dnsmasq" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Install &amp; Setup dnsmasq
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#install-setup-load-balancer" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Install &amp; setup load balancer
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#install-openshift-install-oc-kubectl-govc" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Install openshift-install, oc, kubectl, govc
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#create-ssh-key" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Create ssh key
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#download-pull-secret-from-cloudredhatcom" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Download pull secret from cloud.redhat.com
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#install-configure-govc" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Install configure govc
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#create-rhcos-vm-template" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Create rhcos vm template
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#install-openshift" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Install openshift
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Install openshift">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#create-install-configyaml" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Create install-config.yaml
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#running-installation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Running installation
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-
-<hr/>
-<nav class="md-nav md-nav--secondary" aria-label="toc.title">
-  <label class="md-nav__title" for="__toc">
-    <span class="md-nav__icon md-icon"></span>
-    Tags
-  </label>
-  <ul class="md-nav__list" data-md-scrollfix>
-    
-    <li class="md-nav__item">
-      <a href="/tags.html#VMware" class="md-nav__link">
-        VMware
-      </a>
-    </li>
-    
-    <li class="md-nav__item">
-      <a href="/tags.html#UPI" class="md-nav__link">
-        UPI
-      </a>
-    </li>
-    
-    <li class="md-nav__item">
-      <a href="/tags.html#vSphere" class="md-nav__link">
-        vSphere
-      </a>
-    </li>
-    
-  </ul>
-</nav>
-
-      
     </li>
   
 
@@ -776,7 +509,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../ipi-proxy/" class="md-nav__link">
+      <a href="../../cluster-installation/vmware/ipi-proxy/" class="md-nav__link">
         
   
   
@@ -804,7 +537,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-configuration/MachineSets/VMware-UPI/" class="md-nav__link">
+      <a href="../../cluster-configuration/MachineSets/VMware-UPI/" class="md-nav__link">
         
   
   
@@ -832,7 +565,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../agent-base-non-integrated/" class="md-nav__link">
+      <a href="../../cluster-installation/vmware/agent-base-non-integrated/" class="md-nav__link">
         
   
   
@@ -888,7 +621,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../hosted-control-plane/" class="md-nav__link ">
+            <a href="../../cluster-installation/hosted-control-plane/" class="md-nav__link ">
               
   
   
@@ -932,7 +665,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../hosted-control-plane/kubevirt-networking/" class="md-nav__link">
+      <a href="../../cluster-installation/hosted-control-plane/kubevirt-networking/" class="md-nav__link">
         
   
   
@@ -992,7 +725,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../gpu/" class="md-nav__link ">
+            <a href="../../cluster-installation/gpu/" class="md-nav__link ">
               
   
   
@@ -1036,7 +769,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../gpu/gpu-on-prem/" class="md-nav__link">
+      <a href="../../cluster-installation/gpu/gpu-on-prem/" class="md-nav__link">
         
   
   
@@ -1064,7 +797,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../gpu/gpu-on-aws/" class="md-nav__link">
+      <a href="../../cluster-installation/gpu/gpu-on-aws/" class="md-nav__link">
         
   
   
@@ -1092,7 +825,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../gpu/gpu-debuging/" class="md-nav__link">
+      <a href="../../cluster-installation/gpu/gpu-debuging/" class="md-nav__link">
         
   
   
@@ -1181,7 +914,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../windows-container/VMware-ipi/" class="md-nav__link">
+      <a href="../../cluster-installation/windows-container/VMware-ipi/" class="md-nav__link">
         
   
   
@@ -1209,7 +942,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../windows-container/dev-prev/" class="md-nav__link">
+      <a href="../../cluster-installation/windows-container/dev-prev/" class="md-nav__link">
         
   
   
@@ -1245,7 +978,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adjust-rhcos.iso/" class="md-nav__link">
+      <a href="../../cluster-installation/adjust-rhcos.iso/" class="md-nav__link">
         
   
   
@@ -1322,7 +1055,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../cluster-configuration/" class="md-nav__link ">
+            <a href="../../cluster-configuration/" class="md-nav__link ">
               
   
   
@@ -1394,7 +1127,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../cluster-configuration/authentication/" class="md-nav__link ">
+            <a href="../../cluster-configuration/authentication/" class="md-nav__link ">
               
   
   
@@ -1438,7 +1171,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-configuration/authentication/client-certificate/" class="md-nav__link">
+      <a href="../../cluster-configuration/authentication/client-certificate/" class="md-nav__link">
         
   
   
@@ -1466,7 +1199,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-configuration/authentication/activedirectory-ldap/" class="md-nav__link">
+      <a href="../../cluster-configuration/authentication/activedirectory-ldap/" class="md-nav__link">
         
   
   
@@ -1494,7 +1227,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-configuration/authentication/redhat-sso/" class="md-nav__link">
+      <a href="../../cluster-configuration/authentication/redhat-sso/" class="md-nav__link">
         
   
   
@@ -1522,7 +1255,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-configuration/authentication/auth-basic-authentication/" class="md-nav__link">
+      <a href="../../cluster-configuration/authentication/auth-basic-authentication/" class="md-nav__link">
         
   
   
@@ -1578,7 +1311,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../cluster-configuration/full-cluster-entitlement/" class="md-nav__link ">
+            <a href="../../cluster-configuration/full-cluster-entitlement/" class="md-nav__link ">
               
   
   
@@ -1622,7 +1355,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-configuration/full-cluster-entitlement/debugging/" class="md-nav__link">
+      <a href="../../cluster-configuration/full-cluster-entitlement/debugging/" class="md-nav__link">
         
   
   
@@ -1658,7 +1391,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-configuration/external-dns/" class="md-nav__link">
+      <a href="../../cluster-configuration/external-dns/" class="md-nav__link">
         
   
   
@@ -1686,7 +1419,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-configuration/build-load-kernel-module/" class="md-nav__link">
+      <a href="../../cluster-configuration/build-load-kernel-module/" class="md-nav__link">
         
   
   
@@ -1736,7 +1469,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../cluster-configuration/storage/" class="md-nav__link ">
+            <a href="../../cluster-configuration/storage/" class="md-nav__link ">
               
   
   
@@ -1780,7 +1513,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-configuration/storage/csi-driver-nfs/" class="md-nav__link">
+      <a href="../../cluster-configuration/storage/csi-driver-nfs/" class="md-nav__link">
         
   
   
@@ -1808,7 +1541,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-configuration/storage/nfs/" class="md-nav__link">
+      <a href="../../cluster-configuration/storage/nfs/" class="md-nav__link">
         
   
   
@@ -1844,7 +1577,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-configuration/ntp/" class="md-nav__link">
+      <a href="../../cluster-configuration/ntp/" class="md-nav__link">
         
   
   
@@ -1892,7 +1625,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../cluster-configuration/monitoring/" class="md-nav__link ">
+            <a href="../../cluster-configuration/monitoring/" class="md-nav__link ">
               
   
   
@@ -1960,7 +1693,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../cluster-configuration/monitoring/alertmanager/" class="md-nav__link ">
+            <a href="../../cluster-configuration/monitoring/alertmanager/" class="md-nav__link ">
               
   
   
@@ -2004,7 +1737,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-configuration/monitoring/alertmanager/debug-receiver/" class="md-nav__link">
+      <a href="../../cluster-configuration/monitoring/alertmanager/debug-receiver/" class="md-nav__link">
         
   
   
@@ -2032,7 +1765,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-configuration/monitoring/alertmanager/github-receiver/" class="md-nav__link">
+      <a href="../../cluster-configuration/monitoring/alertmanager/github-receiver/" class="md-nav__link">
         
   
   
@@ -2060,7 +1793,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-configuration/monitoring/alertmanager/telegram-receiver/" class="md-nav__link">
+      <a href="../../cluster-configuration/monitoring/alertmanager/telegram-receiver/" class="md-nav__link">
         
   
   
@@ -2122,7 +1855,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../cluster-configuration/logging/forwarding-demo/" class="md-nav__link ">
+            <a href="../../cluster-configuration/logging/forwarding-demo/" class="md-nav__link ">
               
   
   
@@ -2169,7 +1902,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-configuration/image-registry/" class="md-nav__link">
+      <a href="../../cluster-configuration/image-registry/" class="md-nav__link">
         
   
   
@@ -2219,7 +1952,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../cluster-configuration/machine-config/" class="md-nav__link ">
+            <a href="../../cluster-configuration/machine-config/" class="md-nav__link ">
               
   
   
@@ -2263,7 +1996,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-configuration/machine-config/machine-config-server/" class="md-nav__link">
+      <a href="../../cluster-configuration/machine-config/machine-config-server/" class="md-nav__link">
         
   
   
@@ -2291,7 +2024,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-configuration/machine-config/kubelet-configs/" class="md-nav__link">
+      <a href="../../cluster-configuration/machine-config/kubelet-configs/" class="md-nav__link">
         
   
   
@@ -2347,7 +2080,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../cluster-configuration/MachineSets/VMware-UPI/" class="md-nav__link ">
+            <a href="../../cluster-configuration/MachineSets/VMware-UPI/" class="md-nav__link ">
               
   
   
@@ -2389,7 +2122,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-configuration/MachineSets/debugging/" class="md-nav__link">
+      <a href="../../cluster-configuration/MachineSets/debugging/" class="md-nav__link">
         
   
   
@@ -2427,7 +2160,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-configuration/cluster-autoscaling/" class="md-nav__link">
+      <a href="../../cluster-configuration/cluster-autoscaling/" class="md-nav__link">
         
   
   
@@ -2496,7 +2229,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../cluster-lifecycle/" class="md-nav__link ">
+            <a href="../../cluster-lifecycle/" class="md-nav__link ">
               
   
   
@@ -2542,7 +2275,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-lifecycle/oat-upgrades/" class="md-nav__link">
+      <a href="../../cluster-lifecycle/oat-upgrades/" class="md-nav__link">
         
   
   
@@ -2570,7 +2303,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-lifecycle/add-node/" class="md-nav__link">
+      <a href="../../cluster-lifecycle/add-node/" class="md-nav__link">
         
   
   
@@ -2649,7 +2382,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-lifecycle/monitoring/metrics/" class="md-nav__link">
+      <a href="../../cluster-lifecycle/monitoring/metrics/" class="md-nav__link">
         
   
   
@@ -2685,7 +2418,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-lifecycle/cloud-redhat-com/" class="md-nav__link">
+      <a href="../../cluster-lifecycle/cloud-redhat-com/" class="md-nav__link">
         
   
   
@@ -2764,7 +2497,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-lifecycle/backup/etcd/" class="md-nav__link">
+      <a href="../../cluster-lifecycle/backup/etcd/" class="md-nav__link">
         
   
   
@@ -2800,7 +2533,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-lifecycle/storage-migration/" class="md-nav__link">
+      <a href="../../cluster-lifecycle/storage-migration/" class="md-nav__link">
         
   
   
@@ -2828,7 +2561,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-lifecycle/restore/" class="md-nav__link">
+      <a href="../../cluster-lifecycle/restore/" class="md-nav__link">
         
   
   
@@ -2856,7 +2589,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-lifecycle/shutdown/" class="md-nav__link">
+      <a href="../../cluster-lifecycle/shutdown/" class="md-nav__link">
         
   
   
@@ -2911,7 +2644,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../control-plane/" class="md-nav__link ">
+            <a href="../../control-plane/" class="md-nav__link ">
               
   
   
@@ -2957,7 +2690,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../control-plane/lost-quorum/" class="md-nav__link">
+      <a href="../../control-plane/lost-quorum/" class="md-nav__link">
         
   
   
@@ -3012,7 +2745,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../storage/" class="md-nav__link ">
+            <a href="../../storage/" class="md-nav__link ">
               
   
   
@@ -3058,7 +2791,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../storage/ibm-fusion-access-san/" class="md-nav__link">
+      <a href="../../storage/ibm-fusion-access-san/" class="md-nav__link">
         
   
   
@@ -3101,7 +2834,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../troubleshooting/" class="md-nav__link">
+      <a href="../../troubleshooting/" class="md-nav__link">
         
   
   
@@ -3130,7 +2863,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../client/" class="md-nav__link">
+      <a href="../../client/" class="md-nav__link">
         
   
   
@@ -3187,7 +2920,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../build/" class="md-nav__link ">
+            <a href="../../build/" class="md-nav__link ">
               
   
   
@@ -3233,7 +2966,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../build/entitled/" class="md-nav__link">
+      <a href="../../build/entitled/" class="md-nav__link">
         
   
   
@@ -3281,7 +3014,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../build/pipeline/" class="md-nav__link ">
+            <a href="../../build/pipeline/" class="md-nav__link ">
               
   
   
@@ -3325,7 +3058,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../build/pipeline/buildpacks/" class="md-nav__link">
+      <a href="../../build/pipeline/buildpacks/" class="md-nav__link">
         
   
   
@@ -3361,7 +3094,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../build/jenkins/" class="md-nav__link">
+      <a href="../../build/jenkins/" class="md-nav__link">
         
   
   
@@ -3389,7 +3122,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../build/s2i-r-shiny/" class="md-nav__link">
+      <a href="../../build/s2i-r-shiny/" class="md-nav__link">
         
   
   
@@ -3417,7 +3150,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../build/universal-base-image/" class="md-nav__link">
+      <a href="../../build/universal-base-image/" class="md-nav__link">
         
   
   
@@ -3506,7 +3239,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../deploy/" class="md-nav__link ">
+            <a href="../../deploy/" class="md-nav__link ">
               
   
   
@@ -3552,7 +3285,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../deploy/keycloak/" class="md-nav__link">
+      <a href="../../deploy/keycloak/" class="md-nav__link">
         
   
   
@@ -3580,7 +3313,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../deploy/liveness-probe/" class="md-nav__link">
+      <a href="../../deploy/liveness-probe/" class="md-nav__link">
         
   
   
@@ -3608,7 +3341,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../deploy/storage/" class="md-nav__link">
+      <a href="../../deploy/storage/" class="md-nav__link">
         
   
   
@@ -3636,7 +3369,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../deploy/imagestreams/" class="md-nav__link">
+      <a href="../../deploy/imagestreams/" class="md-nav__link">
         
   
   
@@ -3664,7 +3397,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../deploy/statefulset/" class="md-nav__link">
+      <a href="../../deploy/statefulset/" class="md-nav__link">
         
   
   
@@ -3692,7 +3425,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../deploy/quota/" class="md-nav__link">
+      <a href="../../deploy/quota/" class="md-nav__link">
         
   
   
@@ -3720,7 +3453,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../deploy/scc-anyuid/" class="md-nav__link">
+      <a href="../../deploy/scc-anyuid/" class="md-nav__link">
         
   
   
@@ -3748,7 +3481,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../deploy/initcontainers/" class="md-nav__link">
+      <a href="../../deploy/initcontainers/" class="md-nav__link">
         
   
   
@@ -3776,7 +3509,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../deploy/nginx-reverse-proxy/" class="md-nav__link">
+      <a href="../../deploy/nginx-reverse-proxy/" class="md-nav__link">
         
   
   
@@ -3804,7 +3537,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../deploy/eap-cluster/" class="md-nav__link">
+      <a href="../../deploy/eap-cluster/" class="md-nav__link">
         
   
   
@@ -3832,7 +3565,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../deploy/autoscaling/" class="md-nav__link">
+      <a href="../../deploy/autoscaling/" class="md-nav__link">
         
   
   
@@ -3860,7 +3593,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../deploy/scale-down-deploymentconfigs/" class="md-nav__link">
+      <a href="../../deploy/scale-down-deploymentconfigs/" class="md-nav__link">
         
   
   
@@ -3888,7 +3621,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../deploy/ops-container/" class="md-nav__link">
+      <a href="../../deploy/ops-container/" class="md-nav__link">
         
   
   
@@ -3916,7 +3649,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../deploy/jar/" class="md-nav__link">
+      <a href="../../deploy/jar/" class="md-nav__link">
         
   
   
@@ -3944,7 +3677,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-configuration/authentication/token/" class="md-nav__link">
+      <a href="../../cluster-configuration/authentication/token/" class="md-nav__link">
         
   
   
@@ -3972,7 +3705,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../deploy/faketime/" class="md-nav__link">
+      <a href="../../deploy/faketime/" class="md-nav__link">
         
   
   
@@ -4051,7 +3784,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../deploy/monitoring/workload/" class="md-nav__link">
+      <a href="../../deploy/monitoring/workload/" class="md-nav__link">
         
   
   
@@ -4146,7 +3879,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../deploy/workload/jfrog-artifactory-enterprise-operator-air-gapped/" class="md-nav__link">
+      <a href="../../deploy/workload/jfrog-artifactory-enterprise-operator-air-gapped/" class="md-nav__link">
         
   
   
@@ -4174,7 +3907,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../deploy/workload/own-apache-container/" class="md-nav__link">
+      <a href="../../deploy/workload/own-apache-container/" class="md-nav__link">
         
   
   
@@ -4202,7 +3935,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../deploy/workload/gitlab-runner/" class="md-nav__link">
+      <a href="../../deploy/workload/gitlab-runner/" class="md-nav__link">
         
   
   
@@ -4230,7 +3963,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../deploy/workload/grafana-oauth/" class="md-nav__link">
+      <a href="../../deploy/workload/grafana-oauth/" class="md-nav__link">
         
   
   
@@ -4258,7 +3991,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../deploy/workload/quake3/" class="md-nav__link">
+      <a href="../../deploy/workload/quake3/" class="md-nav__link">
         
   
   
@@ -4319,7 +4052,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../gitops/" class="md-nav__link ">
+            <a href="../../gitops/" class="md-nav__link ">
               
   
   
@@ -4401,7 +4134,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../networking/" class="md-nav__link ">
+            <a href="../../networking/" class="md-nav__link ">
               
   
   
@@ -4447,7 +4180,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../networking/udn/" class="md-nav__link">
+      <a href="../../networking/udn/" class="md-nav__link">
         
   
   
@@ -4528,7 +4261,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../networking/services-routes/service-serving-certificate-secrets/" class="md-nav__link">
+      <a href="../../networking/services-routes/service-serving-certificate-secrets/" class="md-nav__link">
         
   
   
@@ -4556,7 +4289,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../networking/services-routes/route-encryption/" class="md-nav__link">
+      <a href="../../networking/services-routes/route-encryption/" class="md-nav__link">
         
   
   
@@ -4592,7 +4325,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../networking/multus/" class="md-nav__link">
+      <a href="../../networking/multus/" class="md-nav__link">
         
   
   
@@ -4644,7 +4377,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../networking/network-policy/" class="md-nav__link ">
+            <a href="../../networking/network-policy/" class="md-nav__link ">
               
   
   
@@ -4688,7 +4421,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../networking/network-policy/network-policy-demo/README.md" class="md-nav__link">
+      <a href="../../networking/network-policy/network-policy-demo/README.md" class="md-nav__link">
         
   
   
@@ -4716,7 +4449,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../networking/network-policy/OVNKubernetes/" class="md-nav__link">
+      <a href="../../networking/network-policy/OVNKubernetes/" class="md-nav__link">
         
   
   
@@ -4744,7 +4477,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../networking/network-policy/OpenShiftSDN/" class="md-nav__link">
+      <a href="../../networking/network-policy/OpenShiftSDN/" class="md-nav__link">
         
   
   
@@ -4780,7 +4513,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../networking/services-routes/router-sharding/" class="md-nav__link">
+      <a href="../../networking/services-routes/router-sharding/" class="md-nav__link">
         
   
   
@@ -4808,7 +4541,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../networking/egress-ip/" class="md-nav__link">
+      <a href="../../networking/egress-ip/" class="md-nav__link">
         
   
   
@@ -4836,7 +4569,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../networking/k8s-iptables-chains/" class="md-nav__link">
+      <a href="../../networking/k8s-iptables-chains/" class="md-nav__link">
         
   
   
@@ -4864,7 +4597,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../networking/lldpd/" class="md-nav__link">
+      <a href="../../networking/lldpd/" class="md-nav__link">
         
   
   
@@ -4931,7 +4664,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../operators/" class="md-nav__link ">
+            <a href="../../operators/" class="md-nav__link ">
               
   
   
@@ -4977,7 +4710,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../operators/custom-ressource-definition/" class="md-nav__link">
+      <a href="../../operators/custom-ressource-definition/" class="md-nav__link">
         
   
   
@@ -5005,7 +4738,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../operators/air-gapped/" class="md-nav__link">
+      <a href="../../operators/air-gapped/" class="md-nav__link">
         
   
   
@@ -5033,7 +4766,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../operators/ansible-operator/" class="md-nav__link">
+      <a href="../../operators/ansible-operator/" class="md-nav__link">
         
   
   
@@ -5061,7 +4794,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../operators/operatorhub/" class="md-nav__link">
+      <a href="../../operators/operatorhub/" class="md-nav__link">
         
   
   
@@ -5089,7 +4822,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../operators/install-operator-as-a-user/" class="md-nav__link">
+      <a href="../../operators/install-operator-as-a-user/" class="md-nav__link">
         
   
   
@@ -5117,7 +4850,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../operators/cluster-configurator/" class="md-nav__link">
+      <a href="../../operators/cluster-configurator/" class="md-nav__link">
         
   
   
@@ -5145,7 +4878,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../operators/simple-application-operator/" class="md-nav__link">
+      <a href="../../operators/simple-application-operator/" class="md-nav__link">
         
   
   
@@ -5177,6 +4910,8 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
       
   
   
+    
+  
   
   
     
@@ -5212,15 +4947,15 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_13" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_13" checked>
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../kubevirt/" class="md-nav__link ">
+            <a href="../" class="md-nav__link ">
               
   
   
@@ -5334,7 +5069,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_13_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_13_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_13">
             <span class="md-nav__icon md-icon"></span>
             
@@ -5354,7 +5089,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../kubevirt/application-aware-quota/" class="md-nav__link">
+      <a href="../application-aware-quota/" class="md-nav__link">
         
   
   
@@ -5402,7 +5137,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../kubevirt/livemigration/" class="md-nav__link ">
+            <a href="../livemigration/" class="md-nav__link ">
               
   
   
@@ -5446,7 +5181,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../kubevirt/livemigration/cclm/" class="md-nav__link">
+      <a href="../livemigration/cclm/" class="md-nav__link">
         
   
   
@@ -5482,7 +5217,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../kubevirt/pci-passthrough/" class="md-nav__link">
+      <a href="../pci-passthrough/" class="md-nav__link">
         
   
   
@@ -5510,7 +5245,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../kubevirt/node-health-check/" class="md-nav__link">
+      <a href="../node-health-check/" class="md-nav__link">
         
   
   
@@ -5538,7 +5273,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../kubevirt/descheduler/" class="md-nav__link">
+      <a href="../descheduler/" class="md-nav__link">
         
   
   
@@ -5566,7 +5301,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../kubevirt/template/" class="md-nav__link">
+      <a href="../template/" class="md-nav__link">
         
   
   
@@ -5594,7 +5329,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../kubevirt/ansible/README.md" class="md-nav__link">
+      <a href="../ansible/README.md" class="md-nav__link">
         
   
   
@@ -5622,7 +5357,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../kubevirt/networking/" class="md-nav__link">
+      <a href="../networking/" class="md-nav__link">
         
   
   
@@ -5652,7 +5387,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../kubevirt/storage/" class="md-nav__link">
+      <a href="../storage/" class="md-nav__link">
         
   
   
@@ -5680,7 +5415,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../kubevirt/nfs-csi-driver/" class="md-nav__link">
+      <a href="../nfs-csi-driver/" class="md-nav__link">
         
   
   
@@ -5705,10 +5440,37 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../../kubevirt/adjust-domain-xml/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Adjust domain.xml
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -5724,6 +5486,209 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
 
       </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="toc.title">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prerequisites
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#problem-statement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Problem Statement
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#current-disk-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Current Disk Configuration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#desired-disk-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Desired Disk Configuration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-1-enable-the-sidecar-feature-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: Enable the Sidecar Feature Gate
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-2-create-a-sidecar-hook-to-inspect-domainxml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: Create a Sidecar Hook to Inspect domain.xml
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step 2: Create a Sidecar Hook to Inspect domain.xml">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#create-a-configmap-for-the-hook-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Create a ConfigMap for the Hook Script
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add-hook-sidecar-annotation-to-your-virtualmachine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Add Hook Sidecar Annotation to Your VirtualMachine
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#start-the-virtual-machine-and-inspect-domainxml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Start the Virtual Machine and Inspect domain.xml
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-3-update-the-configmap-with-the-sed-command" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: Update the ConfigMap with the sed Command
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-4-verify-the-wwn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4: Verify the WWN
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+
+<hr/>
+<nav class="md-nav md-nav--secondary" aria-label="toc.title">
+  <label class="md-nav__title" for="__toc">
+    <span class="md-nav__icon md-icon"></span>
+    Tags
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+    <li class="md-nav__item">
+      <a href="/tags.html#v4.20" class="md-nav__link">
+        v4.20
+      </a>
+    </li>
+    
+    <li class="md-nav__item">
+      <a href="/tags.html#sidecarhook" class="md-nav__link">
+        sidecarhook
+      </a>
+    </li>
+    
+    <li class="md-nav__item">
+      <a href="/tags.html#kubevirt" class="md-nav__link">
+        kubevirt
+      </a>
+    </li>
+    
+    <li class="md-nav__item">
+      <a href="/tags.html#libvirt" class="md-nav__link">
+        libvirt
+      </a>
+    </li>
+    
+  </ul>
+</nav>
+
+      
     </li>
   
 
@@ -5743,7 +5708,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../certificate/" class="md-nav__link">
+      <a href="../../certificate/" class="md-nav__link">
         
   
   
@@ -5802,7 +5767,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../my-lab/" class="md-nav__link ">
+            <a href="../../my-lab/" class="md-nav__link ">
               
   
   
@@ -5848,7 +5813,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../my-lab/rhel-router/" class="md-nav__link">
+      <a href="../../my-lab/rhel-router/" class="md-nav__link">
         
   
   
@@ -5876,7 +5841,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../my-lab/storage-box/" class="md-nav__link">
+      <a href="../../my-lab/storage-box/" class="md-nav__link">
         
   
   
@@ -5904,7 +5869,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../my-lab/local-fedora/" class="md-nav__link">
+      <a href="../../my-lab/local-fedora/" class="md-nav__link">
         
   
   
@@ -5932,7 +5897,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../my-lab/ssh/" class="md-nav__link">
+      <a href="../../my-lab/ssh/" class="md-nav__link">
         
   
   
@@ -5960,7 +5925,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../my-lab/remote-worker/" class="md-nav__link">
+      <a href="../../my-lab/remote-worker/" class="md-nav__link">
         
   
   
@@ -5988,7 +5953,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../my-lab/fedora-workstation/" class="md-nav__link">
+      <a href="../../my-lab/fedora-workstation/" class="md-nav__link">
         
   
   
@@ -6043,7 +6008,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../openshift-tv/" class="md-nav__link ">
+            <a href="../../openshift-tv/" class="md-nav__link ">
               
   
   
@@ -6089,7 +6054,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../openshift-tv/2021-04-14-vpshere-ipi-disconnected/" class="md-nav__link">
+      <a href="../../openshift-tv/2021-04-14-vpshere-ipi-disconnected/" class="md-nav__link">
         
   
   
@@ -6124,7 +6089,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../tags/" class="md-nav__link">
+      <a href="../../tags/" class="md-nav__link">
         
   
   
@@ -6171,10 +6136,10 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#architecture" class="md-nav__link">
+  <a href="#prerequisites" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Architecture
+        Prerequisites
       
     </span>
   </a>
@@ -6182,22 +6147,66 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
 </li>
       
         <li class="md-nav__item">
-  <a href="#setup-lb-virtual-machine" class="md-nav__link">
+  <a href="#problem-statement" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Setup LB virtual machine
+        Problem Statement
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Setup LB virtual machine">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#current-disk-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Current Disk Configuration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#desired-disk-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Desired Disk Configuration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-1-enable-the-sidecar-feature-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: Enable the Sidecar Feature Gate
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-2-create-a-sidecar-hook-to-inspect-domainxml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: Create a Sidecar Hook to Inspect domain.xml
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step 2: Create a Sidecar Hook to Inspect domain.xml">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#install-rhel-8" class="md-nav__link">
+  <a href="#create-a-configmap-for-the-hook-script" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Install RHEL 8
+        Create a ConfigMap for the Hook Script
       
     </span>
   </a>
@@ -6205,10 +6214,10 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
 </li>
         
           <li class="md-nav__item">
-  <a href="#enable-repos" class="md-nav__link">
+  <a href="#add-hook-sidecar-annotation-to-your-virtualmachine" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Enable repos:
+        Add Hook Sidecar Annotation to Your VirtualMachine
       
     </span>
   </a>
@@ -6216,87 +6225,10 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
 </li>
         
           <li class="md-nav__item">
-  <a href="#install-tmux" class="md-nav__link">
+  <a href="#start-the-virtual-machine-and-inspect-domainxml" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Install tmux
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#update" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Update
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#install-setup-dnsmasq" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Install &amp; Setup dnsmasq
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#install-setup-load-balancer" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Install &amp; setup load balancer
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#install-openshift-install-oc-kubectl-govc" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Install openshift-install, oc, kubectl, govc
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#create-ssh-key" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Create ssh key
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#download-pull-secret-from-cloudredhatcom" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Download pull secret from cloud.redhat.com
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#install-configure-govc" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Install configure govc
+        Start the Virtual Machine and Inspect domain.xml
       
     </span>
   </a>
@@ -6309,10 +6241,10 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
 </li>
       
         <li class="md-nav__item">
-  <a href="#create-rhcos-vm-template" class="md-nav__link">
+  <a href="#step-3-update-the-configmap-with-the-sed-command" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Create rhcos vm template
+        Step 3: Update the ConfigMap with the sed Command
       
     </span>
   </a>
@@ -6320,41 +6252,35 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
 </li>
       
         <li class="md-nav__item">
-  <a href="#install-openshift" class="md-nav__link">
+  <a href="#step-4-verify-the-wwn" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Install openshift
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Install openshift">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#create-install-configyaml" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Create install-config.yaml
+        Step 4: Verify the WWN
       
     </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#running-installation" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Running installation
+        Troubleshooting
       
     </span>
   </a>
   
 </li>
-        
-      </ul>
-    </nav>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary
+      
+    </span>
+  </a>
   
 </li>
       
@@ -6371,20 +6297,26 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   <ul class="md-nav__list" data-md-scrollfix>
     
     <li class="md-nav__item">
-      <a href="/tags.html#VMware" class="md-nav__link">
-        VMware
+      <a href="/tags.html#v4.20" class="md-nav__link">
+        v4.20
       </a>
     </li>
     
     <li class="md-nav__item">
-      <a href="/tags.html#UPI" class="md-nav__link">
-        UPI
+      <a href="/tags.html#sidecarhook" class="md-nav__link">
+        sidecarhook
       </a>
     </li>
     
     <li class="md-nav__item">
-      <a href="/tags.html#vSphere" class="md-nav__link">
-        vSphere
+      <a href="/tags.html#kubevirt" class="md-nav__link">
+        kubevirt
+      </a>
+    </li>
+    
+    <li class="md-nav__item">
+      <a href="/tags.html#libvirt" class="md-nav__link">
+        libvirt
       </a>
     </li>
     
@@ -6409,21 +6341,28 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
       
       
       
-        <a href="../../../tags/#tag:upi" class="md-tag">UPI</a>
+        <a href="../../tags/#tag:kubevirt" class="md-tag">kubevirt</a>
       
     
       
       
       
       
-        <a href="../../../tags/#tag:vmware" class="md-tag">VMware</a>
+        <a href="../../tags/#tag:libvirt" class="md-tag">libvirt</a>
       
     
       
       
       
       
-        <a href="../../../tags/#tag:vsphere" class="md-tag">vSphere</a>
+        <a href="../../tags/#tag:sidecarhook" class="md-tag">sidecarhook</a>
+      
+    
+      
+      
+      
+      
+        <a href="../../tags/#tag:v420" class="md-tag">v4.20</a>
       
     
   </nav>
@@ -6433,581 +6372,277 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
 
 
-<h1 id="example-installation-at-my-vmware-lab">Example installation at my VMware Lab<a class="headerlink" href="#example-installation-at-my-vmware-lab" title="Permanent link">&para;</a></h1>
-<h2 id="architecture">Architecture<a class="headerlink" href="#architecture" title="Permanent link">&para;</a></h2>
-<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="" src="example-architecture.png" /></a></p>
-<h2 id="setup-lb-virtual-machine">Setup LB virtual machine<a class="headerlink" href="#setup-lb-virtual-machine" title="Permanent link">&para;</a></h2>
-<h4 id="install-rhel-8">Install RHEL 8<a class="headerlink" href="#install-rhel-8" title="Permanent link">&para;</a></h4>
-<h4 id="enable-repos">Enable repos:<a class="headerlink" href="#enable-repos" title="Permanent link">&para;</a></h4>
-<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1">1</a></span>
+<h1 id="adjust-domainxml-to-add-a-wwn-to-a-disk">Adjust domain.xml to add a WWN to a disk<a class="headerlink" href="#adjust-domainxml-to-add-a-wwn-to-a-disk" title="Permanent link">&para;</a></h1>
+<p>This guide demonstrates how to use KubeVirt sidecar hooks to modify the libvirt domain.xml and add a World Wide Name (WWN) to a disk. This is particularly useful when testing IBM Fusion Access for SAN, which requires disks to have a specific WWN.</p>
+<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
+<p>Documentation:</p>
+<ul>
+<li><a href="https://github.com/kubevirt/hyperconverged-cluster-operator/blob/main/docs/cluster-configuration.md#kubevirt-feature-gates" target="_blank" rel="noopener">Kubevirt Feature Gates</a></li>
+<li><a href="https://kubevirt.io/user-guide/user_workloads/hook-sidecar/#configmap-with-python-script" target="_blank" rel="noopener">Hook Sidecar Container</a></li>
+</ul>
+<p>Tested with:</p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Version</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OpenShift</td>
+<td>v4.20.12</td>
+</tr>
+<tr>
+<td>OpenShift Virt</td>
+<td>v4.20.3</td>
+</tr>
+</tbody>
+</table>
+<h2 id="problem-statement">Problem Statement<a class="headerlink" href="#problem-statement" title="Permanent link">&para;</a></h2>
+<p>To test IBM Fusion Access for SAN, the attached disk needs a WWN (World Wide Name). The libvirt domain.xml must be patched to include this WWN in the disk configuration.</p>
+<h2 id="current-disk-configuration">Current Disk Configuration<a class="headerlink" href="#current-disk-configuration" title="Permanent link">&para;</a></h2>
+<p>The current domain.xml contains a disk without a WWN:</p>
+<div class="language-xml highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1">1</a></span>
 <span class="normal"><a href="#__codelineno-0-2">2</a></span>
-<span class="normal"><a href="#__codelineno-0-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1"></a>subscription-manager<span class="w"> </span>repos<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="w">    </span>--enable<span class="o">=</span><span class="s2">&quot;rhel-8-for-x86_64-baseos-rpms&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3"></a><span class="w">    </span>--enable<span class="o">=</span><span class="s2">&quot;rhel-8-for-x86_64-appstream-rpms&quot;</span>
+<span class="normal"><a href="#__codelineno-0-3">3</a></span>
+<span class="normal"><a href="#__codelineno-0-4">4</a></span>
+<span class="normal"><a href="#__codelineno-0-5">5</a></span>
+<span class="normal"><a href="#__codelineno-0-6">6</a></span>
+<span class="normal"><a href="#__codelineno-0-7">7</a></span>
+<span class="normal"><a href="#__codelineno-0-8">8</a></span>
+<span class="normal"><a href="#__codelineno-0-9">9</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="nt">&lt;disk</span><span class="w"> </span><span class="na">type=</span><span class="s">&#39;block&#39;</span><span class="w"> </span><span class="na">device=</span><span class="s">&#39;disk&#39;</span><span class="nt">&gt;</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="w">  </span><span class="nt">&lt;driver</span><span class="w"> </span><span class="na">name=</span><span class="s">&#39;qemu&#39;</span><span class="w"> </span><span class="na">type=</span><span class="s">&#39;raw&#39;</span><span class="w"> </span><span class="na">cache=</span><span class="s">&#39;none&#39;</span><span class="w"> </span><span class="na">error_policy=</span><span class="s">&#39;stop&#39;</span><span class="w"> </span><span class="na">io=</span><span class="s">&#39;native&#39;</span><span class="w"> </span><span class="na">discard=</span><span class="s">&#39;unmap&#39;</span><span class="nt">/&gt;</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3"></a><span class="w">  </span><span class="nt">&lt;source</span><span class="w"> </span><span class="na">dev=</span><span class="s">&#39;/var/run/kubevirt/hotplug-disks/ibm-fusion-disk&#39;</span><span class="w"> </span><span class="na">index=</span><span class="s">&#39;1&#39;</span><span class="nt">/&gt;</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4"></a><span class="w">  </span><span class="nt">&lt;backingStore/&gt;</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5"></a><span class="w">  </span><span class="nt">&lt;target</span><span class="w"> </span><span class="na">dev=</span><span class="s">&#39;sda&#39;</span><span class="w"> </span><span class="na">bus=</span><span class="s">&#39;scsi&#39;</span><span class="nt">/&gt;</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6"></a><span class="w">  </span><span class="nt">&lt;shareable/&gt;</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7"></a><span class="w">  </span><span class="nt">&lt;alias</span><span class="w"> </span><span class="na">name=</span><span class="s">&#39;ua-ibm-fusion-disk&#39;</span><span class="nt">/&gt;</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8"></a><span class="w">  </span><span class="nt">&lt;address</span><span class="w"> </span><span class="na">type=</span><span class="s">&#39;drive&#39;</span><span class="w"> </span><span class="na">controller=</span><span class="s">&#39;0&#39;</span><span class="w"> </span><span class="na">bus=</span><span class="s">&#39;0&#39;</span><span class="w"> </span><span class="na">target=</span><span class="s">&#39;0&#39;</span><span class="w"> </span><span class="na">unit=</span><span class="s">&#39;0&#39;</span><span class="nt">/&gt;</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9"></a><span class="nt">&lt;/disk&gt;</span>
 </span></code></pre></div></td></tr></table></div>
-<h4 id="install-tmux">Install tmux<a class="headerlink" href="#install-tmux" title="Permanent link">&para;</a></h4>
-<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1"></a>yum<span class="w"> </span>install<span class="w"> </span>tmux<span class="w"> </span>-y
+<h2 id="desired-disk-configuration">Desired Disk Configuration<a class="headerlink" href="#desired-disk-configuration" title="Permanent link">&para;</a></h2>
+<p>We need to add <code>&lt;wwn&gt;5000c500155a3456&lt;/wwn&gt;</code> to the disk configuration. The target configuration should look like this:</p>
+<div class="language-xml highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1">1</a></span>
+<span class="normal"><a href="#__codelineno-1-2">2</a></span>
+<span class="normal"><a href="#__codelineno-1-3">3</a></span>
+<span class="normal"><a href="#__codelineno-1-4">4</a></span>
+<span class="normal"><a href="#__codelineno-1-5">5</a></span>
+<span class="normal"><a href="#__codelineno-1-6">6</a></span>
+<span class="normal"><a href="#__codelineno-1-7">7</a></span>
+<span class="normal"><a href="#__codelineno-1-8">8</a></span>
+<span class="normal"><a href="#__codelineno-1-9">9</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="nt">&lt;disk</span><span class="w"> </span><span class="na">type=</span><span class="s">&#39;block&#39;</span><span class="w"> </span><span class="na">device=</span><span class="s">&#39;disk&#39;</span><span class="nt">&gt;</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2"></a><span class="w">  </span><span class="nt">&lt;driver</span><span class="w"> </span><span class="na">name=</span><span class="s">&#39;qemu&#39;</span><span class="w"> </span><span class="na">type=</span><span class="s">&#39;raw&#39;</span><span class="w"> </span><span class="na">cache=</span><span class="s">&#39;none&#39;</span><span class="nt">/&gt;</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3"></a><span class="w">  </span><span class="nt">&lt;source</span><span class="w"> </span><span class="na">dev=</span><span class="s">&#39;/dev/mapper/vg0-fusion&#39;</span><span class="w"> </span><span class="na">index=</span><span class="s">&#39;2&#39;</span><span class="nt">/&gt;</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4"></a><span class="w">  </span><span class="nt">&lt;backingStore/&gt;</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5"></a><span class="w">  </span><span class="nt">&lt;target</span><span class="w"> </span><span class="na">dev=</span><span class="s">&#39;sdb&#39;</span><span class="w"> </span><span class="na">bus=</span><span class="s">&#39;scsi&#39;</span><span class="nt">/&gt;</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6"></a><span class="w">  </span><span class="nt">&lt;wwn&gt;</span>5000c500155a3456<span class="nt">&lt;/wwn&gt;</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7"></a><span class="w">  </span><span class="nt">&lt;alias</span><span class="w"> </span><span class="na">name=</span><span class="s">&#39;scsi0-0-0-1&#39;</span><span class="nt">/&gt;</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8"></a><span class="w">  </span><span class="nt">&lt;address</span><span class="w"> </span><span class="na">type=</span><span class="s">&#39;drive&#39;</span><span class="w"> </span><span class="na">controller=</span><span class="s">&#39;0&#39;</span><span class="w"> </span><span class="na">bus=</span><span class="s">&#39;0&#39;</span><span class="w"> </span><span class="na">target=</span><span class="s">&#39;0&#39;</span><span class="w"> </span><span class="na">unit=</span><span class="s">&#39;1&#39;</span><span class="nt">/&gt;</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9"></a><span class="nt">&lt;/disk&gt;</span>
 </span></code></pre></div></td></tr></table></div>
-<p>Start tmux session ;-)</p>
-<h4 id="update">Update<a class="headerlink" href="#update" title="Permanent link">&para;</a></h4>
-<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1"></a>yum<span class="w"> </span>update<span class="w"> </span>-y
+<h2 id="step-1-enable-the-sidecar-feature-gate">Step 1: Enable the Sidecar Feature Gate<a class="headerlink" href="#step-1-enable-the-sidecar-feature-gate" title="Permanent link">&para;</a></h2>
+<p>The Sidecar feature gate must be enabled to use hook sidecar containers. For more information, see the <a href="https://github.com/kubevirt/hyperconverged-cluster-operator/blob/main/docs/cluster-configuration.md#kubevirt-feature-gates" target="_blank" rel="noopener">Kubevirt Feature Gates documentation</a>.</p>
+<p>Edit the HyperConverged operator annotation using <code>oc annotate</code>:</p>
+<div class="language-shell highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1">1</a></span>
+<span class="normal"><a href="#__codelineno-2-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1"></a>oc<span class="w"> </span>annotate<span class="w"> </span>hco<span class="w"> </span>-n<span class="w"> </span>openshift-cnv<span class="w"> </span>kubevirt-hyperconverged<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2"></a><span class="w">  </span>kubevirt.kubevirt.io/jsonpatch<span class="o">=</span><span class="s1">&#39;[ {&quot;op&quot;: &quot;add&quot;, &quot;path&quot;: &quot;/spec/configuration/developerConfiguration/featureGates/-&quot;,&quot;value&quot;: &quot;Sidecar&quot;} ]&#39;</span>
 </span></code></pre></div></td></tr></table></div>
-<h4 id="install-setup-dnsmasq">Install &amp; Setup dnsmasq<a class="headerlink" href="#install-setup-dnsmasq" title="Permanent link">&para;</a></h4>
-<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1"> 1</a></span>
-<span class="normal"><a href="#__codelineno-3-2"> 2</a></span>
-<span class="normal"><a href="#__codelineno-3-3"> 3</a></span>
-<span class="normal"><a href="#__codelineno-3-4"> 4</a></span>
-<span class="normal"><a href="#__codelineno-3-5"> 5</a></span>
-<span class="normal"><a href="#__codelineno-3-6"> 6</a></span>
-<span class="normal"><a href="#__codelineno-3-7"> 7</a></span>
-<span class="normal"><a href="#__codelineno-3-8"> 8</a></span>
-<span class="normal"><a href="#__codelineno-3-9"> 9</a></span>
-<span class="normal"><a href="#__codelineno-3-10">10</a></span>
-<span class="normal"><a href="#__codelineno-3-11">11</a></span>
-<span class="normal"><a href="#__codelineno-3-12">12</a></span>
-<span class="normal"><a href="#__codelineno-3-13">13</a></span>
-<span class="normal"><a href="#__codelineno-3-14">14</a></span>
-<span class="normal"><a href="#__codelineno-3-15">15</a></span>
-<span class="normal"><a href="#__codelineno-3-16">16</a></span>
-<span class="normal"><a href="#__codelineno-3-17">17</a></span>
-<span class="normal"><a href="#__codelineno-3-18">18</a></span>
-<span class="normal"><a href="#__codelineno-3-19">19</a></span>
-<span class="normal"><a href="#__codelineno-3-20">20</a></span>
-<span class="normal"><a href="#__codelineno-3-21">21</a></span>
-<span class="normal"><a href="#__codelineno-3-22">22</a></span>
-<span class="normal"><a href="#__codelineno-3-23">23</a></span>
-<span class="normal"><a href="#__codelineno-3-24">24</a></span>
-<span class="normal"><a href="#__codelineno-3-25">25</a></span>
-<span class="normal"><a href="#__codelineno-3-26">26</a></span>
-<span class="normal"><a href="#__codelineno-3-27">27</a></span>
-<span class="normal"><a href="#__codelineno-3-28">28</a></span>
-<span class="normal"><a href="#__codelineno-3-29">29</a></span>
-<span class="normal"><a href="#__codelineno-3-30">30</a></span>
-<span class="normal"><a href="#__codelineno-3-31">31</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1"></a>yum<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>dnsmasq
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2"></a>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3"></a>cat<span class="w"> </span>&gt;<span class="w"> </span>/etc/dnsmasq.d/openshift-4.conf<span class="w"> </span><span class="s">&lt;&lt;EOF</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4"></a><span class="s">strict-order</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5"></a><span class="s">domain=rbohne.lab.example.com</span>
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6"></a><span class="s">expand-hosts</span>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7"></a><span class="s">server=10.19.143.247</span>
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8"></a><span class="s"># except-interface=lo</span>
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9"></a><span class="s"># bind-dynamic</span>
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10"></a><span class="s">interface=ens224</span>
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11"></a><span class="s">address=/apps.rbohne.lab.example.com/192.168.100.148</span>
-</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12"></a><span class="s">addn-hosts=/etc/dnsmasq-openshift-4.addnhosts</span>
-</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13"></a><span class="s">EOF</span>
-</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14"></a>
-</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15"></a>cat<span class="w"> </span>&gt;<span class="w"> </span>/etc/dnsmasq-openshift-4.addnhosts<span class="w"> </span><span class="s">&lt;&lt;EOF</span>
-</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16"></a><span class="s">192.168.100.148 api.rbohne.lab.example.com api-int.rbohne.lab.example.com</span>
-</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17"></a><span class="s">192.168.100.149 master-0.rbohne.lab.example.com etcd-0.rbohne.lab.example.com</span>
-</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18"></a><span class="s">192.168.100.150 master-1.rbohne.lab.example.com etcd-1.rbohne.lab.example.com</span>
-</span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19"></a><span class="s">192.168.100.151 master-2.rbohne.lab.example.com etcd-2.rbohne.lab.example.com</span>
-</span><span id="__span-3-20"><a id="__codelineno-3-20" name="__codelineno-3-20"></a><span class="s">192.168.100.152 bootstrap.rbohne.lab.example.com</span>
-</span><span id="__span-3-21"><a id="__codelineno-3-21" name="__codelineno-3-21"></a><span class="s">192.168.100.153 worker-1.rbohne.lab.example.com</span>
-</span><span id="__span-3-22"><a id="__codelineno-3-22" name="__codelineno-3-22"></a><span class="s">192.168.100.154 worker-2.rbohne.lab.example.com</span>
-</span><span id="__span-3-23"><a id="__codelineno-3-23" name="__codelineno-3-23"></a><span class="s">192.168.100.155 worker-3.rbohne.lab.example.com</span>
-</span><span id="__span-3-24"><a id="__codelineno-3-24" name="__codelineno-3-24"></a><span class="s">EOF</span>
-</span><span id="__span-3-25"><a id="__codelineno-3-25" name="__codelineno-3-25"></a>
-</span><span id="__span-3-26"><a id="__codelineno-3-26" name="__codelineno-3-26"></a>
-</span><span id="__span-3-27"><a id="__codelineno-3-27" name="__codelineno-3-27"></a>systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>--now<span class="w"> </span>dnsmasq
-</span><span id="__span-3-28"><a id="__codelineno-3-28" name="__codelineno-3-28"></a>systemctl<span class="w"> </span>status<span class="w"> </span>dnsmasq
-</span><span id="__span-3-29"><a id="__codelineno-3-29" name="__codelineno-3-29"></a>
-</span><span id="__span-3-30"><a id="__codelineno-3-30" name="__codelineno-3-30"></a>firewall-cmd<span class="w"> </span>--zone<span class="o">=</span>public<span class="w"> </span>--permanent<span class="w"> </span>--add-service<span class="o">=</span>dns
-</span><span id="__span-3-31"><a id="__codelineno-3-31" name="__codelineno-3-31"></a>firewall-cmd<span class="w"> </span>--reload
+<p>Alternatively, you can edit the HCO resource directly:</p>
+<div class="language-shell highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1"></a>oc<span class="w"> </span>edit<span class="w"> </span>hco<span class="w"> </span>-n<span class="w"> </span>openshift-cnv<span class="w"> </span>kubevirt-hyperconverged
 </span></code></pre></div></td></tr></table></div>
-<p>Testing with:
-<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1"></a>dig<span class="w"> </span>wild.apps.apps.rbohne.lab.example.com<span class="w"> </span>@192.168.100.148
-</span></code></pre></div></td></tr></table></div></p>
-<h4 id="install-setup-load-balancer">Install &amp; setup load balancer<a class="headerlink" href="#install-setup-load-balancer" title="Permanent link">&para;</a></h4>
-<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1"> 1</a></span>
-<span class="normal"><a href="#__codelineno-5-2"> 2</a></span>
-<span class="normal"><a href="#__codelineno-5-3"> 3</a></span>
-<span class="normal"><a href="#__codelineno-5-4"> 4</a></span>
-<span class="normal"><a href="#__codelineno-5-5"> 5</a></span>
-<span class="normal"><a href="#__codelineno-5-6"> 6</a></span>
-<span class="normal"><a href="#__codelineno-5-7"> 7</a></span>
-<span class="normal"><a href="#__codelineno-5-8"> 8</a></span>
-<span class="normal"><a href="#__codelineno-5-9"> 9</a></span>
-<span class="normal"><a href="#__codelineno-5-10">10</a></span>
-<span class="normal"><a href="#__codelineno-5-11">11</a></span>
-<span class="normal"><a href="#__codelineno-5-12">12</a></span>
-<span class="normal"><a href="#__codelineno-5-13">13</a></span>
-<span class="normal"><a href="#__codelineno-5-14">14</a></span>
-<span class="normal"><a href="#__codelineno-5-15">15</a></span>
-<span class="normal"><a href="#__codelineno-5-16">16</a></span>
-<span class="normal"><a href="#__codelineno-5-17">17</a></span>
-<span class="normal"><a href="#__codelineno-5-18">18</a></span>
-<span class="normal"><a href="#__codelineno-5-19">19</a></span>
-<span class="normal"><a href="#__codelineno-5-20">20</a></span>
-<span class="normal"><a href="#__codelineno-5-21">21</a></span>
-<span class="normal"><a href="#__codelineno-5-22">22</a></span>
-<span class="normal"><a href="#__codelineno-5-23">23</a></span>
-<span class="normal"><a href="#__codelineno-5-24">24</a></span>
-<span class="normal"><a href="#__codelineno-5-25">25</a></span>
-<span class="normal"><a href="#__codelineno-5-26">26</a></span>
-<span class="normal"><a href="#__codelineno-5-27">27</a></span>
-<span class="normal"><a href="#__codelineno-5-28">28</a></span>
-<span class="normal"><a href="#__codelineno-5-29">29</a></span>
-<span class="normal"><a href="#__codelineno-5-30">30</a></span>
-<span class="normal"><a href="#__codelineno-5-31">31</a></span>
-<span class="normal"><a href="#__codelineno-5-32">32</a></span>
-<span class="normal"><a href="#__codelineno-5-33">33</a></span>
-<span class="normal"><a href="#__codelineno-5-34">34</a></span>
-<span class="normal"><a href="#__codelineno-5-35">35</a></span>
-<span class="normal"><a href="#__codelineno-5-36">36</a></span>
-<span class="normal"><a href="#__codelineno-5-37">37</a></span>
-<span class="normal"><a href="#__codelineno-5-38">38</a></span>
-<span class="normal"><a href="#__codelineno-5-39">39</a></span>
-<span class="normal"><a href="#__codelineno-5-40">40</a></span>
-<span class="normal"><a href="#__codelineno-5-41">41</a></span>
-<span class="normal"><a href="#__codelineno-5-42">42</a></span>
-<span class="normal"><a href="#__codelineno-5-43">43</a></span>
-<span class="normal"><a href="#__codelineno-5-44">44</a></span>
-<span class="normal"><a href="#__codelineno-5-45">45</a></span>
-<span class="normal"><a href="#__codelineno-5-46">46</a></span>
-<span class="normal"><a href="#__codelineno-5-47">47</a></span>
-<span class="normal"><a href="#__codelineno-5-48">48</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1"></a>yum<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>podman
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2"></a>
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3"></a>podman<span class="w"> </span>pull<span class="w"> </span>quay.io/redhat-emea-ssa-team/openshift-4-loadbalancer
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4"></a>
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5"></a>cat<span class="w"> </span>&gt;<span class="w"> </span>/etc/systemd/system/openshift-4-loadbalancer.service<span class="w"> </span><span class="s">&lt;&lt;EOF</span>
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6"></a><span class="s">[Unit]</span>
-</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7"></a><span class="s">Description=OpenShift 4 LoadBalancer CLUSTER</span>
-</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8"></a><span class="s">After=network.target</span>
-</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9"></a>
-</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10"></a><span class="s">[Service]</span>
-</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11"></a><span class="s">Type=simple</span>
-</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12"></a><span class="s">TimeoutStartSec=5m</span>
-</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13"></a>
-</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14"></a><span class="s">ExecStartPre=-/usr/bin/podman rm &quot;openshift-4-loadbalancer&quot;</span>
-</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15"></a><span class="s">ExecStartPre=/usr/bin/podman pull quay.io/redhat-emea-ssa-team/openshift-4-loadbalancer</span>
-</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16"></a><span class="s">ExecStart=/usr/bin/podman run --name openshift-4-loadbalancer --net host \</span>
-</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17"></a><span class="s">  -e API=bootstrap=192.168.100.152:6443,master-0=192.168.100.149:6443,master-1=192.168.100.150:6443,master-2=192.168.100.151:6443 \</span>
-</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18"></a><span class="s">  -e API_LISTEN=192.168.100.148:6443 \</span>
-</span><span id="__span-5-19"><a id="__codelineno-5-19" name="__codelineno-5-19"></a><span class="s">  -e INGRESS_HTTP=bootstrap=192.168.100.152:80,master-0=192.168.100.149:80,master-1=192.168.100.150:80,master-2=192.168.100.151:80,worker-1=192.168.100.153:80,worker-2=192.168.100.154:80,worker-3=192.168.100.155:80 \</span>
-</span><span id="__span-5-20"><a id="__codelineno-5-20" name="__codelineno-5-20"></a><span class="s">  -e INGRESS_HTTP_LISTEN=192.168.100.148:80 \</span>
-</span><span id="__span-5-21"><a id="__codelineno-5-21" name="__codelineno-5-21"></a><span class="s">  -e INGRESS_HTTPS=bootstrap=192.168.100.152:443,master-0=192.168.100.149:443,master-1=192.168.100.150:443,master-2=192.168.100.151:443,worker-1=192.168.100.153:443,worker-2=192.168.100.154:443,worker-3=192.168.100.155:443 \</span>
-</span><span id="__span-5-22"><a id="__codelineno-5-22" name="__codelineno-5-22"></a><span class="s">  -e INGRESS_HTTPS_LISTEN=192.168.100.148:443 \</span>
-</span><span id="__span-5-23"><a id="__codelineno-5-23" name="__codelineno-5-23"></a><span class="s">  -e MACHINE_CONFIG_SERVER=bootstrap=192.168.100.152:22623,master-0=192.168.100.149:22623,master-1=192.168.100.150:22623,master-2=192.168.100.151:22623 \</span>
-</span><span id="__span-5-24"><a id="__codelineno-5-24" name="__codelineno-5-24"></a><span class="s">  -e MACHINE_CONFIG_SERVER_LISTEN=192.168.100.148:22623 \</span>
-</span><span id="__span-5-25"><a id="__codelineno-5-25" name="__codelineno-5-25"></a><span class="s">  -e STATS_LISTEN=192.168.100.148:1984 \</span>
-</span><span id="__span-5-26"><a id="__codelineno-5-26" name="__codelineno-5-26"></a><span class="s">  -e STATS_ADMIN_PASSWORD=aengeo4oodoidaiP \</span>
-</span><span id="__span-5-27"><a id="__codelineno-5-27" name="__codelineno-5-27"></a><span class="s">  quay.io/redhat-emea-ssa-team/openshift-4-loadbalancer</span>
-</span><span id="__span-5-28"><a id="__codelineno-5-28" name="__codelineno-5-28"></a>
-</span><span id="__span-5-29"><a id="__codelineno-5-29" name="__codelineno-5-29"></a><span class="s">ExecReload=-/usr/bin/podman stop &quot;openshift-4-loadbalancer&quot;</span>
-</span><span id="__span-5-30"><a id="__codelineno-5-30" name="__codelineno-5-30"></a><span class="s">ExecReload=-/usr/bin/podman rm &quot;openshift-4-loadbalancer&quot;</span>
-</span><span id="__span-5-31"><a id="__codelineno-5-31" name="__codelineno-5-31"></a><span class="s">ExecStop=-/usr/bin/podman stop &quot;openshift-4-loadbalancer&quot;</span>
-</span><span id="__span-5-32"><a id="__codelineno-5-32" name="__codelineno-5-32"></a><span class="s">Restart=always</span>
-</span><span id="__span-5-33"><a id="__codelineno-5-33" name="__codelineno-5-33"></a><span class="s">RestartSec=30</span>
-</span><span id="__span-5-34"><a id="__codelineno-5-34" name="__codelineno-5-34"></a>
-</span><span id="__span-5-35"><a id="__codelineno-5-35" name="__codelineno-5-35"></a><span class="s">[Install]</span>
-</span><span id="__span-5-36"><a id="__codelineno-5-36" name="__codelineno-5-36"></a><span class="s">WantedBy=multi-user.target</span>
-</span><span id="__span-5-37"><a id="__codelineno-5-37" name="__codelineno-5-37"></a><span class="s">EOF</span>
-</span><span id="__span-5-38"><a id="__codelineno-5-38" name="__codelineno-5-38"></a>
-</span><span id="__span-5-39"><a id="__codelineno-5-39" name="__codelineno-5-39"></a>systemctl<span class="w"> </span>daemon-reload
-</span><span id="__span-5-40"><a id="__codelineno-5-40" name="__codelineno-5-40"></a>systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>--now<span class="w"> </span>openshift-4-loadbalancer.service
-</span><span id="__span-5-41"><a id="__codelineno-5-41" name="__codelineno-5-41"></a>systemctl<span class="w"> </span>status<span class="w"> </span>openshift-4-loadbalancer.service
-</span><span id="__span-5-42"><a id="__codelineno-5-42" name="__codelineno-5-42"></a>
-</span><span id="__span-5-43"><a id="__codelineno-5-43" name="__codelineno-5-43"></a>firewall-cmd<span class="w"> </span>--zone<span class="o">=</span>public<span class="w"> </span>--permanent<span class="w"> </span>--add-port<span class="o">=</span><span class="m">80</span>/tcp
-</span><span id="__span-5-44"><a id="__codelineno-5-44" name="__codelineno-5-44"></a>firewall-cmd<span class="w"> </span>--zone<span class="o">=</span>public<span class="w"> </span>--permanent<span class="w"> </span>--add-port<span class="o">=</span><span class="m">443</span>/tcp
-</span><span id="__span-5-45"><a id="__codelineno-5-45" name="__codelineno-5-45"></a>firewall-cmd<span class="w"> </span>--zone<span class="o">=</span>public<span class="w"> </span>--permanent<span class="w"> </span>--add-port<span class="o">=</span><span class="m">6443</span>/tcp
-</span><span id="__span-5-46"><a id="__codelineno-5-46" name="__codelineno-5-46"></a>firewall-cmd<span class="w"> </span>--zone<span class="o">=</span>public<span class="w"> </span>--permanent<span class="w"> </span>--add-port<span class="o">=</span><span class="m">22623</span>/tcp
-</span><span id="__span-5-47"><a id="__codelineno-5-47" name="__codelineno-5-47"></a>firewall-cmd<span class="w"> </span>--zone<span class="o">=</span>public<span class="w"> </span>--permanent<span class="w"> </span>--add-port<span class="o">=</span><span class="m">1984</span>/tcp
-</span><span id="__span-5-48"><a id="__codelineno-5-48" name="__codelineno-5-48"></a>firewall-cmd<span class="w"> </span>--reload
+<p>Add the following annotation:</p>
+<div class="language-yaml highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="nt">kubevirt.kubevirt.io/jsonpatch</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;[</span><span class="nv"> </span><span class="s">{&quot;op&quot;:</span><span class="nv"> </span><span class="s">&quot;add&quot;,</span><span class="nv"> </span><span class="s">&quot;path&quot;:</span><span class="nv"> </span><span class="s">&quot;/spec/configuration/developerConfiguration/featureGates/-&quot;,&quot;value&quot;:</span><span class="nv"> </span><span class="s">&quot;Sidecar&quot;}</span><span class="nv"> </span><span class="s">]&#39;</span>
 </span></code></pre></div></td></tr></table></div>
-<h4 id="install-openshift-install-oc-kubectl-govc">Install openshift-install, oc, kubectl, govc<a class="headerlink" href="#install-openshift-install-oc-kubectl-govc" title="Permanent link">&para;</a></h4>
-<div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-6-1">1</a></span>
+<p>Verify that the feature gate is enabled:</p>
+<div class="language-shell highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1">1</a></span>
+<span class="normal"><a href="#__codelineno-5-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1"></a>oc<span class="w"> </span>get<span class="w"> </span>kubevirt<span class="w"> </span>-n<span class="w"> </span>openshift-cnv<span class="w"> </span>kubevirt-kubevirt-hyperconverged<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2"></a><span class="w">  </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s2">&quot;{.spec.configuration.developerConfiguration.featureGates}&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>jq
+</span></code></pre></div></td></tr></table></div>
+<p>Expected output:</p>
+<div class="language-json highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-6-1">1</a></span>
 <span class="normal"><a href="#__codelineno-6-2">2</a></span>
 <span class="normal"><a href="#__codelineno-6-3">3</a></span>
-<span class="normal"><a href="#__codelineno-6-4">4</a></span>
-<span class="normal"><a href="#__codelineno-6-5">5</a></span>
-<span class="normal"><a href="#__codelineno-6-6">6</a></span>
-<span class="normal"><a href="#__codelineno-6-7">7</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1"></a>curl -L -O https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable-4.6/openshift-client-linux-4.6.48.tar.gz
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2"></a>curl -L -O https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable-4.6/openshift-install-linux-4.6.48.tar.gz
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3"></a>curl -L -O https://github.com/vmware/govmomi/releases/download/v0.27.2/govc_Linux_x86_64.tar.gz
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4"></a>
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5"></a>tar -xzvf openshift-client-linux-4.6.48.tar.gz -C /usr/local/bin/ kubectl oc
-</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6"></a>tar -xzvf openshift-install-linux-4.6.48.tar.gz -C /usr/local/bin/ openshift-install
-</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7"></a>tar -xzvf govc_Linux_x86_64.tar.gz -C /usr/local/bin/ govc
+<span class="normal"><a href="#__codelineno-6-4">4</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="p">[</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2"></a><span class="w">  </span><span class="err">...</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3"></a><span class="w">  </span><span class="s2">&quot;Sidecar&quot;</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4"></a><span class="p">]</span>
 </span></code></pre></div></td></tr></table></div>
-<h4 id="create-ssh-key">Create ssh key<a class="headerlink" href="#create-ssh-key" title="Permanent link">&para;</a></h4>
-<p><code>ssh-keygen</code></p>
-<h4 id="download-pull-secret-from-cloudredhatcom">Download pull secret from cloud.redhat.com<a class="headerlink" href="#download-pull-secret-from-cloudredhatcom" title="Permanent link">&para;</a></h4>
-<p>Store it in <code>~/redhat-pullsecret.json</code></p>
-<h4 id="install-configure-govc">Install configure govc<a class="headerlink" href="#install-configure-govc" title="Permanent link">&para;</a></h4>
-<p>Add GOVC env to bashrc:
-<div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-7-1">1</a></span>
-<span class="normal"><a href="#__codelineno-7-2">2</a></span>
-<span class="normal"><a href="#__codelineno-7-3">3</a></span>
-<span class="normal"><a href="#__codelineno-7-4">4</a></span>
-<span class="normal"><a href="#__codelineno-7-5">5</a></span>
-<span class="normal"><a href="#__codelineno-7-6">6</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1"></a>export GOVC_URL=&#39;vcenterip&#39;
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2"></a>export GOVC_USERNAME=&#39;user&#39;
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3"></a>export GOVC_PASSWORD=&#39;pass&#39;
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4"></a>export GOVC_INSECURE=1
-</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5"></a>export GOVC_DATACENTER=&quot;DC&quot;
-</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6"></a>export GOVC_DATASTORE=&quot;ds&quot;
-</span></code></pre></div></td></tr></table></div></p>
-<h2 id="create-rhcos-vm-template">Create rhcos vm template<a class="headerlink" href="#create-rhcos-vm-template" title="Permanent link">&para;</a></h2>
-<p>Create tempalte vm from OVA <code>rhcos-4.6.47</code></p>
-<p>Configure the template</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Info</label><label for="__tabbed_1_2">Screenshots</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
+<h2 id="step-2-create-a-sidecar-hook-to-inspect-domainxml">Step 2: Create a Sidecar Hook to Inspect domain.xml<a class="headerlink" href="#step-2-create-a-sidecar-hook-to-inspect-domainxml" title="Permanent link">&para;</a></h2>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The domain.xml format differs from the running configuration. During hook execution, there are no newlines in the domain.xml, making it a single-line XML string. This is important to consider when developing your modification script.</p>
+</div>
+<h3 id="create-a-configmap-for-the-hook-script">Create a ConfigMap for the Hook Script<a class="headerlink" href="#create-a-configmap-for-the-hook-script" title="Permanent link">&para;</a></h3>
+<p>Create a ConfigMap in the same namespace as your VirtualMachine:</p>
+<div class="language-yaml highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-7-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-7-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-7-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-7-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-7-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-7-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-7-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-7-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-7-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-7-10">10</a></span>
+<span class="normal"><a href="#__codelineno-7-11">11</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ConfigMap</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3"></a><span class="nt">metadata</span><span class="p">:</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">add-wwn</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5"></a><span class="nt">data</span><span class="p">:</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6"></a><span class="w">  </span><span class="nt">add-wwn.sh</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7"></a><span class="w">    </span><span class="no">#!/bin/sh</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8"></a><span class="w">    </span><span class="no">tempFile=`mktemp --dry-run`</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9"></a><span class="w">    </span><span class="no">echo $tempFile &gt;&gt; /tmp/onDefineDomain-tmpfile.log</span>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10"></a><span class="w">    </span><span class="no">echo $4 &gt; $tempFile</span>
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11"></a><span class="w">    </span><span class="no">cat $tempFile</span>
+</span></code></pre></div></td></tr></table></div>
+<p>Save this as <code>add-wwn-configmap.yaml</code> and apply it:</p>
+<div class="language-shell highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-8-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1"></a>oc<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>add-wwn-configmap.yaml
+</span></code></pre></div></td></tr></table></div>
+<h3 id="add-hook-sidecar-annotation-to-your-virtualmachine">Add Hook Sidecar Annotation to Your VirtualMachine<a class="headerlink" href="#add-hook-sidecar-annotation-to-your-virtualmachine" title="Permanent link">&para;</a></h3>
+<p>Add the <code>hooks.kubevirt.io/hookSidecars</code> annotation to your VirtualMachine specification:</p>
+<div class="language-yaml highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-9-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-9-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-9-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-9-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-9-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-9-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-9-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-9-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-9-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-9-10">10</a></span>
+<span class="normal"><a href="#__codelineno-9-11">11</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1"></a><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2"></a><span class="w">  </span><span class="nt">template</span><span class="p">:</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3"></a><span class="w">    </span><span class="nt">metadata</span><span class="p">:</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4"></a><span class="w">      </span><span class="nt">annotations</span><span class="p">:</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5"></a><span class="w">        </span><span class="nt">hooks.kubevirt.io/hookSidecars</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6"></a><span class="w">           </span><span class="no">[</span>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7"></a><span class="w">             </span><span class="no">{</span>
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8"></a><span class="w">               </span><span class="no">&quot;args&quot;: [&quot;--version&quot;, &quot;v1alpha2&quot;],</span>
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9"></a><span class="w">               </span><span class="no">&quot;configMap&quot;: {&quot;name&quot;: &quot;add-wwn&quot;, &quot;key&quot;: &quot;add-wwn.sh&quot;, &quot;hookPath&quot;: &quot;/usr/bin/onDefineDomain&quot;}</span>
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10"></a><span class="w">             </span><span class="no">}</span>
+</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11"></a><span class="w">           </span><span class="no">]</span>
+</span></code></pre></div></td></tr></table></div>
+<h3 id="start-the-virtual-machine-and-inspect-domainxml">Start the Virtual Machine and Inspect domain.xml<a class="headerlink" href="#start-the-virtual-machine-and-inspect-domainxml" title="Permanent link">&para;</a></h3>
+<p>Start the virtual machine:</p>
+<div class="language-shell highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-10-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1"></a>oc<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>your-vm.yaml
+</span></code></pre></div></td></tr></table></div>
+<p>Wait for the VM to start, then connect to the <code>hook-sidecar-0</code> container of the virt-launcher pod:</p>
+<div class="language-shell highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-11-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1"></a>oc<span class="w"> </span>rsh<span class="w"> </span>-c<span class="w"> </span>hook-sidecar-0<span class="w"> </span>virt-launcher-&lt;vm-name&gt;-&lt;pod-id&gt;
+</span></code></pre></div></td></tr></table></div>
+<p>Inside the container, check the log file to see the temporary files created:</p>
+<div class="language-shell highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-12-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1"></a>cat<span class="w"> </span>/tmp/onDefineDomain-tmpfile.log
+</span></code></pre></div></td></tr></table></div>
+<p>Example output:</p>
+<div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-13-1">1</a></span>
+<span class="normal"><a href="#__codelineno-13-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1"></a>/tmp/tmp.Q7YIeHv8cV
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2"></a>/tmp/tmp.XvyR8QbHTi
+</span></code></pre></div></td></tr></table></div>
+<p>Review the XML content in one of these temporary files:</p>
+<div class="language-shell highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-14-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1"></a>cat<span class="w"> </span>/tmp/tmp.XvyR8QbHTi
+</span></code></pre></div></td></tr></table></div>
+<p>This will show you the actual format of the domain.xml that the hook receives. Use this to develop your <code>sed</code> command for modifying the XML.</p>
+<h2 id="step-3-update-the-configmap-with-the-sed-command">Step 3: Update the ConfigMap with the sed Command<a class="headerlink" href="#step-3-update-the-configmap-with-the-sed-command" title="Permanent link">&para;</a></h2>
+<p>Now that you've inspected the domain.xml format, update the ConfigMap with the <code>sed</code> command to add the WWN. The script reads the domain.xml from <code>$4</code>, modifies it, and outputs the modified XML.</p>
+<div class="language-yaml highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-15-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-15-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-15-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-15-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-15-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-15-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-15-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-15-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-15-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-15-10">10</a></span>
+<span class="normal"><a href="#__codelineno-15-11">11</a></span>
+<span class="normal"><a href="#__codelineno-15-12">12</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ConfigMap</span>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3"></a><span class="nt">metadata</span><span class="p">:</span>
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">add-wwn</span>
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5"></a><span class="nt">data</span><span class="p">:</span>
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6"></a><span class="w">  </span><span class="nt">add-wwn.sh</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7"></a><span class="w">    </span><span class="no">#!/bin/sh</span>
+</span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8"></a><span class="w">    </span><span class="no">tempFile=`mktemp --dry-run`</span>
+</span><span id="__span-15-9"><a id="__codelineno-15-9" name="__codelineno-15-9"></a><span class="w">    </span><span class="no">echo $tempFile &gt;&gt; /tmp/onDefineDomain-tmpfile.log</span>
+</span><span id="__span-15-10"><a id="__codelineno-15-10" name="__codelineno-15-10"></a><span class="w">    </span><span class="no">echo $4 &gt; $tempFile</span>
+</span><span id="__span-15-11"><a id="__codelineno-15-11" name="__codelineno-15-11"></a><span class="w">    </span><span class="no">sed -i &quot;s|&lt;shareable&gt;&lt;/shareable&gt;|&lt;shareable&gt;&lt;/shareable&gt;&lt;wwn&gt;5000c500155a3456&lt;/wwn&gt;|&quot; $tempFile</span>
+</span><span id="__span-15-12"><a id="__codelineno-15-12" name="__codelineno-15-12"></a><span class="w">    </span><span class="no">cat $tempFile</span>
+</span></code></pre></div></td></tr></table></div>
+<p><strong>Explanation of the sed command:</strong></p>
 <ul>
-<li>CPU, RAM, Disk</li>
-<li>BIOS Boot</li>
-<li>Disk.EnableUUID</li>
-<li>Latency high</li>
+<li><code>sed -i</code> - Edit the file in place</li>
+<li><code>s|&lt;shareable&gt;&lt;/shareable&gt;|&lt;shareable&gt;&lt;/shareable&gt;&lt;wwn&gt;5000c500155a3456&lt;/wwn&gt;|</code> - Substitute the <code>&lt;shareable&gt;&lt;/shareable&gt;</code> tag with the same tag followed by the WWN element</li>
 </ul>
-</div>
-<div class="tabbed-block">
-<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="Screenshot" src="08-1-ram-disk.png" /></a></p>
-<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="Screenshot" src="08-2-boot-bios.png" /></a></p>
-<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="Screenshot" src="08-3-diskuuid.png" /></a></p>
-<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="Screenshot" src="08-4-lat-high.png" /></a></p>
-</div>
-</div>
-</div>
-<h2 id="install-openshift">Install openshift<a class="headerlink" href="#install-openshift" title="Permanent link">&para;</a></h2>
-<h3 id="create-install-configyaml">Create install-config.yaml<a class="headerlink" href="#create-install-configyaml" title="Permanent link">&para;</a></h3>
-<div class="language-yaml highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-8-1"> 1</a></span>
-<span class="normal"><a href="#__codelineno-8-2"> 2</a></span>
-<span class="normal"><a href="#__codelineno-8-3"> 3</a></span>
-<span class="normal"><a href="#__codelineno-8-4"> 4</a></span>
-<span class="normal"><a href="#__codelineno-8-5"> 5</a></span>
-<span class="normal"><a href="#__codelineno-8-6"> 6</a></span>
-<span class="normal"><a href="#__codelineno-8-7"> 7</a></span>
-<span class="normal"><a href="#__codelineno-8-8"> 8</a></span>
-<span class="normal"><a href="#__codelineno-8-9"> 9</a></span>
-<span class="normal"><a href="#__codelineno-8-10">10</a></span>
-<span class="normal"><a href="#__codelineno-8-11">11</a></span>
-<span class="normal"><a href="#__codelineno-8-12">12</a></span>
-<span class="normal"><a href="#__codelineno-8-13">13</a></span>
-<span class="normal"><a href="#__codelineno-8-14">14</a></span>
-<span class="normal"><a href="#__codelineno-8-15">15</a></span>
-<span class="normal"><a href="#__codelineno-8-16">16</a></span>
-<span class="normal"><a href="#__codelineno-8-17">17</a></span>
-<span class="normal"><a href="#__codelineno-8-18">18</a></span>
-<span class="normal"><a href="#__codelineno-8-19">19</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1"></a><span class="l l-Scalar l-Scalar-Plain">cat &gt; install-config.yaml &lt;&lt;EOF</span>
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2"></a><span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
-</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3"></a><span class="nt">baseDomain</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">lab.example.com</span>
-</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4"></a><span class="nt">compute</span><span class="p">:</span>
-</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">hyperthreading</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Enabled</span>
-</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">worker</span>
-</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7"></a><span class="w">  </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
-</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8"></a><span class="nt">controlPlane</span><span class="p">:</span>
-</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9"></a><span class="w">  </span><span class="nt">hyperthreading</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Enabled</span>
-</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">master</span>
-</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11"></a><span class="w">  </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
-</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12"></a><span class="nt">metadata</span><span class="p">:</span>
-</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rbohne</span>
-</span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14"></a><span class="nt">platform</span><span class="p">:</span>
-</span><span id="__span-8-15"><a id="__codelineno-8-15" name="__codelineno-8-15"></a><span class="w">  </span><span class="nt">none</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-</span><span id="__span-8-16"><a id="__codelineno-8-16" name="__codelineno-8-16"></a><span class="nt">fips</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-</span><span id="__span-8-17"><a id="__codelineno-8-17" name="__codelineno-8-17"></a><span class="nt">pullSecret</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;$(</span><span class="nv"> </span><span class="s">cat</span><span class="nv"> </span><span class="s">~/redhat-pullsecret.json</span><span class="nv"> </span><span class="s">)&#39;</span>
-</span><span id="__span-8-18"><a id="__codelineno-8-18" name="__codelineno-8-18"></a><span class="nt">sshKey</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;$(</span><span class="nv"> </span><span class="s">cat</span><span class="nv"> </span><span class="s">~/.ssh/id_rsa.pub</span><span class="nv"> </span><span class="s">)&#39;</span>
-</span><span id="__span-8-19"><a id="__codelineno-8-19" name="__codelineno-8-19"></a><span class="l l-Scalar l-Scalar-Plain">EOF</span>
+<p>Apply the updated ConfigMap:</p>
+<div class="language-shell highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-16-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1"></a>oc<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>add-wwn-configmap.yaml
 </span></code></pre></div></td></tr></table></div>
-<p>In case you want integrated:
-<div class="language-yaml highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-9-1">1</a></span>
-<span class="normal"><a href="#__codelineno-9-2">2</a></span>
-<span class="normal"><a href="#__codelineno-9-3">3</a></span>
-<span class="normal"><a href="#__codelineno-9-4">4</a></span>
-<span class="normal"><a href="#__codelineno-9-5">5</a></span>
-<span class="normal"><a href="#__codelineno-9-6">6</a></span>
-<span class="normal"><a href="#__codelineno-9-7">7</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1"></a><span class="nt">platform</span><span class="p">:</span>
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2"></a><span class="w">  </span><span class="nt">vsphere</span><span class="p">:</span>
-</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3"></a><span class="w">    </span><span class="nt">vcenter</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${GOVC_URL}</span>
-</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4"></a><span class="w">    </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${GOVC_USERNAME}</span>
-</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5"></a><span class="w">    </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${GOVC_PASSWORD}</span>
-</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6"></a><span class="w">    </span><span class="nt">datacenter</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${GOVC_DATACENTER}</span>
-</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7"></a><span class="w">    </span><span class="nt">defaultDatastore</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${GOVC_DATASTORE}</span>
+<p>Restart the VirtualMachine to apply the changes:</p>
+<div class="language-shell highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-17-1">1</a></span>
+<span class="normal"><a href="#__codelineno-17-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1"></a>oc<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>your-vm.yaml
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2"></a>virtctl<span class="w"> </span>restart<span class="w"> </span>&lt;your-vm-name&gt;
+</span></code></pre></div></td></tr></table></div>
+<h2 id="step-4-verify-the-wwn">Step 4: Verify the WWN<a class="headerlink" href="#step-4-verify-the-wwn" title="Permanent link">&para;</a></h2>
+<p>Once the VM has restarted, connect to it and verify that the disk has the WWN:</p>
+<div class="language-shell highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-18-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1"></a>virtctl<span class="w"> </span>ssh<span class="w"> </span>&lt;your-vm-name&gt;<span class="w">  </span>or<span class="w"> </span>ssh<span class="w"> </span>...
+</span></code></pre></div></td></tr></table></div>
+<p>Inside the VM, check the disk WWN:</p>
+<div class="language-shell highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-19-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1"></a>lsblk<span class="w"> </span>-o<span class="w"> </span>+WWN
+</span></code></pre></div></td></tr></table></div>
+<p>Expected output:</p>
+<div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-20-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-20-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-20-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-20-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-20-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-20-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-20-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-20-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-20-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-20-10">10</a></span>
+<span class="normal"><a href="#__codelineno-20-11">11</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1"></a>NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINTS                      WWN
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2"></a>loop0    7:0    0   5.8M  1 loop
+</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3"></a>sda      8:0    0   500G  0 disk                                  0x5000c500155a3456
+</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4"></a>vda    252:0    0   120G  0 disk
+</span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5"></a>├─vda1 252:1    0     1M  0 part
+</span><span id="__span-20-6"><a id="__codelineno-20-6" name="__codelineno-20-6"></a>├─vda2 252:2    0   127M  0 part
+</span><span id="__span-20-7"><a id="__codelineno-20-7" name="__codelineno-20-7"></a>├─vda3 252:3    0   384M  0 part /boot
+</span><span id="__span-20-8"><a id="__codelineno-20-8" name="__codelineno-20-8"></a>└─vda4 252:4    0 119.5G  0 part /var
+</span><span id="__span-20-9"><a id="__codelineno-20-9" name="__codelineno-20-9"></a>                                 /sysroot/ostree/deploy/rhcos/var
+</span><span id="__span-20-10"><a id="__codelineno-20-10" name="__codelineno-20-10"></a>                                 /etc
+</span><span id="__span-20-11"><a id="__codelineno-20-11" name="__codelineno-20-11"></a>                                 /sysroot
+</span></code></pre></div></td></tr></table></div>
+<p>The disk <code>sda</code> should now show the WWN <code>0x5000c500155a3456</code>.</p>
+<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
+<p>If the WWN is not appearing:</p>
+<ol>
+<li>
+<p><strong>Check the hook sidecar logs:</strong>
+   <div class="language-shell highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-21-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1"></a>oc<span class="w"> </span>logs<span class="w"> </span>-c<span class="w"> </span>hook-sidecar-0<span class="w"> </span>virt-launcher-&lt;vm-name&gt;-&lt;pod-id&gt;
 </span></code></pre></div></td></tr></table></div></p>
-<h3 id="running-installation">Running installation<a class="headerlink" href="#running-installation" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-10-1"> 1</a></span>
-<span class="normal"><a href="#__codelineno-10-2"> 2</a></span>
-<span class="normal"><a href="#__codelineno-10-3"> 3</a></span>
-<span class="normal"><a href="#__codelineno-10-4"> 4</a></span>
-<span class="normal"><a href="#__codelineno-10-5"> 5</a></span>
-<span class="normal"><a href="#__codelineno-10-6"> 6</a></span>
-<span class="normal"><a href="#__codelineno-10-7"> 7</a></span>
-<span class="normal"><a href="#__codelineno-10-8"> 8</a></span>
-<span class="normal"><a href="#__codelineno-10-9"> 9</a></span>
-<span class="normal"><a href="#__codelineno-10-10">10</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1"></a>mkdir<span class="w"> </span>rbohne
-</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2"></a>cp<span class="w"> </span>-v<span class="w"> </span>install-config.yaml<span class="w"> </span>rbohne/
-</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3"></a>
-</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4"></a>openshift-install<span class="w"> </span>create<span class="w"> </span>manifests<span class="w"> </span>--dir<span class="o">=</span>rbohne/
-</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5"></a>rm<span class="w"> </span>-rf<span class="w"> </span>rbohne/openshift/99_openshift-cluster-api_master-machines-*.yaml
-</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6"></a>rm<span class="w"> </span>-rf<span class="w"> </span>rbohne/openshift/99_openshift-cluster-api_worker-machineset-0.yaml
-</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7"></a>
-</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8"></a><span class="c1"># Disable Scheduler if you like...</span>
-</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9"></a>
-</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10"></a>openshift-install<span class="w"> </span>create<span class="w"> </span>ignition-configs<span class="w"> </span>--dir<span class="o">=</span>rbohne/
-</span></code></pre></div></td></tr></table></div>
-<p>Deploy VM's</p>
-<p>Prepare ignition files:</p>
-<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-11-1">1</a></span>
-<span class="normal"><a href="#__codelineno-11-2">2</a></span>
-<span class="normal"><a href="#__codelineno-11-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1"></a>cat<span class="w"> </span>rbohne/bootstrap.ign<span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>-w0<span class="w"> </span>&gt;<span class="w"> </span>rbohne/bootstrap.ign.base64
-</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2"></a>cat<span class="w"> </span>rbohne/master.ign<span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>-w0<span class="w"> </span>&gt;<span class="w"> </span>rbohne/master.ign.base64
-</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3"></a>cat<span class="w"> </span>rbohne/worker.ign<span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>-w0<span class="w"> </span>&gt;<span class="w"> </span>rbohne/worker.ign.base64
-</span></code></pre></div></td></tr></table></div>
-<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">By hand</label><label for="__tabbed_2_2">Short script</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-12-1"> 1</a></span>
-<span class="normal"><a href="#__codelineno-12-2"> 2</a></span>
-<span class="normal"><a href="#__codelineno-12-3"> 3</a></span>
-<span class="normal"><a href="#__codelineno-12-4"> 4</a></span>
-<span class="normal"><a href="#__codelineno-12-5"> 5</a></span>
-<span class="normal"><a href="#__codelineno-12-6"> 6</a></span>
-<span class="normal"><a href="#__codelineno-12-7"> 7</a></span>
-<span class="normal"><a href="#__codelineno-12-8"> 8</a></span>
-<span class="normal"><a href="#__codelineno-12-9"> 9</a></span>
-<span class="normal"><a href="#__codelineno-12-10">10</a></span>
-<span class="normal"><a href="#__codelineno-12-11">11</a></span>
-<span class="normal"><a href="#__codelineno-12-12">12</a></span>
-<span class="normal"><a href="#__codelineno-12-13">13</a></span>
-<span class="normal"><a href="#__codelineno-12-14">14</a></span>
-<span class="normal"><a href="#__codelineno-12-15">15</a></span>
-<span class="normal"><a href="#__codelineno-12-16">16</a></span>
-<span class="normal"><a href="#__codelineno-12-17">17</a></span>
-<span class="normal"><a href="#__codelineno-12-18">18</a></span>
-<span class="normal"><a href="#__codelineno-12-19">19</a></span>
-<span class="normal"><a href="#__codelineno-12-20">20</a></span>
-<span class="normal"><a href="#__codelineno-12-21">21</a></span>
-<span class="normal"><a href="#__codelineno-12-22">22</a></span>
-<span class="normal"><a href="#__codelineno-12-23">23</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1"></a><span class="nv">NODE</span><span class="o">=</span><span class="s2">&quot;bootstrap.rbohne.lab.example.com&quot;</span>
-</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2"></a><span class="c1"># IP::GATEWAY:NETMASK:HOSTNAME:INTERFACE:none</span>
-</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3"></a><span class="nv">IP_CFG</span><span class="o">=</span><span class="s2">&quot;ip=&#39;192.168.100.152::192.168.100.1:255.255.255.0:</span><span class="nv">$NODE</span><span class="s2">:ens192:none nameserver=192.168.100.148&#39;&quot;</span>
-</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4"></a><span class="nv">IGN</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span><span class="s2">/rbohne/bootstrap.ign.base64&quot;</span>
-</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5"></a><span class="nv">CLUSTERNAME</span><span class="o">=</span>rbohne
-</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6"></a>
-</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7"></a>govc<span class="w"> </span>vm.clone<span class="w"> </span>-vm<span class="w"> </span><span class="s2">&quot;/</span><span class="si">${</span><span class="nv">GOVC_DATACENTER</span><span class="si">}</span><span class="s2">/vm/</span><span class="si">${</span><span class="nv">CLUSTERNAME</span><span class="si">}</span><span class="s2">/rhcos-4.6.47&quot;</span><span class="w">  </span><span class="se">\</span>
-</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8"></a><span class="w">  </span>-annotation<span class="o">=</span><span class="nv">$ignition</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9"></a><span class="w">  </span>-c<span class="o">=</span><span class="m">4</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-12-10"><a id="__codelineno-12-10" name="__codelineno-12-10"></a><span class="w">  </span>-m<span class="o">=</span><span class="m">16384</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-12-11"><a id="__codelineno-12-11" name="__codelineno-12-11"></a><span class="w">  </span>-net<span class="w"> </span><span class="s1">&#39;DC-Provisioning&#39;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-12-12"><a id="__codelineno-12-12" name="__codelineno-12-12"></a><span class="w">  </span>-on<span class="o">=</span><span class="nb">false</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-12-13"><a id="__codelineno-12-13" name="__codelineno-12-13"></a><span class="w">  </span>-folder<span class="o">=</span><span class="si">${</span><span class="nv">CLUSTERNAME</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-12-14"><a id="__codelineno-12-14" name="__codelineno-12-14"></a><span class="w">  </span>-ds<span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">GOVC_DATASTORE</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-12-15"><a id="__codelineno-12-15" name="__codelineno-12-15"></a><span class="w">  </span><span class="nv">$NODE</span>
-</span><span id="__span-12-16"><a id="__codelineno-12-16" name="__codelineno-12-16"></a>
-</span><span id="__span-12-17"><a id="__codelineno-12-17" name="__codelineno-12-17"></a>govc<span class="w"> </span>vm.change<span class="w"> </span>-vm<span class="o">=</span><span class="s2">&quot;/</span><span class="si">${</span><span class="nv">GOVC_DATACENTER</span><span class="si">}</span><span class="s2">/vm/</span><span class="si">${</span><span class="nv">CLUSTERNAME</span><span class="si">}</span><span class="s2">/</span><span class="nv">$NODE</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-12-18"><a id="__codelineno-12-18" name="__codelineno-12-18"></a><span class="w">  </span>-e<span class="o">=</span><span class="s2">&quot;guestinfo.afterburn.initrd.network-kargs=</span><span class="nv">$IP_CFG</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-12-19"><a id="__codelineno-12-19" name="__codelineno-12-19"></a><span class="w">  </span>-e<span class="o">=</span><span class="s2">&quot;guestinfo.ipxe.ignition=</span><span class="nv">$ignition</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-12-20"><a id="__codelineno-12-20" name="__codelineno-12-20"></a><span class="w">  </span>-e<span class="o">=</span><span class="s2">&quot;guestinfo.ignition.config.data.encoding=base64&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-12-21"><a id="__codelineno-12-21" name="__codelineno-12-21"></a><span class="w">  </span>-f<span class="o">=</span><span class="s2">&quot;guestinfo.ignition.config.data=</span><span class="si">${</span><span class="nv">IGN</span><span class="si">}</span><span class="s2">&quot;</span>
-</span><span id="__span-12-22"><a id="__codelineno-12-22" name="__codelineno-12-22"></a>
-</span><span id="__span-12-23"><a id="__codelineno-12-23" name="__codelineno-12-23"></a>govc<span class="w"> </span>vm.power<span class="w"> </span>-on<span class="o">=</span><span class="nb">true</span><span class="w"> </span><span class="s2">&quot;/</span><span class="si">${</span><span class="nv">GOVC_DATACENTER</span><span class="si">}</span><span class="s2">/vm/</span><span class="si">${</span><span class="nv">CLUSTERNAME</span><span class="si">}</span><span class="s2">/</span><span class="nv">$NODE</span><span class="s2">&quot;</span>
-</span></code></pre></div></td></tr></table></div>
-<div class="admonition info">
-<p class="admonition-title">Info</p>
-<p>Repeat for other VM's masters and computer</p>
-</div>
-</div>
-<div class="tabbed-block">
-<p><a href="https://examples.openshift.pub/cluster-installation/vmware/example/openshift-deploy.sh" target="_blank" rel="noopener">Download</a></p>
-<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-13-1"> 1</a></span>
-<span class="normal"><a href="#__codelineno-13-2"> 2</a></span>
-<span class="normal"><a href="#__codelineno-13-3"> 3</a></span>
-<span class="normal"><a href="#__codelineno-13-4"> 4</a></span>
-<span class="normal"><a href="#__codelineno-13-5"> 5</a></span>
-<span class="normal"><a href="#__codelineno-13-6"> 6</a></span>
-<span class="normal"><a href="#__codelineno-13-7"> 7</a></span>
-<span class="normal"><a href="#__codelineno-13-8"> 8</a></span>
-<span class="normal"><a href="#__codelineno-13-9"> 9</a></span>
-<span class="normal"><a href="#__codelineno-13-10">10</a></span>
-<span class="normal"><a href="#__codelineno-13-11">11</a></span>
-<span class="normal"><a href="#__codelineno-13-12">12</a></span>
-<span class="normal"><a href="#__codelineno-13-13">13</a></span>
-<span class="normal"><a href="#__codelineno-13-14">14</a></span>
-<span class="normal"><a href="#__codelineno-13-15">15</a></span>
-<span class="normal"><a href="#__codelineno-13-16">16</a></span>
-<span class="normal"><a href="#__codelineno-13-17">17</a></span>
-<span class="normal"><a href="#__codelineno-13-18">18</a></span>
-<span class="normal"><a href="#__codelineno-13-19">19</a></span>
-<span class="normal"><a href="#__codelineno-13-20">20</a></span>
-<span class="normal"><a href="#__codelineno-13-21">21</a></span>
-<span class="normal"><a href="#__codelineno-13-22">22</a></span>
-<span class="normal"><a href="#__codelineno-13-23">23</a></span>
-<span class="normal"><a href="#__codelineno-13-24">24</a></span>
-<span class="normal"><a href="#__codelineno-13-25">25</a></span>
-<span class="normal"><a href="#__codelineno-13-26">26</a></span>
-<span class="normal"><a href="#__codelineno-13-27">27</a></span>
-<span class="normal"><a href="#__codelineno-13-28">28</a></span>
-<span class="normal"><a href="#__codelineno-13-29">29</a></span>
-<span class="normal"><a href="#__codelineno-13-30">30</a></span>
-<span class="normal"><a href="#__codelineno-13-31">31</a></span>
-<span class="normal"><a href="#__codelineno-13-32">32</a></span>
-<span class="normal"><a href="#__codelineno-13-33">33</a></span>
-<span class="normal"><a href="#__codelineno-13-34">34</a></span>
-<span class="normal"><a href="#__codelineno-13-35">35</a></span>
-<span class="normal"><a href="#__codelineno-13-36">36</a></span>
-<span class="normal"><a href="#__codelineno-13-37">37</a></span>
-<span class="normal"><a href="#__codelineno-13-38">38</a></span>
-<span class="normal"><a href="#__codelineno-13-39">39</a></span>
-<span class="normal"><a href="#__codelineno-13-40">40</a></span>
-<span class="normal"><a href="#__codelineno-13-41">41</a></span>
-<span class="normal"><a href="#__codelineno-13-42">42</a></span>
-<span class="normal"><a href="#__codelineno-13-43">43</a></span>
-<span class="normal"><a href="#__codelineno-13-44">44</a></span>
-<span class="normal"><a href="#__codelineno-13-45">45</a></span>
-<span class="normal"><a href="#__codelineno-13-46">46</a></span>
-<span class="normal"><a href="#__codelineno-13-47">47</a></span>
-<span class="normal"><a href="#__codelineno-13-48">48</a></span>
-<span class="normal"><a href="#__codelineno-13-49">49</a></span>
-<span class="normal"><a href="#__codelineno-13-50">50</a></span>
-<span class="normal"><a href="#__codelineno-13-51">51</a></span>
-<span class="normal"><a href="#__codelineno-13-52">52</a></span>
-<span class="normal"><a href="#__codelineno-13-53">53</a></span>
-<span class="normal"><a href="#__codelineno-13-54">54</a></span>
-<span class="normal"><a href="#__codelineno-13-55">55</a></span>
-<span class="normal"><a href="#__codelineno-13-56">56</a></span>
-<span class="normal"><a href="#__codelineno-13-57">57</a></span>
-<span class="normal"><a href="#__codelineno-13-58">58</a></span>
-<span class="normal"><a href="#__codelineno-13-59">59</a></span>
-<span class="normal"><a href="#__codelineno-13-60">60</a></span>
-<span class="normal"><a href="#__codelineno-13-61">61</a></span>
-<span class="normal"><a href="#__codelineno-13-62">62</a></span>
-<span class="normal"><a href="#__codelineno-13-63">63</a></span>
-<span class="normal"><a href="#__codelineno-13-64">64</a></span>
-<span class="normal"><a href="#__codelineno-13-65">65</a></span>
-<span class="normal"><a href="#__codelineno-13-66">66</a></span>
-<span class="normal"><a href="#__codelineno-13-67">67</a></span>
-<span class="normal"><a href="#__codelineno-13-68">68</a></span>
-<span class="normal"><a href="#__codelineno-13-69">69</a></span>
-<span class="normal"><a href="#__codelineno-13-70">70</a></span>
-<span class="normal"><a href="#__codelineno-13-71">71</a></span>
-<span class="normal"><a href="#__codelineno-13-72">72</a></span>
-<span class="normal"><a href="#__codelineno-13-73">73</a></span>
-<span class="normal"><a href="#__codelineno-13-74">74</a></span>
-<span class="normal"><a href="#__codelineno-13-75">75</a></span>
-<span class="normal"><a href="#__codelineno-13-76">76</a></span>
-<span class="normal"><a href="#__codelineno-13-77">77</a></span>
-<span class="normal"><a href="#__codelineno-13-78">78</a></span>
-<span class="normal"><a href="#__codelineno-13-79">79</a></span>
-<span class="normal"><a href="#__codelineno-13-80">80</a></span>
-<span class="normal"><a href="#__codelineno-13-81">81</a></span>
-<span class="normal"><a href="#__codelineno-13-82">82</a></span>
-<span class="normal"><a href="#__codelineno-13-83">83</a></span>
-<span class="normal"><a href="#__codelineno-13-84">84</a></span>
-<span class="normal"><a href="#__codelineno-13-85">85</a></span>
-<span class="normal"><a href="#__codelineno-13-86">86</a></span>
-<span class="normal"><a href="#__codelineno-13-87">87</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1"></a><span class="ch">#!/usr/bin/env bash</span>
-</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2"></a>
-</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3"></a><span class="c1"># How to use the script: copy it and adjust what you have to adjust!</span>
-</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4"></a><span class="c1">#   For example: ip adresses ;-)</span>
-</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5"></a>
-</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6"></a><span class="nb">set</span><span class="w"> </span>-euo<span class="w"> </span>pipefail
-</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7"></a><span class="nb">set</span><span class="w"> </span>-x
-</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8"></a>
-</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9"></a><span class="c1"># Moved into ~/.basrc ;-)</span>
-</span><span id="__span-13-10"><a id="__codelineno-13-10" name="__codelineno-13-10"></a><span class="c1"># export GOVC_URL=&#39;vcenter&#39;</span>
-</span><span id="__span-13-11"><a id="__codelineno-13-11" name="__codelineno-13-11"></a><span class="c1"># export GOVC_USERNAME=&#39;user&#39;</span>
-</span><span id="__span-13-12"><a id="__codelineno-13-12" name="__codelineno-13-12"></a><span class="c1"># export GOVC_PASSWORD=&#39;pwd&#39;</span>
-</span><span id="__span-13-13"><a id="__codelineno-13-13" name="__codelineno-13-13"></a><span class="c1"># export GOVC_INSECURE=1</span>
-</span><span id="__span-13-14"><a id="__codelineno-13-14" name="__codelineno-13-14"></a><span class="c1"># export GOVC_DATACENTER=&quot;DC&quot;</span>
-</span><span id="__span-13-15"><a id="__codelineno-13-15" name="__codelineno-13-15"></a><span class="c1"># export GOVC_DATASTORE=&quot;datastore&quot;</span>
-</span><span id="__span-13-16"><a id="__codelineno-13-16" name="__codelineno-13-16"></a>
-</span><span id="__span-13-17"><a id="__codelineno-13-17" name="__codelineno-13-17"></a><span class="nv">basedomain</span><span class="o">=</span><span class="s2">&quot;lab.example.com&quot;</span>
-</span><span id="__span-13-18"><a id="__codelineno-13-18" name="__codelineno-13-18"></a><span class="nv">clustername</span><span class="o">=</span><span class="s2">&quot;rbohne&quot;</span>
-</span><span id="__span-13-19"><a id="__codelineno-13-19" name="__codelineno-13-19"></a>
-</span><span id="__span-13-20"><a id="__codelineno-13-20" name="__codelineno-13-20"></a><span class="nv">nodes</span><span class="o">=(</span>
-</span><span id="__span-13-21"><a id="__codelineno-13-21" name="__codelineno-13-21"></a><span class="w">    </span><span class="s2">&quot;bootstrap.</span><span class="si">${</span><span class="nv">clustername</span><span class="si">}</span><span class="s2">.</span><span class="si">${</span><span class="nv">basedomain</span><span class="si">}</span><span class="s2">&quot;</span>
-</span><span id="__span-13-22"><a id="__codelineno-13-22" name="__codelineno-13-22"></a><span class="w">    </span><span class="s2">&quot;master-0.</span><span class="si">${</span><span class="nv">clustername</span><span class="si">}</span><span class="s2">.</span><span class="si">${</span><span class="nv">basedomain</span><span class="si">}</span><span class="s2">&quot;</span>
-</span><span id="__span-13-23"><a id="__codelineno-13-23" name="__codelineno-13-23"></a><span class="w">    </span><span class="s2">&quot;master-1.</span><span class="si">${</span><span class="nv">clustername</span><span class="si">}</span><span class="s2">.</span><span class="si">${</span><span class="nv">basedomain</span><span class="si">}</span><span class="s2">&quot;</span>
-</span><span id="__span-13-24"><a id="__codelineno-13-24" name="__codelineno-13-24"></a><span class="w">    </span><span class="s2">&quot;master-2.</span><span class="si">${</span><span class="nv">clustername</span><span class="si">}</span><span class="s2">.</span><span class="si">${</span><span class="nv">basedomain</span><span class="si">}</span><span class="s2">&quot;</span>
-</span><span id="__span-13-25"><a id="__codelineno-13-25" name="__codelineno-13-25"></a><span class="w">    </span><span class="s2">&quot;worker-1.</span><span class="si">${</span><span class="nv">clustername</span><span class="si">}</span><span class="s2">.</span><span class="si">${</span><span class="nv">basedomain</span><span class="si">}</span><span class="s2">&quot;</span>
-</span><span id="__span-13-26"><a id="__codelineno-13-26" name="__codelineno-13-26"></a><span class="w">    </span><span class="s2">&quot;worker-2.</span><span class="si">${</span><span class="nv">clustername</span><span class="si">}</span><span class="s2">.</span><span class="si">${</span><span class="nv">basedomain</span><span class="si">}</span><span class="s2">&quot;</span>
-</span><span id="__span-13-27"><a id="__codelineno-13-27" name="__codelineno-13-27"></a><span class="w">    </span><span class="s2">&quot;worker-3.</span><span class="si">${</span><span class="nv">clustername</span><span class="si">}</span><span class="s2">.</span><span class="si">${</span><span class="nv">basedomain</span><span class="si">}</span><span class="s2">&quot;</span>
-</span><span id="__span-13-28"><a id="__codelineno-13-28" name="__codelineno-13-28"></a><span class="o">)</span>
-</span><span id="__span-13-29"><a id="__codelineno-13-29" name="__codelineno-13-29"></a>
-</span><span id="__span-13-30"><a id="__codelineno-13-30" name="__codelineno-13-30"></a><span class="nv">ignitions</span><span class="o">=(</span>
-</span><span id="__span-13-31"><a id="__codelineno-13-31" name="__codelineno-13-31"></a><span class="w">    </span><span class="s2">&quot;</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span><span class="s2">/rbohne/bootstrap.ign.base64&quot;</span>
-</span><span id="__span-13-32"><a id="__codelineno-13-32" name="__codelineno-13-32"></a><span class="w">    </span><span class="s2">&quot;</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span><span class="s2">/rbohne/master.ign.base64&quot;</span>
-</span><span id="__span-13-33"><a id="__codelineno-13-33" name="__codelineno-13-33"></a><span class="w">    </span><span class="s2">&quot;</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span><span class="s2">/rbohne/master.ign.base64&quot;</span>
-</span><span id="__span-13-34"><a id="__codelineno-13-34" name="__codelineno-13-34"></a><span class="w">    </span><span class="s2">&quot;</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span><span class="s2">/rbohne/master.ign.base64&quot;</span>
-</span><span id="__span-13-35"><a id="__codelineno-13-35" name="__codelineno-13-35"></a><span class="w">    </span><span class="s2">&quot;</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span><span class="s2">/rbohne/worker.ign.base64&quot;</span>
-</span><span id="__span-13-36"><a id="__codelineno-13-36" name="__codelineno-13-36"></a><span class="w">    </span><span class="s2">&quot;</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span><span class="s2">/rbohne/worker.ign.base64&quot;</span>
-</span><span id="__span-13-37"><a id="__codelineno-13-37" name="__codelineno-13-37"></a><span class="w">    </span><span class="s2">&quot;</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span><span class="s2">/rbohne/worker.ign.base64&quot;</span>
-</span><span id="__span-13-38"><a id="__codelineno-13-38" name="__codelineno-13-38"></a><span class="o">)</span><span class="p">;</span>
-</span><span id="__span-13-39"><a id="__codelineno-13-39" name="__codelineno-13-39"></a>
-</span><span id="__span-13-40"><a id="__codelineno-13-40" name="__codelineno-13-40"></a><span class="nv">ips</span><span class="o">=(</span>
-</span><span id="__span-13-41"><a id="__codelineno-13-41" name="__codelineno-13-41"></a><span class="w">    </span><span class="s2">&quot;ip=192.168.100.152::192.168.100.148:255.255.255.0:bootstrap.</span><span class="si">${</span><span class="nv">clustername</span><span class="si">}</span><span class="s2">.</span><span class="si">${</span><span class="nv">basedomain</span><span class="si">}</span><span class="s2">:ens192:none nameserver=192.168.100.148&quot;</span>
-</span><span id="__span-13-42"><a id="__codelineno-13-42" name="__codelineno-13-42"></a><span class="w">    </span><span class="s2">&quot;ip=192.168.100.149::192.168.100.148:255.255.255.0:master-0.</span><span class="si">${</span><span class="nv">clustername</span><span class="si">}</span><span class="s2">.</span><span class="si">${</span><span class="nv">basedomain</span><span class="si">}</span><span class="s2">:ens192:none nameserver=192.168.100.148&quot;</span>
-</span><span id="__span-13-43"><a id="__codelineno-13-43" name="__codelineno-13-43"></a><span class="w">    </span><span class="s2">&quot;ip=192.168.100.150::192.168.100.148:255.255.255.0:master-1.</span><span class="si">${</span><span class="nv">clustername</span><span class="si">}</span><span class="s2">.</span><span class="si">${</span><span class="nv">basedomain</span><span class="si">}</span><span class="s2">:ens192:none nameserver=192.168.100.148&quot;</span>
-</span><span id="__span-13-44"><a id="__codelineno-13-44" name="__codelineno-13-44"></a><span class="w">    </span><span class="s2">&quot;ip=192.168.100.151::192.168.100.148:255.255.255.0:master-2.</span><span class="si">${</span><span class="nv">clustername</span><span class="si">}</span><span class="s2">.</span><span class="si">${</span><span class="nv">basedomain</span><span class="si">}</span><span class="s2">:ens192:none nameserver=192.168.100.148&quot;</span>
-</span><span id="__span-13-45"><a id="__codelineno-13-45" name="__codelineno-13-45"></a><span class="w">    </span><span class="s2">&quot;ip=192.168.100.153::192.168.100.148:255.255.255.0:worker-1.</span><span class="si">${</span><span class="nv">clustername</span><span class="si">}</span><span class="s2">.</span><span class="si">${</span><span class="nv">basedomain</span><span class="si">}</span><span class="s2">:ens192:none nameserver=192.168.100.148&quot;</span>
-</span><span id="__span-13-46"><a id="__codelineno-13-46" name="__codelineno-13-46"></a><span class="w">    </span><span class="s2">&quot;ip=192.168.100.154::192.168.100.148:255.255.255.0:worker-2.</span><span class="si">${</span><span class="nv">clustername</span><span class="si">}</span><span class="s2">.</span><span class="si">${</span><span class="nv">basedomain</span><span class="si">}</span><span class="s2">:ens192:none nameserver=192.168.100.148&quot;</span>
-</span><span id="__span-13-47"><a id="__codelineno-13-47" name="__codelineno-13-47"></a><span class="w">    </span><span class="s2">&quot;ip=192.168.100.155::192.168.100.148:255.255.255.0:worker-3.</span><span class="si">${</span><span class="nv">clustername</span><span class="si">}</span><span class="s2">.</span><span class="si">${</span><span class="nv">basedomain</span><span class="si">}</span><span class="s2">:ens192:none nameserver=192.168.100.148&quot;</span>
-</span><span id="__span-13-48"><a id="__codelineno-13-48" name="__codelineno-13-48"></a><span class="o">)</span>
-</span><span id="__span-13-49"><a id="__codelineno-13-49" name="__codelineno-13-49"></a>
-</span><span id="__span-13-50"><a id="__codelineno-13-50" name="__codelineno-13-50"></a><span class="c1"># function govc {</span>
-</span><span id="__span-13-51"><a id="__codelineno-13-51" name="__codelineno-13-51"></a><span class="c1">#     echo &quot;Dummy function&quot;</span>
-</span><span id="__span-13-52"><a id="__codelineno-13-52" name="__codelineno-13-52"></a><span class="c1"># }</span>
-</span><span id="__span-13-53"><a id="__codelineno-13-53" name="__codelineno-13-53"></a>
-</span><span id="__span-13-54"><a id="__codelineno-13-54" name="__codelineno-13-54"></a><span class="c1"># Setup vm&#39;s</span>
-</span><span id="__span-13-55"><a id="__codelineno-13-55" name="__codelineno-13-55"></a><span class="k">for</span><span class="w"> </span><span class="o">((</span><span class="w"> </span><span class="nv">i</span><span class="o">=</span><span class="m">0</span><span class="p">;</span><span class="w"> </span>i&lt;<span class="w"> </span><span class="si">${#</span><span class="nv">nodes</span><span class="p">[@]</span><span class="si">}</span><span class="w"> </span><span class="p">;</span><span class="w"> </span>i++<span class="w"> </span><span class="o">))</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
-</span><span id="__span-13-56"><a id="__codelineno-13-56" name="__codelineno-13-56"></a><span class="w">    </span><span class="nv">node</span><span class="o">=</span><span class="si">${</span><span class="nv">nodes</span><span class="p">[</span><span class="nv">$i</span><span class="p">]</span><span class="si">}</span>
-</span><span id="__span-13-57"><a id="__codelineno-13-57" name="__codelineno-13-57"></a><span class="w">    </span><span class="nv">ip</span><span class="o">=</span><span class="si">${</span><span class="nv">ips</span><span class="p">[</span><span class="nv">$i</span><span class="p">]</span><span class="si">}</span>
-</span><span id="__span-13-58"><a id="__codelineno-13-58" name="__codelineno-13-58"></a><span class="w">    </span><span class="nv">ignition</span><span class="o">=</span><span class="si">${</span><span class="nv">ignitions</span><span class="p">[</span><span class="nv">$i</span><span class="p">]</span><span class="si">}</span>
-</span><span id="__span-13-59"><a id="__codelineno-13-59" name="__codelineno-13-59"></a>
-</span><span id="__span-13-60"><a id="__codelineno-13-60" name="__codelineno-13-60"></a><span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Setup </span><span class="nv">$node</span><span class="s2"> -&gt; </span><span class="nv">$ip</span><span class="s2">&quot;</span><span class="p">;</span>
-</span><span id="__span-13-61"><a id="__codelineno-13-61" name="__codelineno-13-61"></a>
-</span><span id="__span-13-62"><a id="__codelineno-13-62" name="__codelineno-13-62"></a><span class="w">    </span><span class="c1"># If you want to setup mac adress</span>
-</span><span id="__span-13-63"><a id="__codelineno-13-63" name="__codelineno-13-63"></a><span class="w">    </span><span class="c1"># mac_adresse=${mac_adresses[$i]}</span>
-</span><span id="__span-13-64"><a id="__codelineno-13-64" name="__codelineno-13-64"></a><span class="w">    </span><span class="c1"># -net.address ${mac_adresse} \</span>
-</span><span id="__span-13-65"><a id="__codelineno-13-65" name="__codelineno-13-65"></a>
-</span><span id="__span-13-66"><a id="__codelineno-13-66" name="__codelineno-13-66"></a><span class="w">    </span>govc<span class="w"> </span>vm.clone<span class="w"> </span>-vm<span class="w"> </span><span class="s2">&quot;/</span><span class="si">${</span><span class="nv">GOVC_DATACENTER</span><span class="si">}</span><span class="s2">/vm/</span><span class="si">${</span><span class="nv">clustername</span><span class="si">}</span><span class="s2">/rhcos-4.6.47&quot;</span><span class="w">  </span><span class="se">\</span>
-</span><span id="__span-13-67"><a id="__codelineno-13-67" name="__codelineno-13-67"></a><span class="w">      </span>-annotation<span class="o">=</span><span class="nv">$ignition</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-13-68"><a id="__codelineno-13-68" name="__codelineno-13-68"></a><span class="w">      </span>-c<span class="o">=</span><span class="m">4</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-13-69"><a id="__codelineno-13-69" name="__codelineno-13-69"></a><span class="w">      </span>-m<span class="o">=</span><span class="m">16384</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-13-70"><a id="__codelineno-13-70" name="__codelineno-13-70"></a><span class="w">      </span>-net<span class="w"> </span><span class="s1">&#39;DC-Provisioning&#39;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-13-71"><a id="__codelineno-13-71" name="__codelineno-13-71"></a><span class="w">      </span>-on<span class="o">=</span><span class="nb">false</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-13-72"><a id="__codelineno-13-72" name="__codelineno-13-72"></a><span class="w">      </span>-folder<span class="o">=</span><span class="si">${</span><span class="nv">clustername</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-13-73"><a id="__codelineno-13-73" name="__codelineno-13-73"></a><span class="w">      </span>-ds<span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">GOVC_DATASTORE</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-13-74"><a id="__codelineno-13-74" name="__codelineno-13-74"></a><span class="w">      </span><span class="nv">$node</span>
-</span><span id="__span-13-75"><a id="__codelineno-13-75" name="__codelineno-13-75"></a>
-</span><span id="__span-13-76"><a id="__codelineno-13-76" name="__codelineno-13-76"></a><span class="w">    </span>govc<span class="w"> </span>vm.change<span class="w"> </span>-vm<span class="o">=</span><span class="s2">&quot;/</span><span class="si">${</span><span class="nv">GOVC_DATACENTER</span><span class="si">}</span><span class="s2">/vm/</span><span class="si">${</span><span class="nv">clustername</span><span class="si">}</span><span class="s2">/</span><span class="nv">$node</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-13-77"><a id="__codelineno-13-77" name="__codelineno-13-77"></a><span class="w">      </span>-e<span class="o">=</span><span class="s2">&quot;guestinfo.afterburn.initrd.network-kargs=</span><span class="nv">$ip</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-13-78"><a id="__codelineno-13-78" name="__codelineno-13-78"></a><span class="w">      </span>-e<span class="o">=</span><span class="s2">&quot;guestinfo.ignition.config.data.encoding=base64&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-13-79"><a id="__codelineno-13-79" name="__codelineno-13-79"></a><span class="w">      </span>-f<span class="o">=</span><span class="s2">&quot;guestinfo.ignition.config.data=</span><span class="si">${</span><span class="nv">ignition</span><span class="si">}</span><span class="s2">&quot;</span>
-</span><span id="__span-13-80"><a id="__codelineno-13-80" name="__codelineno-13-80"></a>
-</span><span id="__span-13-81"><a id="__codelineno-13-81" name="__codelineno-13-81"></a><span class="k">done</span><span class="p">;</span>
-</span><span id="__span-13-82"><a id="__codelineno-13-82" name="__codelineno-13-82"></a>
-</span><span id="__span-13-83"><a id="__codelineno-13-83" name="__codelineno-13-83"></a><span class="c1"># Start vm&#39;s</span>
-</span><span id="__span-13-84"><a id="__codelineno-13-84" name="__codelineno-13-84"></a><span class="k">for</span><span class="w"> </span>node<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="si">${</span><span class="nv">nodes</span><span class="p">[@]</span><span class="si">}</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
-</span><span id="__span-13-85"><a id="__codelineno-13-85" name="__codelineno-13-85"></a><span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;# Start </span><span class="nv">$node</span><span class="s2">&quot;</span><span class="p">;</span>
-</span><span id="__span-13-86"><a id="__codelineno-13-86" name="__codelineno-13-86"></a><span class="w">    </span>govc<span class="w"> </span>vm.power<span class="w"> </span>-on<span class="o">=</span><span class="nb">true</span><span class="w"> </span><span class="nv">$node</span>
-</span><span id="__span-13-87"><a id="__codelineno-13-87" name="__codelineno-13-87"></a><span class="k">done</span><span class="p">;</span>
-</span></code></pre></div></td></tr></table></div>
-</div>
-</div>
-</div>
-<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-14-1"> 1</a></span>
-<span class="normal"><a href="#__codelineno-14-2"> 2</a></span>
-<span class="normal"><a href="#__codelineno-14-3"> 3</a></span>
-<span class="normal"><a href="#__codelineno-14-4"> 4</a></span>
-<span class="normal"><a href="#__codelineno-14-5"> 5</a></span>
-<span class="normal"><a href="#__codelineno-14-6"> 6</a></span>
-<span class="normal"><a href="#__codelineno-14-7"> 7</a></span>
-<span class="normal"><a href="#__codelineno-14-8"> 8</a></span>
-<span class="normal"><a href="#__codelineno-14-9"> 9</a></span>
-<span class="normal"><a href="#__codelineno-14-10">10</a></span>
-<span class="normal"><a href="#__codelineno-14-11">11</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1"></a>openshift-install<span class="w"> </span>wait-for<span class="w"> </span>bootstrap-complete<span class="w"> </span>--dir<span class="o">=</span>rbohne
-</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2"></a>
-</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3"></a><span class="c1"># Power off bootstrap</span>
-</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4"></a>govc<span class="w"> </span>vm.power<span class="w"> </span>-off<span class="w"> </span>bootstrap.rbohne.lab.example.com
-</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5"></a>
-</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6"></a><span class="c1"># Watch for pending csr and approve it for nodes</span>
-</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7"></a><span class="c1">#    two for each node</span>
-</span><span id="__span-14-8"><a id="__codelineno-14-8" name="__codelineno-14-8"></a>oc<span class="w"> </span>get<span class="w"> </span>csr<span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">&#39;/Pending/ { print $1 }&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>xargs<span class="w"> </span>oc<span class="w"> </span>adm<span class="w"> </span>certificate<span class="w"> </span>approve
-</span><span id="__span-14-9"><a id="__codelineno-14-9" name="__codelineno-14-9"></a>
-</span><span id="__span-14-10"><a id="__codelineno-14-10" name="__codelineno-14-10"></a>
-</span><span id="__span-14-11"><a id="__codelineno-14-11" name="__codelineno-14-11"></a>openshift-install<span class="w"> </span>wait-for<span class="w"> </span>install-complete<span class="w"> </span>--dir<span class="o">=</span>rbohne
-</span></code></pre></div></td></tr></table></div>
+</li>
+<li>
+<p><strong>Verify the sed pattern matches your domain.xml:</strong></p>
+</li>
+<li>Connect to the hook-sidecar-0 container and check the actual XML format</li>
+<li>
+<p>Adjust the sed pattern if your XML structure differs</p>
+</li>
+<li>
+<p><strong>Ensure the feature gate is enabled:</strong>
+   <div class="language-shell highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-22-1">1</a></span>
+<span class="normal"><a href="#__codelineno-22-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1"></a>oc<span class="w"> </span>get<span class="w"> </span>kubevirt<span class="w"> </span>-n<span class="w"> </span>openshift-cnv<span class="w"> </span>kubevirt-kubevirt-hyperconverged<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2"></a><span class="w">  </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s2">&quot;{.spec.configuration.developerConfiguration.featureGates}&quot;</span>
+</span></code></pre></div></td></tr></table></div></p>
+</li>
+<li>
+<p><strong>Check that the ConfigMap is correctly referenced:</strong></p>
+</li>
+<li>Verify the ConfigMap name and namespace match your VM annotation</li>
+<li>Ensure the key name matches (<code>add-wwn.sh</code>)</li>
+</ol>
+<h2 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h2>
+<p>You have successfully configured a KubeVirt sidecar hook to modify the libvirt domain.xml and add a WWN to a disk. This enables testing with IBM Fusion Access for SAN, which requires disks to have specific WWNs.</p>
 <hr>
 <div class="md-source-file">
   <span class="md-source-file__fact">
@@ -7015,13 +6650,13 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
       <span class="md-icon" title="Last update">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 14h-2V8h2zm2-13H9v2h6zM5 13a6.995 6.995 0 0 1 13.79-1.66l.6-.6c.32-.32.71-.53 1.11-.64a8.6 8.6 0 0 0-1.47-2.71l1.42-1.42c-.45-.51-.9-.97-1.41-1.41L17.62 6c-1.55-1.26-3.5-2-5.62-2a9 9 0 0 0-9 9c0 4.63 3.5 8.44 8 8.94v-2.02c-3.39-.49-6-3.39-6-6.92m8 6.96V22h2.04l6.13-6.12-2.04-2.05zm9.85-6.49-1.32-1.32c-.2-.2-.53-.2-.72 0l-.98.98 2.04 2.04.98-.98c.2-.19.2-.52 0-.72"/></svg>
       </span>
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago"><span class="timeago" datetime="2021-12-02T16:48:07+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date">2021-12-02</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago"><span class="timeago" datetime="2026-02-06T16:11:57+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date">2026-02-06</span>
 
       
         <span class="md-icon" title="Created">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11 8h2v6h-2zm4-7H9v2h6zm-3 19c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7c.7 0 1.36.13 2 .35V13c0-2.12-.74-4.07-1.97-5.61l1.42-1.42c-.45-.51-.9-.97-1.41-1.41L17.62 6c-1.55-1.26-3.5-2-5.62-2a9 9 0 0 0 0 18c.59 0 1.16-.06 1.71-.17-.31-.58-.53-1.23-.63-1.92-.36.05-.71.09-1.08.09m8-2v-3h-2v3h-3v2h3v3h2v-3h3v-2z"/></svg>
         </span>
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago"><span class="timeago" datetime="2020-04-21T12:29:25+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date">2020-04-21</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago"><span class="timeago" datetime="2026-02-06T16:11:57+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date">2026-02-06</span>
       
 
       
@@ -7032,7 +6667,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
       </span>
       <span>Contributors:</span><span>
         <a href="mailto:robert.bohne@redhat.com" class="md-author" title="Robert Bohne">
-          <img src="../../../assets/external/www.gravatar.com/avatar/6a667d65f2e33ca8b495e24d738bf6af7137f648b52d0179762add099092b4b0.fa7f668e.jpg" alt="Robert Bohne">
+          <img src="../../assets/external/www.gravatar.com/avatar/6a667d65f2e33ca8b495e24d738bf6af7137f648b52d0179762add099092b4b0.fa7f668e.jpg" alt="Robert Bohne">
         </a>
       </span>
   </span>
@@ -7124,18 +6759,18 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.top", "navigation.indexes", "navigation.tracking", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.top", "navigation.indexes", "navigation.tracking", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
-        <script src="../../../js/timeago.min.js"></script>
+        <script src="../../js/timeago.min.js"></script>
       
-        <script src="../../../js/timeago_mkdocs_material.js"></script>
+        <script src="../../js/timeago_mkdocs_material.js"></script>
       
-        <script src="../../../assets/external/viewer.diagrams.net/js/viewer-static.min.js"></script>
+        <script src="../../assets/external/viewer.diagrams.net/js/viewer-static.min.js"></script>
       
-        <script src="../../../javascripts/drawio-reload.js"></script>
+        <script src="../../javascripts/drawio-reload.js"></script>
       
     
   <script id="init-glightbox">document.querySelectorAll('.glightbox').forEach(function(element) {

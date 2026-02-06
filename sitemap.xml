@@ -377,6 +377,10 @@
          <lastmod>2026-02-06</lastmod>
     </url>
     <url>
+         <loc>https://examples.openshift.pub/kubevirt/adjust-domain-xml/</loc>
+         <lastmod>2026-02-06</lastmod>
+    </url>
+    <url>
          <loc>https://examples.openshift.pub/kubevirt/nfs-csi-driver/</loc>
          <lastmod>2026-02-06</lastmod>
     </url>
