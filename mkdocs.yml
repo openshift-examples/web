@@ -283,6 +283,7 @@ nav:
       - Networking: kubevirt/networking/index.md
       - Storage: kubevirt/storage.md
       - NFS CSI Driver: kubevirt/nfs-csi-driver.md
+      - Adjust domain.xml: kubevirt/adjust-domain-xml.md
 
   - Certificates: certificate.md
 
