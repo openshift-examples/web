@@ -20,6 +20,15 @@ making the repository even more valuable as a collective resource.
 Feel free to explore the examples, contribute your own insights,
 and benefit from the expertise shared in this repository.
 
+## Last updates
+
+|Date|Headline|
+|---|---|
+|2026-02-06|[Added domain.xml adjustment example via sidecar hook](kubevirt/adjust-domain-xml/)|
+|2026-02-06|[Updated IBM Fusion Access for SAN with air-gapped/disconnected details](storage/ibm-fusion-access-san/)|
+|2026-01-29|[Added how to setup a rhel 10 router](my-lab/rhel-router/)|
+|2026-01-12|[Added storage/ibm-fusion-access-san](storage/ibm-fusion-access-san/)|
+
 ## Usefull Red Hat Solutions articles & blog posts
 
 * [How can a user update OpenShift 4 console route](https://access.redhat.com/solutions/4539491)
