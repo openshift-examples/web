@@ -118,6 +118,86 @@ In my virtual lab environment running on KVM/libvirt with [hetzner-ocp4](https:/
             Subject: CN=Organization signing key
     ```
 
+## In case you want to run this in a disconnected/air-gapped environment
+
+In a disconnected environment, you need to mirror the required container images to your local registry. This includes the IBM Fusion Access for SAN operator, the Kernel Module Management (KMM) operator, and the specific IBM Spectrum Scale images.
+
+### Mirroring images via oc-mirror v2
+
+Use [oc-mirror v2](https://docs.redhat.com/en/documentation/openshift_container_platform/4.21/html/disconnected_environments/about-installing-oc-mirror-v2) to mirror the images.
+
+Example `imageset-configuration.yaml`:
+
+```yaml
+kind: ImageSetConfiguration
+apiVersion: mirror.openshift.io/v2alpha1
+mirror:
+  platform:
+    channels:
+    - name: stable-4.20
+      type: ocp
+      minVersion: 4.20.4
+    graph: true
+  operators:
+  - catalog: registry.redhat.io/redhat/certified-operator-index:v4.20
+    packages:
+      - name: openshift-fusion-access-operator
+        channels:
+          - name: stable-v1
+            minVersion: 1.1.0-1
+  - catalog: registry.redhat.io/redhat/redhat-operator-index:v4.20
+    packages:
+    - name: kernel-module-management
+      channels:
+      - name: stable
+        minVersion: '2.5.1'
+  additionalImages:
+    # Required for KMM & GPFS Build
+    - name: registry.redhat.io/ubi9/ubi-minimal:latest
+    # IBM Fusion Access for SAN images
+    # Gathered from https://github.com/openshift-storage-scale/openshift-fusion-access-operator/tree/main/files
+    - name: cp.icr.io/cp/gpfs/erasure-code/ibm-spectrum-scale-daemon@sha256:fa389056d2489eae1da98be08fc553806ad3817b2875329e51674134cc425f8a
+    - name: cp.icr.io/cp/gpfs/data-management/ibm-spectrum-scale-daemon@sha256:07ae36c1a8539aee091cff19261aa14a9d220e6994132a14d2d8c537d596f9ec
+    - name: cp.icr.io/cp/gpfs/data-access/ibm-spectrum-scale-daemon@sha256:539f31bb5691b636f2a7236b3fa617ba38e7ed35b7a3b1e71de5e84fd16f4d26
+    - name: cp.icr.io/cp/gpfs/ibm-spectrum-scale-core-init@sha256:51dc287dd9ae2f8dcb60c1678fe8b535bb72e29faad24108d55b7cfe62362777
+    - name: cp.icr.io/cp/gpfs/ibm-spectrum-scale-gui@sha256:57ea64cdd612aef7a5f01dfbd41677092c0f565c35ef7e5394e50799dc3796e1
+    - name: cp.icr.io/cp/gpfs/postgres@sha256:0bcc5bbbb2aa9c9b4c6505845918c7eb55d783cf5c1f434fac33012579fb149d
+    - name: cp.icr.io/cp/gpfs/ibm-spectrum-scale-logs@sha256:3b48c09f3641c10c63378a2dda806673fe7ea9c43774112f67bd8f8bd4e53b93
+    - name: cp.icr.io/cp/gpfs/ibm-spectrum-scale-pmcollector@sha256:ad1e25622e325f4aa3000e680bd747bea50a22b65a8472cbc20640b730c86fa4
+    - name: cp.icr.io/cp/gpfs/ibm-spectrum-scale-monitor@sha256:c77c0b3c6f7373136b581dabf2f57899c8a742d1cb4501d739af95cba151a438
+    - name: cp.icr.io/cp/gpfs/ibm-spectrum-scale-grafana-bridge@sha256:b3b91b2f6729ecb3544b6b9fc539e2abbe425dfe497ce88deba7deed55305c7c
+    - name: cp.icr.io/cp/gpfs/ibm-spectrum-scale-coredns@sha256:6a317b23fee629c0b07eb95d34ab7593bb38d41bffc5d1cd4cb2870539c66cd4
+    - name: icr.io/cpopen/ibm-spectrum-scale-must-gather@sha256:798559d9dfabfbd2cca1224fde8f6b0cbc4c96fd9d01212ea07bfdb4e40c8818
+    - name: cp.icr.io/cp/gpfs/csi/csi-snapshotter@sha256:5f4bb469fec51147ce157329dab598c758da1b018bad6dad26f0ff469326d769
+    - name: cp.icr.io/cp/gpfs/csi/csi-attacher@sha256:69888dba58159c8bc0d7c092b9fb97900c9ca8710d088b0b7ea7bd9052df86f6
+    - name: cp.icr.io/cp/gpfs/csi/csi-provisioner@sha256:d5e46da8aff7d73d6f00c761dae94472bcda6e78f4f17b3802dc89d44de0111b
+    - name: cp.icr.io/cp/gpfs/csi/livenessprobe@sha256:2c5f9dc4ea5ac5509d93c664ae7982d4ecdec40ca7b0638c24e5b16243b8360f
+    - name: cp.icr.io/cp/gpfs/csi/csi-node-driver-registrar@sha256:d7138bcc3aa5f267403d45ad4292c95397e421ea17a0035888850f424c7de25d
+    - name: cp.icr.io/cp/gpfs/csi/csi-resizer@sha256:8ddd178ba5d08973f1607f9b84619b58320948de494b31c9d7cd5375b316d6d4
+    - name: cp.icr.io/cp/gpfs/csi/ibm-spectrum-scale-csi-driver@sha256:711f9fc45969639da712b0823139549cdbedead0be9453c4243e1a873e7737f1
+    - name: icr.io/cpopen/ibm-spectrum-scale-csi-operator@sha256:2c2e9c630a45da80321bbf1b63e9152e0cb7cc14390ee3879fd736e0a6974464
+    - name: icr.io/cpopen/ibm-spectrum-scale-operator@sha256:6dcb6ca5430deea044cfd029df4a9f0576586e824af07d9c61f4630ee4798e11
+```
+
+### Extracting image names for a specific version
+
+To get the exact list of images for a different version, you can use this one-liner:
+
+```shell
+export VERSION=v5.2.3.5
+curl -s https://raw.githubusercontent.com/openshift-storage-scale/openshift-fusion-access-operator/refs/heads/main/files/${VERSION}/install.yaml | grep -i -e "icr.io" -e "quay.io" | awk '{ print "  - name: "  $2 }' | sort -u
+```
+
+### Applying the mirrored configuration
+
+After mirroring, apply the generated `CatalogSource`, `ImageContentSourcePolicy` (or `ImageDigestMirrorSet`), and `ImageTagMirrorSet` as usual.
+
+### Important: Internal Registry for Kernel Module Builds
+
+IBM Fusion Access for SAN uses KMM to build kernel modules on the fly. In a disconnected environment, you **must** provide a registry where KMM can push the newly built images and where the nodes can pull them from.
+
+Refer to the [Configure external registry for kernel module container image](#optional-configure-external-registry-for-kernel-module-container-image) section for details on how to set this up. In a disconnected environment, this "external" registry would be your local/internal registry (e.g., Quay, Harbor, or the OpenShift integrated registry).
+
 ### Install IBM Fusion Access for SAN operator
 
 <https://www.ibm.com/docs/en/fusion-software/2.12.0?topic=san-installing-fusion-access-operator>
