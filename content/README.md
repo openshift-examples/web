@@ -24,6 +24,7 @@ and benefit from the expertise shared in this repository.
 
 |Date|Headline|
 |---|---|
+|2026-02-12|[Update networking/egressip](networking/egress-ip/)|
 |2026-02-06|[Added domain.xml adjustment example via sidecar hook](kubevirt/adjust-domain-xml/)|
 |2026-02-06|[Updated IBM Fusion Access for SAN with air-gapped/disconnected details](storage/ibm-fusion-access-san/)|
 |2026-01-29|[Added how to setup a rhel 10 router](my-lab/rhel-router/)|

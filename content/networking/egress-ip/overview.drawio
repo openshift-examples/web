@@ -1,0 +1,28 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.3.6 Chrome/140.0.7339.249 Electron/38.8.0 Safari/537.36" version="29.3.6">
+  <diagram name="Page-1" id="CfVRJ24CIUdbo2xG4-Xr">
+    <mxGraphModel dx="1823" dy="486" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="EBQ1oc4t_hqgZCyZlvfD-4" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;align=center;verticalAlign=top;fontStyle=1;fontSize=15;" value="OpenShift Cluster - ocp6" vertex="1">
+          <mxGeometry height="160" width="270" x="40" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="EBQ1oc4t_hqgZCyZlvfD-5" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;align=center;verticalAlign=top;fontStyle=1;fontSize=15;" value="OpenShift Cluster - ocp7" vertex="1">
+          <mxGeometry height="160" width="270" x="480" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="EBQ1oc4t_hqgZCyZlvfD-6" parent="1" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;" value="&lt;b&gt;simple-http-server&lt;/b&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;&quot;&gt;Web server to determine the sender&#39;s IP address.&lt;/div&gt;" vertex="1">
+          <mxGeometry height="70" width="230" x="500" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="EBQ1oc4t_hqgZCyZlvfD-7" parent="1" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;" value="Configured egress IPs&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;CURL as Client to connect to simple-http-server running on ocp7&lt;br&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="90" width="240" x="60" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="EBQ1oc4t_hqgZCyZlvfD-8" edge="1" parent="1" source="EBQ1oc4t_hqgZCyZlvfD-7" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;strokeWidth=3;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="EBQ1oc4t_hqgZCyZlvfD-6" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="560" y="220" as="sourcePoint" />
+            <mxPoint x="410" y="250" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
