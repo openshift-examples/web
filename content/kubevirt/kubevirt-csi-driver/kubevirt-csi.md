@@ -112,7 +112,6 @@ for node in $(oc get nodes -o jsonpath='{.items[*].metadata.name}'); do echo ${n
 
 - Install the complete CSI Driver:
 
-
 === "Download"
 
     ```bash
