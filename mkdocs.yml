@@ -282,6 +282,7 @@ nav:
       - Ansible: kubevirt/ansible/README.md
       - Networking: kubevirt/networking/index.md
       - Storage: kubevirt/storage.md
+      - KubeVirt CSI Driver: kubevirt/kubevirt-csi-driver/kubevirt-csi.md
       - NFS CSI Driver: kubevirt/nfs-csi-driver.md
       - Adjust domain.xml: kubevirt/adjust-domain-xml.md
 
