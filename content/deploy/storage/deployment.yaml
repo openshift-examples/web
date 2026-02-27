@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: pvc-example
+    app.kubernetes.io/component: pvc-example
+    app.kubernetes.io/instance: pvc-example
+    app.kubernetes.io/part-of: pvc-example
+    app.openshift.io/runtime: redhat
+  name: pvc-example
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pvc-example
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: pvc-example
+        deploymentconfig: pvc-example
+    spec:
+      volumes:
+        - name: san
+          persistentVolumeClaim:
+            claimName: san
+      containers:
+      - image: registry.access.redhat.com/ubi8/ubi:latest
+        imagePullPolicy: Always
+        name: pvc-example
+        command:
+        - /bin/sh
+        - -c
+        - |
+          sleep infinity
+        resources: {}
+        volumeMounts:
+          - mountPath: /storage
+            name: san
+
+
+
+
+
+
