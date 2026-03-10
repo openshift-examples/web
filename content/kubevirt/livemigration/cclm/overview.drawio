@@ -1,17 +1,20 @@
-<mxfile host="Electron" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.0.3 Chrome/140.0.7339.249 Electron/38.7.0 Safari/537.36" version="29.0.3">
+<mxfile host="Electron" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.3.6 Chrome/140.0.7339.249 Electron/38.8.0 Safari/537.36" version="29.3.6">
   <diagram name="Page-1" id="v5TLrGDv5Zna5h-NuhlQ">
-    <mxGraphModel dx="771" dy="1185" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1200" dy="422" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="y9kCMN5oIVWWpKz-H3Th-1" value="Bare Metal OpenShift (ISAR)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1" vertex="1" parent="1">
-          <mxGeometry x="20" y="70" width="230" height="30" as="geometry" />
+        <mxCell id="y9kCMN5oIVWWpKz-H3Th-1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1" value="Bare Metal OpenShift (ISAR)" vertex="1">
+          <mxGeometry height="30" width="350" x="20" y="80" as="geometry" />
         </mxCell>
-        <mxCell id="y9kCMN5oIVWWpKz-H3Th-2" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;OCP&lt;/span&gt;1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontStyle=1;fontColor=#333333;" vertex="1" parent="1">
-          <mxGeometry x="20" y="30" width="110" height="30" as="geometry" />
+        <mxCell id="y9kCMN5oIVWWpKz-H3Th-2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontStyle=1;fontColor=#333333;" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;OCP&lt;/span&gt;1&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;Hub Cluster (ACM)&lt;/span&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="30" width="110" x="140" y="20" as="geometry" />
         </mxCell>
-        <mxCell id="y9kCMN5oIVWWpKz-H3Th-3" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;OCP&lt;/span&gt;7" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1" vertex="1" parent="1">
-          <mxGeometry x="140" y="30" width="110" height="30" as="geometry" />
+        <mxCell id="y9kCMN5oIVWWpKz-H3Th-3" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;OCP6&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;Source Cluster&lt;/span&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="30" width="110" x="20" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="4z84g-IBkBKbJmHJT2-F-1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;OCP&lt;/span&gt;7&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;Target Cluster&lt;/span&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="30" width="110" x="260" y="40" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

@@ -2,93 +2,121 @@
 title: Cross Cluster Live Migration
 linktitle: Cross Cluster Live Migration
 description: Cross Cluster Live Migration
-tags: ['cnv','kubevirt','ocp-v','v4.12']
+tags: ['cnv','kubevirt','ocp-v','v4.21']
 ---
 # Cross cluster live migration
-
-Official documentation: [12.5. Configuring a cross-cluster live migration network](https://docs.redhat.com/en/documentation/openshift_container_platform/4.20/html/virtualization/live-migration#virt-configuring-cross-cluster-live-migration-network)
 
 Tested with:
 
 |Component|Version|
 |---|---|
-|OpenShift|v4.20.4|
-|OpenShift Virt|v4.20.1|
-|MTV|v2.10.0|
+|OpenShift|v4.21.1|
+|OpenShift Virt|v4.21.0|
+|MTV|v2.10.5|
+|ACM|v2.15.1|
 
-Without ACM, just a pure cross cluster live migration with two OpenShift clusters.
+Walk through a cross cluster live migration with Red Hat Advanced Cluster Management for Kubernetes (ACM). Behind the scense Migration Toolkit for Virtualsation (MTV) is also needed.
+
+Documentation for an configuration with ACM: [1.3. Migrating virtual machines between clusters (Technology Preview)](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/virtualization/acm-virt?utm_source=chatgpt.com#migrate-vm)
+
+Documentation for an MTV only configuration: [12.4. Enabling cross-cluster live migration for virtual machines](https://docs.redhat.com/en/documentation/openshift_container_platform/4.21/html/virtualization/live-migration#virt-enabling-cclm-for-vms)
+
+During a cross cluster livemigration the entire virtual machine (metadata, RAM, CPU State and disks) will be copied from the source cluster into the target cluster. (Yes, that includes the disks of the virtual machine). 
+
+To synchornise the data virt-handle and  virt-synchronization-controller pods in source and target cluster have to able to communication wiht each other. There are two options available to connected these components:
+
+A) Using a shared L2 network to connect the cluster
+B) Using submariner to connected the cluster 
 
 ## Cluster overview
 
-We have two identicial clusters in terms of
+We have three identicial clusters in terms of
 
 * OpenShift Version
 * CPU Type and Model
 
-Cluster one called OCP1 is the target cluster with mtv.
-Cluster two called OCP7 is the source cluster.
+Cluster one called ocp1 is the cluster where ACM is located
+Cluster two called ocp6 is the source cluster.
+Cluster three called ocp7 is the target cluster with mtv.
 
 This cluster are running on bare OpenShift Cluster called ISAR.
 
 ![](cclm/overview.drawio)
 
-### Details about the OCP1 & OCP7 adjustments at ISAR
+CPU Architure is the same at all worker clusters
 
-OCP1 and OCP7 are provided via our [stormshift automation](https://github.com/stormshift/automation)
+```shell
+oc get nodes -o name | while read line ; do oc debug -q $line -- cat /proc/cpuinfo | grep 'model name' | head -n 1|cut -f2 -d':'| ts  "[$line] " ; done
+```
 
-??? quote "OCP1 & OCP7 Infrastructure details"
+```log
+[node/ocp1-cp-0]   Intel Xeon E3-12xx v2 (Ivy Bridge, IBRS)
+[node/ocp1-cp-1]   Intel Xeon E3-12xx v2 (Ivy Bridge, IBRS)
+[node/ocp1-cp-2]   Intel Xeon E3-12xx v2 (Ivy Bridge, IBRS)
+[node/ocp1-worker-0]   Intel Xeon E3-12xx v2 (Ivy Bridge, IBRS)
+[node/ocp1-worker-1]   Intel Xeon E3-12xx v2 (Ivy Bridge, IBRS)
+[node/ocp1-worker-2]   Intel Xeon E3-12xx v2 (Ivy Bridge, IBRS)
+```
 
-    #### Patch the cpu model
+```log
+[node/ocp6-cp-0]   Intel Xeon E3-12xx v2 (Ivy Bridge, IBRS)
+[node/ocp6-cp-1]   Intel Xeon E3-12xx v2 (Ivy Bridge, IBRS)
+[node/ocp6-cp-2]   Intel Xeon E3-12xx v2 (Ivy Bridge, IBRS)
+[node/ocp6-worker-0]   Intel Xeon E3-12xx v2 (Ivy Bridge, IBRS)
+[node/ocp6-worker-1]   Intel Xeon E3-12xx v2 (Ivy Bridge, IBRS)
+[node/ocp6-worker-2]   Intel Xeon E3-12xx v2 (Ivy Bridge, IBRS)
+```
 
-    === "Command"
+```log
+[node/ocp7-cp-0]   Intel Xeon E3-12xx v2 (Ivy Bridge, IBRS)
+[node/ocp7-cp-1]   Intel Xeon E3-12xx v2 (Ivy Bridge, IBRS)
+[node/ocp7-cp-2]   Intel Xeon E3-12xx v2 (Ivy Bridge, IBRS)
+[node/ocp7-worker-0]   Intel Xeon E3-12xx v2 (Ivy Bridge, IBRS)
+[node/ocp7-worker-1]   Intel Xeon E3-12xx v2 (Ivy Bridge, IBRS)
+[node/ocp7-worker-2]   Intel Xeon E3-12xx v2 (Ivy Bridge, IBRS)
+```
 
-        ```shell
-        oc get vm -o name | xargs oc patch  --type=merge -p '{"spec":{"template":{"spec":{"domain":{"cpu":{"model":"Haswell-v4"}}}}}}'
-        ```
+### Start basic ACM Installation and configuration
 
-    #### Enable VT-X/vmx feature
+* Install ACM at Hub Cluster ocp1
+* Import Managed Cluster ocp6
+* Import Managed Cluster ocp7
 
-    === "Command"
+Follow the official documentation: [1.3. Migrating virtual machines between clusters (Technology Preview)](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/virtualization/acm-virt?utm_source=chatgpt.com#migrate-vm)
 
-        ```shell
-        oc get vm -o name | xargs oc patch  --type=merge -p '{"spec":{"template":{"spec":{"domain":{"cpu":{"features":[{"name":"vmx","policy":"require"}]}}}}}}'
-        ```
+* Enable `cnv-mtv-integrations-preview` at Hub Cluster
+* Step 6: Enable cross-cluster migration from the OpenShift Virtualization console. **At Hub Cluster** 
 
-    #### Restart all VM's
+!!! warning
 
-    === "Command"
+    ToDo: Create Docbug
 
-        ```shell
-        oc get vm --no-headers -o custom-columns="NAME:.metadata.name" | xargs -n1 virtctl restart
-        ```
+* Step 7: **Is Not Optional.** Configure your network 
 
-    #### Check setttings as ISAR
+!!! warning
 
-    === "Command"
+    ToDo: Create Docbug
 
-        ```shell
-        oc get vm -o custom-columns=NAME:.metadata.name,CPU:.spec.template.spec.domain.cpu
-        ```
+### Network Option A) L2 Network
 
-    === "Example output"
+Both clusters have to be connected via an L2 network.
+In my case it's vlan 2001 with `192.168.201.0/24 subnet
 
-        ```shell
-        oc get vm -o custom-columns=NAME:.metadata.name,CPU:.spec.template.spec.domain.cpu
-        NAME            CPU
-        ocp1-cp-0       map[cores:8 features:[map[name:vmx policy:require]] model:Haswell-v4 sockets:1 threads:1]
-        ocp1-cp-1       map[cores:8 features:[map[name:vmx policy:require]] model:Haswell-v4 sockets:1 threads:1]
-        ocp1-cp-2       map[cores:8 features:[map[name:vmx policy:require]] model:Haswell-v4 sockets:1 threads:1]
-        ocp1-worker-0   map[cores:8 features:[map[name:vmx policy:require]] model:Haswell-v4 sockets:1 threads:1]
-        ocp1-worker-1   map[cores:8 features:[map[name:vmx policy:require]] model:Haswell-v4 sockets:1 threads:1]
-        ocp1-worker-2   map[cores:8 features:[map[name:vmx policy:require]] model:Haswell-v4 sockets:1 threads:1]
-        ```
+Here an high level overview:
+
+![](cclm/live-migration-network.drawio)
+
+In my lab first I have to attach a second interface for live migration traffice
+
+??? quote "Add second interface for live migration"
+
 
     #### Add second interface into vlan 2001 for the VM's/nodes
 
     === "oc apply -f ...."
 
         ```bash
-        oc apply -n stormshift-ocp1-infra -f {{ page.canonical_url }}cclm/isar-2001-net-attach-def.yaml
+        oc apply -n stormshift-ocp6-infra -f {{ page.canonical_url }}cclm/isar-2001-net-attach-def.yaml
         oc apply -n stormshift-ocp7-infra -f {{ page.canonical_url }}cclm/isar-2001-net-attach-def.yaml
 
         ```
@@ -103,22 +131,6 @@ OCP1 and OCP7 are provided via our [stormshift automation](https://github.com/st
 
     ![](cclm/isar-second-interface.png)
 
-## OCP1 and OCP7 cluster preperation
-
-### Install following operators
-
-* Nmstate Operator (instantiate the operator now)
-* OpenShift Virtualization (instantiate the operator **LATER!**)
-* Migration Toolkit for Virtualization (instantiate the operator **LATER!**)
-
-### Prepare required live migration network
-
-Both clusters have to be connected via an L2 network.
-In my case it's vlan 2001 with `192.168.201.0/24 subnet
-
-Here an high level overview:
-
-![](cclm/live-migration-network.drawio)
 
 ???+ bug "There is an documetion bug in the offical docs"
 
@@ -126,7 +138,7 @@ Here an high level overview:
 
 ??? example "NodeNetworkConfigurationPolicy for linux bridge into VLAN 2001"
 
-    Apply this to OCP1 and OCP7
+    Apply this to source cluster ocp6 and target cluster ocp7
 
     === "coe-bridge-via-enp2s0.yaml"
 
@@ -140,7 +152,7 @@ Here an high level overview:
         oc apply -f {{ page.canonical_url }}cclm/coe-bridge-via-enp2s0.yaml
         ```
 
-??? example "NetworkAttachmentDefinition for OCP1 and OCP7"
+??? example "NetworkAttachmentDefinition for source ocp6 and target ocp7"
 
     Little helper for find out the interfaces on the nodes:
 
@@ -148,21 +160,21 @@ Here an high level overview:
     oc get nodes -l node-role.kubernetes.io/worker -o name | while read line ; do echo "# $line";oc debug -q $line -- ip -br l | grep enp ; done
     ```
 
-    Apply this to OCP1
+    Apply this to source ocp6
 
     === "ocp1.net-attach-def.yaml"
 
         ```yaml
-        --8<-- "content/kubevirt/livemigration/cclm/ocp1.net-attach-def.yaml"
+        --8<-- "content/kubevirt/livemigration/cclm/ocp6.net-attach-def.yaml"
         ```
 
     === "oc apply -f ...."
 
         ```bash
-        oc apply -f {{ page.canonical_url }}cclm/ocp1.net-attach-def.yaml
+        oc apply -f {{ page.canonical_url }}cclm/ocp6.net-attach-def.yaml
         ```
 
-    Apply this to OCP7
+    Apply this to target ocp7
 
     === "ocp7.net-attach-def.yaml"
 
@@ -176,19 +188,25 @@ Here an high level overview:
         oc apply -f {{ page.canonical_url }}cclm/ocp7.net-attach-def.yaml
         ```
 
-### Instantiate the operator
 
-#### OpenShift Virtualization on OCP1 and OCP7
+Apply following `AddOnDeploymentConfig` to Hub Cluster
 
-Instantiate with following changes:
-
-```yaml
+```yaml hl_lines="10 12"
+apiVersion: addon.open-cluster-management.io/v1alpha1
+kind: AddOnDeploymentConfig
+metadata:
+  name: cnv-hco-config
+  namespace: open-cluster-management
 spec:
-  liveMigrationConfig:
-    network: livemigration-network
-  featureGates:
-    decentralizedLiveMigration: true
+  agentInstallNamespace: openshift-cnv
+  customizedVariables:
+    - name: LIVE_NETWORK_KEY
+      value: network
+    - name: LIVE_NETWORK_VALUE
+      value: livemigration-network
 ```
+
+
 
 Wait until `virt-synchronization-controller-xxx` pods are running:
 
@@ -208,9 +226,9 @@ Optional: Check the virt-handler migration network configuration:
 ```shell
 % oc project openshift-cnv
 % oc get pods -l kubevirt.io=virt-handler  -o name | while read line ; do oc exec -q $line -- /bin/sh -c 'echo -n "$HOSTNAME $NODE_NAME "; ip -4 -br a show dev migration0' ; done
-virt-handler-dm5mh ocp1-worker-2 migration0@if9   UP             192.168.201.129/24
-virt-handler-h6bn9 ocp1-worker-1 migration0@if9   UP             192.168.201.131/24
-virt-handler-nndkq ocp1-worker-0 migration0@if9   UP             192.168.201.130/24
+virt-handler-7qdf4 ocp6-worker-1 migration0@if9   UP             192.168.201.130/24
+virt-handler-ptmss ocp6-worker-2 migration0@if9   UP             192.168.201.128/24
+virt-handler-txgfq ocp6-worker-0 migration0@if9   UP             192.168.201.129/24
 ```
 
 ```shell
@@ -220,6 +238,61 @@ virt-handler-bjwvt ocp7-worker-1 migration0@if9   UP             192.168.201.3/2
 virt-handler-gl8gs ocp7-worker-0 migration0@if9   UP             192.168.201.1/24
 virt-handler-kxg7k ocp7-worker-2 migration0@if8   UP             192.168.201.4/24
 ```
+
+Permissions
+
+ocp6/7
+```
+oc adm policy add-cluster-role-to-user kubevirt.io:admin rbohne@redhat.com-admin
+```
+
+### Network Option B) Use Submariner
+
+Official ACM Submariner documentation: [1.4. Submariner multicluster networking and service discovery](https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.15/html/networking/networking#submariner)
+
+* Create a new clusterset call `virt-clusters` (Optional)
+* Attach source (ocp6) and target (ocp7) to the clusterset `virt-clusters` (optional)
+* Install Submariner add-ons
+
+In my case I have to enable Globalnet because all my clusters have the clusternetwork.
+
+!!! warning
+
+    ToDo: Create Docbug
+
+    Label nodes!
+
+    ```
+    oc label node -l node-role.kubernetes.io/worker submariner.io/gateway=true
+    ```
+
+!!! info
+
+    Submariner is no yet available for 4.21
+
+    ```bash
+    % podman run -p 50051:50051 -ti --rm   registry.redhat.io/redhat/redhat-operator-index:v4.21
+    ```
+
+    ```bash
+    % grpcurl -plaintext localhost:50051 api.Registry/ListPackages | jq -r '.name' | wc -l
+     129
+    % grpcurl -plaintext localhost:50051 api.Registry/ListPackages | jq -r '.name' | grep submar
+    %
+    ```
+
+    Stop here and try L2..
+
+## OCP1 and OCP7 cluster preperation
+
+### Install following operators
+
+* Nmstate Operator (instantiate the operator now)
+* OpenShift Virtualization (instantiate the operator **LATER!**)
+* Migration Toolkit for Virtualization (instantiate the operator **LATER!**)
+
+### Instantiate the operator
+
 
 #### Migration toolkit for Virtualization on OCP1
 
