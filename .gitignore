@@ -4,3 +4,4 @@ rosetta
 
 .local
 share
+hooks/__pycache__/
