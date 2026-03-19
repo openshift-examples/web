@@ -1,0 +1,176 @@
+apiVersion: v1alpha1
+kind: AgentConfig
+metadata:
+  name: proxy
+rendezvousIP:
+# Required DHCP to fetch rhcos at initramfs level
+# minimalISO: true
+hosts:
+  - hostname: cp-0
+    role: master
+    interfaces:
+      - name: eth0
+        macAddress: 0E:C0:EF:A8:C9:0C
+    networkConfig:
+      interfaces:
+        - name: eth0
+          type: ethernet
+          state: up
+          mtu: 1450
+          mac-address: 0E:C0:EF:A8:C9:0C
+          ipv4:
+            enabled: true
+            address:
+              - ip: 192.168.201.12
+                prefix-length: 24
+            dhcp: false
+      dns-resolver:
+        config:
+          server:
+            - 192.168.201.3
+      routes:
+        config:
+          - destination: 0.0.0.0/0
+            next-hop-address: 192.168.201.1
+            next-hop-interface: eth0
+            table-id: 254
+  - hostname: cp-1
+    role: master
+    interfaces:
+      - name: eth0
+        macAddress: 0E:C0:EF:A8:C9:0D
+    networkConfig:
+      interfaces:
+        - name: eth0
+          type: ethernet
+          state: up
+          mtu: 1450
+          mac-address: 0E:C0:EF:A8:C9:0D
+          ipv4:
+            enabled: true
+            address:
+              - ip: 192.168.201.13
+                prefix-length: 24
+            dhcp: false
+      dns-resolver:
+        config:
+          server:
+            - 192.168.201.3
+      routes:
+        config:
+          - destination: 0.0.0.0/0
+            next-hop-address: 192.168.201.1
+            next-hop-interface: eth0
+            table-id: 254
+  - hostname: cp-2
+    role: master
+    interfaces:
+      - name: eth0
+        macAddress: 0E:C0:EF:A8:C9:0E
+    networkConfig:
+      interfaces:
+        - name: eth0
+          type: ethernet
+          state: up
+          mtu: 1450
+          mac-address: 0E:C0:EF:A8:C9:0E
+          ipv4:
+            enabled: true
+            address:
+              - ip: 192.168.201.14
+                prefix-length: 24
+            dhcp: false
+      dns-resolver:
+        config:
+          server:
+            - 192.168.201.3
+      routes:
+        config:
+          - destination: 0.0.0.0/0
+            next-hop-address: 192.168.201.1
+            next-hop-interface: eth0
+            table-id: 254
+  - hostname: worker-0
+    role: worker
+    interfaces:
+      - name: eth0
+        macAddress: 0E:C0:EF:A8:C9:0F
+    networkConfig:
+      interfaces:
+        - name: eth0
+          type: ethernet
+          state: up
+          mtu: 1450
+          mac-address: 0E:C0:EF:A8:C9:0F
+          ipv4:
+            enabled: true
+            address:
+              - ip: 192.168.201.15
+                prefix-length: 24
+            dhcp: false
+      dns-resolver:
+        config:
+          server:
+            - 192.168.201.3
+      routes:
+        config:
+          - destination: 0.0.0.0/0
+            next-hop-address: 192.168.201.1
+            next-hop-interface: eth0
+            table-id: 254
+  - hostname: worker-1
+    role: worker
+    interfaces:
+      - name: eth0
+        macAddress: 0E:C0:EF:A8:C9:10
+    networkConfig:
+      interfaces:
+        - name: eth0
+          type: ethernet
+          state: up
+          mtu: 1450
+          mac-address: 0E:C0:EF:A8:C9:10
+          ipv4:
+            enabled: true
+            address:
+              - ip: 192.168.201.16
+                prefix-length: 24
+            dhcp: false
+      dns-resolver:
+        config:
+          server:
+            - 192.168.201.3
+      routes:
+        config:
+          - destination: 0.0.0.0/0
+            next-hop-address: 192.168.201.1
+            next-hop-interface: eth0
+            table-id: 254
+  - hostname: worker-2
+    role: worker
+    interfaces:
+      - name: eth0
+        macAddress: 0E:C0:EF:A8:C9:11
+    networkConfig:
+      interfaces:
+        - name: eth0
+          type: ethernet
+          state: up
+          mtu: 1450
+          mac-address: 0E:C0:EF:A8:C9:11
+          ipv4:
+            enabled: true
+            address:
+              - ip: 192.168.201.17
+                prefix-length: 24
+            dhcp: false
+      dns-resolver:
+        config:
+          server:
+            - 192.168.201.3
+      routes:
+        config:
+          - destination: 0.0.0.0/0
+            next-hop-address: 192.168.201.1
+            next-hop-interface: eth0
+            table-id: 254

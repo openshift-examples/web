@@ -1,0 +1,194 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: proxy
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: proxy-scc-rolebinding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: system:openshift:scc:privileged
+subjects:
+  - kind: ServiceAccount
+    name: proxy
+---
+apiVersion: k8s.cni.cncf.io/v1
+kind: NetworkAttachmentDefinition
+metadata:
+  name: coe-bridge-2001-2
+spec:
+  config: |-
+    {
+        "cniVersion": "0.3.1",
+        "name": "coe-bridge-2001-2",
+        "type": "bridge",
+        "bridge": "coe-bridge",
+        "ipam":{
+          "type": "static",
+            "addresses": [
+              {
+                "address": "192.168.201.2/24"
+              }
+            ]
+        },
+        "macspoofchk": false,
+        "preserveDefaultVlan": false,
+        "vlan": 2001
+    }
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  annotations:
+  name: squid-proxy-config
+data:
+  squid.conf: |
+      #
+      # Recommended minimum configuration:
+      #
+
+      # Example rule allowing access from your local networks.
+      # Adapt to list your (internal) IP networks from where browsing
+      # should be allowed
+      acl localnet src 0.0.0.1-0.255.255.255	# RFC 1122 "this" network (LAN)
+      acl localnet src 10.0.0.0/8		# RFC 1918 local private network (LAN)
+      acl localnet src 100.64.0.0/10		# RFC 6598 shared address space (CGN)
+      acl localnet src 169.254.0.0/16 	# RFC 3927 link-local (directly plugged) machines
+      acl localnet src 172.16.0.0/12		# RFC 1918 local private network (LAN)
+      acl localnet src 192.168.0.0/16		# RFC 1918 local private network (LAN)
+      acl localnet src fc00::/7       	# RFC 4193 local private network range
+      acl localnet src fe80::/10      	# RFC 4291 link-local (directly plugged) machines
+
+      acl SSL_ports port 443
+      acl SSL_ports port 8443
+      acl SSL_ports port 8200
+
+      acl Safe_ports port 80		# http
+      acl Safe_ports port 21		# ftp
+      acl Safe_ports port 443		# https
+      acl Safe_ports port 70		# gopher
+      acl Safe_ports port 210		# wais
+      acl Safe_ports port 1025-65535	# unregistered ports
+      acl Safe_ports port 280		# http-mgmt
+      acl Safe_ports port 488		# gss-http
+      acl Safe_ports port 591		# filemaker
+      acl Safe_ports port 777		# multiling http
+
+      #
+      # Recommended minimum Access Permission configuration:
+      #
+      # Deny requests to certain unsafe ports
+      http_access deny !Safe_ports
+
+      # Deny CONNECT to other than secure SSL ports
+      http_access deny CONNECT !SSL_ports
+
+      http_access deny !localnet
+
+      # acl allow_domains dstdomain "/etc/squid/allow_domains"
+
+      acl allow_domains dstdomain .github.com
+      acl allow_domains dstdomain github.githubassets.com
+      acl allow_domains dstdomain objects.githubusercontent.com
+      acl allow_domains dstdomain www.googleapis.com
+      acl allow_domains dstdomain external-secrets.io
+      acl allow_domains dstdomain charts.external-secrets.io
+      acl allow_domains dstdomain vault.corp.redhat.com
+
+      acl allow_domains dstdomain .quay.io
+      acl allow_domains dstdomain registry.redhat.io
+      acl allow_domains dstdomain registry.access.redhat.com
+      http_access allow allow_domains
+
+      # Allow coe network
+      acl allow_ips dst 10.32.96.0/20
+      http_access allow allow_ips
+
+      # And finally deny all other access to this proxy
+      # http_access deny all
+
+      # Squid normally listens to port 3128
+      http_port 3128
+
+      # Uncomment and adjust the following to add a disk cache directory.
+      #cache_dir ufs /var/spool/squid 100 16 256
+
+      # Leave coredumps in the first cache dir
+      coredump_dir /var/spool/squid
+
+      #
+      # Add any of your own refresh_pattern entries above these.
+      #
+      refresh_pattern ^ftp:		1440	20%	10080
+      refresh_pattern ^gopher:	1440	0%	1440
+      refresh_pattern -i (/cgi-bin/|\?) 0	0%	0
+      refresh_pattern .		0	20%	4320
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+  labels:
+    app: squid-proxy
+    app.kubernetes.io/component: squid-proxy
+    app.kubernetes.io/instance: squid-proxy
+    app.kubernetes.io/name: squid-proxy
+    app.kubernetes.io/part-of: squid-proxy
+    app.openshift.io/runtime: linux
+  name: squid-proxy
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: squid-proxy
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        k8s.v1.cni.cncf.io/networks: '[ { "name": "coe-bridge-2001-2", "mac": "0E:C0:EF:A8:C9:02",
+          "interface": "eth1" } ]'
+        openshift.io/required-scc: privileged
+      labels:
+        app: squid-proxy
+        deployment: squid-proxy
+    spec:
+      containers:
+        - command:
+            - /usr/sbin/squid
+            - --foreground
+            - -f
+            - /config/squid.conf
+          image: quay.io/stormshift/ubi-squid:202603131038
+          imagePullPolicy: IfNotPresent
+          name: squid-proxy
+          ports:
+            - containerPort: 3128
+              name: proxy
+              protocol: TCP
+          resources: {}
+          securityContext:
+            runAsUser: 0
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /config
+              name: squid-proxy-config
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      serviceAccount: proxy
+      serviceAccountName: proxy
+      terminationGracePeriodSeconds: 30
+      volumes:
+        - configMap:
+            defaultMode: 420
+            name: squid-proxy-config
+          name: squid-proxy-config

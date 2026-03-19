@@ -12,19 +12,19 @@
         <meta name="author" content="Robert Bohne">
       
       
-        <link rel="canonical" href="https://examples.openshift.pub/kubevirt/kubevirt-csi-driver/kubevirt-csi/">
+        <link rel="canonical" href="https://examples.openshift.pub/kubevirt/kubevirt-csi-driver/">
       
       
-        <link rel="prev" href="../../storage/">
+        <link rel="prev" href="../storage/">
       
       
-        <link rel="next" href="../../nfs-csi-driver/">
+        <link rel="next" href="../nfs-csi-driver/">
       
       
         
       
       
-      <link rel="icon" href="../../../images/favicon.png">
+      <link rel="icon" href="../../images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
     
     
@@ -33,10 +33,10 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -50,22 +50,22 @@
         
         
         
-        <link rel="stylesheet" href="../../../assets/external/fonts.googleapis.com/css.aaf87032.css">
+        <link rel="stylesheet" href="../../assets/external/fonts.googleapis.com/css.aaf87032.css">
         <style>:root{--md-text-font:"Overpass";--md-code-font:"Overpass Mono"}</style>
       
     
     
-      <link rel="stylesheet" href="../../../css/timeago.css">
+      <link rel="stylesheet" href="../../css/timeago.css">
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/powered-by.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/powered-by.css">
     
-    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
     
     
-   <link href="../../../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+   <link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
     html.glightbox-open { overflow: initial; height: 100%; }
     .gslide-title { margin-top: 0px; user-select: text; }
     .gslide-desc { color: #666; user-select: text; }
@@ -74,7 +74,7 @@
     .gdesc-inner { font-size: 0.75rem; }
     body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color);}
     body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color);}
-    body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}</style> <script src="../../../assets/javascripts/glightbox.min.js"></script></head>
+    body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}</style> <script src="../../assets/javascripts/glightbox.min.js"></script></head>
   
   
     
@@ -109,7 +109,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../.." title="OpenShift Examples" class="md-header__button md-logo" aria-label="OpenShift Examples" data-md-component="logo">
+    <a href="../.." title="OpenShift Examples" class="md-header__button md-logo" aria-label="OpenShift Examples" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.665 11.812a11.1 11.1 0 0 0-1.08-3.966L24 6.599a11 11 0 0 0-.943-1.595l-1.601.583a11.015 11.015 0 0 0-19.945 7.258l1.604-.584q.077.924.305 1.822L0 15.335a11.2 11.2 0 0 0 1.721 3.731l1.812-.659c3.526 4.95 10.398 6.106 15.349 2.58a11 11 0 0 0 3.599-4.332 10.9 10.9 0 0 0 .991-5.497zm-4.74-2.635a7.18 7.18 0 0 1 .895 4.032l1.809-.657a7 7 0 0 1-.646 2.471 7.166 7.166 0 0 1-9.514 3.472 7.1 7.1 0 0 1-2.092-1.49l-1.813.66a7.2 7.2 0 0 1-1.903-3.667l3.426-1.242a7.1 7.1 0 0 1-.111-1.896H6.97l-1.604.583a7.14 7.14 0 0 1 10.156-5.929v-.006a7.1 7.1 0 0 1 2.082 1.483l1.599-.582.006.005c.441.454.82.965 1.128 1.518z"/></svg>
@@ -245,7 +245,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../.." title="OpenShift Examples" class="md-nav__button md-logo" aria-label="OpenShift Examples" data-md-component="logo">
+    <a href="../.." title="OpenShift Examples" class="md-nav__button md-logo" aria-label="OpenShift Examples" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.665 11.812a11.1 11.1 0 0 0-1.08-3.966L24 6.599a11 11 0 0 0-.943-1.595l-1.601.583a11.015 11.015 0 0 0-19.945 7.258l1.604-.584q.077.924.305 1.822L0 15.335a11.2 11.2 0 0 0 1.721 3.731l1.812-.659c3.526 4.95 10.398 6.106 15.349 2.58a11 11 0 0 0 3.599-4.332 10.9 10.9 0 0 0 .991-5.497zm-4.74-2.635a7.18 7.18 0 0 1 .895 4.032l1.809-.657a7 7 0 0 1-.646 2.471 7.166 7.166 0 0 1-9.514 3.472 7.1 7.1 0 0 1-2.092-1.49l-1.813.66a7.2 7.2 0 0 1-1.903-3.667l3.426-1.242a7.1 7.1 0 0 1-.111-1.896H6.97l-1.604.583a7.14 7.14 0 0 1 10.156-5.929v-.006a7.1 7.1 0 0 1 2.082 1.483l1.599-.582.006.005c.441.454.82.965 1.128 1.518z"/></svg>
@@ -295,6 +295,8 @@
       
         
       
+        
+      
     
     
     
@@ -307,7 +309,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../cluster-installation/" class="md-nav__link ">
+            <a href="../../cluster-installation/" class="md-nav__link ">
               
   
   
@@ -353,7 +355,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-installation/air-gapped/" class="md-nav__link">
+      <a href="../../cluster-installation/air-gapped/" class="md-nav__link">
         
   
   
@@ -381,7 +383,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-installation/sno-on-ocpv/" class="md-nav__link">
+      <a href="../../cluster-installation/sno-on-ocpv/" class="md-nav__link">
         
   
   
@@ -389,6 +391,34 @@
     
   
     SNO on OCP-V
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cluster-installation/agent-base-proxy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agent-based (proxy)
   
 
     
@@ -431,11 +461,11 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_5" >
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../cluster-installation/vmware/" class="md-nav__link ">
+            <a href="../../cluster-installation/vmware/" class="md-nav__link ">
               
   
   
@@ -455,14 +485,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_1_4" id="__nav_1_4_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_1_5" id="__nav_1_5_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_1_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -481,7 +511,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-installation/vmware/example/" class="md-nav__link">
+      <a href="../../cluster-installation/vmware/example/" class="md-nav__link">
         
   
   
@@ -509,7 +539,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-installation/vmware/ipi-proxy/" class="md-nav__link">
+      <a href="../../cluster-installation/vmware/ipi-proxy/" class="md-nav__link">
         
   
   
@@ -537,7 +567,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-configuration/MachineSets/VMware-UPI/" class="md-nav__link">
+      <a href="../../cluster-configuration/MachineSets/VMware-UPI/" class="md-nav__link">
         
   
   
@@ -565,7 +595,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-installation/vmware/agent-base-non-integrated/" class="md-nav__link">
+      <a href="../../cluster-installation/vmware/agent-base-non-integrated/" class="md-nav__link">
         
   
   
@@ -617,11 +647,11 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_6" >
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../cluster-installation/hosted-control-plane/" class="md-nav__link ">
+            <a href="../../cluster-installation/hosted-control-plane/" class="md-nav__link ">
               
   
   
@@ -639,14 +669,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_1_5" id="__nav_1_5_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_1_6" id="__nav_1_6_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_1_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -665,7 +695,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-installation/hosted-control-plane/kubevirt-networking/" class="md-nav__link">
+      <a href="../../cluster-installation/hosted-control-plane/kubevirt-networking/" class="md-nav__link">
         
   
   
@@ -721,11 +751,11 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_7" >
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../cluster-installation/gpu/" class="md-nav__link ">
+            <a href="../../cluster-installation/gpu/" class="md-nav__link ">
               
   
   
@@ -743,14 +773,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_1_6" id="__nav_1_6_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_1_7" id="__nav_1_7_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_1_6">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_7">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -769,7 +799,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-installation/gpu/gpu-on-prem/" class="md-nav__link">
+      <a href="../../cluster-installation/gpu/gpu-on-prem/" class="md-nav__link">
         
   
   
@@ -797,7 +827,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-installation/gpu/gpu-on-aws/" class="md-nav__link">
+      <a href="../../cluster-installation/gpu/gpu-on-aws/" class="md-nav__link">
         
   
   
@@ -825,7 +855,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-installation/gpu/gpu-debuging/" class="md-nav__link">
+      <a href="../../cluster-installation/gpu/gpu-debuging/" class="md-nav__link">
         
   
   
@@ -875,10 +905,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_7" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_8" >
         
           
-          <label class="md-nav__link" for="__nav_1_7" id="__nav_1_7_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_1_8" id="__nav_1_8_label" tabindex="0">
             
   
   
@@ -896,8 +926,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_7_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_1_7">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_8">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -914,7 +944,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-installation/windows-container/VMware-ipi/" class="md-nav__link">
+      <a href="../../cluster-installation/windows-container/VMware-ipi/" class="md-nav__link">
         
   
   
@@ -942,7 +972,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-installation/windows-container/dev-prev/" class="md-nav__link">
+      <a href="../../cluster-installation/windows-container/dev-prev/" class="md-nav__link">
         
   
   
@@ -978,7 +1008,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-installation/adjust-rhcos.iso/" class="md-nav__link">
+      <a href="../../cluster-installation/adjust-rhcos.iso/" class="md-nav__link">
         
   
   
@@ -1055,7 +1085,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../cluster-configuration/" class="md-nav__link ">
+            <a href="../../cluster-configuration/" class="md-nav__link ">
               
   
   
@@ -1127,7 +1157,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../cluster-configuration/authentication/" class="md-nav__link ">
+            <a href="../../cluster-configuration/authentication/" class="md-nav__link ">
               
   
   
@@ -1171,7 +1201,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-configuration/authentication/client-certificate/" class="md-nav__link">
+      <a href="../../cluster-configuration/authentication/client-certificate/" class="md-nav__link">
         
   
   
@@ -1199,7 +1229,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-configuration/authentication/activedirectory-ldap/" class="md-nav__link">
+      <a href="../../cluster-configuration/authentication/activedirectory-ldap/" class="md-nav__link">
         
   
   
@@ -1227,7 +1257,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-configuration/authentication/redhat-sso/" class="md-nav__link">
+      <a href="../../cluster-configuration/authentication/redhat-sso/" class="md-nav__link">
         
   
   
@@ -1255,7 +1285,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-configuration/authentication/auth-basic-authentication/" class="md-nav__link">
+      <a href="../../cluster-configuration/authentication/auth-basic-authentication/" class="md-nav__link">
         
   
   
@@ -1311,7 +1341,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../cluster-configuration/full-cluster-entitlement/" class="md-nav__link ">
+            <a href="../../cluster-configuration/full-cluster-entitlement/" class="md-nav__link ">
               
   
   
@@ -1355,7 +1385,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-configuration/full-cluster-entitlement/debugging/" class="md-nav__link">
+      <a href="../../cluster-configuration/full-cluster-entitlement/debugging/" class="md-nav__link">
         
   
   
@@ -1391,7 +1421,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-configuration/external-dns/" class="md-nav__link">
+      <a href="../../cluster-configuration/external-dns/" class="md-nav__link">
         
   
   
@@ -1419,7 +1449,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-configuration/build-load-kernel-module/" class="md-nav__link">
+      <a href="../../cluster-configuration/build-load-kernel-module/" class="md-nav__link">
         
   
   
@@ -1469,7 +1499,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../cluster-configuration/storage/" class="md-nav__link ">
+            <a href="../../cluster-configuration/storage/" class="md-nav__link ">
               
   
   
@@ -1513,7 +1543,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-configuration/storage/csi-driver-nfs/" class="md-nav__link">
+      <a href="../../cluster-configuration/storage/csi-driver-nfs/" class="md-nav__link">
         
   
   
@@ -1541,7 +1571,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-configuration/storage/nfs/" class="md-nav__link">
+      <a href="../../cluster-configuration/storage/nfs/" class="md-nav__link">
         
   
   
@@ -1577,7 +1607,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-configuration/ntp/" class="md-nav__link">
+      <a href="../../cluster-configuration/ntp/" class="md-nav__link">
         
   
   
@@ -1625,7 +1655,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../cluster-configuration/monitoring/" class="md-nav__link ">
+            <a href="../../cluster-configuration/monitoring/" class="md-nav__link ">
               
   
   
@@ -1693,7 +1723,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../cluster-configuration/monitoring/alertmanager/" class="md-nav__link ">
+            <a href="../../cluster-configuration/monitoring/alertmanager/" class="md-nav__link ">
               
   
   
@@ -1737,7 +1767,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-configuration/monitoring/alertmanager/debug-receiver/" class="md-nav__link">
+      <a href="../../cluster-configuration/monitoring/alertmanager/debug-receiver/" class="md-nav__link">
         
   
   
@@ -1765,7 +1795,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-configuration/monitoring/alertmanager/github-receiver/" class="md-nav__link">
+      <a href="../../cluster-configuration/monitoring/alertmanager/github-receiver/" class="md-nav__link">
         
   
   
@@ -1793,7 +1823,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-configuration/monitoring/alertmanager/telegram-receiver/" class="md-nav__link">
+      <a href="../../cluster-configuration/monitoring/alertmanager/telegram-receiver/" class="md-nav__link">
         
   
   
@@ -1855,7 +1885,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../cluster-configuration/logging/forwarding-demo/" class="md-nav__link ">
+            <a href="../../cluster-configuration/logging/forwarding-demo/" class="md-nav__link ">
               
   
   
@@ -1902,7 +1932,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-configuration/image-registry/" class="md-nav__link">
+      <a href="../../cluster-configuration/image-registry/" class="md-nav__link">
         
   
   
@@ -1952,7 +1982,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../cluster-configuration/machine-config/" class="md-nav__link ">
+            <a href="../../cluster-configuration/machine-config/" class="md-nav__link ">
               
   
   
@@ -1996,7 +2026,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-configuration/machine-config/machine-config-server/" class="md-nav__link">
+      <a href="../../cluster-configuration/machine-config/machine-config-server/" class="md-nav__link">
         
   
   
@@ -2024,7 +2054,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-configuration/machine-config/kubelet-configs/" class="md-nav__link">
+      <a href="../../cluster-configuration/machine-config/kubelet-configs/" class="md-nav__link">
         
   
   
@@ -2080,7 +2110,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../cluster-configuration/MachineSets/VMware-UPI/" class="md-nav__link ">
+            <a href="../../cluster-configuration/MachineSets/VMware-UPI/" class="md-nav__link ">
               
   
   
@@ -2122,7 +2152,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-configuration/MachineSets/debugging/" class="md-nav__link">
+      <a href="../../cluster-configuration/MachineSets/debugging/" class="md-nav__link">
         
   
   
@@ -2160,7 +2190,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-configuration/cluster-autoscaling/" class="md-nav__link">
+      <a href="../../cluster-configuration/cluster-autoscaling/" class="md-nav__link">
         
   
   
@@ -2229,7 +2259,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../cluster-lifecycle/" class="md-nav__link ">
+            <a href="../../cluster-lifecycle/" class="md-nav__link ">
               
   
   
@@ -2275,7 +2305,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-lifecycle/oat-upgrades/" class="md-nav__link">
+      <a href="../../cluster-lifecycle/oat-upgrades/" class="md-nav__link">
         
   
   
@@ -2303,7 +2333,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-lifecycle/add-node/" class="md-nav__link">
+      <a href="../../cluster-lifecycle/add-node/" class="md-nav__link">
         
   
   
@@ -2382,7 +2412,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-lifecycle/monitoring/metrics/" class="md-nav__link">
+      <a href="../../cluster-lifecycle/monitoring/metrics/" class="md-nav__link">
         
   
   
@@ -2418,7 +2448,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-lifecycle/cloud-redhat-com/" class="md-nav__link">
+      <a href="../../cluster-lifecycle/cloud-redhat-com/" class="md-nav__link">
         
   
   
@@ -2497,7 +2527,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-lifecycle/backup/etcd/" class="md-nav__link">
+      <a href="../../cluster-lifecycle/backup/etcd/" class="md-nav__link">
         
   
   
@@ -2533,7 +2563,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-lifecycle/storage-migration/" class="md-nav__link">
+      <a href="../../cluster-lifecycle/storage-migration/" class="md-nav__link">
         
   
   
@@ -2561,7 +2591,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-lifecycle/restore/" class="md-nav__link">
+      <a href="../../cluster-lifecycle/restore/" class="md-nav__link">
         
   
   
@@ -2589,7 +2619,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-lifecycle/shutdown/" class="md-nav__link">
+      <a href="../../cluster-lifecycle/shutdown/" class="md-nav__link">
         
   
   
@@ -2644,7 +2674,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../control-plane/" class="md-nav__link ">
+            <a href="../../control-plane/" class="md-nav__link ">
               
   
   
@@ -2690,7 +2720,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../control-plane/lost-quorum/" class="md-nav__link">
+      <a href="../../control-plane/lost-quorum/" class="md-nav__link">
         
   
   
@@ -2745,7 +2775,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../storage/" class="md-nav__link ">
+            <a href="../../storage/" class="md-nav__link ">
               
   
   
@@ -2791,7 +2821,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../storage/ibm-fusion-access-san/" class="md-nav__link">
+      <a href="../../storage/ibm-fusion-access-san/" class="md-nav__link">
         
   
   
@@ -2834,7 +2864,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../troubleshooting/" class="md-nav__link">
+      <a href="../../troubleshooting/" class="md-nav__link">
         
   
   
@@ -2863,7 +2893,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../client/" class="md-nav__link">
+      <a href="../../client/" class="md-nav__link">
         
   
   
@@ -2920,7 +2950,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../build/" class="md-nav__link ">
+            <a href="../../build/" class="md-nav__link ">
               
   
   
@@ -2966,7 +2996,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../build/entitled/" class="md-nav__link">
+      <a href="../../build/entitled/" class="md-nav__link">
         
   
   
@@ -3014,7 +3044,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../build/pipeline/" class="md-nav__link ">
+            <a href="../../build/pipeline/" class="md-nav__link ">
               
   
   
@@ -3058,7 +3088,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../build/pipeline/buildpacks/" class="md-nav__link">
+      <a href="../../build/pipeline/buildpacks/" class="md-nav__link">
         
   
   
@@ -3094,7 +3124,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../build/jenkins/" class="md-nav__link">
+      <a href="../../build/jenkins/" class="md-nav__link">
         
   
   
@@ -3122,7 +3152,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../build/s2i-r-shiny/" class="md-nav__link">
+      <a href="../../build/s2i-r-shiny/" class="md-nav__link">
         
   
   
@@ -3150,7 +3180,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../build/universal-base-image/" class="md-nav__link">
+      <a href="../../build/universal-base-image/" class="md-nav__link">
         
   
   
@@ -3239,7 +3269,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../deploy/" class="md-nav__link ">
+            <a href="../../deploy/" class="md-nav__link ">
               
   
   
@@ -3285,7 +3315,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../deploy/keycloak/" class="md-nav__link">
+      <a href="../../deploy/keycloak/" class="md-nav__link">
         
   
   
@@ -3313,7 +3343,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../deploy/liveness-probe/" class="md-nav__link">
+      <a href="../../deploy/liveness-probe/" class="md-nav__link">
         
   
   
@@ -3341,7 +3371,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../deploy/storage/" class="md-nav__link">
+      <a href="../../deploy/storage/" class="md-nav__link">
         
   
   
@@ -3369,7 +3399,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../deploy/imagestreams/" class="md-nav__link">
+      <a href="../../deploy/imagestreams/" class="md-nav__link">
         
   
   
@@ -3397,7 +3427,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../deploy/statefulset/" class="md-nav__link">
+      <a href="../../deploy/statefulset/" class="md-nav__link">
         
   
   
@@ -3425,7 +3455,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../deploy/quota/" class="md-nav__link">
+      <a href="../../deploy/quota/" class="md-nav__link">
         
   
   
@@ -3453,7 +3483,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../deploy/scc-anyuid/" class="md-nav__link">
+      <a href="../../deploy/scc-anyuid/" class="md-nav__link">
         
   
   
@@ -3481,7 +3511,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../deploy/initcontainers/" class="md-nav__link">
+      <a href="../../deploy/initcontainers/" class="md-nav__link">
         
   
   
@@ -3509,7 +3539,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../deploy/nginx-reverse-proxy/" class="md-nav__link">
+      <a href="../../deploy/nginx-reverse-proxy/" class="md-nav__link">
         
   
   
@@ -3537,7 +3567,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../deploy/eap-cluster/" class="md-nav__link">
+      <a href="../../deploy/eap-cluster/" class="md-nav__link">
         
   
   
@@ -3565,7 +3595,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../deploy/autoscaling/" class="md-nav__link">
+      <a href="../../deploy/autoscaling/" class="md-nav__link">
         
   
   
@@ -3593,7 +3623,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../deploy/scale-down-deploymentconfigs/" class="md-nav__link">
+      <a href="../../deploy/scale-down-deploymentconfigs/" class="md-nav__link">
         
   
   
@@ -3621,7 +3651,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../deploy/ops-container/" class="md-nav__link">
+      <a href="../../deploy/ops-container/" class="md-nav__link">
         
   
   
@@ -3649,7 +3679,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../deploy/jar/" class="md-nav__link">
+      <a href="../../deploy/jar/" class="md-nav__link">
         
   
   
@@ -3677,7 +3707,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../cluster-configuration/authentication/token/" class="md-nav__link">
+      <a href="../../cluster-configuration/authentication/token/" class="md-nav__link">
         
   
   
@@ -3705,7 +3735,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../deploy/faketime/" class="md-nav__link">
+      <a href="../../deploy/faketime/" class="md-nav__link">
         
   
   
@@ -3784,7 +3814,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../deploy/monitoring/workload/" class="md-nav__link">
+      <a href="../../deploy/monitoring/workload/" class="md-nav__link">
         
   
   
@@ -3879,7 +3909,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../deploy/workload/jfrog-artifactory-enterprise-operator-air-gapped/" class="md-nav__link">
+      <a href="../../deploy/workload/jfrog-artifactory-enterprise-operator-air-gapped/" class="md-nav__link">
         
   
   
@@ -3907,7 +3937,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../deploy/workload/own-apache-container/" class="md-nav__link">
+      <a href="../../deploy/workload/own-apache-container/" class="md-nav__link">
         
   
   
@@ -3935,7 +3965,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../deploy/workload/gitlab-runner/" class="md-nav__link">
+      <a href="../../deploy/workload/gitlab-runner/" class="md-nav__link">
         
   
   
@@ -3963,7 +3993,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../deploy/workload/grafana-oauth/" class="md-nav__link">
+      <a href="../../deploy/workload/grafana-oauth/" class="md-nav__link">
         
   
   
@@ -3991,7 +4021,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../deploy/workload/quake3/" class="md-nav__link">
+      <a href="../../deploy/workload/quake3/" class="md-nav__link">
         
   
   
@@ -4052,7 +4082,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../gitops/" class="md-nav__link ">
+            <a href="../../gitops/" class="md-nav__link ">
               
   
   
@@ -4134,7 +4164,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../networking/" class="md-nav__link ">
+            <a href="../../networking/" class="md-nav__link ">
               
   
   
@@ -4180,7 +4210,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../networking/udn/" class="md-nav__link">
+      <a href="../../networking/udn/" class="md-nav__link">
         
   
   
@@ -4261,7 +4291,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../networking/services-routes/service-serving-certificate-secrets/" class="md-nav__link">
+      <a href="../../networking/services-routes/service-serving-certificate-secrets/" class="md-nav__link">
         
   
   
@@ -4289,7 +4319,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../networking/services-routes/route-encryption/" class="md-nav__link">
+      <a href="../../networking/services-routes/route-encryption/" class="md-nav__link">
         
   
   
@@ -4325,7 +4355,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../networking/multus/" class="md-nav__link">
+      <a href="../../networking/multus/" class="md-nav__link">
         
   
   
@@ -4377,7 +4407,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../networking/network-policy/" class="md-nav__link ">
+            <a href="../../networking/network-policy/" class="md-nav__link ">
               
   
   
@@ -4421,7 +4451,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../networking/network-policy/network-policy-demo/README.md" class="md-nav__link">
+      <a href="../../networking/network-policy/network-policy-demo/README.md" class="md-nav__link">
         
   
   
@@ -4449,7 +4479,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../networking/network-policy/OVNKubernetes/" class="md-nav__link">
+      <a href="../../networking/network-policy/OVNKubernetes/" class="md-nav__link">
         
   
   
@@ -4477,7 +4507,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../networking/network-policy/OpenShiftSDN/" class="md-nav__link">
+      <a href="../../networking/network-policy/OpenShiftSDN/" class="md-nav__link">
         
   
   
@@ -4513,7 +4543,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../networking/services-routes/router-sharding/" class="md-nav__link">
+      <a href="../../networking/services-routes/router-sharding/" class="md-nav__link">
         
   
   
@@ -4541,7 +4571,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../networking/egress-ip/" class="md-nav__link">
+      <a href="../../networking/egress-ip/" class="md-nav__link">
         
   
   
@@ -4569,7 +4599,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../networking/k8s-iptables-chains/" class="md-nav__link">
+      <a href="../../networking/k8s-iptables-chains/" class="md-nav__link">
         
   
   
@@ -4597,7 +4627,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../networking/lldpd/" class="md-nav__link">
+      <a href="../../networking/lldpd/" class="md-nav__link">
         
   
   
@@ -4664,7 +4694,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../operators/" class="md-nav__link ">
+            <a href="../../operators/" class="md-nav__link ">
               
   
   
@@ -4710,7 +4740,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../operators/custom-ressource-definition/" class="md-nav__link">
+      <a href="../../operators/custom-ressource-definition/" class="md-nav__link">
         
   
   
@@ -4738,7 +4768,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../operators/air-gapped/" class="md-nav__link">
+      <a href="../../operators/air-gapped/" class="md-nav__link">
         
   
   
@@ -4766,7 +4796,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../operators/ansible-operator/" class="md-nav__link">
+      <a href="../../operators/ansible-operator/" class="md-nav__link">
         
   
   
@@ -4794,7 +4824,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../operators/operatorhub/" class="md-nav__link">
+      <a href="../../operators/operatorhub/" class="md-nav__link">
         
   
   
@@ -4822,7 +4852,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../operators/install-operator-as-a-user/" class="md-nav__link">
+      <a href="../../operators/install-operator-as-a-user/" class="md-nav__link">
         
   
   
@@ -4850,7 +4880,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../operators/cluster-configurator/" class="md-nav__link">
+      <a href="../../operators/cluster-configurator/" class="md-nav__link">
         
   
   
@@ -4878,7 +4908,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../operators/simple-application-operator/" class="md-nav__link">
+      <a href="../../operators/simple-application-operator/" class="md-nav__link">
         
   
   
@@ -4957,7 +4987,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../" class="md-nav__link ">
+            <a href="../" class="md-nav__link ">
               
   
   
@@ -5091,7 +5121,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../application-aware-quota/" class="md-nav__link">
+      <a href="../application-aware-quota/" class="md-nav__link">
         
   
   
@@ -5139,7 +5169,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../livemigration/" class="md-nav__link ">
+            <a href="../livemigration/" class="md-nav__link ">
               
   
   
@@ -5183,7 +5213,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../livemigration/cclm/" class="md-nav__link">
+      <a href="../livemigration/cclm/" class="md-nav__link">
         
   
   
@@ -5219,7 +5249,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../pci-passthrough/" class="md-nav__link">
+      <a href="../pci-passthrough/" class="md-nav__link">
         
   
   
@@ -5247,7 +5277,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../node-health-check/" class="md-nav__link">
+      <a href="../node-health-check/" class="md-nav__link">
         
   
   
@@ -5275,7 +5305,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../descheduler/" class="md-nav__link">
+      <a href="../descheduler/" class="md-nav__link">
         
   
   
@@ -5303,7 +5333,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../template/" class="md-nav__link">
+      <a href="../template/" class="md-nav__link">
         
   
   
@@ -5331,7 +5361,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../ansible/README.md" class="md-nav__link">
+      <a href="../ansible/README.md" class="md-nav__link">
         
   
   
@@ -5359,7 +5389,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../networking/" class="md-nav__link">
+      <a href="../networking/" class="md-nav__link">
         
   
   
@@ -5389,7 +5419,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../storage/" class="md-nav__link">
+      <a href="../storage/" class="md-nav__link">
         
   
   
@@ -5687,7 +5717,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../nfs-csi-driver/" class="md-nav__link">
+      <a href="../nfs-csi-driver/" class="md-nav__link">
         
   
   
@@ -5715,7 +5745,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../adjust-domain-xml/" class="md-nav__link">
+      <a href="../adjust-domain-xml/" class="md-nav__link">
         
   
   
@@ -5750,7 +5780,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../certificate/" class="md-nav__link">
+      <a href="../../certificate/" class="md-nav__link">
         
   
   
@@ -5809,7 +5839,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../my-lab/" class="md-nav__link ">
+            <a href="../../my-lab/" class="md-nav__link ">
               
   
   
@@ -5855,7 +5885,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../my-lab/rhel-router/" class="md-nav__link">
+      <a href="../../my-lab/rhel-router/" class="md-nav__link">
         
   
   
@@ -5883,7 +5913,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../my-lab/storage-box/" class="md-nav__link">
+      <a href="../../my-lab/storage-box/" class="md-nav__link">
         
   
   
@@ -5911,7 +5941,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../my-lab/local-fedora/" class="md-nav__link">
+      <a href="../../my-lab/local-fedora/" class="md-nav__link">
         
   
   
@@ -5939,7 +5969,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../my-lab/ssh/" class="md-nav__link">
+      <a href="../../my-lab/ssh/" class="md-nav__link">
         
   
   
@@ -5967,7 +5997,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../my-lab/remote-worker/" class="md-nav__link">
+      <a href="../../my-lab/remote-worker/" class="md-nav__link">
         
   
   
@@ -5995,7 +6025,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../my-lab/fedora-workstation/" class="md-nav__link">
+      <a href="../../my-lab/fedora-workstation/" class="md-nav__link">
         
   
   
@@ -6050,7 +6080,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../openshift-tv/" class="md-nav__link ">
+            <a href="../../openshift-tv/" class="md-nav__link ">
               
   
   
@@ -6096,7 +6126,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../openshift-tv/2021-04-14-vpshere-ipi-disconnected/" class="md-nav__link">
+      <a href="../../openshift-tv/2021-04-14-vpshere-ipi-disconnected/" class="md-nav__link">
         
   
   
@@ -6131,7 +6161,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../../../tags/" class="md-nav__link">
+      <a href="../../tags/" class="md-nav__link">
         
   
   
@@ -6395,35 +6425,35 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
       
       
       
-        <a href="../../../tags/#tag:cnv" class="md-tag">cnv</a>
+        <a href="../../tags/#tag:cnv" class="md-tag">cnv</a>
       
     
       
       
       
       
-        <a href="../../../tags/#tag:csi" class="md-tag">csi</a>
+        <a href="../../tags/#tag:csi" class="md-tag">csi</a>
       
     
       
       
       
       
-        <a href="../../../tags/#tag:kubevirt" class="md-tag">kubevirt</a>
+        <a href="../../tags/#tag:kubevirt" class="md-tag">kubevirt</a>
       
     
       
       
       
       
-        <a href="../../../tags/#tag:ocp-v" class="md-tag">ocp-v</a>
+        <a href="../../tags/#tag:ocp-v" class="md-tag">ocp-v</a>
       
     
       
       
       
       
-        <a href="../../../tags/#tag:storage" class="md-tag">storage</a>
+        <a href="../../tags/#tag:storage" class="md-tag">storage</a>
       
     
   </nav>
@@ -6483,7 +6513,7 @@ from the underlying, infrastructure cluster. To avoid confusion, this CSI driver
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Download</label><label for="__tabbed_1_2">infra-cluster-serviceaccount</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1"></a>curl<span class="w"> </span>-L<span class="w"> </span>-O<span class="w"> </span>https://examples.openshift.pub/kubevirt/kubevirt-csi-driver/kubevirt-csi//infra-cluster-serviceaccount.yaml
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1"></a>curl<span class="w"> </span>-L<span class="w"> </span>-O<span class="w"> </span>https://examples.openshift.pub/kubevirt/kubevirt-csi-driver//infra-cluster-serviceaccount.yaml
 </span></code></pre></div></td></tr></table></div>
 </div>
 <div class="tabbed-block">
@@ -6585,7 +6615,7 @@ from the underlying, infrastructure cluster. To avoid confusion, this CSI driver
 <div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Download</label><label for="__tabbed_2_2">controller-infra</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-7-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1"></a>curl<span class="w"> </span>-L<span class="w"> </span>-O<span class="w"> </span>https://examples.openshift.pub/kubevirt/kubevirt-csi-driver/kubevirt-csi//controller-infra.yaml
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-7-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1"></a>curl<span class="w"> </span>-L<span class="w"> </span>-O<span class="w"> </span>https://examples.openshift.pub/kubevirt/kubevirt-csi-driver//controller-infra.yaml
 </span></code></pre></div></td></tr></table></div>
 </div>
 <div class="tabbed-block">
@@ -6970,7 +7000,7 @@ from the underlying, infrastructure cluster. To avoid confusion, this CSI driver
 <div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">Download</label><label for="__tabbed_3_2">controller-tenant</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-13-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1"></a>curl<span class="w"> </span>-L<span class="w"> </span>-O<span class="w"> </span>https://examples.openshift.pub/kubevirt/kubevirt-csi-driver/kubevirt-csi//controller-tenant.yaml
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-13-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1"></a>curl<span class="w"> </span>-L<span class="w"> </span>-O<span class="w"> </span>https://examples.openshift.pub/kubevirt/kubevirt-csi-driver//controller-tenant.yaml
 </span></code></pre></div></td></tr></table></div>
 </div>
 <div class="tabbed-block">
@@ -7722,7 +7752,7 @@ from the underlying, infrastructure cluster. To avoid confusion, this CSI driver
 I0218 10:03:06.901504 1 controller.go:403] Attaching DataVolume pvc-c08d2bd3-c43c-4157-82ab-3fa81464bbd0 to Node ID rguske-ocp42/rguske-ocp42-n3
 I0218 10:03:06.907020 1 controller.go:430] Start attaching DataVolume pvc-c08d2bd3-c43c-4157-82ab-3fa81464bbd0 to VM rguske-ocp42-n3. Volume name: pvc-c08d2bd3-c43c-4157-82ab-3fa81464bbd0. Serial: c462f25e-3ba7-4f12-96ef-8013aee36760. Bus: scsi</p>
 </details>
-<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="attached-dv" src="../assets/Screenshot%202026-02-18%20at%2011.06.56.png" /></a></p>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="attached-dv" src="assets/Screenshot%202026-02-18%20at%2011.06.56.png" /></a></p>
 <h3 id="pod-cant-mount-pvc">Pod can't mount PVC<a class="headerlink" href="#pod-cant-mount-pvc" title="Permanent link">&para;</a></h3>
 <details class="warning" open="open">
 <summary>Warning</summary>
@@ -8275,7 +8305,7 @@ I0218 10:03:06.907020 1 controller.go:430] Start attaching DataVolume pvc-c08d2b
       </span>
       <span>Contributors:</span><span>
         <a href="mailto:robert.guske@gmail.com" class="md-author" title="Robert Guske">
-          <img src="../../../assets/external/www.gravatar.com/avatar/6341f656c73df80718f6e44f6cc0f526a87d38346c046b74ec09d909719025f3.fa7f668e.png" alt="Robert Guske">
+          <img src="../../assets/external/www.gravatar.com/avatar/6341f656c73df80718f6e44f6cc0f526a87d38346c046b74ec09d909719025f3.fa7f668e.png" alt="Robert Guske">
         </a>
       </span>
   </span>
@@ -8367,18 +8397,18 @@ I0218 10:03:06.907020 1 controller.go:430] Start attaching DataVolume pvc-c08d2b
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.top", "navigation.indexes", "navigation.tracking", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.top", "navigation.indexes", "navigation.tracking", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
-        <script src="../../../js/timeago.min.js"></script>
+        <script src="../../js/timeago.min.js"></script>
       
-        <script src="../../../js/timeago_mkdocs_material.js"></script>
+        <script src="../../js/timeago_mkdocs_material.js"></script>
       
-        <script src="../../../assets/external/viewer.diagrams.net/js/viewer-static.min.js"></script>
+        <script src="../../assets/external/viewer.diagrams.net/js/viewer-static.min.js"></script>
       
-        <script src="../../../javascripts/drawio-reload.js"></script>
+        <script src="../../javascripts/drawio-reload.js"></script>
       
     
   <script id="init-glightbox">document.querySelectorAll('.glightbox').forEach(function(element) {
