@@ -24,6 +24,7 @@ and benefit from the expertise shared in this repository.
 
 |Date|Headline|
 |---|---|
+|2026-03-17|[Added KubeVirt CSI](kubevirt/kubevirt-csi-driver/)|
 |2026-02-12|[Update networking/egressip](networking/egress-ip/)|
 |2026-02-06|[Added domain.xml adjustment example via sidecar hook](kubevirt/adjust-domain-xml/)|
 |2026-02-06|[Updated IBM Fusion Access for SAN with air-gapped/disconnected details](storage/ibm-fusion-access-san/)|
