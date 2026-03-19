@@ -1,0 +1,94 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: agent-base-proxy-vm-tmpl
+parameters:
+  - description: VM name
+    required: true
+    name: NAME
+  - description: MAC
+    required: true
+    name: MAC
+objects:
+  - apiVersion: kubevirt.io/v1
+    kind: VirtualMachine
+    metadata:
+      name: ${NAME}
+      labels:
+        app: ${NAME}
+    spec:
+      dataVolumeTemplates:
+        - metadata:
+            creationTimestamp: null
+            name: ${NAME}-root
+            annotations:
+              cdi.kubevirt.io/storage.bind.immediate.requested: "true"
+          spec:
+            source:
+              blank: {}
+            storage:
+              accessModes:
+                - ReadWriteMany
+              resources:
+                requests:
+                  storage: 120Gi
+              storageClassName: odf-replica-two-block
+              volumeMode: Block
+      runStrategy: RerunOnFailure
+      template:
+        metadata:
+          creationTimestamp: null
+          labels:
+            app: ${NAME}
+        spec:
+          architecture: amd64
+          domain:
+            clock:
+              timezone: Etc/GMT
+            cpu:
+              cores: 1
+              sockets: 12
+              threads: 1
+            devices:
+              disks:
+                - bootOrder: 1
+                  disk:
+                    bus: virtio
+                  name: ${NAME}-root
+                - cdrom:
+                    bus: sata
+                  name: cd-rom
+                  shareable: true
+                  bootOrder: 2
+              inputs:
+                - bus: virtio
+                  name: tablet
+                  type: tablet
+              interfaces:
+                - bridge: {}
+                  macAddress: '${MAC}'
+                  model: virtio
+                  name: net-vlan-2001
+                  state: up
+            firmware:
+              bootloader:
+                efi:
+                  secureBoot: false
+            machine:
+              type: q35
+            memory:
+              guest: 32Gi
+            resources:
+              requests:
+                memory: 32Gi
+          networks:
+            - multus:
+                networkName: coe-bridge-2001
+              name: net-vlan-2001
+          volumes:
+            - name: ${NAME}-root
+              dataVolume:
+                name: ${NAME}-root
+            - name: cd-rom
+              persistentVolumeClaim:
+                claimName: agent-iso
