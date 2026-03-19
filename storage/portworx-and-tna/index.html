@@ -6,19 +6,19 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="TBD">
+        <meta name="description" content="Deploy Portworx on an OpenShift compact (two-node + arbiter) cluster with notes on disks, labels, and replica-2 storage.">
       
       
         <meta name="author" content="Robert Bohne">
       
       
-        <link rel="canonical" href="https://examples.openshift.pub/networking/multus/">
+        <link rel="canonical" href="https://examples.openshift.pub/storage/portworx-and-tna/">
       
       
-        <link rel="prev" href="../services-routes/route-encryption/">
+        <link rel="prev" href="../">
       
       
-        <link rel="next" href="../network-policy/">
+        <link rel="next" href="../ibm-fusion-access-san/">
       
       
         
@@ -29,7 +29,7 @@
     
     
       
-        <title>Multus - OpenShift Examples</title>
+        <title>Portworx on Two-Node with Arbiter - OpenShift Examples</title>
       
     
     
@@ -93,7 +93,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#multus" class="md-skip">
+        <a href="#running-portworx-on-openshift-two-node-with-arbiter" class="md-skip">
           Skip to content
         </a>
       
@@ -129,7 +129,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Multus
+              Portworx on Two-Node with Arbiter
             
           </span>
         </div>
@@ -2752,6 +2752,8 @@
       
   
   
+    
+  
   
   
     
@@ -2769,15 +2771,15 @@
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../storage/" class="md-nav__link ">
+            <a href="../" class="md-nav__link ">
               
   
   
@@ -2803,7 +2805,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             
@@ -2820,10 +2822,39 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../storage/portworx-and-tna/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+    <?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 150 150"><defs><style>.cls-1{fill:url(#linear-gradient-2);}.cls-1,.cls-2,.cls-3{fill-rule:evenodd;}.cls-2{fill:url(#linear-gradient);}.cls-4{fill:none;}.cls-3{fill:url(#linear-gradient-3);}</style><linearGradient id="linear-gradient" x1="58.78" y1="5.98" x2="58.78" y2="56.31" gradientTransform="translate(0 151.28) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ff7825"/><stop offset=".15" stop-color="#f46822"/><stop offset=".5" stop-color="#df481c"/><stop offset=".8" stop-color="#d23418"/><stop offset="1" stop-color="#cd2d17"/></linearGradient><linearGradient id="linear-gradient-2" x1="39.91" y1="121.09" x2="116.13" y2="121.09" gradientTransform="translate(0 151.28) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e63c0c"/><stop offset=".24" stop-color="#e8410e"/><stop offset=".52" stop-color="#ee5014"/><stop offset=".83" stop-color="#f8681e"/><stop offset="1" stop-color="#ff7825"/></linearGradient><linearGradient id="linear-gradient-3" x1="39.6" y1="79.67" x2="116.13" y2="79.67" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ff7825"/><stop offset=".32" stop-color="#f5601b"/><stop offset=".75" stop-color="#ea4610"/><stop offset="1" stop-color="#e63c0c"/></linearGradient></defs><g id="logosandtypes_com" image-rendering="logosandtypes_com"><path id="Layer_3" class="cls-4" d="M0,0H150V150H0V0Z"/><polygon id="polygon42" class="cls-2" points="77.96 145.3 39.6 126.93 77.96 94.96 77.96 145.3"/><polygon id="polygon46" class="cls-1" points="86.53 56.59 116.13 32.41 73 3.82 72.94 3.79 39.91 25.68 40.04 25.77 86.53 56.59"/><polygon class="cls-3" points="116.13 32.41 116.13 76.21 116.13 76.21 39.6 126.93 39.6 83.14 116.13 32.41"/></g></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+    Portworx and TNA
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -2841,6 +2872,115 @@
   
 
       </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="toc.title">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prerequisites
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#install-the-operator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Install the operator
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apply-the-storagecluster" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apply the StorageCluster
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#replica-2-storage-class" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Replica-2 storage class
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-present-virtual-disks-as-non-rotational" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Appendix: present virtual disks as non-rotational
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+
+<hr/>
+<nav class="md-nav md-nav--secondary" aria-label="toc.title">
+  <label class="md-nav__title" for="__toc">
+    <span class="md-nav__icon md-icon"></span>
+    Tags
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+    <li class="md-nav__item">
+      <a href="/tags.html#storage" class="md-nav__link">
+        storage
+      </a>
+    </li>
+    
+    <li class="md-nav__item">
+      <a href="/tags.html#portworx" class="md-nav__link">
+        portworx
+      </a>
+    </li>
+    
+    <li class="md-nav__item">
+      <a href="/tags.html#TNA" class="md-nav__link">
+        TNA
+      </a>
+    </li>
+    
+    <li class="md-nav__item">
+      <a href="/tags.html#v4.20" class="md-nav__link">
+        v4.20
+      </a>
+    </li>
+    
+  </ul>
+</nav>
+
+      
     </li>
   
 
@@ -2853,7 +2993,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../storage/ibm-fusion-access-san/" class="md-nav__link">
+      <a href="../ibm-fusion-access-san/" class="md-nav__link">
         
   
   
@@ -4159,8 +4299,6 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
       
   
   
-    
-  
   
   
     
@@ -4190,15 +4328,15 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../" class="md-nav__link ">
+            <a href="../../networking/" class="md-nav__link ">
               
   
   
@@ -4224,7 +4362,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_11">
             <span class="md-nav__icon md-icon"></span>
             
@@ -4244,7 +4382,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../udn/" class="md-nav__link">
+      <a href="../../networking/udn/" class="md-nav__link">
         
   
   
@@ -4325,7 +4463,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../services-routes/service-serving-certificate-secrets/" class="md-nav__link">
+      <a href="../../networking/services-routes/service-serving-certificate-secrets/" class="md-nav__link">
         
   
   
@@ -4353,7 +4491,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../services-routes/route-encryption/" class="md-nav__link">
+      <a href="../../networking/services-routes/route-encryption/" class="md-nav__link">
         
   
   
@@ -4386,37 +4524,10 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Multus
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../networking/multus/" class="md-nav__link">
         
   
   
@@ -4432,64 +4543,6 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
 
       </a>
-      
-        
-<nav class="md-nav md-nav--secondary" aria-label="toc.title">
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      On this page
-    </label>
-    <ul class="md-nav__list" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#ipvlan-example" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        ipvlan example
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="ipvlan example">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#configure-additional-network" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Configure additional network
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#create-a-pod" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Create a pod
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-
-      
     </li>
   
 
@@ -4526,7 +4579,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../network-policy/" class="md-nav__link ">
+            <a href="../../networking/network-policy/" class="md-nav__link ">
               
   
   
@@ -4570,7 +4623,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../network-policy/network-policy-demo/README.md" class="md-nav__link">
+      <a href="../../networking/network-policy/network-policy-demo/README.md" class="md-nav__link">
         
   
   
@@ -4598,7 +4651,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../network-policy/OVNKubernetes/" class="md-nav__link">
+      <a href="../../networking/network-policy/OVNKubernetes/" class="md-nav__link">
         
   
   
@@ -4626,7 +4679,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../network-policy/OpenShiftSDN/" class="md-nav__link">
+      <a href="../../networking/network-policy/OpenShiftSDN/" class="md-nav__link">
         
   
   
@@ -4662,7 +4715,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../services-routes/router-sharding/" class="md-nav__link">
+      <a href="../../networking/services-routes/router-sharding/" class="md-nav__link">
         
   
   
@@ -4690,7 +4743,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../egress-ip/" class="md-nav__link">
+      <a href="../../networking/egress-ip/" class="md-nav__link">
         
   
   
@@ -4718,7 +4771,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../k8s-iptables-chains/" class="md-nav__link">
+      <a href="../../networking/k8s-iptables-chains/" class="md-nav__link">
         
   
   
@@ -4746,7 +4799,7 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
   
   
     <li class="md-nav__item">
-      <a href="../lldpd/" class="md-nav__link">
+      <a href="../../networking/lldpd/" class="md-nav__link">
         
   
   
@@ -6083,46 +6136,97 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#ipvlan-example" class="md-nav__link">
+  <a href="#prerequisites" class="md-nav__link">
     <span class="md-ellipsis">
       
-        ipvlan example
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="ipvlan example">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#configure-additional-network" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Configure additional network
+        Prerequisites
       
     </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#create-a-pod" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#install-the-operator" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Create a pod
+        Install the operator
       
     </span>
   </a>
   
 </li>
-        
-      </ul>
-    </nav>
+      
+        <li class="md-nav__item">
+  <a href="#apply-the-storagecluster" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apply the StorageCluster
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#replica-2-storage-class" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Replica-2 storage class
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-present-virtual-disks-as-non-rotational" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Appendix: present virtual disks as non-rotational
+      
+    </span>
+  </a>
   
 </li>
       
     </ul>
   
+</nav>
+
+<hr/>
+<nav class="md-nav md-nav--secondary" aria-label="toc.title">
+  <label class="md-nav__title" for="__toc">
+    <span class="md-nav__icon md-icon"></span>
+    Tags
+  </label>
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+    <li class="md-nav__item">
+      <a href="/tags.html#storage" class="md-nav__link">
+        storage
+      </a>
+    </li>
+    
+    <li class="md-nav__item">
+      <a href="/tags.html#portworx" class="md-nav__link">
+        portworx
+      </a>
+    </li>
+    
+    <li class="md-nav__item">
+      <a href="/tags.html#TNA" class="md-nav__link">
+        TNA
+      </a>
+    </li>
+    
+    <li class="md-nav__item">
+      <a href="/tags.html#v4.20" class="md-nav__link">
+        v4.20
+      </a>
+    </li>
+    
+  </ul>
 </nav>
 
                   </div>
@@ -6137,49 +6241,262 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
                 
                   
 
+  <nav class="md-tags" >
+    
+      
+      
+      
+      
+        <a href="../../tags/#tag:tna" class="md-tag">TNA</a>
+      
+    
+      
+      
+      
+      
+        <a href="../../tags/#tag:portworx" class="md-tag">portworx</a>
+      
+    
+      
+      
+      
+      
+        <a href="../../tags/#tag:storage" class="md-tag">storage</a>
+      
+    
+      
+      
+      
+      
+        <a href="../../tags/#tag:v420" class="md-tag">v4.20</a>
+      
+    
+  </nav>
+
 
   
   
 
 
-<h1 id="multus">Multus<a class="headerlink" href="#multus" title="Permanent link">&para;</a></h1>
-<div class="admonition notice">
-<p class="admonition-title">Notice</p>
-<p>Not comlete yet....</p>
-</div>
-<ul>
-<li><a href="https://developers.redhat.com/blog/2018/10/22/introduction-to-linux-interfaces-for-virtual-networking" target="_blank" rel="noopener">Introduction to Linux interfaces for virtual networking</a></li>
-<li>OpenShift Documentation: <a href="https://docs.openshift.com/container-platform/4.2/networking/multiple-networks/understanding-multiple-networks.html" target="_blank" rel="noopener">Understanding multiple networks</a></li>
-</ul>
-<h2 id="ipvlan-example">ipvlan example<a class="headerlink" href="#ipvlan-example" title="Permanent link">&para;</a></h2>
-<p>Example based on my lab build with <a href="https://github.com/RedHat-EMEA-SSA-Team/hetzner-ocp4" target="_blank" rel="noopener">hetzner-ocp4</a></p>
-<h3 id="configure-additional-network">Configure additional network<a class="headerlink" href="#configure-additional-network" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1"></a>oc edit networks.operator.openshift.io cluster
+<h1 id="running-portworx-on-openshift-two-node-with-arbiter">Running Portworx on OpenShift Two-Node with Arbiter<a class="headerlink" href="#running-portworx-on-openshift-two-node-with-arbiter" title="Permanent link">&para;</a></h1>
+<p><strong>Two-Node with Arbiter (TNA)</strong> is a compact OpenShift topology: two control-plane nodes that also run workloads, plus a third <strong>arbiter</strong> node that participates in quorum for etcd and—for storage—typically hosts <strong>witness / KVDB</strong> services without holding application data replicas. Portworx can run in that layout if you size disks and node roles correctly and align replication with the number of storage nodes.</p>
+<p>Official documentation: <a href="https://docs.portworx.com/install-portworx/openshift/" target="_blank" rel="noopener">Portworx on OpenShift</a> (use the version that matches your Portworx release).</p>
+<p><strong>Tested with:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Version</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OpenShift</td>
+<td>v4.20.15</td>
+</tr>
+<tr>
+<td>Portworx</td>
+<td>v25.6.1</td>
+</tr>
+</tbody>
+</table>
+<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
+<p>Use a <strong>Two-Node with Arbiter</strong> cluster. Example node list:</p>
+<div class="language-shell highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1">1</a></span>
+<span class="normal"><a href="#__codelineno-0-2">2</a></span>
+<span class="normal"><a href="#__codelineno-0-3">3</a></span>
+<span class="normal"><a href="#__codelineno-0-4">4</a></span>
+<span class="normal"><a href="#__codelineno-0-5">5</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1"></a>%<span class="w"> </span>oc<span class="w"> </span>get<span class="w"> </span>nodes
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2"></a>NAME<span class="w">              </span>STATUS<span class="w">   </span>ROLES<span class="w">                         </span>AGE<span class="w">     </span>VERSION
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3"></a>ocp21-arbiter-0<span class="w">   </span>Ready<span class="w">    </span>arbiter<span class="w">                       </span>3d11h<span class="w">   </span>v1.33.6
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4"></a>ocp21-cp-0<span class="w">        </span>Ready<span class="w">    </span>control-plane,master,worker<span class="w">   </span>3d11h<span class="w">   </span>v1.33.6
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5"></a>ocp21-cp-1<span class="w">        </span>Ready<span class="w">    </span>control-plane,master,worker<span class="w">   </span>3d11h<span class="w">   </span>v1.33.6
 </span></code></pre></div></td></tr></table></div>
-<p>Add <code>additionalNetworks</code>:
-<div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1">1</a></span>
-<span class="normal"><a href="#__codelineno-1-2">2</a></span>
-<span class="normal"><a href="#__codelineno-1-3">3</a></span>
-<span class="normal"><a href="#__codelineno-1-4">4</a></span>
-<span class="normal"><a href="#__codelineno-1-5">5</a></span>
-<span class="normal"><a href="#__codelineno-1-6">6</a></span>
-<span class="normal"><a href="#__codelineno-1-7">7</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1"></a>  additionalNetworks:
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2"></a>  - name: extra-network-1
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3"></a>    namespace: cni-test
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4"></a>    simpleMacvlanConfig:
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5"></a>      ipamConfig:
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6"></a>        type: DHCP
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7"></a>    type: SimpleMacvlan
-</span></code></pre></div></td></tr></table></div></p>
-<p>Check the network attachment definitions:
-<div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1">1</a></span>
-<span class="normal"><a href="#__codelineno-2-2">2</a></span>
-<span class="normal"><a href="#__codelineno-2-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1"></a>$ oc get network-attachment-definitions/extra-network-1 -n cni-test
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2"></a>NAME              AGE
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3"></a>extra-network-1   14h
-</span></code></pre></div></td></tr></table></div></p>
-<h3 id="create-a-pod">Create a pod<a class="headerlink" href="#create-a-pod" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1"> 1</a></span>
+<p><strong>Additional disks</strong> (example sizing from a lab):</p>
+<table>
+<thead>
+<tr>
+<th>Node</th>
+<th>Additional disks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ocp21-arbiter-0</td>
+<td><code>/dev/vdb</code> — KVDB, min 32&nbsp;GiB</td>
+</tr>
+<tr>
+<td>ocp21-cp-0</td>
+<td><code>/dev/vdb</code> — data (~256&nbsp;GiB)<br/><code>/dev/vdc</code> — metadata, min 64&nbsp;GiB</td>
+</tr>
+<tr>
+<td>ocp21-cp-1</td>
+<td><code>/dev/vdb</code> — data (~256&nbsp;GiB)<br/><code>/dev/vdc</code> — metadata, min 64&nbsp;GiB</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Node labels</strong> (storage vs storageless + running on control-plane nodes):</p>
+<table>
+<thead>
+<tr>
+<th>Node</th>
+<th>Labels</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ocp21-arbiter-0</td>
+<td><code>portworx.io/node-type=storageless</code></td>
+</tr>
+<tr>
+<td>ocp21-cp-0</td>
+<td><code>portworx.io/node-type=storage</code>, <code>portworx.io/run-on-master=true</code></td>
+</tr>
+<tr>
+<td>ocp21-cp-1</td>
+<td><code>portworx.io/node-type=storage</code>, <code>portworx.io/run-on-master=true</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="install-the-operator">Install the operator<a class="headerlink" href="#install-the-operator" title="Permanent link">&para;</a></h2>
+<p>Install the <strong>Portworx Operator</strong> operator from <strong>OperatorHub</strong> into the <code>openshift-operaotrs</code> namespace (default). Wait until the operator deployment is <strong>Available</strong>.</p>
+<p>If your cluster uses a private registry or disconnected mirrors, follow Portworx’s air-gapped / mirror steps for that release—image references in <code>StorageCluster</code> must resolve in your environment.</p>
+<h2 id="apply-the-storagecluster">Apply the StorageCluster<a class="headerlink" href="#apply-the-storagecluster" title="Permanent link">&para;</a></h2>
+<p>The manifest below maps <strong>two storage nodes</strong> to metadata + data devices and uses the <strong>arbiter</strong> for internal KVDB on a dedicated disk. <code>clusterDomain</code> values (<code>master1</code>, <code>master2</code>, <code>witness</code>) tie each block to the matching node; adjust names and devices to match your cluster.</p>
+<div class="language-yaml highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-1-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-1-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-1-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-1-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-1-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-1-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-1-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-1-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-1-10">10</a></span>
+<span class="normal"><a href="#__codelineno-1-11">11</a></span>
+<span class="normal"><a href="#__codelineno-1-12">12</a></span>
+<span class="normal"><a href="#__codelineno-1-13">13</a></span>
+<span class="normal"><a href="#__codelineno-1-14">14</a></span>
+<span class="normal"><a href="#__codelineno-1-15">15</a></span>
+<span class="normal"><a href="#__codelineno-1-16">16</a></span>
+<span class="normal"><a href="#__codelineno-1-17">17</a></span>
+<span class="normal"><a href="#__codelineno-1-18">18</a></span>
+<span class="normal"><a href="#__codelineno-1-19">19</a></span>
+<span class="normal"><a href="#__codelineno-1-20">20</a></span>
+<span class="normal"><a href="#__codelineno-1-21">21</a></span>
+<span class="normal"><a href="#__codelineno-1-22">22</a></span>
+<span class="normal"><a href="#__codelineno-1-23">23</a></span>
+<span class="normal"><a href="#__codelineno-1-24">24</a></span>
+<span class="normal"><a href="#__codelineno-1-25">25</a></span>
+<span class="normal"><a href="#__codelineno-1-26">26</a></span>
+<span class="normal"><a href="#__codelineno-1-27">27</a></span>
+<span class="normal"><a href="#__codelineno-1-28">28</a></span>
+<span class="normal"><a href="#__codelineno-1-29">29</a></span>
+<span class="normal"><a href="#__codelineno-1-30">30</a></span>
+<span class="normal"><a href="#__codelineno-1-31">31</a></span>
+<span class="normal"><a href="#__codelineno-1-32">32</a></span>
+<span class="normal"><a href="#__codelineno-1-33">33</a></span>
+<span class="normal"><a href="#__codelineno-1-34">34</a></span>
+<span class="normal"><a href="#__codelineno-1-35">35</a></span>
+<span class="normal"><a href="#__codelineno-1-36">36</a></span>
+<span class="normal"><a href="#__codelineno-1-37">37</a></span>
+<span class="normal"><a href="#__codelineno-1-38">38</a></span>
+<span class="normal"><a href="#__codelineno-1-39">39</a></span>
+<span class="normal"><a href="#__codelineno-1-40">40</a></span>
+<span class="normal"><a href="#__codelineno-1-41">41</a></span>
+<span class="normal"><a href="#__codelineno-1-42">42</a></span>
+<span class="normal"><a href="#__codelineno-1-43">43</a></span>
+<span class="normal"><a href="#__codelineno-1-44">44</a></span>
+<span class="normal"><a href="#__codelineno-1-45">45</a></span>
+<span class="normal"><a href="#__codelineno-1-46">46</a></span>
+<span class="normal"><a href="#__codelineno-1-47">47</a></span>
+<span class="normal"><a href="#__codelineno-1-48">48</a></span>
+<span class="normal"><a href="#__codelineno-1-49">49</a></span>
+<span class="normal"><a href="#__codelineno-1-50">50</a></span>
+<span class="normal"><a href="#__codelineno-1-51">51</a></span>
+<span class="normal"><a href="#__codelineno-1-52">52</a></span>
+<span class="normal"><a href="#__codelineno-1-53">53</a></span>
+<span class="normal"><a href="#__codelineno-1-54">54</a></span>
+<span class="normal"><a href="#__codelineno-1-55">55</a></span>
+<span class="normal"><a href="#__codelineno-1-56">56</a></span>
+<span class="normal"><a href="#__codelineno-1-57">57</a></span>
+<span class="normal"><a href="#__codelineno-1-58">58</a></span>
+<span class="normal"><a href="#__codelineno-1-59">59</a></span>
+<span class="normal"><a href="#__codelineno-1-60">60</a></span>
+<span class="normal"><a href="#__codelineno-1-61">61</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">core.libopenstorage.org/v1</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">StorageCluster</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3"></a><span class="nt">metadata</span><span class="p">:</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4"></a><span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5"></a><span class="w">    </span><span class="nt">portworx.io/is-openshift</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;true&#39;</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6"></a><span class="w">    </span><span class="nt">portworx.io/misc-args</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;-rt_opts</span><span class="nv"> </span><span class="s">small_conf=1</span><span class="nv"> </span><span class="s">-T</span><span class="nv"> </span><span class="s">px-storev2&#39;</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7"></a><span class="w">    </span><span class="nt">portworx.io/disable-storage-class</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">px-cluster</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">portworx</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10"></a><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11"></a><span class="w">  </span><span class="nt">startPort</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">17001</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12"></a><span class="w">  </span><span class="nt">runtimeOptions</span><span class="p">:</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13"></a><span class="w">    </span><span class="nt">default-io-profile</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;6&#39;</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14"></a><span class="w">  </span><span class="nt">stork</span><span class="p">:</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15"></a><span class="w">    </span><span class="nt">args</span><span class="p">:</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16"></a><span class="w">      </span><span class="nt">webhook-controller</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;true&#39;</span>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17"></a><span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18"></a><span class="w">  </span><span class="nt">monitoring</span><span class="p">:</span>
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19"></a><span class="w">    </span><span class="nt">prometheus</span><span class="p">:</span>
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20"></a><span class="w">      </span><span class="nt">exportMetrics</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21"></a><span class="w">    </span><span class="nt">telemetry</span><span class="p">:</span>
+</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22"></a><span class="w">      </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23"></a><span class="w">      </span><span class="nt">metricsCollector</span><span class="p">:</span>
+</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24"></a><span class="w">        </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25"></a><span class="w">  </span><span class="nt">kvdb</span><span class="p">:</span>
+</span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26"></a><span class="w">    </span><span class="nt">enableTLS</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+</span><span id="__span-1-27"><a id="__codelineno-1-27" name="__codelineno-1-27"></a><span class="w">    </span><span class="nt">internal</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span><span id="__span-1-28"><a id="__codelineno-1-28" name="__codelineno-1-28"></a><span class="w">  </span><span class="nt">nodes</span><span class="p">:</span>
+</span><span id="__span-1-29"><a id="__codelineno-1-29" name="__codelineno-1-29"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">clusterDomain</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">master1</span>
+</span><span id="__span-1-30"><a id="__codelineno-1-30" name="__codelineno-1-30"></a><span class="w">      </span><span class="nt">selector</span><span class="p">:</span>
+</span><span id="__span-1-31"><a id="__codelineno-1-31" name="__codelineno-1-31"></a><span class="w">        </span><span class="nt">nodeName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ocp21-cp-0</span>
+</span><span id="__span-1-32"><a id="__codelineno-1-32" name="__codelineno-1-32"></a><span class="w">      </span><span class="nt">storage</span><span class="p">:</span>
+</span><span id="__span-1-33"><a id="__codelineno-1-33" name="__codelineno-1-33"></a><span class="w">        </span><span class="nt">systemMetadataDevice</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/dev/vdc</span>
+</span><span id="__span-1-34"><a id="__codelineno-1-34" name="__codelineno-1-34"></a><span class="w">        </span><span class="nt">useAll</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span><span id="__span-1-35"><a id="__codelineno-1-35" name="__codelineno-1-35"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">clusterDomain</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">master2</span>
+</span><span id="__span-1-36"><a id="__codelineno-1-36" name="__codelineno-1-36"></a><span class="w">      </span><span class="nt">selector</span><span class="p">:</span>
+</span><span id="__span-1-37"><a id="__codelineno-1-37" name="__codelineno-1-37"></a><span class="w">        </span><span class="nt">nodeName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ocp21-cp-1</span>
+</span><span id="__span-1-38"><a id="__codelineno-1-38" name="__codelineno-1-38"></a><span class="w">      </span><span class="nt">storage</span><span class="p">:</span>
+</span><span id="__span-1-39"><a id="__codelineno-1-39" name="__codelineno-1-39"></a><span class="w">        </span><span class="nt">systemMetadataDevice</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/dev/vdc</span>
+</span><span id="__span-1-40"><a id="__codelineno-1-40" name="__codelineno-1-40"></a><span class="w">        </span><span class="nt">useAll</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span><span id="__span-1-41"><a id="__codelineno-1-41" name="__codelineno-1-41"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">clusterDomain</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">witness</span>
+</span><span id="__span-1-42"><a id="__codelineno-1-42" name="__codelineno-1-42"></a><span class="w">      </span><span class="nt">selector</span><span class="p">:</span>
+</span><span id="__span-1-43"><a id="__codelineno-1-43" name="__codelineno-1-43"></a><span class="w">        </span><span class="nt">nodeName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ocp21-arbiter-0</span>
+</span><span id="__span-1-44"><a id="__codelineno-1-44" name="__codelineno-1-44"></a><span class="w">      </span><span class="nt">storage</span><span class="p">:</span>
+</span><span id="__span-1-45"><a id="__codelineno-1-45" name="__codelineno-1-45"></a><span class="w">        </span><span class="nt">kvdbDevice</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/dev/vdb</span>
+</span><span id="__span-1-46"><a id="__codelineno-1-46" name="__codelineno-1-46"></a><span class="w">        </span><span class="nt">useAll</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+</span><span id="__span-1-47"><a id="__codelineno-1-47" name="__codelineno-1-47"></a><span class="w">  </span><span class="nt">imagePullPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Always</span>
+</span><span id="__span-1-48"><a id="__codelineno-1-48" name="__codelineno-1-48"></a><span class="w">  </span><span class="nt">secretsProvider</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">k8s</span>
+</span><span id="__span-1-49"><a id="__codelineno-1-49" name="__codelineno-1-49"></a><span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3.5.2.1</span>
+</span><span id="__span-1-50"><a id="__codelineno-1-50" name="__codelineno-1-50"></a><span class="w">  </span><span class="nt">csi</span><span class="p">:</span>
+</span><span id="__span-1-51"><a id="__codelineno-1-51" name="__codelineno-1-51"></a><span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span><span id="__span-1-52"><a id="__codelineno-1-52" name="__codelineno-1-52"></a><span class="w">    </span><span class="nt">installSnapshotController</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span><span id="__span-1-53"><a id="__codelineno-1-53" name="__codelineno-1-53"></a><span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;portworx/oci-monitor:3.5.2.1&#39;</span>
+</span><span id="__span-1-54"><a id="__codelineno-1-54" name="__codelineno-1-54"></a><span class="w">  </span><span class="nt">storage</span><span class="p">:</span>
+</span><span id="__span-1-55"><a id="__codelineno-1-55" name="__codelineno-1-55"></a><span class="w">    </span><span class="nt">useAll</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span><span id="__span-1-56"><a id="__codelineno-1-56" name="__codelineno-1-56"></a><span class="w">  </span><span class="nt">updateStrategy</span><span class="p">:</span>
+</span><span id="__span-1-57"><a id="__codelineno-1-57" name="__codelineno-1-57"></a><span class="w">    </span><span class="nt">rollingUpdate</span><span class="p">:</span>
+</span><span id="__span-1-58"><a id="__codelineno-1-58" name="__codelineno-1-58"></a><span class="w">      </span><span class="nt">disruption</span><span class="p">:</span>
+</span><span id="__span-1-59"><a id="__codelineno-1-59" name="__codelineno-1-59"></a><span class="w">        </span><span class="nt">allow</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span><span id="__span-1-60"><a id="__codelineno-1-60" name="__codelineno-1-60"></a><span class="w">      </span><span class="nt">maxUnavailable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+</span><span id="__span-1-61"><a id="__codelineno-1-61" name="__codelineno-1-61"></a><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RollingUpdate</span>
+</span></code></pre></div></td></tr></table></div>
+<p>For <strong>lab</strong> clusters where you want a clean teardown, you can add:</p>
+<div class="language-yaml highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1">1</a></span>
+<span class="normal"><a href="#__codelineno-2-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="w">  </span><span class="nt">deleteStrategy</span><span class="p">:</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2"></a><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">UninstallAndWipe</span>
+</span></code></pre></div></td></tr></table></div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><code>UninstallAndWipe</code> removes Portworx data from disks allocated to Portworx when the <code>StorageCluster</code> is deleted. Use only in non-production or when you accept full data loss on those devices.</p>
+</div>
+<h2 id="replica-2-storage-class">Replica-2 storage class<a class="headerlink" href="#replica-2-storage-class" title="Permanent link">&para;</a></h2>
+<p>With <strong>two</strong> data nodes, a <strong>replica factor of 2</strong> matches the topology: each volume is mirrored across both storage nodes. (Higher replication is not meaningful with only two storage members.)</p>
+<div class="language-yaml highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-3-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-3-3"> 3</a></span>
 <span class="normal"><a href="#__codelineno-3-4"> 4</a></span>
@@ -6192,23 +6509,96 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
 <span class="normal"><a href="#__codelineno-3-11">11</a></span>
 <span class="normal"><a href="#__codelineno-3-12">12</a></span>
 <span class="normal"><a href="#__codelineno-3-13">13</a></span>
-<span class="normal"><a href="#__codelineno-3-14">14</a></span>
-<span class="normal"><a href="#__codelineno-3-15">15</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1"></a>oc create -f - &lt;&lt;EOF
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2"></a>apiVersion: v1
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3"></a>kind: Pod
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4"></a>metadata:
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5"></a>  name: multus
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6"></a>  namespace: cni-test
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7"></a>  annotations:
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8"></a>    k8s.v1.cni.cncf.io/networks: extra-network-1
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9"></a>spec:
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10"></a>  containers:
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11"></a>    - name: rhel
-</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12"></a>      image: registry.access.redhat.com/rhel7/rhel-tools
-</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13"></a>      command: [ &quot;/bin/sh&quot;, &quot;-c&quot;, &quot;while true ; do date; sleep 10; done;&quot; ]
-</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14"></a>  restartPolicy: Never
-</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15"></a>EOF
+<span class="normal"><a href="#__codelineno-3-14">14</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">StorageClass</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">storage.k8s.io/v1</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3"></a><span class="nt">metadata</span><span class="p">:</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">portworx-replica-two</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5"></a><span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6"></a><span class="w">    </span><span class="nt">storageclass.kubevirt.io/is-default-virt-class</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;true&#39;</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7"></a><span class="w">    </span><span class="nt">storageclass.kubernetes.io/is-default-class</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;true&#39;</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8"></a><span class="nt">provisioner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pxd.portworx.com</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9"></a><span class="nt">parameters</span><span class="p">:</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10"></a><span class="w">  </span><span class="nt">io_profile</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">db_remote</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11"></a><span class="w">  </span><span class="nt">repl</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;2&#39;</span>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12"></a><span class="nt">reclaimPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Delete</span>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13"></a><span class="nt">allowVolumeExpansion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14"></a><span class="nt">volumeBindingMode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Immediate</span>
 </span></code></pre></div></td></tr></table></div>
+<h2 id="appendix-present-virtual-disks-as-non-rotational">Appendix: present virtual disks as non-rotational<a class="headerlink" href="#appendix-present-virtual-disks-as-non-rotational" title="Permanent link">&para;</a></h2>
+<p>Portworx expects <strong>non-rotational</strong> (SSD/NVMe) storage. Some lab hypervisors still report virtio disks as rotational, which can block or complicate install. A common workaround is a <strong>udev</strong> rule that sets <code>queue/rotational</code> to <code>0</code> (and a suitable scheduler) for <code>vd*</code> devices.</p>
+<p>Rule content:</p>
+<div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1"></a>ACTION==&quot;add|change&quot;, KERNEL==&quot;vd[a-z]&quot;, ATTR{queue/rotational}=&quot;0&quot;, ATTR{queue/scheduler}=&quot;deadline&quot;
+</span></code></pre></div></td></tr></table></div>
+<p>Apply per <strong>MachineConfig</strong> pool—for example, arbiter and master roles:</p>
+<div class="language-yaml highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-5-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-5-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-5-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-5-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-5-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-5-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-5-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-5-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-5-10">10</a></span>
+<span class="normal"><a href="#__codelineno-5-11">11</a></span>
+<span class="normal"><a href="#__codelineno-5-12">12</a></span>
+<span class="normal"><a href="#__codelineno-5-13">13</a></span>
+<span class="normal"><a href="#__codelineno-5-14">14</a></span>
+<span class="normal"><a href="#__codelineno-5-15">15</a></span>
+<span class="normal"><a href="#__codelineno-5-16">16</a></span>
+<span class="normal"><a href="#__codelineno-5-17">17</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">machineconfiguration.openshift.io/v1</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MachineConfig</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3"></a><span class="nt">metadata</span><span class="p">:</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4"></a><span class="w">  </span><span class="nt">labels</span><span class="p">:</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5"></a><span class="w">    </span><span class="nt">machineconfiguration.openshift.io/role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">arbiter</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">99-arbiter-disk-rotational</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7"></a><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8"></a><span class="w">  </span><span class="nt">config</span><span class="p">:</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9"></a><span class="w">    </span><span class="nt">ignition</span><span class="p">:</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10"></a><span class="w">      </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3.5.0</span>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11"></a><span class="w">    </span><span class="nt">storage</span><span class="p">:</span>
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12"></a><span class="w">      </span><span class="nt">files</span><span class="p">:</span>
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">contents</span><span class="p">:</span>
+</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14"></a><span class="w">            </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">data:text/plain;charset=utf-8;base64,QUNUSU9OPT0iYWRkfGNoYW5nZSIsIEtFUk5FTD09InZkW2Etel0iLCBBVFRSe3F1ZXVlL3JvdGF0aW9uYWx9PSIwIiwgQVRUUntxdWV1ZS9zY2hlZHVsZXJ9PSJkZWFkbGluZSIK</span>
+</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15"></a><span class="w">            </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">420</span>
+</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16"></a><span class="w">            </span><span class="nt">overwrite</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17"></a><span class="w">            </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/etc/udev/rules.d/99-disk-rotational.rules</span>
+</span></code></pre></div></td></tr></table></div>
+<div class="language-yaml highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-6-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-6-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-6-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-6-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-6-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-6-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-6-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-6-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-6-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-6-10">10</a></span>
+<span class="normal"><a href="#__codelineno-6-11">11</a></span>
+<span class="normal"><a href="#__codelineno-6-12">12</a></span>
+<span class="normal"><a href="#__codelineno-6-13">13</a></span>
+<span class="normal"><a href="#__codelineno-6-14">14</a></span>
+<span class="normal"><a href="#__codelineno-6-15">15</a></span>
+<span class="normal"><a href="#__codelineno-6-16">16</a></span>
+<span class="normal"><a href="#__codelineno-6-17">17</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">machineconfiguration.openshift.io/v1</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MachineConfig</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3"></a><span class="nt">metadata</span><span class="p">:</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4"></a><span class="w">  </span><span class="nt">labels</span><span class="p">:</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5"></a><span class="w">    </span><span class="nt">machineconfiguration.openshift.io/role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">master</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">99-master-disk-rotational</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7"></a><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8"></a><span class="w">  </span><span class="nt">config</span><span class="p">:</span>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9"></a><span class="w">    </span><span class="nt">ignition</span><span class="p">:</span>
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10"></a><span class="w">      </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3.5.0</span>
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11"></a><span class="w">    </span><span class="nt">storage</span><span class="p">:</span>
+</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12"></a><span class="w">      </span><span class="nt">files</span><span class="p">:</span>
+</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">contents</span><span class="p">:</span>
+</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14"></a><span class="w">            </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">data:text/plain;charset=utf-8;base64,QUNUSU9OPT0iYWRkfGNoYW5nZSIsIEtFUk5FTD09InZkW2Etel0iLCBBVFRSe3F1ZXVlL3JvdGF0aW9uYWx9PSIwIiwgQVRUUntxdWV1ZS9zY2hlZHVsZXJ9PSJkZWFkbGluZSIK</span>
+</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15"></a><span class="w">            </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">420</span>
+</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16"></a><span class="w">            </span><span class="nt">overwrite</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17"></a><span class="w">            </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/etc/udev/rules.d/99-disk-rotational.rules</span>
+</span></code></pre></div></td></tr></table></div>
+<p>After the nodes reconcile, confirm with <code>cat /sys/block/vd*/queue/rotational</code> on each node if needed.</p>
 <hr>
 <div class="md-source-file">
   <span class="md-source-file__fact">
@@ -6216,13 +6606,13 @@ fill="#ffffff"/><path fill="none" stroke="#1f70c1" stroke-width="12" d="M54 332h
       <span class="md-icon" title="Last update">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 14h-2V8h2zm2-13H9v2h6zM5 13a6.995 6.995 0 0 1 13.79-1.66l.6-.6c.32-.32.71-.53 1.11-.64a8.6 8.6 0 0 0-1.47-2.71l1.42-1.42c-.45-.51-.9-.97-1.41-1.41L17.62 6c-1.55-1.26-3.5-2-5.62-2a9 9 0 0 0-9 9c0 4.63 3.5 8.44 8 8.94v-2.02c-3.39-.49-6-3.39-6-6.92m8 6.96V22h2.04l6.13-6.12-2.04-2.05zm9.85-6.49-1.32-1.32c-.2-.2-.53-.2-.72 0l-.98.98 2.04 2.04.98-.98c.2-.19.2-.52 0-.72"/></svg>
       </span>
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago"><span class="timeago" datetime="2020-12-06T17:52:40+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date">2020-12-06</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago"><span class="timeago" datetime="2026-03-19T20:30:54+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date">2026-03-19</span>
 
       
         <span class="md-icon" title="Created">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11 8h2v6h-2zm4-7H9v2h6zm-3 19c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7c.7 0 1.36.13 2 .35V13c0-2.12-.74-4.07-1.97-5.61l1.42-1.42c-.45-.51-.9-.97-1.41-1.41L17.62 6c-1.55-1.26-3.5-2-5.62-2a9 9 0 0 0 0 18c.59 0 1.16-.06 1.71-.17-.31-.58-.53-1.23-.63-1.92-.36.05-.71.09-1.08.09m8-2v-3h-2v3h-3v2h3v3h2v-3h3v-2z"/></svg>
         </span>
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago"><span class="timeago" datetime="2020-04-15T06:22:44+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date">2020-04-15</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago"><span class="timeago" datetime="2026-03-19T20:30:54+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date">2026-03-19</span>
       
 
       
