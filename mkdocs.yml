@@ -198,6 +198,7 @@ nav:
 
   - Storage:
       - storage/index.md
+      - Portworx and TNA: storage/portworx-and-tna/index.md
       - IBM Fussion Access SAN: storage/ibm-fusion-access-san/index.md
 
   - Troubleshooting: troubleshooting/index.md
