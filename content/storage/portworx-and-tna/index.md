@@ -16,7 +16,8 @@ Official documentation: [Portworx on OpenShift](https://docs.portworx.com/instal
 | Component | Version   |
 | --------- | --------- |
 | OpenShift | v4.20.15  |
-| Portworx  | v25.6.1   |
+| Portworx  | v3.5.2.1  |
+| Portworx Operator | v25.6.1 |
 
 ## Prerequisites
 
