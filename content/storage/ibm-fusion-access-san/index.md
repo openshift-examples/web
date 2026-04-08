@@ -43,6 +43,12 @@ Documentation:
 
 Here are the commands executed on RHEL 10.
 
+* Install required packages
+
+    ```shell
+    dnf install pesign openssl  kernel-devel mokutil keyutils
+    ```
+
 * Create public and private key
 
     ```shell
@@ -53,13 +59,13 @@ Here are the commands executed on RHEL 10.
       --nickname 'Custom Secure Boot key'
     ```
 
-* Export public key to `sb_cert.cer`
+* Export public key to `sb_cert.der`
 
     ```shell
     certutil -d /etc/pki/pesign \
       -n 'Custom Secure Boot key' \
       -Lr \
-      > sb_cert.cer
+      > sb_cert.der
     ```
 
 * Export private key to `sb_cert.p12`
@@ -89,7 +95,7 @@ In my virtual lab environment running on KVM/libvirt with [hetzner-ocp4](https:/
 * Copy the public key to the VM via SSH
 
     ```shell
-    scp sb_cert.cer core@compute-X:~/
+    scp sb_cert.der core@compute-X:~/
     ```
 
 * Check & import the key via `mokutil` on the node:
@@ -100,7 +106,7 @@ In my virtual lab environment running on KVM/libvirt with [hetzner-ocp4](https:/
             Subject: CN=Red Hat Secure Boot CA 8/emailAddress=secalert@redhat.com
 
     # Set a simple password; it will be needed later in the UEFI shell.
-    % sudo mokutil --import sb_cert.cer
+    % sudo mokutil --import sb_cert.der
     input password:
     input password again:
     ```
@@ -234,7 +240,7 @@ Create the key pair in the earlier section [If Secure Boot is enabled: Create an
     ```shell
     oc create secret generic secureboot-signing-key-pub \
       -n ibm-fusion-access \
-      --from-file=cert=sb_cert.cer
+      --from-file=cert=sb_cert.der
     ```
 
 ### Optional: Configure external registry for kernel module container image
