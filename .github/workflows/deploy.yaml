@@ -1,0 +1,42 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: 'Deploy'
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    permissions:
+      # actions: read # Only required for private GitHub Repo
+      contents: read
+      deployments: write
+      pull-requests: write
+    runs-on: ubuntu-latest
+    environment: Cloudflare Pages
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: 3.12
+          cache: 'pip'
+      - name: Install Dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Build Docs Website
+        run: mkdocs build
+
+      - name: Deploy to Cloudflare Pages
+        uses: andykenward/github-actions-cloudflare-pages@v3.0.0
+        id: pages
+        with:
+          cloudflare-api-token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          cloudflare-account-id: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          cloudflare-project-name: ${{ vars.CLOUDFLARE_PROJECT_NAME }}
+          directory: site
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-environment: Cloudflare Pages
