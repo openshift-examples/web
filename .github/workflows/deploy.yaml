@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+
 jobs:
   deploy:
     permissions:
@@ -29,11 +30,6 @@ jobs:
       - name: Build Docs Website
         run: mkdocs build
 
-      # - uses: actions/setup-node@v4
-      #   with:
-      #     node_version: 20
-      # - run: npm ci
-      #   run: npm run build
       - name: Deploy to Cloudflare Pages
         uses: andykenward/github-actions-cloudflare-pages@v3.0.0
         id: pages

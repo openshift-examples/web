@@ -4,20 +4,12 @@
 # not workflow_run, so previews use wrangler directly (same pattern as Cloudflare docs).
 name: PR Preview Deploy
 on:
-  workflow_run:
-    workflows:
-      - PR Preview Validate
-    types:
-      - completed
+  pull_request_target:
+    branches:
+      - main
 
 jobs:
   deploy:
-    # workflow_run has no github.event.pull_request; pull_requests[0].number matches
-    # github.event.pull_request.number from the PR Preview Validate run.
-    if: >-
-      github.event.workflow_run.conclusion == 'success' &&
-      github.event.workflow_run.event == 'pull_request' &&
-      github.event.workflow_run.pull_requests[0].number != null
     runs-on: ubuntu-latest
     timeout-minutes: 5
     environment: Cloudflare Pages
@@ -31,7 +23,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: ${{ github.event.workflow_run.head_repository.full_name || github.repository }}
-          ref: ${{ github.event.workflow_run.head_sha }}
+          ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
       - uses: actions/setup-python@v6
         with:
