@@ -36,13 +36,26 @@ jobs:
         run: pip install -r requirements.txt
       - name: Build docs
         run: mkdocs build
-      - name: Deploy to Cloudflare Pages
-        uses: andykenward/github-actions-cloudflare-pages@v3.0.0
+
+      - name: Deploy preview to Cloudflare Pages
         id: pages
+        uses: cloudflare/wrangler-action@v3
         with:
-          cloudflare-api-token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          cloudflare-account-id: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
-          cloudflare-project-name: ${{ vars.CLOUDFLARE_PROJECT_NAME }}
-          directory: site
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          github-environment: Cloudflare Pages
+          workingDirectory: site
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          command: >-
+            pages deploy site
+            --project-name=${{ vars.CLOUDFLARE_PROJECT_NAME }}
+            --branch=${{ github.event.workflow_run.head_branch }}
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Deploy to Cloudflare Pages
+      #   uses: andykenward/github-actions-cloudflare-pages@v3.0.0
+      #   id: pages
+      #   with:
+      #     cloudflare-api-token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      #     cloudflare-account-id: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+      #     cloudflare-project-name: ${{ vars.CLOUDFLARE_PROJECT_NAME }}
+      #     directory: site
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}
+      #     github-environment: Cloudflare Pages
