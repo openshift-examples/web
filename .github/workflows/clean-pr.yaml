@@ -1,0 +1,27 @@
+# .github/workflows/build-pr.yml
+name: 1 - Clean Web Page PR
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  clean:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      deployments: write
+      pull-requests: write
+    steps:
+
+      # NEW: Save the PR number to a file
+      - name: Save PR number
+        run: echo ${{ github.event.pull_request.number }} > pr-number.txt
+
+      # NEW: Upload the PR number as its own artifact
+      - name: Upload PR Number Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr-metadata
+          path: pr-number.txt

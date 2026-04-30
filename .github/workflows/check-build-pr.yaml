@@ -1,0 +1,50 @@
+# .github/workflows/build-pr.yml
+name: 1 - Check and Build Web Page PR
+
+on:
+  pull_request:
+    branches: [ "main" ] 
+
+jobs:
+  linter:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      deployments: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: 3.12
+          cache: pip
+
+      - name: pre-commit
+        uses: pre-commit/action@v3.0.1
+        with:
+          extra_args: "--from-ref origin/main --to-ref HEAD"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Build docs
+        run: mkdocs build
+
+      - name: Upload Static Site Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: preview-site
+          path: site/
+
+      # NEW: Save the PR number to a file
+      - name: Save PR number
+        run: echo ${{ github.event.pull_request.number }} > pr-number.txt
+
+      # NEW: Upload the PR number as its own artifact
+      - name: Upload PR Number Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr-metadata
+          path: pr-number.txt

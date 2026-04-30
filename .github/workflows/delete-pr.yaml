@@ -1,0 +1,71 @@
+# .github/workflows/deploy-pr.yml
+name: 2 - Clean Web Page PR
+
+on:
+  workflow_run:
+    workflows: ["1 - Clean Web Page PR"]
+    types: [completed]
+
+# CRITICAL: Grant the workflow permission to write comments on PRs
+permissions:
+  pull-requests: write
+
+jobs:
+  deploy-preview:
+    if: github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    environment: Cloudflare Pages
+    permissions:
+      # actions: read # Only required for private GitHub Repo
+      contents: read
+      deployments: write
+      pull-requests: write
+
+    steps:
+      # NEW: Download the PR metadata artifact
+      - name: Download PR Number Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: pr-metadata
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Set PR Number Context
+        run: |
+          PR_NUMBER=$(cat pr-number.txt)
+          # This syntax makes it available to subsequent steps as ${{ env.PR_NUMBER }}
+          echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_ENV
+
+      - name: Delete Cloudflare Deployments
+        env:
+          # Pull your secrets securely
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          PROJECT_NAME: "openshift-examples"
+          PR_NUMBER: ${{ env.PR_NUMBER }}
+        run: |
+          echo "Cleaning up deployments for PR #$PR_NUMBER..."
+          
+          # 1. Install the Cloudflare Wrangler CLI
+          npm install -g wrangler
+          
+          # 2. Fetch all project deployments as a JSON payload
+          wrangler pages deployment list --project-name $PROJECT_NAME --json > deployments.json
+          
+          # 3. Use 'jq' to filter the JSON for deployments matching this PR's branch
+          # (In our previous step, we named the branch 'pr-123')
+          TARGET_IDS=$(jq -r ".[] | select(.Branch == \"pr-$PR_NUMBER\") | .Id" deployments.json)
+          
+          # Check if any deployments were actually found
+          if [ -z "$TARGET_IDS" ]; then
+            echo "No preview deployments found for pr-$PR_NUMBER."
+            exit 0
+          fi
+          
+          # 4. Loop through the matching IDs and force-delete them
+          for ID in $TARGET_IDS; do
+            echo "Deleting deployment ID: $ID..."
+            wrangler pages deployment delete $ID --project-name $PROJECT_NAME --force
+          done
+          
+          echo "🎉 Cleanup complete!"
