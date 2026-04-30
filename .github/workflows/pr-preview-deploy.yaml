@@ -41,7 +41,6 @@ jobs:
         id: pages
         uses: cloudflare/wrangler-action@v3
         with:
-          workingDirectory: site
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
           command: >-
