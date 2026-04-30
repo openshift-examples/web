@@ -12,12 +12,17 @@ on:
 
 jobs:
   deploy:
+    # workflow_run has no github.event.pull_request; pull_requests[0].number matches
+    # github.event.pull_request.number from the PR Preview Validate run.
     if: >-
       github.event.workflow_run.conclusion == 'success' &&
-      github.event.workflow_run.event == 'pull_request'
+      github.event.workflow_run.event == 'pull_request' &&
+      github.event.workflow_run.pull_requests[0].number != null
     runs-on: ubuntu-latest
     timeout-minutes: 5
     environment: Cloudflare Pages
+    env:
+      PR_NUMBER: ${{ github.event.workflow_run.pull_requests[0].number }}
     permissions:
       contents: read
       deployments: write
@@ -46,7 +51,7 @@ jobs:
           command: >-
             pages deploy site
             --project-name=${{ vars.CLOUDFLARE_PROJECT_NAME }}
-            --branch=${{ github.event.workflow_run.head_branch }}
+            --branch=pr-${{ env.PR_NUMBER }}
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
       # - name: Deploy to Cloudflare Pages
       #   uses: andykenward/github-actions-cloudflare-pages@v3.0.0
