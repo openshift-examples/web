@@ -15,6 +15,7 @@ jobs:
       deployments: write
       pull-requests: write
     runs-on: ubuntu-latest
+    environment: Cloudflare Pages
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
