@@ -1,30 +1,25 @@
-name: pr-close
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 
+name: 'PR Close - Deletion'
 on:
   pull_request:
     types:
       - closed
-
-permissions:
-  contents: write
+    branches:
+      - main
 
 jobs:
-  cleanup:
+  deploy-delete:
+    permissions:
+      actions: read # Only required for private GitHub Repo
+      contents: read
+      deployments: write
+      pull-requests: write
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v3
+      - name: Deploy deletion Cloudflare Pages
+        uses: andykenward/github-actions-cloudflare-pages/delete@v2.3.2
         with:
-          fetch-depth: 0
-      - uses: actions/setup-python@v6
-        with:
-          python-version: 3.12
-          cache: 'pip'
-      - name: Install Dependencies
-        run: |
-          pip install -r requirements.txt
-      - name: Setup Docs Deploy
-        run: |
-          git config --global user.name "Docs Deploy"
-          git config --global user.email "docs.deploy@example.co.uk"
-      - name: Build Docs Website
-        run: mike delete --push pr-${{ github.event.pull_request.number }}
+          cloudflare-api-token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}

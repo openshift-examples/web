@@ -1,4 +1,4 @@
-name: pr-check
+name: pre-commit
 
 on:
   pull_request:

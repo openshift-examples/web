@@ -1,10 +1,12 @@
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
-name: 'Publish main/production'
+name: 'Deploy'
 on:
   push:
     branches:
       - main
-
+  pull_request:
+    branches:
+      - main
 jobs:
   deploy:
     permissions:
