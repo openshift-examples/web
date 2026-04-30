@@ -1,0 +1,48 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+# Trusted follow-up: runs in base-repo context so secrets and environments work (incl. fork PRs).
+# andykenward/github-actions-cloudflare-pages only supports push/pull_request/workflow_dispatch,
+# not workflow_run, so previews use wrangler directly (same pattern as Cloudflare docs).
+name: PR Preview Deploy
+on:
+  workflow_run:
+    workflows:
+      - PR Preview Validate
+    types:
+      - completed
+
+jobs:
+  deploy:
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    environment: Cloudflare Pages
+    permissions:
+      contents: read
+      deployments: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event.workflow_run.head_repository.full_name || github.repository }}
+          ref: ${{ github.event.workflow_run.head_sha }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: 3.12
+          cache: pip
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Build docs
+        run: mkdocs build
+      - name: Deploy to Cloudflare Pages
+        uses: andykenward/github-actions-cloudflare-pages@v3.0.0
+        id: pages
+        with:
+          cloudflare-api-token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          cloudflare-account-id: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          cloudflare-project-name: ${{ vars.CLOUDFLARE_PROJECT_NAME }}
+          directory: site
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-environment: Cloudflare Pages

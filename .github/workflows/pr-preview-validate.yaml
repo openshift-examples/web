@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+# Runs without secrets (safe for fork PRs). PR Preview Deploy runs after this completes.
+name: PR Preview Validate
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: 3.12
+          cache: 'pip'
+      - name: pre-commit
+        uses: pre-commit/action@v3.0.1
+        with:
+          extra_args: "--from-ref origin/main --to-ref HEAD"
