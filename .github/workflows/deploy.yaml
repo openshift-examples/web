@@ -45,4 +45,4 @@ jobs:
           cloudflare-project-name: ${{ vars.CLOUDFLARE_PROJECT_NAME }}
           directory: site
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          github-environment: ${{ vars.CLOUDFLARE_PROJECT_NAME }} ${{ (github.ref == 'refs/heads/main' && '(Production)') || '(Preview)' }}
+          github-environment: Cloudflare Pages
