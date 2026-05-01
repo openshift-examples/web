@@ -3,7 +3,7 @@ name: 1 - Check and Build Web Page PR
 
 on:
   pull_request:
-    branches: [ "main" ] 
+    branches: ["main"]
 
 jobs:
   linter:
