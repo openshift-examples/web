@@ -37,7 +37,7 @@ jobs:
           name: pr-metadata
           run-id: ${{ github.event.workflow_run.id }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
-      
+
       - name: Set PR Number Context
         run: |
           PR_NUMBER=$(cat pr-number.txt)
@@ -49,7 +49,7 @@ jobs:
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }} 
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: |
             pages deploy site/ --project-name=openshift-examples --branch pr-${{ env.PR_NUMBER }}
           # Optional: Enable this if you want to have GitHub Deployments triggered

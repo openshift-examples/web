@@ -29,7 +29,7 @@ jobs:
           name: pr-metadata
           run-id: ${{ github.event.workflow_run.id }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
-      
+
       - name: Set PR Number Context
         run: |
           PR_NUMBER=$(cat pr-number.txt)
@@ -45,27 +45,27 @@ jobs:
           PR_NUMBER: ${{ env.PR_NUMBER }}
         run: |
           echo "Cleaning up deployments for PR #$PR_NUMBER..."
-          
+
           # 1. Install the Cloudflare Wrangler CLI
           npm install -g wrangler
-          
+
           # 2. Fetch all project deployments as a JSON payload
           wrangler pages deployment list --project-name $PROJECT_NAME --json > deployments.json
-          
+
           # 3. Use 'jq' to filter the JSON for deployments matching this PR's branch
           # (In our previous step, we named the branch 'pr-123')
           TARGET_IDS=$(jq -r ".[] | select(.Branch == \"pr-$PR_NUMBER\") | .Id" deployments.json)
-          
+
           # Check if any deployments were actually found
           if [ -z "$TARGET_IDS" ]; then
             echo "No preview deployments found for pr-$PR_NUMBER."
             exit 0
           fi
-          
+
           # 4. Loop through the matching IDs and force-delete them
           for ID in $TARGET_IDS; do
             echo "Deleting deployment ID: $ID..."
             wrangler pages deployment delete $ID --project-name $PROJECT_NAME --force
           done
-          
+
           echo "🎉 Cleanup complete!"
