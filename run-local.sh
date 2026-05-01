@@ -1,4 +1,4 @@
 podman run -ti --user 0 --rm \
   -v $(pwd):/opt/app-root/src:z \
-  -p 8080:8080 quay.io/openshift-examples/builder:202601121657
+  -p 8080:8080 quay.io/openshift-examples/builder:202604300846
 
