@@ -43,6 +43,7 @@ theme:
     - navigation.indexes
     - navigation.tracking
     - content.code.copy
+    - content.code.annotate
 
 # Extras
 extra:
