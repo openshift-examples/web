@@ -6,7 +6,7 @@ tags: ['hcp','v4.21']
 ---
 # Hosted Control Plane and tenant networking
 
-Official documentation: Net yet available
+Official documentation: Not yet available
 
 Tested with:
 
@@ -17,53 +17,48 @@ Tested with:
 
 ## Overview
 
-Challenge: running an hosted cluster with in different tenant network segment/vlan without widely open access from tenant segment to managment segment.
+Challenge: running a hosted cluster in a different tenant network segment or VLAN without wide-open access from the tenant segment to the management segment.
 
-Addtional requirement, the hub cluster should not have any address or network connection into the tenant network segment. It's only allowed to place virtual machines into the network segment. 
+Additional requirement: the hub cluster must not have arbitrary addressing or routing into the tenant network segment. The hub may only attach hosted-cluster workloads (for example, KubeVirt VMs) to that segment.
 
 ![](overview.drawio){ page="Page-1" }
 
-The worker nodes of the hosted cluster are quite easy to solve, just connected them into the tenant network segment (import, DHCP is required).
+Worker nodes are straightforward: attach them to the tenant network segment (DHCP or equivalent addressing is required).
 
-The hosted control plane compontents to expose into tenant network segment is more challenging. Following components have to concider:
+Exposing hosted control plane endpoints into the tenant segment is harder. The following components must be reachable from workers and clients in that segment:
 
 * API Server
 * OAuth
 * Konnectivity
-* Ignition 
+* Ignition
 
-Here an list of possible exposing options for these components:
+Here is a summary of common publishing options for these components:
 
-|Component/Service|Exposing strategy (`servicePublishingStrategy`)|Kubernetes Service type `LoadBalancer`|Ingress/Route|
+|Component/Service|Exposing strategy (`servicePublishingStrategy`)|Kubernetes Service type `LoadBalancer`|Route (OpenShift router)|
 |---|---|---|---|
-|API Server|<li>LoadBalancer (Recommended, K8s Service Type Load Balancer)</li><li>NodePort* (not for production)</li>|✅|❌|
-|OAuth|<li>Route/Ingress (default)</li><li>NodePort* (not for production)</li>|❌|✅|
-|Konnectivity|<li>Route/Ingress (default)</li><li>LoadBalancer (K8s Service Type Load Balancer)</li><li>NodePort* (not for production)</li>|✅|✅|
-|Ignition|<li>Route/Ingress (default)</li><li>NodePort* (not for production)</li>|✅|❌|
+|API Server|<li>LoadBalancer (recommended; Kubernetes `LoadBalancer` service)</li><li>NodePort* (not for production)</li>|✅|❌|
+|OAuth|<li>Route (default)</li><li>NodePort* (not for production)</li>|❌|✅|
+|Konnectivity|<li>Route (default)</li><li>LoadBalancer (Kubernetes `LoadBalancer` service)</li><li>NodePort* (not for production)</li>|✅|✅|
+|Ignition|<li>Route (default)</li><li>NodePort* (not for production)</li>|✅|❌|
 
-For our proof of concept we want to try following, exposing the components via:
+For this proof of concept, endpoints are exposed as follows:
 
-* API Server: LoadBalancer
-* OAuth: Router/Ingress: via a dedicted router shard. 
-* Konnectivity: via a dedicted router shard. 
-* Ignition: via a dedicted router shard. 
+* API Server: `LoadBalancer` (fronted by external `api-lb` in the tenant segment; see below)
+* OAuth, Konnectivity, Ignition: `Route` via a **dedicated ingress controller shard** on the hub, fronted by external `ingress-shared-lb` with VIPs/DNS in the tenant segment
 
-## Exposing compontents via router/ingress shard
+## Exposing components via a dedicated router shard
 
-The idea with the dedicated router/ingress shared is to expose the router/ingress shard into the tenant network segment and only for the hosted cluster components. 
+Use a dedicated OpenShift Ingress Controller shard on the **hub** so only the hosted-cluster control-plane Routes are served by that shard. Tenant clients resolve OAuth, Konnectivity, and Ignition hostnames to `ingress-shared-lb`, which forwards to the shard’s NodePorts on the management network.
 
-In front of the router/ingress shared is an external load balancer (for example, f5 bigip, netscaler,..) with access into the managment network segment and expose the router shared into the tenant network segment.
+Place an external load balancer in front of that shard (for example F5 BIG-IP or NetScaler) that can reach the hub’s management network and present stable tenant-facing VIPs or addresses.
 
-
-
-
-## Proof of concept envrioment overview
+## Proof of concept environment overview
 
 ![](overview.drawio){ page="Page-2" }
 
 ### Router between Mgmt and Tenant-A
 
-[VyOS Router](https://vyos.io/) router & firewall. Do not allow Traffic between Mgmt and Tenant-A network except DNS and gateway.
+[VyOS](https://vyos.io/) acts as router and firewall between management and Tenant-A. Restrict **lateral** traffic between the two segments (no full mesh); allow only what you need (for example DNS to resolvers, default route or NAT for internet egress). Hosted-cluster control-plane traffic from tenant nodes should flow to the **external load balancer VIPs** in the tenant segment (not directly into arbitrary management subnets).
 
 ??? example "VyOS config commands"
 
@@ -71,11 +66,10 @@ In front of the router/ingress shared is an external load balancer (for example,
     --8<-- "content/cluster-installation/hosted-control-plane/tenant-network/vyos-router-2003.txt"
     ```
 
-### Ingress Sharding
+### Ingress Sharding at Hub Cluster
 
 * [2.3.4. Ingress sharding in OpenShift Container Platform](https://docs.redhat.com/en/documentation/openshift_container_platform/4.21/html/ingress_and_load_balancing/configuring-ingress-cluster-traffic#nw-ingress-sharding-concept_configuring-ingress-cluster-traffic-ingress-controller)
 * [3.1.3.8.1. Example load balancer configuration for user-provisioned clusters](https://docs.redhat.com/en/documentation/openshift_container_platform/4.21/html/installing_on_vmware_vsphere/user-provisioned-infrastructure)
-
 
 ???+ example "Ingress Controller"
 
@@ -89,12 +83,12 @@ NAME                       TYPE       CLUSTER-IP       EXTERNAL-IP   PORT(S)    
 router-nodeport-tenant-a   NodePort   172.30.141.209   <none>        80:32460/TCP,443:32488/TCP,1936:32095/TCP   106s
 ```
 
-Ingress sharding load balancer is an RHEL 9 system with haproxy.
+The ingress shard load balancer is an RHEL 9 host running HAProxy (external load balancer `ingress-shared-lb`).
 
-* Install HAProxy `dnf install haproxy`
-* Configure selinux `setsebool -P haproxy_connect_any 1`
-* Apply Example haproxy.conf (don't forget to update ports)
-* Enabel and start haproxy `systemctl enable --now haproxy`
+* Install HAProxy: `dnf install haproxy`
+* Configure SELinux: `setsebool -P haproxy_connect_any 1`
+* Apply the example `haproxy` configuration (update ports to match your NodePort service)
+* Enable and start HAProxy: `systemctl enable --now haproxy`
 
 ??? example "HAProxy config"
 
@@ -102,7 +96,7 @@ Ingress sharding load balancer is an RHEL 9 system with haproxy.
     --8<-- "content/cluster-installation/hosted-control-plane/tenant-network/ingress-shared-haproxy.conf"
     ```
 
-Add DNS Records 
+Add DNS records
 
 ```bind
 konnectivity.tenant-a.coe.muc.redhat.com.       IN A 192.168.203.111
@@ -110,19 +104,65 @@ oauth.tenant-a.coe.muc.redhat.com.              IN A 192.168.203.111
 ignition.tenant-a.coe.muc.redhat.com.           IN A 192.168.203.111
 ```
 
+### Deployment sequence (reference)
 
+Three external load balancers appear in this write-up; keep their roles distinct:
 
+| Name | Role |
+|------|------|
+| `ingress-shared-lb` | Tenant-facing VIPs for OAuth, Konnectivity, Ignition Routes on the **hub** ingress shard |
+| `api-lb` | Tenant-facing VIP for the hosted cluster **API** (`APIServer` publishing) |
+| `ingress-lb` | Tenant-facing VIP for **hosted cluster** application Routes (`*.apps…`) |
 
+Suggested order: (1) hub ingress shard + `ingress-shared-lb` + DNS for the three control-plane hostnames, (2) `api-lb` + API DNS, (3) `ingress-lb` + wildcard apps DNS, then (4) apply `HostedCluster` and `NodePool`. Adjust if your automation creates services first and you backfill DNS once NodePorts or service endpoints are known.
 
+The following two subsections describe (2) and (3); the hub shard and DNS for OAuth, Konnectivity, and Ignition are covered above.
 
+### Deploy External Load Balancer for API (`api-lb`)
 
+Use an RHEL 9 virtual machine with HAProxy.
 
+* Install HAProxy: `dnf install haproxy`
+* Configure SELinux: `setsebool -P haproxy_connect_any 1`
+* Apply the example `haproxy` configuration (update ports to match your environment)
+* Enable and start HAProxy: `systemctl enable --now haproxy`
 
-apiVersion: project.openshift.io/v1
-kind: Project
-metadata:
-  name: 'clusters'
----
+??? example "HAProxy config"
+
+    ```shell
+    --8<-- "content/cluster-installation/hosted-control-plane/tenant-network/api-lb.conf"
+    ```
+
+Add DNS record:
+
+```bind
+api.tenant-a.coe.muc.redhat.com.       IN A 192.168.203.<IP of VM>
+```
+
+### Deploy External Load Balancer for Ingress (`ingress-lb`) of hosted cluster
+
+Use an RHEL 9 virtual machine with HAProxy.
+
+* Install HAProxy: `dnf install haproxy`
+* Configure SELinux: `setsebool -P haproxy_connect_any 1`
+* Apply the example `haproxy` configuration (update ports to match your environment)
+* Enable and start HAProxy: `systemctl enable --now haproxy`
+
+??? example "HAProxy config"
+
+    ```shell
+    --8<-- "content/cluster-installation/hosted-control-plane/tenant-network/ingress-lb.conf"
+    ```
+
+Add DNS record:
+
+```bind
+*.apps.tenant-a.coe.muc.redhat.com.       IN A 192.168.203.<IP of VM>
+```
+
+### Start hosted control plane and nodepool
+
+```yaml hl_lines="11 43-66" title="HostedCluster"
 apiVersion: hypershift.openshift.io/v1beta1
 kind: HostedCluster
 metadata:
@@ -133,7 +173,7 @@ metadata:
 spec:
   configuration:
     ingress:
-      appsDomain: apps.tenant-a.coe.muc.redhat.com
+      appsDomain: apps.tenant-a.coe.muc.redhat.com # (1)
       domain: ''
       loadBalancer:
         platform:
@@ -170,12 +210,12 @@ spec:
       servicePublishingStrategy:
         type: LoadBalancer
         loadBalancer:
-          hostname: api.tenant-a.coe.muc.redhat.com
+          hostname: api.tenant-a.coe.muc.redhat.com  # (2)
     - service: OAuthServer
       servicePublishingStrategy:
         type: Route
         route:
-          hostname: oauth.tenant-a.coe.muc.redhat.com
+          hostname: oauth.tenant-a.coe.muc.redhat.com  # (3)
     - service: OIDC
       servicePublishingStrategy:
         type: Route
@@ -183,14 +223,21 @@ spec:
       servicePublishingStrategy:
         type: Route
         route:
-          hostname: konnectivity.tenant-a.coe.muc.redhat.com
+          hostname: konnectivity.tenant-a.coe.muc.redhat.com  # (4)
     - service: Ignition
       servicePublishingStrategy:
         type: Route
         route:
-          hostname: ignition.tenant-a.coe.muc.redhat.com
+          hostname: ignition.tenant-a.coe.muc.redhat.com  # (5)
+```
 
----
+1. `appsDomain`: resolve names under `apps.tenant-a.coe.muc.redhat.com` to **`ingress-lb`** (hosted cluster ingress), not the hub shard.
+2. API server `loadBalancer.hostname`: resolve to **`api-lb`**, which forwards to the `APIServer` publishing target on the hub.
+3. OAuth `route.hostname`: resolve to **`ingress-shared-lb`** (hub dedicated shard).
+4. Konnectivity `route.hostname`: resolve to **`ingress-shared-lb`**.
+5. Ignition `route.hostname`: resolve to **`ingress-shared-lb`**.
+
+```yaml hl_lines="24-26" title="NodePool"
 apiVersion: hypershift.openshift.io/v1beta1
 kind: NodePool
 metadata:
@@ -214,8 +261,17 @@ spec:
         persistent:
           size: 32Gi
       additionalNetworks:
-      - name: default/cudn-localnet1-2003
+      - name: default/cudn-localnet1-2003 # (1)
       attachDefaultNetwork: false
   release:
     image: quay.io/openshift-release-dev/ocp-release:4.21.11-multi
+```
 
+1. Attach NodePool VMs to the tenant segment using a user-defined network (UDN) `localnet` attachment (`default/cudn-localnet1-2003` in this lab).
+
+## Open topics
+
+* Disable or constrain cloud provider integration so that Kubernetes `LoadBalancer` Service requests for the hosted cluster are not satisfied by the hub cluster cloud integration unless that is intentional.
+* WebUI bug: ACM shows `https://console-openshift-console.apps.tenant-a.apps.ocp5.stormshift.coe.muc.redhat.com/` for the console, but the URL should be `https://console-openshift-console.apps.tenant-a.coe.muc.redhat.com/`.
+* Add custom endpoint publishing strategy
+* Find a solution for the NodePort chicken-and-egg problem of the external API load balancer
