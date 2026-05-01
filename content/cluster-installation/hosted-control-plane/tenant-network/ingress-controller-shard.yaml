@@ -10,8 +10,8 @@ spec:
     type: NodePortService
   namespaceSelector:
     matchExpressions:
-    - key: kubernetes.io/metadata.name
-      operator: In
-      values:
-      - ingress-test
-      - clusters-tenant-a
+      - key: kubernetes.io/metadata.name
+        operator: In
+        values:
+          - ingress-test
+          - clusters-tenant-a

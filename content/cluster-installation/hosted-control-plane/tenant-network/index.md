@@ -19,7 +19,7 @@ Tested with:
 
 Challenge: running an hosted cluster with in different tenant network segment/vlan without widely open access from tenant segment to managment segment.
 
-Addtional requirement, the hub cluster should not have any address or network connection into the tenant network segment. It's only allowed to place virtual machines into the network segment. 
+Addtional requirement, the hub cluster should not have any address or network connection into the tenant network segment. It's only allowed to place virtual machines into the network segment.
 
 ![](overview.drawio){ page="Page-1" }
 
@@ -30,7 +30,7 @@ The hosted control plane compontents to expose into tenant network segment is mo
 * API Server
 * OAuth
 * Konnectivity
-* Ignition 
+* Ignition
 
 Here an list of possible exposing options for these components:
 
@@ -44,18 +44,15 @@ Here an list of possible exposing options for these components:
 For our proof of concept we want to try following, exposing the components via:
 
 * API Server: LoadBalancer
-* OAuth: Router/Ingress: via a dedicted router shard. 
-* Konnectivity: via a dedicted router shard. 
-* Ignition: via a dedicted router shard. 
+* OAuth: Router/Ingress: via a dedicted router shard.
+* Konnectivity: via a dedicted router shard.
+* Ignition: via a dedicted router shard.
 
 ## Exposing compontents via router/ingress shard
 
-The idea with the dedicated router/ingress shared is to expose the router/ingress shard into the tenant network segment and only for the hosted cluster components. 
+The idea with the dedicated router/ingress shared is to expose the router/ingress shard into the tenant network segment and only for the hosted cluster components.
 
 In front of the router/ingress shared is an external load balancer (for example, f5 bigip, netscaler,..) with access into the managment network segment and expose the router shared into the tenant network segment.
-
-
-
 
 ## Proof of concept envrioment overview
 
@@ -75,7 +72,6 @@ In front of the router/ingress shared is an external load balancer (for example,
 
 * [2.3.4. Ingress sharding in OpenShift Container Platform](https://docs.redhat.com/en/documentation/openshift_container_platform/4.21/html/ingress_and_load_balancing/configuring-ingress-cluster-traffic#nw-ingress-sharding-concept_configuring-ingress-cluster-traffic-ingress-controller)
 * [3.1.3.8.1. Example load balancer configuration for user-provisioned clusters](https://docs.redhat.com/en/documentation/openshift_container_platform/4.21/html/installing_on_vmware_vsphere/user-provisioned-infrastructure)
-
 
 ???+ example "Ingress Controller"
 
@@ -102,7 +98,7 @@ Ingress sharding load balancer is an RHEL 9 system with haproxy.
     --8<-- "content/cluster-installation/hosted-control-plane/tenant-network/ingress-shared-haproxy.conf"
     ```
 
-Add DNS Records 
+Add DNS Records
 
 ```bind
 konnectivity.tenant-a.coe.muc.redhat.com.       IN A 192.168.203.111
@@ -110,14 +106,7 @@ oauth.tenant-a.coe.muc.redhat.com.              IN A 192.168.203.111
 ignition.tenant-a.coe.muc.redhat.com.           IN A 192.168.203.111
 ```
 
-
-
-
-
-
-
-
-
+```yaml
 apiVersion: project.openshift.io/v1
 kind: Project
 metadata:
@@ -189,7 +178,6 @@ spec:
         type: Route
         route:
           hostname: ignition.tenant-a.coe.muc.redhat.com
-
 ---
 apiVersion: hypershift.openshift.io/v1beta1
 kind: NodePool
@@ -218,4 +206,4 @@ spec:
       attachDefaultNetwork: false
   release:
     image: quay.io/openshift-release-dev/ocp-release:4.21.11-multi
-
+```
