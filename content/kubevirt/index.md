@@ -4,7 +4,7 @@ linktitle: "Virtualization"
 weight: 14000
 description: Running VM's on OpenShift
 tags: ['cnv', 'kubevirt','ocp-v']
-icon: redhat/Technology_icon-Red_Hat-OpenShift_Virtualization-Standard-RGB
+icon: material/server
 ---
 
 # OpenShift Virtualization (CNV/KubeVirt)
