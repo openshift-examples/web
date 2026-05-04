@@ -15,6 +15,12 @@ Tested with:
 |OpenShift|v4.21.9|
 |OpenShift Virt|v4.21.0|
 
+## ToDo's
+
+* Add custom endpointpublishing strategy
+* Find a solution for the nodeport chicken egg problem of external api load balancer
+* Check WebUI bug: Ingress domain is wrong.
+
 ## Overview
 
 Challenge: running an hosted cluster with in different tenant network segment/vlan without widely open access from tenant segment to managment segment.
@@ -60,7 +66,7 @@ In front of the router/ingress shared is an external load balancer (for example,
 
 ### Router between Mgmt and Tenant-A
 
-[VyOS Router](https://vyos.io/) router & firewall. Do not allow Traffic between Mgmt and Tenant-A network except DNS and gateway.
+[VyOS Router](https://vyos.io/) router & firewall. Do not allow Traffic between Mgmt and Tenant-A network except DNS and gateway. To provde direct internect connection.
 
 ??? example "VyOS config commands"
 
@@ -106,12 +112,9 @@ oauth.tenant-a.coe.muc.redhat.com.              IN A 192.168.203.111
 ignition.tenant-a.coe.muc.redhat.com.           IN A 192.168.203.111
 ```
 
+### Start hosted control plane and nodepool
+
 ```yaml
-apiVersion: project.openshift.io/v1
-kind: Project
-metadata:
-  name: 'clusters'
----
 apiVersion: hypershift.openshift.io/v1beta1
 kind: HostedCluster
 metadata:
@@ -178,6 +181,9 @@ spec:
         type: Route
         route:
           hostname: ignition.tenant-a.coe.muc.redhat.com
+```
+
+```yaml
 ---
 apiVersion: hypershift.openshift.io/v1beta1
 kind: NodePool
@@ -207,3 +213,18 @@ spec:
   release:
     image: quay.io/openshift-release-dev/ocp-release:4.21.11-multi
 ```
+
+### Deploy external load balancer for ingress of hosted cluster
+
+Ingress sharding load balancer is an RHEL 9 system with haproxy.
+
+* Install HAProxy `dnf install haproxy`
+* Configure selinux `setsebool -P haproxy_connect_any 1`
+* Apply Example haproxy.conf (don't forget to update ports)
+* Enabel and start haproxy `systemctl enable --now haproxy`
+
+??? example "HAProxy config"
+
+    ```shell
+    --8<-- "content/cluster-installation/hosted-control-plane/tenant-network/ingress-lb.conf"
+    ```
