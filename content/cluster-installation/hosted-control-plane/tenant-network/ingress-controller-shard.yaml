@@ -1,0 +1,17 @@
+apiVersion: operator.openshift.io/v1
+kind: IngressController
+metadata:
+  name: tenant-a
+  namespace: openshift-ingress-operator
+spec:
+  domain: tenant-a.coe.muc.redhat.com
+
+  endpointPublishingStrategy:
+    type: NodePortService
+  namespaceSelector:
+    matchExpressions:
+      - key: kubernetes.io/metadata.name
+        operator: In
+        values:
+          - ingress-test
+          - clusters-tenant-a

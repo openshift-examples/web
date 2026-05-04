@@ -57,6 +57,7 @@ extra:
 extra_javascript:
   - https://viewer.diagrams.net/js/viewer-static.min.js
   - javascripts/drawio-reload.js
+
 # Extensions
 markdown_extensions:
   - pymdownx.emoji:
@@ -99,6 +100,7 @@ plugins:
       verbose: false
   - glightbox
   - drawio:
+      viewer_js: "https://viewer.diagrams.net/js/viewer-static.min.js"
       toolbar: false    # control if hovering on a diagram shows a toolbar for zooming or not (default: true)
       tooltips: false   # control if tooltips will be shown (default: true)
       edit: false       # control if edit button will be shown in the lightbox view (default: true)
@@ -131,6 +133,7 @@ nav:
       - Hosted Control Plane:
           - cluster-installation/hosted-control-plane/index.md
           - KubeVirt Networking: cluster-installation/hosted-control-plane/kubevirt-networking.md
+          - Tenant Network: cluster-installation/hosted-control-plane/tenant-network/index.md
       - Nvidia GPU:
           - cluster-installation/gpu/index.md
           - GPU on-prem: cluster-installation/gpu/gpu-on-prem.md
