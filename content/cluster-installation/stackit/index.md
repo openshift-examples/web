@@ -366,3 +366,102 @@ Re-run until nothing pending; `machine-approver` normally takes over post-bootst
 ```
 
 Console URL and `kubeadmin` password are printed on success.
+
+## Day-2: default Ingress TLS
+
+### Let’s Encrypt via cert-manager (DNS-01 / STACKIT)
+
+Install **cert-manager Operator for Red Hat OpenShift** from OperatorHub (align minor with cluster; ships CRDs + controller).
+
+**Webhook identity** — the [STACKIT cert-manager webhook](https://github.com/stackitcloud/stackit-cert-manager-webhook) needs API credentials for DNS in the project that **owns** the public zone for `*.apps` (typically the same project as the cluster).
+
+```shell
+stackit service-account create --name cert-manager
+# Export the service-account key JSON from the portal; keep it off shell history and out of docs.
+```
+
+Grant that principal **DNS admin** (or equivalent) on the zone:
+
+![](sa-webui.png)
+
+Secret name below should match Helm `values` / webhook config for the STACKIT SA file:
+
+```shell
+oc create secret generic stackit-sa-authentication \
+  -n cert-manager \
+  --from-file=sa.json=./stackit-cert-manager-sa.json
+```
+
+**Webhook** (Helm):
+
+```shell
+helm repo add stackit-cert-manager-webhook https://stackitcloud.github.io/stackit-cert-manager-webhook
+helm repo update
+helm install stackit-cert-manager-webhook stackit-cert-manager-webhook/stackit-cert-manager-webhook \
+  --namespace cert-manager \
+  --create-namespace
+
+oc -n cert-manager adm policy add-scc-to-user nonroot-v2 -z stackit-cert-manager-webhook
+```
+
+If the chart exposes secret name / key path values, point them at `stackit-sa-authentication` / `sa.json`.
+
+**ClusterIssuer** (production ACME; use Let’s Encrypt **staging** while debugging):
+
+```yaml
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-prod
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: Repalce # Replace this with your email address
+    privateKeySecretRef:
+      name: letsencrypt-prod
+    solvers:
+      - dns01:
+          webhook:
+            solverName: stackit
+            groupName: acme.stackit.de
+            config:
+              projectId: "<STACKIT_PROJECT_ID>"
+```
+
+**Wildcard `Certificate`** in `openshift-ingress` for the default router:
+
+```yaml
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: letsencrypt-wildcard
+  namespace: openshift-ingress
+spec:
+  secretName: letsencrypt-wildcard
+  issuerRef:
+    group: cert-manager.io
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: '*.apps.cluster-a.openshift.runs.onstackit.cloud' # project must be the owner of this zone
+  duration: 8760h0m0s
+  dnsNames:
+    - '*.apps.cluster-a.openshift.runs.onstackit.cloud'
+```
+
+Match `dnsNames` / `commonName` to your apps subdomain. The `projectId` in the issuer must be allowed to publish `_acme-challenge` for that zone.
+
+**Observe issuance** (DNS-01 can take several minutes):
+
+```shell
+oc -n openshift-ingress get certificate,order,challenge
+oc -n openshift-ingress describe certificate letsencrypt-wildcard
+```
+
+**Default `IngressController`** → issued secret:
+
+```shell
+oc patch ingresscontroller/default -n openshift-ingress-operator --type=merge \
+  --patch '{"spec":{"defaultCertificate":{"name":"letsencrypt-wildcard"}}}'
+```
+
+Until the secret is populated, the router keeps serving the installer default; after issuance, HAProxy reload picks up the Let’s Encrypt chain.
