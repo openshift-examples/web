@@ -131,6 +131,8 @@ nav:
       - Hosted Control Plane:
           - cluster-installation/hosted-control-plane/index.md
           - KubeVirt Networking: cluster-installation/hosted-control-plane/kubevirt-networking.md
+      - STACKIT:
+          - cluster-installation/stackit/index.md
       - Nvidia GPU:
           - cluster-installation/gpu/index.md
           - GPU on-prem: cluster-installation/gpu/gpu-on-prem.md

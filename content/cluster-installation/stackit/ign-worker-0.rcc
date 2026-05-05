@@ -1,0 +1,13 @@
+variant: fcos
+version: 1.5.0
+ignition:
+  config:
+    merge:
+      - local: "conf/worker.ign"
+storage:
+  files:
+    - path: /etc/hostname
+      overwrite: true
+      contents:
+        source: data:,worker-0
+      mode: 420

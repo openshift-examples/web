@@ -1,0 +1,15 @@
+variant: fcos
+version: 1.5.0
+ignition:
+  config:
+    merge:
+      - source: "https://ignition.object.storage.eu01.onstackit.cloud/bootstrap.ign"
+storage:
+  files:
+    - path: /etc/hostname
+      overwrite: true
+      contents:
+        source: data:,bootstrap
+      mode: 420
+
+ 

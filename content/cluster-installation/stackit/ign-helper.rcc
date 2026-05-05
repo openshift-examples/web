@@ -1,0 +1,30 @@
+variant: fcos
+version: 1.5.0
+ignition:
+  config:
+    merge:
+      - source: "https://ignition.object.storage.eu01.onstackit.cloud/bootstrap.ign"
+
+storage:
+  files:
+    - path: /etc/hostname
+      overwrite: true
+      contents:
+        source: data:,helper
+      mode: 0420
+    - path: /home/core/.ssh/id_ed25519
+      overwrite: true
+      contents:
+        local: .ssh/ocp-on-stackit
+      mode: 0600
+    - path: /home/core/.ssh/id_ed25519.pub
+      overwrite: true
+      contents:
+        local: .ssh/ocp-on-stackit.pub
+      mode: 0600
+passwd:
+  users:
+    - name: core
+      password_hash: "$y$j9T$15cuONdoH5AKB62c9qTtD.$oOf4GqrwEnNzT7WuEFvkDuSOyv2xIx/z4EXzbQivdO0"
+      ssh_authorized_keys_local: 
+        - .ssh/ocp-on-stackit.pub
