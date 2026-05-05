@@ -1,0 +1,54 @@
+{
+    "listeners": [
+      {
+        "displayName": "api",
+        "port": 6443,
+        "protocol": "PROTOCOL_TCP",
+        "targetPool": "api"
+      },{
+        "displayName": "machine-config-server",
+        "port": 22623,
+        "protocol": "PROTOCOL_TCP",
+        "targetPool": "machine-config-server"
+      }
+    ],
+    "name": "lb-int",
+    "networks": [
+      {
+        "networkId": "<REPLACE WITH NETWORK_ID>",
+        "role": "ROLE_LISTENERS_AND_TARGETS"
+      }
+    ],
+    "options": {
+      "accessControl": {
+        "allowedSourceRanges": [
+          "10.0.0.0/24"
+        ]
+      },
+      "ephemeralAddress": false,
+      "privateNetworkOnly": true
+    },
+    "planId": "p10",
+    "targetPools": [
+      {
+        "name": "api",
+        "targetPort": 6443,
+        "targets": [
+          { "displayName": "bootstrap","ip": "REPLACE WITH IP OF BOOTSTRAP NODE"},
+          { "displayName": "control-plane-0","ip": "REPLACE WITH IP OF CONTROL PLANE 0 NODE"},
+          { "displayName": "control-plane-1","ip": "REPLACE WITH IP OF CONTROL PLANE 1 NODE"},
+          { "displayName": "control-plane-2","ip": "REPLACE WITH IP OF CONTROL PLANE 2 NODE"}
+        ]
+      },
+      {
+        "name": "machine-config-server",
+        "targetPort": 22623,
+        "targets": [
+          { "displayName": "bootstrap","ip": "REPLACE with IP"},
+          { "displayName": "control-plane-0","ip": "REPLACE WITH IP OF CONTROL PLANE 0 NODE"},
+          { "displayName": "control-plane-1","ip": "REPLACE WITH IP OF CONTROL PLANE 1 NODE"},
+          { "displayName": "control-plane-2","ip": "REPLACE WITH IP OF CONTROL PLANE 2 NODE"}
+        ]
+      }
+    ]
+}
