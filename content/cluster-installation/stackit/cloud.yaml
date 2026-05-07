@@ -1,0 +1,6 @@
+# cloud.yaml
+global:
+  projectId: <project id>
+  region: eu01
+loadBalancer:
+  networkId: <network id>
