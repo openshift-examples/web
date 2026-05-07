@@ -3,7 +3,8 @@ kind: Kustomization
 
 namespace: stackit-csi-driver
 resources:
-  - git@github.com:stackitcloud/cloud-provider-stackit/deploy/csi-plugin/
+  # HTTPS so `oc apply -k` works without a GitHub SSH key (pin ref for reproducibility).
+  - https://github.com/stackitcloud/cloud-provider-stackit.git//deploy/csi-plugin?ref=main
 
 images:
   - name: ghcr.io/stackitcloud/cloud-provider-stackit/stackit-csi-plugin:release-v1.34

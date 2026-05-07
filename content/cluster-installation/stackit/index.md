@@ -466,7 +466,9 @@ oc patch ingresscontroller/default -n openshift-ingress-operator --type=merge \
 
 Until the secret is populated, the router keeps serving the installer default; after issuance, HAProxy reload picks up the Let’s Encrypt chain.
 
-## Day-2: Add GPU Node
+## Day-2: Add GPU node
+
+Extra worker that merges the same **`conf/worker.ign`** as the other workers (hostname-only delta in Butane). Pick a GPU **flavor** and **AZ** that exist in your project.
 
 === "Download"
 
@@ -476,86 +478,83 @@ Until the secret is populated, the router keeps serving the installer default; a
 
 === "ign-gpu-worker-0.rcc"
 
-    ```json
+    ```yaml
     --8<-- "content/cluster-installation/stackit/ign-gpu-worker-0.rcc"
     ```
 
 ```shell
-  stackit server create \
-    --assume-yes \
-    --availability-zone eu01-1 \
-    --machine-type n2.14d.g1 \
-    --name "cluster-a-gpu-worker-0" \
-    --boot-volume-source-type image \
-    --boot-volume-source-id 6055861d-6641-4a45-b00e-fcfb250d65e6 \
-    --boot-volume-delete-on-termination \
-    --boot-volume-size 120 \
-    --network-id 459afb3e-54fa-45d4-a972-ae39ec370761 \
-    --user-data @<(butane -d . -r "ign-gpu-worker-0.rcc")
+stackit server create \
+  --assume-yes \
+  --availability-zone eu01-1 \
+  --machine-type n2.14d.g1 \
+  --name cluster-a-gpu-worker-0 \
+  --boot-volume-source-type image \
+  --boot-volume-source-id <RHCOS_IMAGE_ID> \
+  --boot-volume-delete-on-termination \
+  --boot-volume-size 120 \
+  --network-id <NETWORK_ID> \
+  --user-data @<(butane -d . -r ign-gpu-worker-0.rcc)
 ```
 
-Wait and approve CSR
+When the node registers, approve any lingering **Pending** CSRs:
 
 ```shell
 export KUBECONFIG="$PWD/conf/auth/kubeconfig"
 oc get csr | awk '/Pending/{print $1}' | xargs oc adm certificate approve
 ```
 
-Install Nvidia GPU Operator: [NVIDIA GPU Operator on Red Hat OpenShift Container Platform](https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/index.html)
+Install the **NVIDIA GPU Operator** (catalog channel + `ClusterPolicy` per your OCP version): [NVIDIA GPU Operator on OpenShift](https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/index.html).
+
+Sanity-check after the operator has prepared the node runtime:
 
 ```shell
-oc create -f - <<EOF
+oc new-project gpu-test
+oc apply -f - <<'EOF'
 apiVersion: v1
 kind: Pod
 metadata:
   name: nvidia-smi
+  namespace: gpu-test
 spec:
+  restartPolicy: Never
   containers:
-  - image: registry.redhat.io/rhai/base-image-cuda-13.0-rhel9:3.3.1-1775076057
-    name: nvidia-smi
-    command: [ nvidia-smi ]
-    resources:
-      limits:
-        nvidia.com/gpu: 1
-      requests:
-        nvidia.com/gpu: 1
+    - name: nvidia-smi
+      image: registry.redhat.io/rhai/base-image-cuda-13.0-rhel9:3.3.1-1775076057
+      command: [nvidia-smi]
+      resources:
+        limits:
+          nvidia.com/gpu: "1"
+        requests:
+          nvidia.com/gpu: "1"
 EOF
+oc wait -n gpu-test --for=condition=Ready pod/nvidia-smi --timeout=120s
+oc logs -n gpu-test nvidia-smi
+```
 
-$ oc logs nvidia-smi
+Example output (hardware-dependent):
+
+```text
 Tue May  5 13:27:54 2026
 +-----------------------------------------------------------------------------------------+
 | NVIDIA-SMI 580.126.20             Driver Version: 580.126.20     CUDA Version: 13.0     |
 +-----------------------------------------+------------------------+----------------------+
-| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
-| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
-|                                         |                        |               MIG M. |
-|=========================================+========================+======================|
 |   0  NVIDIA L40S                    On  |   00000000:05:00.0 Off |                    0 |
 | N/A   29C    P8             36W /  350W |       0MiB /  46068MiB |      0%      Default |
-|                                         |                        |                  N/A |
-+-----------------------------------------+------------------------+----------------------+
-
-+-----------------------------------------------------------------------------------------+
-| Processes:                                                                              |
-|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
-|        ID   ID                                                               Usage      |
-|=========================================================================================|
-|  No running processes found                                                             |
 +-----------------------------------------------------------------------------------------+
 ```
 
-## Day-2: Deploy Cloud Controller Manager (CCM)
+Pin the CUDA **image digest** in production; the tag above is illustrative.
 
-[Upstream documentation](https://github.com/stackitcloud/cloud-provider-stackit/blob/main/docs/deployment.md)
+## Day-2: Cloud Controller Manager (CCM)
 
-* Create an Service Account at STACKIT called `ccm-and-csi`
-* Create Service account keys and download the json file
-* Assign editor role for the entire project.
+**Prereq** — STACKIT service account (reuse for CSI below):
 
-Deployment steps:
+* Create a service account (e.g. `ccm-and-csi`), download the key JSON.
+* Grant **Editor** on the project that owns `projectId` / `networkId` in `cloud.yaml`.
 
 ```shell
-oc create secret generic -n kube-system stackit-cloud-secret --from-file=sa_key.json=<service account json>
+oc create secret generic -n kube-system stackit-cloud-secret \
+  --from-file=sa_key.json=./stackit-ccm-sa.json
 ```
 
 === "Download"
@@ -566,108 +565,92 @@ oc create secret generic -n kube-system stackit-cloud-secret --from-file=sa_key.
 
 === "cloud.yaml"
 
-    ```json
+    ```yaml
     --8<-- "content/cluster-installation/stackit/cloud.yaml"
     ```
 
-Adjust cloud.yaml and put into configmap:
-
 ```shell
-oc create configmap -n kube-system stackit-cloud-config --from-file=cloud.yaml
+oc create configmap -n kube-system stackit-cloud-config \
+  --from-file=cloud.yaml=./cloud.yaml
 ```
 
-Deploy cloud controller manager:
+Upstream RBAC + `Service` (pin a **commit** if you do not want `main` drifting):
 
 ```shell
-oc apply -f https://raw.githubusercontent.com/stackitcloud/cloud-provider-stackit/refs/heads/main/deploy/cloud-controller-manager/rbac.yaml
-oc apply -f https://github.com/stackitcloud/cloud-provider-stackit/raw/refs/heads/main/deploy/cloud-controller-manager/service.yaml
+CCM_BASE=https://raw.githubusercontent.com/stackitcloud/cloud-provider-stackit/main/deploy/cloud-controller-manager
+oc apply -f "${CCM_BASE}/rbac.yaml"
+oc apply -f "${CCM_BASE}/service.yaml"
 ```
 
 === "Apply"
 
     ```shell
-    oc apply -f{{ page.canonical_url }}ccm-and-csi-deployment.yaml
+    oc apply -f {{ page.canonical_url }}ccm-and-csi-deployment.yaml
     ```
 
 === "ccm-and-csi-deployment.yaml"
 
-    ```json
+    ```yaml
     --8<-- "content/cluster-installation/stackit/ccm-and-csi-deployment.yaml"
     ```
 
-???+ failure
+???+ warning "CCM panic observed"
+
+    With **`cloud-controller-manager:v1.36.0`** this deployment **segfaulted** right after startup (nil deref). Root cause not chased here. **CSI dynamic provisioning still worked** without a healthy CCM — storage does not depend on cloud `Service` LBs — but confirm for your image / region before assuming that split is always safe.
 
     ```
     starting Controller
     I0507 12:55:45.723462 1 serving.go:411] Generated self-signed cert in-memory
-    W0507 12:55:45.723531 1 client_config.go:683] Neither --kubeconfig nor --master was specified. Using the inClusterConfig. This might not work.
+    W0507 12:55:45.723531 1 client_config.go:683] Neither --kubeconfig nor --master was
+    specified. Using the inClusterConfig. This might not work.
     panic: runtime error: invalid memory address or nil pointer dereference
     [signal SIGSEGV: segmentation violation code=0x1 addr=0x18 pc=0x4fe685]
     ```
 
     **No further investigation, because it looks CSI works without CCM**
 
-## Day-2: Container Storage Interface (CSI) Driver
+## Day-2: STACKIT CSI driver
 
-[Upstream documentation](https://github.com/stackitcloud/cloud-provider-stackit/blob/main/docs/csi-driver.md)
+[Upstream CSI doc](https://github.com/stackitcloud/cloud-provider-stackit/blob/main/docs/csi-driver.md). Reuse the **same** STACKIT SA and `cloud.yaml` as in the CCM section.
 
-* Create an Service Account at STACKIT called `ccm-and-csi` (already done in `[Day-2: Deploy Cloud Controller Manager (CCM)` )
-* Create Service account keys and download the json file (already done in `[Day-2: Deploy Cloud Controller Manager (CCM)` )
-* Assign editor role for the entire project. (already done in `[Day-2: Deploy Cloud Controller Manager (CCM)` )
-
-Let's deploy the csi-driver into namespace/project `stackit-csi-driver`
+The overlay sets **`namespace: stackit-csi-driver`** on all resources from the remote base. Put **`stackit-cloud-secret`** and **`stackit-cloud-config` in that namespace** — not `kube-system` — or the controller never mounts credentials.
 
 ```shell
 oc new-project stackit-csi-driver
+oc create secret generic -n stackit-csi-driver stackit-cloud-secret \
+  --from-file=sa_key.json=./stackit-ccm-sa.json
+oc create configmap -n stackit-csi-driver stackit-cloud-config \
+  --from-file=cloud.yaml=./cloud.yaml
 ```
 
+Node plugin needs host paths / devices; grant **`privileged`** to the node SA (narrow with a custom SCC later if you need to):
+
 ```shell
-oc create secret generic -n kube-system stackit-cloud-secret --from-file=sa_key.json=<service account json>
+oc -n stackit-csi-driver adm policy add-scc-to-user privileged -z csi-stackit-node-sa
 ```
+
+Working directory for `kustomize build` / `oc apply -k`: remote base is **HTTPS** (no `git@` SSH key). Image tag override stays in the local overlay.
 
 === "Download"
 
     ```shell
-    curl -L -O {{ page.canonical_url }}cloud.yaml
-    ```
-
-=== "cloud.yaml"
-
-    ```json
-    --8<-- "content/cluster-installation/stackit/cloud.yaml"
-    ```
-
-Adjust cloud.yaml and put into configmap:
-
-```shell
-oc create configmap stackit-cloud-config --from-file=cloud.yaml
-```
-
-Allow the CSI node componentes to run privileged, looks like it only need hostpath and hostnetwork. It's recommended to pick and/or create a more precise security context constraint.
-
-```shell
-oc adm policy add-scc-to-user privileged -z csi-stackit-node-sa
-```
-
-Download and apply `kustomization.yaml` to deploy csi driver into specific namespace and propper image url
-
-=== "Download"
-
-    ```shell
-    curl -L -O {{ page.canonical_url }}kustomization.yaml
+    mkdir -p stackit-csi && cd stackit-csi
+    curl -L -O {{ page.canonical_url }}csi/kustomization.yaml
     ```
 
 === "kustomization.yaml"
 
-    ```json
-    --8<-- "content/cluster-installation/stackit/kustomization.yaml"
+    ```yaml
+    --8<-- "content/cluster-installation/stackit/csi/kustomization.yaml"
     ```
 
 ```shell
 oc apply -k .
 ```
 
-### Let's try to storage
+### Validate provisioning
+
+`StorageClass` **`premium-perf4-stackit`** ships with the upstream CSI bundle (name matches [their examples](https://github.com/stackitcloud/cloud-provider-stackit/blob/main/docs/csi-driver.md)).
 
 ```shell
 oc new-project storage-test
@@ -681,6 +664,6 @@ oc new-project storage-test
 
 === "lets-try-storage.yaml"
 
-    ```json
+    ```yaml
     --8<-- "content/cluster-installation/stackit/lets-try-storage.yaml"
     ```
