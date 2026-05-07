@@ -1,0 +1,11 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: stackit-csi-driver
+resources:
+  - git@github.com:stackitcloud/cloud-provider-stackit/deploy/csi-plugin/
+
+images:
+  - name: ghcr.io/stackitcloud/cloud-provider-stackit/stackit-csi-plugin:release-v1.34
+    newName: ghcr.io/stackitcloud/cloud-provider-stackit/stackit-csi-plugin
+    newTag: v1.36.0
