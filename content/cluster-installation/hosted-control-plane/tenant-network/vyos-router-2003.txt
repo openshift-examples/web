@@ -1,0 +1,27 @@
+set firewall group address-group ALLOWED-IPS address '10.32.96.1'
+set firewall group address-group ALLOWED-IPS address '10.32.96.31'
+set firewall group address-group ALLOWED-IPS address '10.32.111.254'
+set firewall ipv4 forward filter rule 49 action 'accept'
+set firewall ipv4 forward filter rule 49 description 'Allow IPs'
+set firewall ipv4 forward filter rule 49 destination group address-group 'ALLOWED-IPS'
+set firewall ipv4 forward filter rule 50 action 'drop'
+set firewall ipv4 forward filter rule 50 description 'Drop enire coe lab'
+set firewall ipv4 forward filter rule 50 destination address '10.32.96.0/20'
+
+set interfaces ethernet eth0 address 'dhcp'
+set interfaces ethernet eth1 address '192.168.203.1/24'
+
+set nat source rule 100 outbound-interface name 'eth0'
+set nat source rule 100 source address '192.168.203.0/24'
+set nat source rule 100 translation address 'masquerade'
+set service dhcp-server listen-interface 'eth1'
+set service dhcp-server shared-network-name coe-2003 authoritative
+set service dhcp-server shared-network-name coe-2003 subnet 192.168.203.0/24 option default-router '192.168.203.1'
+set service dhcp-server shared-network-name coe-2003 subnet 192.168.203.0/24 option name-server '10.32.96.1'
+set service dhcp-server shared-network-name coe-2003 subnet 192.168.203.0/24 range 1 start '192.168.203.100'
+set service dhcp-server shared-network-name coe-2003 subnet 192.168.203.0/24 range 1 stop '192.168.203.200'
+set service dhcp-server shared-network-name coe-2003 subnet 192.168.203.0/24 subnet-id '1'
+set service ssh
+set system host-name 'router-2003'
+set system name-server '10.32.96.1'
+set system name-server '10.32.96.31'
