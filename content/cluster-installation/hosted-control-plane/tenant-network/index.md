@@ -6,26 +6,29 @@ tags: ['hcp','v4.21']
 ---
 # Hosted Control Plane and tenant networking
 
-Official documentation: Not yet available
-
-Tested with:
-
-|Component|Version|
-|---|---|
-|OpenShift|v4.21.9|
-|OpenShift Virt|v4.21.0|
-
-## Overview
-
 Challenge: running a hosted cluster in a different tenant network segment or VLAN without wide-open access from the tenant segment to the management segment.
 
-Additional requirement: the hub cluster must not have arbitrary addressing or routing into the tenant network segment. The hub may only attach hosted-cluster workloads (for example, KubeVirt VMs) to that segment.
+???+ note "Hub cluster must not route into tenant networks"
 
-![](overview.drawio){ page="Page-1" }
+    The hub cluster must **not** have arbitrary Layer-3 addressing or routing into the tenant network segment. The hub may only attach hosted-cluster workloads—for example, KubeVirt VMs on a UDN `localnet`—to that segment.
 
-Worker nodes are straightforward: attach them to the tenant network segment (DHCP or equivalent addressing is required).
+    **Do not use MetalLB on the hub** to expose services into a tenant network. That pattern typically requires:
 
-Exposing hosted control plane endpoints into the tenant segment is harder. The following components must be reachable from workers and clients in that segment:
+    * Tenant-network IP addressing on hub bare-metal nodes
+    * [Enabling IP forwarding globally](https://docs.redhat.com/en/documentation/openshift_container_platform/4.21/html/networking_operators/cluster-network-operator#nw-cno-enable-ip-forwarding_cluster-network-operator)
+    * [Enabling `routingViaHost`](https://docs.redhat.com/en/documentation/openshift_container_platform/4.21/html/networking_operators/cluster-network-operator#nw-operator-configuration-parameters-for-ovn-sdn_cluster-network-operator)
+
+    Together, those changes let **any** workload on the hub reach tenant networks—not only the hosted cluster you intend to isolate.
+
+    This guide uses **external load balancers in the tenant segment** and a **dedicated ingress controller shard** on the hub instead.
+
+    ![](overview.drawio){ page="Page-1" }
+
+An hosted cluster can devide into two parts: **control plane** and **data plan aka worker nodes**. For there parts there different technics to place it into a tenant network:
+
+## Exposing hosted control plane into tenant network
+
+... it is fairly hard. The following components must be reachable from workers and clients in/from tenant network and beyond:
 
 * API Server
 * OAuth
@@ -39,18 +42,22 @@ Here is a summary of common publishing options for these components:
 |API Server|<li>LoadBalancer (recommended; Kubernetes `LoadBalancer` service)</li><li>NodePort* (not for production)</li>|✅|❌|
 |OAuth|<li>Route (default)</li><li>NodePort* (not for production)</li>|❌|✅|
 |Konnectivity|<li>Route (default)</li><li>LoadBalancer (Kubernetes `LoadBalancer` service)</li><li>NodePort* (not for production)</li>|✅|✅|
-|Ignition|<li>Route (default)</li><li>NodePort* (not for production)</li>|✅|❌|
+|Ignition|<li>Route (default)</li><li>NodePort* (not for production)</li>|❌|✅|
 
 For this proof of concept, endpoints are exposed as follows:
 
 * API Server: `LoadBalancer` (fronted by external `api-lb` in the tenant segment; see below)
 * OAuth, Konnectivity, Ignition: `Route` via a **dedicated ingress controller shard** on the hub, fronted by external `ingress-shared-lb` with VIPs/DNS in the tenant segment
 
-## Exposing components via a dedicated router shard
+### Exposing components via a dedicated router shard
 
 Use a dedicated OpenShift Ingress Controller shard on the **hub** so only the hosted-cluster control-plane Routes are served by that shard. Tenant clients resolve OAuth, Konnectivity, and Ignition hostnames to `ingress-shared-lb`, which forwards to the shard’s NodePorts on the management network.
 
 Place an external load balancer in front of that shard (for example F5 BIG-IP or NetScaler) that can reach the hub’s management network and present stable tenant-facing VIPs or addresses.
+
+## Exposing hosted worker nodes into netant network
+
+Worker nodes (VM's) of the hosted cluster are straightforward: attach them to the tenant network segment (DHCP or equivalent addressing is required).
 
 ## Proof of concept environment overview
 
@@ -58,7 +65,7 @@ Place an external load balancer in front of that shard (for example F5 BIG-IP or
 
 ### Router between Mgmt and Tenant-A
 
-[VyOS](https://vyos.io/) acts as router and firewall between management and Tenant-A. Restrict **lateral** traffic between the two segments (no full mesh); allow only what you need (for example DNS to resolvers, default route or NAT for internet egress). Hosted-cluster control-plane traffic from tenant nodes should flow to the **external load balancer VIPs** in the tenant segment (not directly into arbitrary management subnets).
+[VyOS](https://vyos.io/) acts as router and firewall between the management and the Tenant-A network. Restrict **lateral** traffic between the two segments (no full mesh); allow only what you need (for example DNS to resolvers, default route or NAT for internet egress). Hosted-cluster control-plane traffic from tenant nodes should flow to the **external load balancer VIPs** in the tenant segment (not directly into arbitrary management subnets).
 
 ??? example "VyOS config commands"
 
@@ -275,3 +282,13 @@ spec:
 * WebUI bug: ACM shows `https://console-openshift-console.apps.tenant-a.apps.ocp5.stormshift.coe.muc.redhat.com/` for the console, but the URL should be `https://console-openshift-console.apps.tenant-a.coe.muc.redhat.com/`.
 * Add custom endpoint publishing strategy
 * Find a solution for the NodePort chicken-and-egg problem of the external API load balancer
+
+## Verions
+
+Tested with:
+
+|Component|Version|
+|---|---|
+|OpenShift|v4.21.9|
+|OpenShift Virt|v4.21.0|
+|MCE|v2.11.1|
