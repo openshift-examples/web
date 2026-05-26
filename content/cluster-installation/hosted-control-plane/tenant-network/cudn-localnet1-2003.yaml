@@ -1,0 +1,22 @@
+apiVersion: k8s.ovn.org/v1
+kind: ClusterUserDefinedNetwork
+metadata:
+  name: cudn-localnet1-2003
+spec:
+  namespaceSelector:
+    matchExpressions:
+      - key: kubernetes.io/metadata.name
+        operator: In
+        values:
+          - default
+  network:
+    localnet:
+      ipam:
+        mode: Disabled
+      physicalNetworkName: localnet1
+      role: Secondary
+      vlan:
+        access:
+          id: 2003
+        mode: Access
+    topology: Localnet
