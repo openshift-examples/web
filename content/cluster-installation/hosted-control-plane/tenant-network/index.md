@@ -73,7 +73,24 @@ Worker nodes (VM's) of the hosted cluster are straightforward: attach them to th
     --8<-- "content/cluster-installation/hosted-control-plane/tenant-network/vyos-router-2003.txt"
     ```
 
-### Ingress Sharding at Hub Cluster
+### Deployment sequence (reference)
+
+Three external load balancers appear in this write-up; keep their roles distinct:
+
+| Name | Role |
+|------|------|
+| `ingress-shared-lb` | Tenant-facing VIPs for OAuth, Konnectivity, Ignition Routes on the **hub** ingress shard |
+| `api-lb` | Tenant-facing VIP for the hosted cluster **API** (`APIServer` publishing) |
+| `ingress-lb` | Tenant-facing VIP for **hosted cluster** application Routes (`*.apps…`) |
+
+Suggested order:
+
+1. Hub ingress shard + `ingress-shared-lb` + DNS for the three control-plane hostnames: OAuth, Konnectivity, and Ignition
+2. Apply `HostedCluster` and `NodePool`.
+3. Deploy external load balancer for `api-lb` + API DNS. Based on the NodePorts for the api kubernetes Service, located in hub cluster
+4. Deploy external load balancer for `ingress-lb` + wildcard apps DNS. Based on the NodePorts of the ingress kubernetes service, located in hosted cluster.
+
+### Hub ingress shard + `ingress-shared-lb`
 
 * [2.3.4. Ingress sharding in OpenShift Container Platform](https://docs.redhat.com/en/documentation/openshift_container_platform/4.21/html/ingress_and_load_balancing/configuring-ingress-cluster-traffic#nw-ingress-sharding-concept_configuring-ingress-cluster-traffic-ingress-controller)
 * [3.1.3.8.1. Example load balancer configuration for user-provisioned clusters](https://docs.redhat.com/en/documentation/openshift_container_platform/4.21/html/installing_on_vmware_vsphere/user-provisioned-infrastructure)
@@ -111,63 +128,7 @@ oauth.tenant-a.coe.muc.redhat.com.              IN A 192.168.203.111
 ignition.tenant-a.coe.muc.redhat.com.           IN A 192.168.203.111
 ```
 
-### Deployment sequence (reference)
-
-Three external load balancers appear in this write-up; keep their roles distinct:
-
-| Name | Role |
-|------|------|
-| `ingress-shared-lb` | Tenant-facing VIPs for OAuth, Konnectivity, Ignition Routes on the **hub** ingress shard |
-| `api-lb` | Tenant-facing VIP for the hosted cluster **API** (`APIServer` publishing) |
-| `ingress-lb` | Tenant-facing VIP for **hosted cluster** application Routes (`*.apps…`) |
-
-Suggested order: (1) hub ingress shard + `ingress-shared-lb` + DNS for the three control-plane hostnames, (2) `api-lb` + API DNS, (3) `ingress-lb` + wildcard apps DNS, then (4) apply `HostedCluster` and `NodePool`. Adjust if your automation creates services first and you backfill DNS once NodePorts or service endpoints are known.
-
-The following two subsections describe (2) and (3); the hub shard and DNS for OAuth, Konnectivity, and Ignition are covered above.
-
-### Deploy External Load Balancer for API (`api-lb`)
-
-Use an RHEL 9 virtual machine with HAProxy.
-
-* Install HAProxy: `dnf install haproxy`
-* Configure SELinux: `setsebool -P haproxy_connect_any 1`
-* Apply the example `haproxy` configuration (update ports to match your environment)
-* Enable and start HAProxy: `systemctl enable --now haproxy`
-
-??? example "HAProxy config"
-
-    ```shell
-    --8<-- "content/cluster-installation/hosted-control-plane/tenant-network/api-lb.conf"
-    ```
-
-Add DNS record:
-
-```bind
-api.tenant-a.coe.muc.redhat.com.       IN A 192.168.203.<IP of VM>
-```
-
-### Deploy External Load Balancer for Ingress (`ingress-lb`) of hosted cluster
-
-Use an RHEL 9 virtual machine with HAProxy.
-
-* Install HAProxy: `dnf install haproxy`
-* Configure SELinux: `setsebool -P haproxy_connect_any 1`
-* Apply the example `haproxy` configuration (update ports to match your environment)
-* Enable and start HAProxy: `systemctl enable --now haproxy`
-
-??? example "HAProxy config"
-
-    ```shell
-    --8<-- "content/cluster-installation/hosted-control-plane/tenant-network/ingress-lb.conf"
-    ```
-
-Add DNS record:
-
-```bind
-*.apps.tenant-a.coe.muc.redhat.com.       IN A 192.168.203.<IP of VM>
-```
-
-### Start hosted control plane and nodepool
+### Apply `HostedCluster` and `NodePool`
 
 ```yaml hl_lines="11 43-66" title="HostedCluster"
 apiVersion: hypershift.openshift.io/v1beta1
@@ -275,6 +236,48 @@ spec:
 ```
 
 1. Attach NodePool VMs to the tenant segment using a user-defined network (UDN) `localnet` attachment (`default/cudn-localnet1-2003` in this lab).
+
+### Deploy external load balancer for (`api-lb`)
+
+Use an RHEL 9 virtual machine with HAProxy.
+
+* Install HAProxy: `dnf install haproxy`
+* Configure SELinux: `setsebool -P haproxy_connect_any 1`
+* Apply the example `haproxy` configuration (update ports to match your environment)
+* Enable and start HAProxy: `systemctl enable --now haproxy`
+
+??? example "HAProxy config"
+
+    ```shell
+    --8<-- "content/cluster-installation/hosted-control-plane/tenant-network/api-lb.conf"
+    ```
+
+Add DNS record:
+
+```bind
+api.tenant-a.coe.muc.redhat.com.       IN A 192.168.203.<IP of VM>
+```
+
+### Deploy external load balancer for (`ingress-lb`) of hosted cluster
+
+Use an RHEL 9 virtual machine with HAProxy.
+
+* Install HAProxy: `dnf install haproxy`
+* Configure SELinux: `setsebool -P haproxy_connect_any 1`
+* Apply the example `haproxy` configuration (update ports to match your environment)
+* Enable and start HAProxy: `systemctl enable --now haproxy`
+
+??? example "HAProxy config"
+
+    ```shell
+    --8<-- "content/cluster-installation/hosted-control-plane/tenant-network/ingress-lb.conf"
+    ```
+
+Add DNS record:
+
+```bind
+*.apps.tenant-a.coe.muc.redhat.com.       IN A 192.168.203.<IP of VM>
+```
 
 ## Open topics
 
