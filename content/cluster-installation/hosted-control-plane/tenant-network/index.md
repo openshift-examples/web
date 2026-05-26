@@ -87,8 +87,8 @@ Suggested order:
 
 1. Hub ingress shard + `ingress-shared-lb` + DNS for the three control-plane hostnames: OAuth, Konnectivity, and Ignition
 2. Apply `HostedCluster` and `NodePool`.
-3. Deploy external load balancer for `api-lb` + API DNS. Based on the NodePorts for the api kubernetes Service, located in hub cluster
-4. Deploy external load balancer for `ingress-lb` + wildcard apps DNS. Based on the NodePorts of the ingress kubernetes service, located in hosted cluster.
+3. Deploy external load balancer for the Hosted-Cluster API `api-lb` + API DNS. Based on the NodePorts for the api kubernetes Service, located in hub cluster
+4. Deploy external load balancer for the Hosted-Cluster Ingress `ingress-lb` + wildcard apps DNS. Based on the NodePorts of the ingress kubernetes service, located in hosted cluster.
 
 ### Hub ingress shard + `ingress-shared-lb`
 
@@ -237,7 +237,7 @@ spec:
 
 1. Attach NodePool VMs to the tenant segment using a user-defined network (UDN) `localnet` attachment (`default/cudn-localnet1-2003` in this lab).
 
-### Deploy external load balancer for (`api-lb`)
+### Deploy external load balancer for the Hosted-Cluster API (`api-lb`)
 
 Use an RHEL 9 virtual machine with HAProxy.
 
@@ -258,7 +258,7 @@ Add DNS record:
 api.tenant-a.coe.muc.redhat.com.       IN A 192.168.203.<IP of VM>
 ```
 
-### Deploy external load balancer for (`ingress-lb`) of hosted cluster
+### Deploy external load balancer for Hosted-Cluster ingress (`ingress-lb`)
 
 Use an RHEL 9 virtual machine with HAProxy.
 
