@@ -2,7 +2,8 @@
 title: Air-gapped/Disconnected Operator Handling
 linktitle: Air-gapped/Disconnected
 description: Some informations around OLM and Air-gapped/Disconnected
-tags: ['OLM','air-gapped','v4.17','v4.18','v4.19','operators']
+tags: ['air-gapped','v4.21','OLM','operators']
+
 ---
 # Air-gapped/Disconnected
 

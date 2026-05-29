@@ -122,9 +122,10 @@ extra_css:
 nav:
   - Cluster installation:
       - cluster-installation/index.md
-      - Air-gapped/Disconnected:
-          - "Cluster Installation": cluster-installation/disconnected/disconnected-installation.md
-          - "Operator Installation": cluster-installation/disconnected/disconnected-operators.md
+      - Disconnected:
+          - cluster-installation/disconnected/index.md
+          - "Cluster Installation": cluster-installation/disconnected/installation.md
+          - "Operator Installation": cluster-installation/disconnected/operators.md
       - SNO on OCP-V: cluster-installation/sno-on-ocpv/index.md
       - Agent-based (proxy): cluster-installation/agent-base-proxy/index.md
       - VMware/vSphere:
