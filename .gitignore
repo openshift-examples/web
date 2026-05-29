@@ -3,6 +3,7 @@ pre-commit
 rosetta
 
 .local
+.DS_Store
 share
 hooks/__pycache__/
 
