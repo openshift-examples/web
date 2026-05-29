@@ -681,37 +681,14 @@ Obtain your [pull secret from Red Hat OpenShift Cluster Manager](https://console
 
 Make a copy of your pull secret in JSON format by running the following command:
 
-Paste the content in the file pull-scret. Then:
-
-`cat ./pull-secret | jq . > $(pwd)/pull-secret.json`
-
-Replace the existing `auth.json` file in $XDG_RUNTIME_DIR/containers/
-
-```code
-sudo mv pull-secret.json $XDG_RUNTIME_DIR/containers/auth.json
+```shell
+cp pull-secret.json $XDG_RUNTIME_DIR/containers/auth.json
 ```
 
-Next up is to generate the base64-encoded user name and password or token for your mirror registry by running the following command:
+Next step is to add your mirror registry credentials:
 
-`echo -n '<user_name>:<password>' | base64 -w0`
-
-For <user_name> and <password>, specify the user name and password that you configured for your registry.
-
-Example:
-
-`echo -n 'init:r3dh4t1!' | base64 -w0`
-
-Edit the JSON file and add a section that describes your registry to it:
-
-```json
-  "auths": {
-    "rguske-rhel9-disco-bastion.rguske.coe.muc.redhat.com:8443": {
-      "auth": "aW5pdDpyM2RoNHQxIQ==",
-      "email": "rguske@redhat.com"
-    },
-    "cloud.openshift.com": {
-
-[...]
+```shell
+podman login --authfile $XDG_RUNTIME_DIR/containers/auth.json rguske-rhel9-disco-bastion.rguske.coe.muc.redhat.com:8443
 ```
 
 ## Creating the image set configuration
