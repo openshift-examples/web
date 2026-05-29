@@ -1,3 +1,10 @@
+---
+title: Disconnected Agent-Based Cluster Installation
+linktitle: Cluster Installation
+description: Disconnected Agent-Based Cluster Installation
+tags: ['air-gapped','v4.21']
+---
+
 # Disconnected Agent-Based Cluster Installation
 
 A disconnected environment is an environment that does not have full access to the internet.
