@@ -44,23 +44,35 @@ jobs:
           # This syntax makes it available to subsequent steps as ${{ env.PR_NUMBER }}
           echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_ENV
 
-      - name: Deploy
-        id: deploy
-        uses: cloudflare/wrangler-action@v3
+      - name: Deploy to Cloudflare Pages
+        uses: andykenward/github-actions-cloudflare-pages@v3.4.0
+        id: pages
         with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: |
-            pages deploy site/ --project-name=openshift-examples --branch pr-${{ env.PR_NUMBER }}
-          # Optional: Enable this if you want to have GitHub Deployments triggered
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          cloudflare-api-token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          cloudflare-account-id: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          cloudflare-project-name: ${{ vars.CLOUDFLARE_PROJECT_NAME }}
+          directory: site
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-environment: Cloudflare Pages
+          pr-number: ${{ env.PR_NUMBER }}
 
-      - name: Comment on PR
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          CMD_OUTPUT: ${{ steps.deploy.outputs.command-output }}
-          DEPLOYMENT_URL: ${{ steps.deploy.outputs.deployment-url }}
-        run: |
-          gh pr comment ${{ env.PR_NUMBER }} \
-            --repo ${{ github.repository }} \
-            --body "🚀 **Preview Deployment Success!** View your live changes here: $DEPLOYMENT_URL\n\n$CMD_OUTPUT"
+      # - name: Deploy
+      #   id: deploy
+      #   uses: cloudflare/wrangler-action@v3
+      #   with:
+      #     apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      #     accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      #     command: |
+      #       pages deploy site/ --project-name=openshift-examples --branch pr-${{ env.PR_NUMBER }}
+      #     # Optional: Enable this if you want to have GitHub Deployments triggered
+      #     gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+
+      # - name: Comment on PR
+      #   env:
+      #     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #     CMD_OUTPUT: ${{ steps.deploy.outputs.command-output }}
+      #     DEPLOYMENT_URL: ${{ steps.deploy.outputs.deployment-url }}
+      #   run: |
+      #     gh pr comment ${{ env.PR_NUMBER }} \
+      #       --repo ${{ github.repository }} \
+      #       --body "🚀 **Preview Deployment Success!** View your live changes here: $DEPLOYMENT_URL\n\n$CMD_OUTPUT"
