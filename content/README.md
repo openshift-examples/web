@@ -8,7 +8,7 @@ hide: ['toc']
 
 # [OpenShift Examples](https://examples.openshift.pub/)
 
-# BenitoGreyBeard
+# Benito 🐻
 
 ![](openshift-examples.png)
 
