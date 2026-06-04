@@ -31,7 +31,7 @@ jobs:
         run: mkdocs build
 
       - name: Deploy to Cloudflare Pages
-        uses: andykenward/github-actions-cloudflare-pages@v3.4.0
+        uses: andykenward/github-actions-cloudflare-pages@v3.5.0
         id: pages
         with:
           cloudflare-api-token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
