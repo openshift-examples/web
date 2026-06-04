@@ -45,7 +45,7 @@ jobs:
           echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_ENV
 
       - name: Deploy to Cloudflare Pages
-        uses: andykenward/github-actions-cloudflare-pages@v3.4.0
+        uses: andykenward/github-actions-cloudflare-pages@v3.5.0
         id: pages
         with:
           cloudflare-api-token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -55,6 +55,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           github-environment: Cloudflare Pages
           pr-number: ${{ env.PR_NUMBER }}
+          branch: pr-${{ env.PR_NUMBER }}
 
       # - name: Deploy
       #   id: deploy
