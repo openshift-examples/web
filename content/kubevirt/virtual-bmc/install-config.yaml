@@ -1,0 +1,62 @@
+apiVersion: v1
+baseDomain: coe.muc.redhat.com
+cpuPartitioningMode: None
+compute:
+  - architecture: amd64
+    hyperthreading: Enabled
+    name: worker
+    platform: {}
+    replicas: 0
+controlPlane:
+  architecture: amd64
+  hyperthreading: Enabled
+  name: master
+  platform: {}
+  replicas: 3
+metadata:
+  creationTimestamp: null
+  name: rbohne-fakefish
+networking:
+  clusterNetwork:
+    - cidr: 10.128.0.0/14
+      hostPrefix: 23
+  machineNetwork:
+    - cidr: 10.32.96.0/20
+  networkType: OVNKubernetes
+  serviceNetwork:
+    - 172.30.0.0/16
+platform:
+  baremetal:
+    hosts:
+      - name: node-0tfcw7
+        role: master
+        BootMACAddress: 02:d8:6d:00:00:4a	
+        bmc:
+          address: redfish://ff-node-0tfcw7-rbohne-fakefish.apps.isar.coe.muc.redhat.com/redfish/v1/Systems/1
+          username: "fakefish"
+          password: "fakefish"
+          disableCertificateVerification: True
+      - name: node-ovacww
+        role: master
+        BootMACAddress: 02:d8:6d:00:00:4b	
+        bmc:
+          address: redfish://ff-node-ovacww-rbohne-fakefish.apps.isar.coe.muc.redhat.com/redfish/v1/Systems/1
+          username: "fakefish"
+          password: "fakefish"
+          disableCertificateVerification: True
+      - name: node-puyubl
+        role: master
+        BootMACAddress: 02:d8:6d:00:00:4c
+        bmc:
+          address: redfish://ff-node-puyubl-rbohne-fakefish.apps.isar.coe.muc.redhat.com/redfish/v1/Systems/1
+          username: "fakefish"
+          password: "fakefish"
+          disableCertificateVerification: True
+    apiVIPs:
+      - "10.32.98.7"
+    ingressVIPs:
+      - "10.32.98.8"
+publish: External
+pullSecret: ...
+sshKey: |
+  ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEQM82o2imwpHyGVO7DxCNbdE0ZWnkp6oxdawb7/MOCT coe-muc
