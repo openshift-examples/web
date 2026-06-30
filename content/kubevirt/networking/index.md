@@ -11,11 +11,11 @@ tags: ['v4.17','cnv', 'kubevirt','ocp-v','networking']
 
 An OpenShift cluster is configured using an overlay software-defined network (SDN) for both the Pod and Service networks. By default, VMs are configured with connectivity to the SDN and have the same features/connectivity as Pod-based applications.
 
-Host-level networking configurations are created and applied using the NMstate operator. This includes the ability to report the current configuration options, such as bonds, bridges, and VLAN tags to help segregate networking resources, as well as apply desired-state configuration for those entities.
+Host-level networking is configured for the primary interface during installation (br-0/SDN). All additional networks can be configured via the NMState operator.
 
-* *Source: [Red Hat Architecting OpenShift Virtualization](https://redhatquickcourses.github.io/architect-the-ocpvirt/Red%20Hat%20OpenShift%20Virtualization%20-%20Architecting%20OpenShift%20Virtualization/1/chapter5/section2.html)*
+* *Source: [OpenShift Virtualization, 10.1. Networking overview](https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/virtualization/networking#virt-networking)*
 
-![network_bond](network_bond.png)
+![network_bond](https://access.redhat.com/webassets/avalon/d/OpenShift_Container_Platform-4.22-Virtualization-en-US/images/6410e9f17a383d0982527727e56209c1/318_OpenShift_Virtualization_Networking_0423.png)
 
 ## Bonded NICs for Management and SDN
 
