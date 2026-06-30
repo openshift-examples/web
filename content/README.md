@@ -24,6 +24,7 @@ and benefit from the expertise shared in this repository.
 
 |Date|Headline|
 |---|---|
+|2026-07-03|[Updated KubeVirt networking: OVN-Bridge, Linux-Bridge, ClusterUserDefinedNetwork](kubevirt/networking/)|
 |2026-05-29|[Updated disconnected installation section](cluster-installation/disconnected/)|
 |2026-05-26|[Added Hosted Control Plane and tenant networking](cluster-installation/hosted-control-plane/tenant-network/)|
 |2026-05-05|[Added cluster-installation on STACKIT](cluster-installation/stackit/)|

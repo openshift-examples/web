@@ -2,20 +2,20 @@
 title: Networking
 linktitle: Networking
 weight: 14100
-description: TBD
+description: OpenShift Virtualization networking configuration including bonds, bridges, VLANs, OVS, SR-IOV, and secondary networks for VMs.
 icon: material/tournament
-tags: ['v4.17','cnv', 'kubevirt','ocp-v','networking']
+tags: ['v4.22','cnv', 'kubevirt','ocp-v','networking']
 ---
 
 # Networking
 
 An OpenShift cluster is configured using an overlay software-defined network (SDN) for both the Pod and Service networks. By default, VMs are configured with connectivity to the SDN and have the same features/connectivity as Pod-based applications.
 
-Host-level networking configurations are created and applied using the NMstate operator. This includes the ability to report the current configuration options, such as bonds, bridges, and VLAN tags to help segregate networking resources, as well as apply desired-state configuration for those entities.
+Host-level networking is configured for the primary interface during installation (br-0/SDN). All additional networks can be configured via the NMState operator.
 
-* *Source: [Red Hat Architecting OpenShift Virtualization](https://redhatquickcourses.github.io/architect-the-ocpvirt/Red%20Hat%20OpenShift%20Virtualization%20-%20Architecting%20OpenShift%20Virtualization/1/chapter5/section2.html)*
+* *Source: [OpenShift Virtualization, 10.1. Networking overview](https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/virtualization/networking#virt-networking)*
 
-![network_bond](network_bond.png)
+![network_bond](318_OpenShift_Virtualization_Networking_0423.png)
 
 ## Bonded NICs for Management and SDN
 
@@ -25,7 +25,13 @@ The initial bond interface, consisting of two adapters bonded together with an I
 
 The following is a sample NMstate configuration making use of two adapters on the host to create a bonded interface in the LACP (802.3ad) run mode. The bonds are intended to be used for isolating network traffic for different purposes. This provides the advantage of avoiding noisy neighbor scenarios for some interfaces that may have a large impact, for example a backup for a virtual machine consuming significant network throughput impacting ODF or etcd traffic on a shared interface.
 
-```yaml
+!!! warning
+
+    Keep in mind, `NodeNetworkConfigurationPolicy` following not the typical Kubernetes declarative way. If you delete the following `NodeNetworkConfigurationPolicy` the bond1 for example will not be deleted.
+
+    To remove the `bond1` from the nodes, you have to change the `state` from `up` to `absent`.
+
+```yaml title="Node configuration, for bond1 (LACP)"
 apiVersion: nmstate.io/v1
 kind: NodeNetworkConfigurationPolicy
 metadata:
@@ -35,34 +41,51 @@ metadata:
 spec:
   desiredState:
     interfaces:
-      - link-aggregation:
+      - name: bond1
+        state: up
+        type: bond
+        link-aggregation:
           mode: 802.3ad
           port:
             - enp6s0f0
             - enp6s0f1
-        name: bond1
-        state: up
-        type: bond
 ```
 
-## Example VM Network Configuration
+## OVN-Bridge vs Linux-Bridge
+
+[10.1.3.1. Comparing Linux bridge CNI and OVN-Kubernetes localnet topology](https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/virtualization/networking#virt-nw-overview-comparing-localnet-linuxbridge_virt-networking-overview)
+
+## OVN-Bridge example
+
+|Component|Version|
+|---|---|
+|OpenShift|v4.22.1|
 
 An example configuration for VM network connectivity is below, note that the bond configuration should be a part of the same NodeNetworkConfigurationPolicy to ensure they are configured together.
 
-```yaml
+![](diagram.drawio){ page="physnet-ovs-br1-bond1" }
+
+```yaml title="Node configuration, for bond1, ovs-bridge (ovs-br1) and localnet (physnet-ovs-br1-bond1)"
 apiVersion: nmstate.io/v1
 kind: NodeNetworkConfigurationPolicy
 metadata:
-  name: ovs-br1-vlan-trunk
+  annotations:
+    description: Localnet, OVS Bridge and bond1
+  name: physnet-ovs-br1-bond1
 spec:
   nodeSelector:
     node-role.kubernetes.io/worker: ''
   desiredState:
     interfaces:
+    - name: bond1
+      state: up
+      type: bond
+      link-aggregation:
+        mode: active-backup
+        port:
+          - eth2
+          - eth3
     - name: ovs-br1
-      description: |-
-        A dedicated OVS bridge with bond2 as a port
-        allowing all VLANs and untagged traffic
       type: ovs-bridge
       state: up
       bridge:
@@ -70,184 +93,118 @@ spec:
         options:
           stp: true
         port:
-        - name: bond2
+        - name: bond1
     ovn:
       bridge-mappings:
-      - localnet: vlan-2024
+      - localnet: physnet-ovs-br1-bond1
         bridge: ovs-br1
         state: present
-      - localnet: vlan-1993
-        bridge: ovs-br1
-        state: present
----
-apiVersion: k8s.cni.cncf.io/v1
-kind: NetworkAttachmentDefinition
-metadata:
-  annotations:
-    description: VLAN 2024 connection for VMs
-  name: vlan-2024
-  namespace: default
-spec:
-  config: |-
-    {
-      "cniVersion": "0.3.1",
-      "name": "vlan-2024",
-      "type": "ovn-k8s-cni-overlay",
-      "topology": "localnet",
-      "netAttachDefName": "default/vlan-2024",
-      "vlanID": 2024,
-      "ipam": {}
-    }
----
-apiVersion: k8s.cni.cncf.io/v1
-kind: NetworkAttachmentDefinition
-metadata:
-  annotations:
-    description: VLAN 1993 connection for VMs
-  name: vlan-1993
-  namespace: default
-spec:
-  config: |-
-    {
-      "cniVersion": "0.3.1",
-      "name": "vlan-1993",
-      "type": "ovn-k8s-cni-overlay",
-      "topology": "localnet",
-      "netAttachDefName": "default/vlan-1993",
-      "vlanID": 1993,
-      "ipam": {}
-    }
 ```
 
-## Create a bridge on the main interface
+### Project/namespace configuration for OVN-Bridge
 
-All nodes on which the configuration is executed are restarted.
+To allow virtual machines to connect to a specific VLAN.
+
+!!! info
+
+    **Since OpenShift 4.19, `ClusterUserDefinedNetwork` — supports Localnet topology.**
+    It's not needed anymore to create `NetworkAttachmentDefinitions` by hand.
 
 ```yaml
-oc apply -f - <<EOF
-apiVersion: nmstate.io/v1alpha1
+apiVersion: k8s.ovn.org/v1
+kind: ClusterUserDefinedNetwork
+metadata:
+  annotations:
+    description: Localnet, OVS Bridge and bond1
+  name: net-default-vlan-10
+spec:
+  namespaceSelector:
+    matchLabels:
+      openshift.pub/access-to-vlan: "11"
+      # kubernetes.io/metadata.name: <namespace name>
+  network:
+    localnet:
+      ipam:
+        mode: Disabled
+      mtu: 1500
+      physicalNetworkName: physnet-ovs-br1-bond1
+      role: Secondary
+      vlan:
+        access:
+          id: 11
+        mode: Access
+    topology: Localnet
+```
+
+## Linux-Bridge example
+
+|Component|Version|
+|---|---|
+|OpenShift|v4.22.1|
+
+```yaml title="Node configuration, for bond1 and linux-bridge (br1)"
+apiVersion: nmstate.io/v1
 kind: NodeNetworkConfigurationPolicy
 metadata:
-  name: br1-ens3-policy-workers
+  annotations:
+    description: Linux-Bridge and bond1
+  name: physnet-br1-bond1
 spec:
   nodeSelector:
-    node-role.kubernetes.io/worker: ""
+    node-role.kubernetes.io/worker: ''
   desiredState:
     interfaces:
+      - name: bond1
+        state: up
+        type: bond
+        link-aggregation:
+          mode: active-backup
+          port:
+            - eth2
+            - eth3
       - name: br1
-        description: Linux bridge with ens3 as a port
         type: linux-bridge
         state: up
         ipv4:
-          enabled: true
-          dhcp: true
+          enabled: false
+        ipv6:
+          enabled: false
         bridge:
           options:
             stp:
               enabled: false
           port:
-            - name: ens3
-EOF
+            - name: bond1
 ```
 
-## Create Network Attachment Definition
+### Project/namespace configuration for Linux-Bridge
 
 ```yaml
-cat << EOF | oc apply -f -
 apiVersion: "k8s.cni.cncf.io/v1"
 kind: NetworkAttachmentDefinition
 metadata:
-  name: tuning-bridge-fixed
+  name: bridge-network
   annotations:
     k8s.v1.cni.cncf.io/resourceName: bridge.network.kubevirt.io/br1
 spec:
-  config: '{
-    "cniVersion": "0.3.1",
-    "name": "br1",
-    "plugins": [
-      {
-        "type": "cnv-bridge",
-        "bridge": "br1"
-      },
-      {
-        "type": "cnv-tuning"
-      }
-    ]
-  }'
-EOF
+  config: |
+    {
+      "cniVersion": "0.3.1",
+      "name": "bridge-network",
+      "type": "bridge",
+      "bridge": "br1",
+      "macspoofchk": false,
+      "vlan": 100,
+      "disableContainerInterface": true,
+      "preserveDefaultVlan": false
+    }
 ```
-
-## Example: Localnet
-
-* Tested with OpenShift 4.17.0
-* [Blog post: Red Hat OpenShift Virtualization: Configuring virtual machines to use external networks](https://www.redhat.com/en/blog/access-external-networks-with-openshift-virtualization)
-
-### Configure localnet via NNCP
-
-=== "OC"
-
-    ```bash
-    oc apply -f {{ page.canonical_url }}localnet-nncp.yaml
-    ```
-
-    ```bash
-    % oc get nncp,nnce
-    NAME                                                     STATUS      REASON
-    nodenetworkconfigurationpolicy.nmstate.io/localnet-coe   Available   SuccessfullyConfigured
-
-    NAME                                                                      STATUS      STATUS AGE   REASON
-    nodenetworkconfigurationenactment.nmstate.io/ocp1-worker-1.localnet-coe   Available   2s           SuccessfullyConfigured
-    nodenetworkconfigurationenactment.nmstate.io/ocp1-worker-2.localnet-coe   Available   9s           SuccessfullyConfigured
-    nodenetworkconfigurationenactment.nmstate.io/ocp1-worker-3.localnet-coe   Available   8s           SuccessfullyConfigured
-    ```
-
-=== "localnet-nncp.yaml"
-
-    ```yaml
-    --8<-- "content/kubevirt/networking/localnet-nncp.yaml"
-    ```
-
-### Apply localnet-demo
-
-#### Create new project
-
-```bash
-oc new-project localnet-demo
-```
-
-#### Create net-attach-def
-
-=== "OC"
-
-    ```bash
-    oc apply -f {{ page.canonical_url }}localnet-net-attach-def.yaml
-    ```
-
-=== "localnet-net-attach-def.yaml"
-
-    ```yaml
-    --8<-- "content/kubevirt/networking/localnet-net-attach-def.yaml"
-    ```
-
-#### Attach Fedora VM
-
-=== "OC"
-
-    ```bash
-    oc apply -f {{ page.canonical_url }}localnet-fedora-vm.yaml
-    ```
-
-=== "localnet-fedora-vm.yaml"
-
-    ```yaml
-    --8<-- "content/kubevirt/networking/localnet-fedora-vm.yaml"
-    ```
 
 ## Example: Bonding -> VLAN -> LocalNet & Bridge
 
 * Tested with OpenShift 4.17.11
 
-![bonding-vlan-localnet-bridge](bonding-vlan-localnet-bridge.drawio)
+![](diagram.drawio){ page="bonding-vlan-localnet-bridge" }
 
 ??? quote "NMState for initial setup / add-node"
 
@@ -346,7 +303,7 @@ oc new-project localnet-demo
 
 * Tested with OpenShift 4.18.13
 
-![bond-balance-slb](bond-balance-slb.drawio)
+![](diagram.drawio){ page="bond-balance-slb" }
 
 !!! WARNING
 
