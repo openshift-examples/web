@@ -24,6 +24,8 @@ and benefit from the expertise shared in this repository.
 
 |Date|Headline|
 |---|---|
+|2026-05-29|[Updated disconnected installation section](cluster-installation/disconnected/)|
+|2026-05-26|[Added Hosted Control Plane and tenant networking](cluster-installation/hosted-control-plane/tenant-network/)|
 |2026-05-05|[Added cluster-installation on STACKIT](cluster-installation/stackit/)|
 |2026-03-19|[Added Portworx on Two-Node with Arbiter](storage/portworx-and-tna/)|
 |2026-03-19|[Added Agent-base installation example (proxy)](cluster-installation/agent-base-proxy/)|
