@@ -109,6 +109,8 @@ plugins:
   - mike:
       deploy_prefix: preview
   - privacy:
+      assets_exclude:
+        - starchart.cc/*
       links_attr_map:
         target: _blank
 hooks:
