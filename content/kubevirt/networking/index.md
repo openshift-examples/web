@@ -2,7 +2,7 @@
 title: Networking
 linktitle: Networking
 weight: 14100
-description: TBD
+description: OpenShift Virtualization networking configuration including bonds, bridges, VLANs, OVS, SR-IOV, and secondary networks for VMs.
 icon: material/tournament
 tags: ['v4.17','cnv', 'kubevirt','ocp-v','networking']
 ---
