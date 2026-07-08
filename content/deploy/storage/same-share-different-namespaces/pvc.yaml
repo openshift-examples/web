@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: coe-isos
+spec:
+  storageClassName: ""
+  accessModes: [ "ReadWriteMany" ]
+  selector:
+    matchLabels:
+      type: "static-nfs-2e4c62a0f0"
+  resources:
+    requests:
+      storage: 500Gi
