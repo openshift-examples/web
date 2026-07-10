@@ -67,7 +67,7 @@ subjects:
 
 ### without-anyuid
 
-```yaml
+```yaml title="YAML, without-anyuid Deployment"
 kind: Deployment
 apiVersion: apps/v1
 metadata:
@@ -95,17 +95,14 @@ spec:
               sleep infinity
 ```
 
-```shell
+```shell title="Log output of the Pod"
 % oc logs deployment/without-anyuid
 id: uid=1000750000(1000750000) gid=0(root) groups=0(root),1000750000
 ```
 
 ### with-anyuid
 
-!!! note
-    Important is the and `serviceAccountName`!
-
-```yaml
+```yaml title="YAML, with-anyuid Deployment" hl_lines="16"
 kind: Deployment
 apiVersion: apps/v1
 metadata:
@@ -134,7 +131,7 @@ spec:
               sleep infinity
 ```
 
-```shell
+```shell title="Log output of the Pod"
 % oc logs deployment/with-anyuid
 id: uid=0(root) gid=0(root) groups=0(root)
 ```
@@ -220,12 +217,12 @@ subjects:
 After restarting pods, many now use the custom SCC — including platform components that shouldn't:
 
 ```shell
-$ oc get pods -A -o custom-columns=NAMESPACE:.metadata.namespace,NAME:.metadata.name,SCC:.metadata.annotations."openshift\.io/scc" | grep nonroot-v2-with-prio
-anyuid-demo          without-anyuid-55b5b5fd9f-l5jpq          nonroot-v2-with-prio
-openshift-image-registry   image-pruner-29727360-6r9l5        nonroot-v2-with-prio
-openshift-machine-api      machine-api-controllers-789b98f676-49d9z   nonroot-v2-with-prio
-openshift-operators        trident-operator-79ccfcdc4d-7l56t  nonroot-v2-with-prio
-scc-test             simple-http-server-555b496bd7-pskl5      nonroot-v2-with-prio
+% oc get pods -A -o custom-columns=NAMESPACE:.metadata.namespace,NAME:.metadata.name,SCC:.metadata.annotations."openshift\.io/scc" | grep nonroot-v2-with-prio
+anyuid-demo                 without-anyuid-55b5b5fd9f-l5jpq             nonroot-v2-with-prio
+openshift-image-registry    image-pruner-29727360-6r9l5                 nonroot-v2-with-prio
+openshift-machine-api       machine-api-controllers-789b98f676-49d9z    nonroot-v2-with-prio
+openshift-operators         trident-operator-79ccfcdc4d-7l56t           nonroot-v2-with-prio
+scc-test                    simple-http-server-555b496bd7-pskl5         nonroot-v2-with-prio
 ```
 
 Because the priority is higher than any default SCC, the admission controller picks `nonroot-v2-with-prio` first. Components like `machine-api-controllers` and `trident-operator` now run under an SCC they were never designed for — potentially breaking them.
