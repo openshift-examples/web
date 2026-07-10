@@ -16,7 +16,7 @@ Official documentation: [Managing security context constraints](https://docs.red
 
 Based on: [SCC Prioritization - OpenShift Documentation](https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/authentication_and_authorization/managing-pod-security-policies#scc-prioritization_configuring-internal-oauth)
 
-When a workload is created, only the **service account** is used to find SCCs — not the creating user. The admission controller:
+When a workload is created, the **service account** is used to find SCCs. The admission controller:
 
 1. **Retrieves** all SCCs the service account can `use` (via RBAC).
 2. **Generates** default values for unset security context fields from the pod spec.
@@ -151,3 +151,85 @@ NAMESPACE     NAME                              SCC             REQ-SCC
 anyuid-demo   with-anyuid-7769dfb79-6kpd5       anyuid          <none>
 anyuid-demo   without-anyuid-55b5b5fd9f-8j9vb   restricted-v2   <none>
 ```
+
+## ⚠️ Allow all service accounts to use an SCC with priority
+
+!!! warning
+
+    This is a bad practice! Setting a high priority on a custom SCC and granting it cluster-wide causes **all** pods to pick it up — including platform components that may require a different SCC. This example demonstrates why priority must be used carefully.
+
+Create a custom SCC based on `nonroot-v2` but with `priority: 100`:
+
+```yaml
+allowHostDirVolumePlugin: false
+allowHostIPC: false
+allowHostNetwork: false
+allowHostPID: false
+allowHostPorts: false
+allowPrivilegeEscalation: false
+allowPrivilegedContainer: false
+allowedCapabilities:
+- NET_BIND_SERVICE
+apiVersion: security.openshift.io/v1
+defaultAddCapabilities: null
+fsGroup:
+  type: RunAsAny
+groups: []
+kind: SecurityContextConstraints
+metadata:
+  name: nonroot-v2-with-prio
+priority: 100
+readOnlyRootFilesystem: false
+requiredDropCapabilities:
+- ALL
+runAsUser:
+  type: MustRunAsNonRoot
+seLinuxContext:
+  type: MustRunAs
+seccompProfiles:
+- runtime/default
+supplementalGroups:
+  type: RunAsAny
+userNamespaceLevel: AllowHostLevel
+users: []
+volumes:
+- configMap
+- csi
+- downwardAPI
+- emptyDir
+- ephemeral
+- image
+- persistentVolumeClaim
+- projected
+- secret
+```
+
+Grant access to **all** service accounts cluster-wide via a ClusterRoleBinding:
+
+```yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: system:openshift:scc:nonroot-v2-with-prio
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: system:openshift:scc:nonroot-v2-with-prio
+subjects:
+- apiGroup: rbac.authorization.k8s.io
+  kind: Group
+  name: system:serviceaccounts
+```
+
+After restarting pods, many now use the custom SCC — including platform components that shouldn't:
+
+```shell
+$ oc get pods -A -o custom-columns=NAMESPACE:.metadata.namespace,NAME:.metadata.name,SCC:.metadata.annotations."openshift\.io/scc" | grep nonroot-v2-with-prio
+anyuid-demo          without-anyuid-55b5b5fd9f-l5jpq          nonroot-v2-with-prio
+openshift-image-registry   image-pruner-29727360-6r9l5        nonroot-v2-with-prio
+openshift-machine-api      machine-api-controllers-789b98f676-49d9z   nonroot-v2-with-prio
+openshift-operators        trident-operator-79ccfcdc4d-7l56t  nonroot-v2-with-prio
+scc-test             simple-http-server-555b496bd7-pskl5      nonroot-v2-with-prio
+```
+
+Because the priority is higher than any default SCC, the admission controller picks `nonroot-v2-with-prio` first. Components like `machine-api-controllers` and `trident-operator` now run under an SCC they were never designed for — potentially breaking them.
