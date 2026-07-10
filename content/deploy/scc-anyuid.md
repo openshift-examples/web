@@ -1,31 +1,32 @@
 ---
 title: SCC anyuid example
 linktitle: SCC anyuid example
-description: TBD
-tags:
-  - SCC
+description: SCC anyuid example
+tags: ['SCC']
 ---
 # SCC anyuid example
 
-### Create project and service account
-```bash
+Official documentation: [Managing security context constraints](https://docs.openshift.com/container-platform/latest/authentication/managing-security-context-constraints.html)
+
+## Create project and service account
+```shell
 oc new-project anyuid-demo
 oc create sa anyuid
 ```
 
-### Allow service account to use scc anyuid
+## Allow service account to use scc anyuid
 
-#### prior 4.3.8
+### prior 4.3.8
 
-```bash
+```shell
 oc adm policy add-scc-to-user -n anyuid-demo -z anyuid anyuid
 ```
 
-#### past 4.3.8
+### past 4.3.8
 
 Use [Role-based access to Security Context Constraints](https://docs.openshift.com/container-platform/4.3/authentication/managing-security-context-constraints.html#role-based-access-to-ssc_configuring-internal-oauth).
 
-```bash
+```shell
 oc create -f - <<EOF
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
@@ -59,10 +60,10 @@ roleRef:
 EOF
 ```
 
-### Deploy
+## Deploy
 
-#### without-anyuid
-```bash
+### without-anyuid
+```shell
 oc apply -f - <<EOF
 apiVersion: v1
 kind: DeploymentConfig
@@ -95,12 +96,12 @@ spec:
 EOF
 ```
 
-#### with-anyuid
+### with-anyuid
 
 !!! note
     Important is the `serviceAccount` and `serviceAccountName`!
 
-```bash
+```shell
 oc apply -f - <<EOF
 apiVersion: v1
 kind: DeploymentConfig
@@ -135,9 +136,9 @@ spec:
 EOF
 ```
 
-### Result:
+## Result
 
-```bash
+```shell
 $ oc get pods -l deployment -o "custom-columns=NAME:.metadata.name,SCC:.metadata.annotations.openshift\.io/scc,SERVICEACCOUNT:.spec.serviceAccountName"
 NAME                     SCC          SERVICEACCOUNT
 with-anyuid-1-gxczf      anyuid       anyuid
