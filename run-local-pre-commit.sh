@@ -1,3 +1,4 @@
-podman run -ti --rm -v \
-    $(pwd):/opt/app-root/src quay.io/openshift-examples/builder:202601121657 \
+podman run -ti --rm --user 0 \
+    -v $(pwd):/opt/app-root/src:z \
+    quay.io/openshift-examples/builder:202604300846 \
     ./helper/run-pre-commit.sh
