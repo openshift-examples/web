@@ -65,9 +65,6 @@ subjects:
 
 ## Deployment
 
-
-
-
 ### without-anyuid
 
 ```yaml
@@ -102,7 +99,6 @@ spec:
 % oc logs deployment/without-anyuid
 id: uid=1000750000(1000750000) gid=0(root) groups=0(root),1000750000
 ```
-
 
 ### with-anyuid
 
