@@ -9,6 +9,7 @@ tags: ['SCC']
 Official documentation: [Managing security context constraints](https://docs.openshift.com/container-platform/latest/authentication/managing-security-context-constraints.html)
 
 ## Create project and service account
+
 ```shell
 oc new-project anyuid-demo
 oc create sa anyuid
@@ -63,6 +64,7 @@ EOF
 ## Deploy
 
 ### without-anyuid
+
 ```shell
 oc apply -f - <<EOF
 apiVersion: v1
