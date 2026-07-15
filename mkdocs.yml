@@ -58,6 +58,7 @@ extra:
 extra_javascript:
   - https://viewer.diagrams.net/js/viewer-static.min.js
   - javascripts/drawio-reload.js
+  - https://unpkg.com/mermaid@11/dist/mermaid.min.js
 
 # Extensions
 markdown_extensions:
@@ -73,7 +74,11 @@ markdown_extensions:
       line_spans: __span
       pygments_lang_class: true
   - pymdownx.inlinehilite
-  - pymdownx.superfences
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
   - pymdownx.tabbed:
       alternate_style: true
   - toc:
@@ -189,6 +194,9 @@ nav:
           - Debugging: cluster-configuration/MachineSets/debugging.md
           - "VMware UPI": cluster-configuration/MachineSets/VMware-UPI/index.md
       - Cluster autoscaler: cluster-configuration/cluster-autoscaling.md
+      - Gatekeeper / OPA:
+          - cluster-configuration/gatekeeper-opa/index.md
+          - Automatic SCC Assignment: cluster-configuration/gatekeeper-opa/automatic-scc-assignment/index.md
 
   - Cluster lifecycle:
       - cluster-lifecycle/index.md

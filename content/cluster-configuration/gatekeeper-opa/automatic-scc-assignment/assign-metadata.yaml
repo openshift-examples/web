@@ -1,0 +1,20 @@
+apiVersion: mutations.gatekeeper.sh/v1
+kind: AssignMetadata
+metadata:
+  name: assign-required-scc-annotation
+spec:
+  match:
+    scope: Namespaced
+    kinds:
+      - apiGroups:
+          - ""
+        kinds:
+          - Pod
+    labelSelector: {}
+    namespaceSelector:
+      matchLabels:
+        examples.openshift.pub/scc-assignment: "true"
+  location: 'metadata.annotations."openshift.io/required-scc"'
+  parameters:
+    assign:
+      value: anyuid-without-prio

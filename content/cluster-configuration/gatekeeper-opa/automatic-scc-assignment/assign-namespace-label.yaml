@@ -1,0 +1,27 @@
+apiVersion: mutations.gatekeeper.sh/v1
+kind: AssignMetadata
+metadata:
+  name: assign-scc-assignment-label
+spec:
+  match:
+    scope: Cluster
+    kinds:
+      - apiGroups:
+          - ""
+        kinds:
+          - Namespace
+    namespaceSelector: {}
+    labelSelector:
+      matchExpressions:
+        - key: examples.openshift.pub/scc-assignment
+          operator: DoesNotExist
+    namespacesInScope:
+      include:
+        - "*"
+      exclude:
+        - kube-*
+        - openshift-*
+  location: 'metadata.labels."examples.openshift.pub/scc-assignment"'
+  parameters:
+    assign:
+      value: "true"
