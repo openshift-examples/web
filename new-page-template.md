@@ -18,12 +18,12 @@ Tested with:
 
 ## Content
 
-{% set current_page_title = page.title %}
-{% for n in navigation if n.title == current_page_title %}
-{% for c in n.children if c.title != current_page_title %}
+{% set section = page.parent %}
+{% if section and section.children %}
+{% for c in section.children if c.title != page.title %}
 {% if c.abs_url is string %}
 
-- [{{ c.title }}]({{c.canonical_url}})
+- [{{ c.title }}]({{ c.canonical_url }})
 
 {% else %}
 
@@ -31,4 +31,4 @@ Tested with:
 
 {% endif %}
 {% endfor %}
-{% endfor %}
+{% endif %}
