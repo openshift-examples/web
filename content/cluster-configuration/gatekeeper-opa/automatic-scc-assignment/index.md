@@ -39,7 +39,7 @@ flowchart LR
         D -- No --> E[Gatekeeper adds\nlabel=true]
         D -- Yes --> F([Label kept as-is])
     end
-    
+
     subgraph pod ["Pod Mutation"]
         E --> G([Pod creation])
         F --> G
