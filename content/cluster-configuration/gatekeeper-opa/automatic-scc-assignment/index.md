@@ -6,14 +6,15 @@ tags: ['gatekeeper','opa','scc','security','v4.21']
 ---
 # Gatekeeper — Automatic SCC Assignment
 
+!!! warning
+
+    This is not recommended — you bypass one of OpenShift's core security features.
+    Only use this in controlled environments where you fully understand the implications.
+
 This setup uses OPA Gatekeeper mutations to automatically assign a specific SCC
 to every workload namespace cluster-wide. Gatekeeper labels each namespace and
 then injects the `openshift.io/required-scc` annotation onto pods, ensuring
 OpenShift uses the designated SCC instead of its default selection logic.
-
-!!! info
-
-    `AssignMetadata` only sets a value when the field is **not already present** — pods with an existing `openshift.io/required-scc` annotation are not touched.
 
 Official documentation:
 
@@ -31,17 +32,23 @@ Tested with:
 
 ```mermaid
 flowchart LR
-    A([Namespace created]) --> B{Name starts with\nopenshift-* or kube-*?}
-    B -- Yes --> C([Skipped — no mutation])
-    B -- No --> D{Has label\nscc-assignment?}
-    D -- No --> E[Gatekeeper adds\nlabel=true]
-    D -- Yes --> F([Label kept as-is])
-    E --> G([Pod created in namespace])
-    F --> G
-    G --> H{Label\nscc-assignment=true?}
-    H -- No --> I([Pod admitted — default SCC applies])
-    H -- Yes --> J[Gatekeeper injects annotation\nopenshift.io/required-scc:\nanyuid-without-prio]
-    J --> K([OpenShift uses anyuid-without-prio SCC])
+    subgraph ns ["Namespace Mutation"]
+        A([Namespace creation]) --> B{Name starts with\nopenshift-* or kube-*?}
+        B -- Yes --> C([Skipped — no mutation])
+        B -- No --> D{Has label\nscc-assignment?}
+        D -- No --> E[Gatekeeper adds\nlabel=true]
+        D -- Yes --> F([Label kept as-is])
+    end
+    
+    subgraph pod ["Pod Mutation"]
+        E --> G([Pod creation])
+        F --> G
+        G --> H{Has annotation\nopenshift.io/required-scc}
+        H -- Yes --> X(Done)
+        H -- No --> K{Label at Namespace\nscc-assignment==true?}
+        K -- No --> I([Pod admitted — default SCC applies])
+        K -- Yes --> J[Inject annotation\nopenshift.io/required-scc]
+    end
 ```
 
 ## Prerequisites
@@ -78,13 +85,13 @@ That's the reason why I created a copy of anyuid without a prio:
 
 Now it's time to allow all services accounts (group `system:serviceaccounts`) to use our own SCC.
 
-=== "clusterrole-use-anyuid-without-prio.yaml"
+=== "ClusterRole"
 
     ```yaml
     --8<-- "content/cluster-configuration/gatekeeper-opa/automatic-scc-assignment/clusterrole-use-anyuid-without-prio.yaml"
     ```
 
-=== "clusterrolebinding-use-anyuid-without-prio.yaml"
+=== "ClusterRoleBinding"
 
     ```yaml
     --8<-- "content/cluster-configuration/gatekeeper-opa/automatic-scc-assignment/clusterrolebinding-use-anyuid-without-prio.yaml"
@@ -103,7 +110,7 @@ Let's apply our two mutations.
 
 #### 3.1. Ensure the namespace labeling
 
-=== "assign-namespace-label.yaml"
+=== "AssignMetadata to Namespace"
 
     ```yaml
     --8<-- "content/cluster-configuration/gatekeeper-opa/automatic-scc-assignment/assign-namespace-label.yaml"
@@ -119,7 +126,11 @@ Let's apply our two mutations.
 
 Add the annotation `openshift.io/required-scc` to all pods in namespaces with a specific label.
 
-=== "assign-metadata.yaml"
+!!! info
+
+    `AssignMetadata` only sets a value when the field is **not already present** — pods with an existing `openshift.io/required-scc` annotation are not touched.
+
+=== "AssignMetadata to Pod"
 
     ```yaml
     --8<-- "content/cluster-configuration/gatekeeper-opa/automatic-scc-assignment/assign-metadata.yaml"
@@ -177,15 +188,3 @@ test-app    simple-http-server-7fbb8879-7mvzb   restricted-v2   <none>
 
 The Gatekeeper mutation only fires when the label is absent, so an explicit
 `"false"` value is preserved and the SCC annotation is not injected.
-
-## Security Considerations
-
-- The `anyuid-without-prio` SCC has **no priority**, so it is never automatically
-  selected by OpenShift's SCC admission. It is only used when explicitly
-  requested via the `openshift.io/required-scc` annotation.
-- The SCC still drops the `MKNOD` capability and does not allow host-level
-  access (hostNetwork, hostPID, hostIPC, hostPath volumes, or privileged
-  containers).
-- The ClusterRoleBinding grants usage to **all** service accounts
-  (`system:serviceaccounts`). Restrict the binding to specific namespaces or
-  service accounts if needed.
