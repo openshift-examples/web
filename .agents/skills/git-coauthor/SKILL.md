@@ -28,7 +28,7 @@ If your identity is not listed, use `Co-authored-by: <AgentName> <agentname@prov
 
 The trailer **must** be separated from the subject/body by a blank line:
 
-```
+```text
 <subject line>
 
 <optional body paragraphs>
