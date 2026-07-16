@@ -13,19 +13,10 @@ co-author using the [GitHub co-author trailer convention](https://docs.github.co
 
 ## Co-author identity
 
-Use the following trailer exactly — GitHub resolves the noreply address to the
-model's public profile:
+Use the following trailer exactly:
 
 ```
-Co-authored-by: Claude <claude@anthropic.com>
-```
-
-If the agent is known to be a different model (e.g. GPT-4, Gemini), substitute
-the appropriate name and a matching noreply address:
-
-```
-Co-authored-by: GPT-4 <gpt4@openai.com>
-Co-authored-by: Gemini <gemini@google.com>
+Co-authored-by: Bob <bob@ibm.com>
 ```
 
 ## Commit message format
@@ -37,7 +28,7 @@ The trailer **must** be separated from the subject/body by a blank line:
 
 <optional body paragraphs>
 
-Co-authored-by: Claude <claude@anthropic.com>
+Co-authored-by: Bob <bob@ibm.com>
 ```
 
 ## Steps
@@ -53,13 +44,13 @@ Co-authored-by: Claude <claude@anthropic.com>
    second for the trailer (git appends them with a blank line between):
 
    ```shell
-   git commit -m "<subject>" -m "Co-authored-by: Claude <claude@anthropic.com>"
+   git commit -m "<subject>" -m "Co-authored-by: Bob <bob@ibm.com>"
    ```
 
    If a longer body is also needed:
 
    ```shell
-   git commit -m "<subject>" -m "<body paragraph>" -m "Co-authored-by: Claude <claude@anthropic.com>"
+   git commit -m "<subject>" -m "<body paragraph>" -m "Co-authored-by: Bob <bob@ibm.com>"
    ```
 
 3. Verify the trailer was recorded:
