@@ -276,6 +276,7 @@ nav:
           - OVNKubernetes: networking/network-policy/OVNKubernetes.md
           - OpenShiftSDN: networking/network-policy/OpenShiftSDN.md
       - Router sharding: networking/services-routes/router-sharding.md
+      - Gateway API: networking/gateway-api/index.md
       - Egress IP: networking/egress-ip/index.md
       - Kubernetes iptables chains: networking/k8s-iptables-chains.md
       - LLDPd: networking/lldpd/index.md

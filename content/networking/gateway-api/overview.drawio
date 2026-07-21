@@ -1,0 +1,128 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.3.6 Chrome/140.0.7339.249 Electron/38.3.6 Safari/537.36" pages="2">
+  <diagram name="Page-1" id="gateway-api-overview">
+    <mxGraphModel dx="854" dy="948" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1300" pageHeight="760" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="bg-cluster" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;align=left;verticalAlign=top;fontStyle=1;fontSize=14;spacingLeft=10;spacingTop=6;" value="OpenShift Cluster" vertex="1">
+          <mxGeometry height="340" width="960" x="260" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ns-ingress" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;fontColor=#333333;strokeColor=#d79b00;align=left;verticalAlign=top;fontStyle=2;fontSize=11;spacingLeft=8;spacingTop=5;dashed=1;" value="Namespace: openshift-ingress" vertex="1">
+          <mxGeometry height="120" width="260" x="460" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="ns-app" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;fontColor=#333333;strokeColor=#82b366;align=left;verticalAlign=top;fontStyle=2;fontSize=11;spacingLeft=8;spacingTop=5;dashed=1;" value="Namespace: test-app" vertex="1">
+          <mxGeometry height="260" width="420" x="760" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="bg-clusterscoped" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;fontColor=#333333;strokeColor=#d6b656;align=left;verticalAlign=top;fontStyle=2;fontSize=11;spacingLeft=8;spacingTop=5;dashed=1;" value="Cluster-scoped" vertex="1">
+          <mxGeometry height="113" width="260" x="460" y="253" as="geometry" />
+        </mxCell>
+        <mxCell id="client" parent="1" style="shape=mxgraph.network.laptop;html=1;whiteSpace=wrap;fillColor=#f0f0f0;strokeColor=#333333;fontSize=12;" value="&lt;b&gt;Client&lt;/b&gt;&lt;div&gt;(Browser / curl)&lt;/div&gt;" vertex="1">
+          <mxGeometry height="90" width="110" x="60" y="140" as="geometry" />
+        </mxCell>
+        <mxCell id="gateway" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=12;arcSize=10;" value="&lt;b&gt;Gateway&lt;/b&gt;&lt;div style=&quot;font-weight:normal&quot;&gt;openshift-ingress&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="180" x="490" y="155" as="geometry" />
+        </mxCell>
+        <mxCell id="httproute" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;arcSize=10;" value="&lt;b&gt;HTTPRoute&lt;/b&gt;" vertex="1">
+          <mxGeometry height="60" width="120" x="880" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="service" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;arcSize=10;" value="&lt;b&gt;Service&lt;/b&gt;&lt;div style=&quot;font-weight:normal&quot;&gt;ClusterIP&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="150" x="1022" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="pod" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" value="&lt;b&gt;Pod&lt;/b&gt;&lt;div style=&quot;font-weight:normal&quot;&gt;(Backend)&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="130" x="1032" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="gatewayclass" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;arcSize=10;" value="&lt;b&gt;GatewayClass&lt;/b&gt;&lt;div style=&quot;font-weight:normal&quot;&gt;openshift-default&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="180" x="490" y="288" as="geometry" />
+        </mxCell>
+        <mxCell id="e-client-gw" edge="1" parent="1" source="client" style="endArrow=classic;html=1;rounded=0;strokeWidth=2;strokeColor=#0050ef;fontColor=#0050ef;fontStyle=1;fontSize=11;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;shadow=0;flowAnimation=1;labelBorderColor=light-dark(#0050EF,#FFFFFF);labelBackgroundColor=default;" target="gateway" value="&lt;font style=&quot;&quot;&gt;&lt;span style=&quot;font-size: 18px;&quot;&gt;🔐HTTPS :443&amp;nbsp;&lt;/span&gt;&lt;/font&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e-gw-service" edge="1" parent="1" source="gateway" style="endArrow=classic;html=1;rounded=0;strokeWidth=2;strokeColor=#00701a;fontColor=#00701a;fontStyle=1;fontSize=11;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;edgeStyle=orthogonalEdgeStyle;labelBorderColor=#00701A;flowAnimation=1;" target="service" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;&amp;nbsp;HTTP :8080&amp;nbsp;&lt;/font&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1022" y="185" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e-service-pod" edge="1" parent="1" source="service" style="endArrow=classic;html=1;rounded=0;strokeWidth=2;strokeColor=#00701a;fontColor=#00701a;fontStyle=1;fontSize=18;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;labelBorderColor=#00701A;" target="pod" value="&lt;b&gt;&amp;nbsp;HTTP :8080&amp;nbsp;&lt;/b&gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-gw-gwclass" edge="1" parent="1" source="gateway" style="endArrow=open;endFill=0;html=1;rounded=0;strokeWidth=1;strokeColor=#666666;fontColor=#666666;dashed=1;fontSize=11;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="gatewayclass" value="">
+          <mxGeometry relative="1" x="0.008" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="Page-2" id="gateway-api-reencrypt">
+    <mxGraphModel dx="1186" dy="1317" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1300" pageHeight="760" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="p2-bg-cluster" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;align=left;verticalAlign=top;fontStyle=1;fontSize=14;spacingLeft=10;spacingTop=6;" value="OpenShift Cluster" vertex="1">
+          <mxGeometry height="440" width="960" x="260" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-ns-ingress" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;fontColor=#333333;strokeColor=#d79b00;align=left;verticalAlign=top;fontStyle=2;fontSize=11;spacingLeft=8;spacingTop=5;dashed=1;" value="Namespace: openshift-ingress" vertex="1">
+          <mxGeometry height="120" width="260" x="460" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-ns-app" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;fontColor=#333333;strokeColor=#82b366;align=left;verticalAlign=top;fontStyle=2;fontSize=11;spacingLeft=8;spacingTop=5;dashed=1;" value="Namespace: test-app" vertex="1">
+          <mxGeometry height="360" width="420" x="760" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-bg-clusterscoped" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;fontColor=#333333;strokeColor=#d6b656;align=left;verticalAlign=top;fontStyle=2;fontSize=11;spacingLeft=8;spacingTop=5;dashed=1;" value="Cluster-scoped" vertex="1">
+          <mxGeometry height="113" width="260" x="460" y="353" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-client" parent="1" style="shape=mxgraph.network.laptop;html=1;whiteSpace=wrap;fillColor=#f0f0f0;strokeColor=#333333;fontSize=12;" value="&lt;b&gt;Client&lt;/b&gt;&lt;div&gt;(Browser / curl)&lt;/div&gt;" vertex="1">
+          <mxGeometry height="90" width="110" x="60" y="140" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-gateway" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=12;arcSize=10;" value="&lt;b&gt;Gateway&lt;/b&gt;&lt;div style=&quot;font-weight:normal&quot;&gt;openshift-ingress&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="180" x="490" y="155" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-httproute" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;arcSize=10;" value="&lt;b&gt;HTTPRoute&lt;/b&gt;" vertex="1">
+          <mxGeometry height="60" width="110" x="800" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-service" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;arcSize=10;" value="&lt;b&gt;Service&lt;/b&gt;&lt;div style=&quot;font-weight:normal&quot;&gt;simple-https&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="150" x="1020" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-pod" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" value="&lt;b&gt;Pod&lt;/b&gt;&lt;div style=&quot;font-weight:normal&quot;&gt;(Backend)&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="130" x="1030" y="293" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-gatewayclass" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;arcSize=10;" value="&lt;b&gt;GatewayClass&lt;/b&gt;&lt;div style=&quot;font-weight:normal&quot;&gt;openshift-default&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="180" x="490" y="388" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-backendtlspolicy" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=12;arcSize=10;" value="&lt;b&gt;BackendTLSPolicy&lt;/b&gt;" vertex="1">
+          <mxGeometry height="30" width="130" x="920" y="195" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-configmap" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;arcSize=10;" value="&lt;b&gt;ConfigMap&lt;/b&gt;&lt;div style=&quot;font-weight:normal&quot;&gt;my-openshift-service-ca.crt&lt;/div&gt;&lt;div style=&quot;font-weight:normal;font-style:italic&quot;&gt;key: ca.crt&lt;/div&gt;" vertex="1">
+          <mxGeometry height="70" width="200" x="800" y="310" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-e-client-gw" edge="1" parent="1" source="p2-client" style="endArrow=classic;html=1;rounded=0;strokeWidth=2;strokeColor=#0050ef;fontColor=#0050ef;fontStyle=1;fontSize=11;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;shadow=0;flowAnimation=1;labelBorderColor=light-dark(#0050EF,#FFFFFF);labelBackgroundColor=default;" target="p2-gateway" value="&lt;font&gt;&lt;span style=&quot;font-size: 18px;&quot;&gt;🔐HTTPS :443&amp;nbsp;&lt;/span&gt;&lt;/font&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p2-e-gw-service" edge="1" parent="1" source="p2-gateway" style="endArrow=classic;html=1;rounded=0;strokeWidth=2;strokeColor=#0050ef;fontColor=#0050ef;fontStyle=1;fontSize=11;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;edgeStyle=orthogonalEdgeStyle;labelBorderColor=#0050ef;flowAnimation=1;" target="p2-service" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;🔐HTTPS :8443&lt;/font&gt;">
+          <mxGeometry relative="1" x="0.001" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p2-e-service-pod" edge="1" parent="1" source="p2-service" style="endArrow=classic;html=1;rounded=0;strokeWidth=2;strokeColor=#0050ef;fontColor=#0050ef;fontStyle=1;fontSize=18;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;labelBorderColor=light-dark(#0050EF,#FFFFFF);" target="p2-pod" value="&lt;b&gt;🔐HTTPS :8443&lt;/b&gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-e-gw-gwclass" edge="1" parent="1" source="p2-gateway" style="endArrow=open;endFill=0;html=1;rounded=0;strokeWidth=1;strokeColor=#666666;fontColor=#666666;dashed=1;fontSize=11;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="p2-gatewayclass" value="">
+          <mxGeometry relative="1" x="0.008" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p2-e-btlsp-configmap" edge="1" parent="1" source="p2-backendtlspolicy" style="endArrow=classic;html=1;rounded=0;strokeWidth=1.5;strokeColor=#6c8ebf;fontColor=#6c8ebf;dashed=1;fontSize=11;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="p2-configmap" value="caCertificateRef">
+          <mxGeometry relative="1" x="-0.003" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
