@@ -110,7 +110,8 @@ Use MkDocs Material admonitions:
 
 - Use `shell` as the language for terminal commands and output.
 - Use `hl_lines` to highlight important output lines, e.g. add `hl_lines="3 4"` after the language tag.
-- Include `$` prompt prefix only when mixing commands with output.
+- Code blocks with more than 4 lines must have a `title=""` attribute.
+- Include `%` prompt prefix only when mixing commands with output.
 
 ### Child-page listing (index pages)
 

@@ -148,7 +148,7 @@ NAME           HOSTNAMES                                                        
 simple-https   ["simple-https.gwapi-default.ocp7.stormshift.coe.muc.redhat.com"]   3h27m
 ```
 
-```shell title="Test edge termination"
+```shell
 % curl https://simple-https.gwapi-default.ocp7.stormshift.coe.muc.redhat.com/
 <html>
 <head></head>
@@ -250,7 +250,7 @@ spec:
           port: 8443
 ```
 
-```shell title="Test re-encrypt termination"
+```shell
 % curl https://simple-https.gwapi-default.ocp7.stormshift.coe.muc.redhat.com/
 <html>
 <head></head>
@@ -316,4 +316,3 @@ Filter by a specific cluster name:
     | .endpoints[]?.lb_endpoints[]?.endpoint.address.socket_address
     | "\($cn) \(.address):\(.port_value)"'
 ```
-
