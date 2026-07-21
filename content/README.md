@@ -24,6 +24,7 @@ and benefit from the expertise shared in this repository.
 
 |Date|Headline|
 |---|---|
+|2026-07-18|[Gateway API examples and ingress sharding](networking/gateway-api/)|
 |2026-07-17|[Gatekeeper — Automatic SCC Assignment](cluster-configuration/gatekeeper-opa/automatic-scc-assignment/)|
 |2026-07-10|[Updated SCC anyuid page with selection process and modern examples](deploy/scc-anyuid.md)|
 |2026-07-03|[Updated KubeVirt networking: OVN-Bridge, Linux-Bridge, ClusterUserDefinedNetwork](kubevirt/networking/)|
