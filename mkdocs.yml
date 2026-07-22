@@ -145,6 +145,7 @@ nav:
           - cluster-installation/hosted-control-plane/index.md
           - KubeVirt Networking: cluster-installation/hosted-control-plane/kubevirt-networking.md
           - Tenant Network: cluster-installation/hosted-control-plane/tenant-network/index.md
+          - Proxy: cluster-installation/hosted-control-plane/proxy/index.md
       - STACKIT:
           - cluster-installation/stackit/index.md
       - Nvidia GPU:
