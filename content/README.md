@@ -24,6 +24,7 @@ and benefit from the expertise shared in this repository.
 
 |Date|Headline|
 |---|---|
+|2026-07-22|[Hosted Control Plane and Proxy](cluster-installation/hosted-control-plane/proxy/)|
 |2026-07-18|[Gateway API examples and ingress sharding](networking/gateway-api/)|
 |2026-07-17|[Gatekeeper — Automatic SCC Assignment](cluster-configuration/gatekeeper-opa/automatic-scc-assignment/)|
 |2026-07-10|[Updated SCC anyuid page with selection process and modern examples](deploy/scc-anyuid.md)|
