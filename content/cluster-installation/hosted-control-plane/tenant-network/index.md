@@ -128,111 +128,40 @@ oauth.tenant-a.coe.muc.redhat.com.              IN A 192.168.203.111
 ignition.tenant-a.coe.muc.redhat.com.           IN A 192.168.203.111
 ```
 
+### Apply PullSecret, SSH-Key
+
+```shell
+oc create secret docker-registry pullsecret-cluster-tenant-a \
+  -n clusters \
+  --from-file=${HOME}/redhat-pull-secret.json
+```
+
+```shell
+oc create secret generic sshkey-cluster-tenant-a \
+  -n clusters \
+  --from-file=id_rsa.pub=${HOME}/.ssh/id_ed25519.pub
+```
+
 ### Apply `HostedCluster` and `NodePool`
 
-```yaml hl_lines="11 43-66" title="HostedCluster"
-apiVersion: hypershift.openshift.io/v1beta1
-kind: HostedCluster
-metadata:
-  name: 'tenant-a'
-  namespace: 'clusters'
-  labels:
-    "cluster.open-cluster-management.io/clusterset": 'default'
-spec:
-  configuration:
-    ingress:
-      appsDomain: apps.tenant-a.coe.muc.redhat.com # (1)
-      domain: ''
-      loadBalancer:
-        platform:
-          type: ''
-  channel: fast-4.21
-  etcd:
-    managed:
-      storage:
-        persistentVolume:
-          size: 8Gi
-        type: PersistentVolume
-    managementType: Managed
-  release:
-    image: quay.io/openshift-release-dev/ocp-release:4.21.11-multi
-  pullSecret:
-    name: pullsecret-cluster-tenant-a
-  sshKey:
-    name: sshkey-cluster-tenant-a
-  networking:
-    clusterNetwork:
-      - cidr: 10.132.0.0/14
-    serviceNetwork:
-      - cidr: 172.31.0.0/16
-    networkType: OVNKubernetes
-  controllerAvailabilityPolicy: SingleReplica
-  infrastructureAvailabilityPolicy: SingleReplica
-  platform:
-    type: KubeVirt
-    kubevirt:
-      baseDomainPassthrough: false
-  infraID: 'tenant-a'
-  services:
-    - service: APIServer
-      servicePublishingStrategy:
-        type: LoadBalancer
-        loadBalancer:
-          hostname: api.tenant-a.coe.muc.redhat.com  # (2)
-    - service: OAuthServer
-      servicePublishingStrategy:
-        type: Route
-        route:
-          hostname: oauth.tenant-a.coe.muc.redhat.com  # (3)
-    - service: OIDC
-      servicePublishingStrategy:
-        type: Route
-    - service: Konnectivity
-      servicePublishingStrategy:
-        type: Route
-        route:
-          hostname: konnectivity.tenant-a.coe.muc.redhat.com  # (4)
-    - service: Ignition
-      servicePublishingStrategy:
-        type: Route
-        route:
-          hostname: ignition.tenant-a.coe.muc.redhat.com  # (5)
+```yaml hl_lines="9-11 14 46-69" title="HostedCluster"
+--8<-- "content/cluster-installation/hosted-control-plane/tenant-network/HostedCluster.tenant-a.yaml"
 ```
+
+OSDOCS-19432
+
+https://hypershift.pages.dev/contribute/add-a-capability/#background-openshift-capabilities
+=> 
 
 1. `appsDomain`: resolve names under `apps.tenant-a.coe.muc.redhat.com` to **`ingress-lb`** (hosted cluster ingress), not the hub shard.
 2. API server `loadBalancer.hostname`: resolve to **`api-lb`**, which forwards to the `APIServer` publishing target on the hub.
 3. OAuth `route.hostname`: resolve to **`ingress-shared-lb`** (hub dedicated shard).
 4. Konnectivity `route.hostname`: resolve to **`ingress-shared-lb`**.
 5. Ignition `route.hostname`: resolve to **`ingress-shared-lb`**.
+6. Explicitly exclude the service controller, to avoid Kubernetes Services type LoadBalancer requestes are forwarded from Hosted Cluster to Hub Cluster.
 
 ```yaml hl_lines="24-26" title="NodePool"
-apiVersion: hypershift.openshift.io/v1beta1
-kind: NodePool
-metadata:
-  name: 'tenant-a'
-  namespace: 'clusters'
-spec:
-  arch: amd64
-  clusterName: 'tenant-a'
-  replicas: 2
-  management:
-    autoRepair: false
-    upgradeType: Replace
-  platform:
-    type: KubeVirt
-    kubevirt:
-      compute:
-        cores: 2
-        memory: 8Gi
-      rootVolume:
-        type: Persistent
-        persistent:
-          size: 32Gi
-      additionalNetworks:
-      - name: default/cudn-localnet1-2003 # (1)
-      attachDefaultNetwork: false
-  release:
-    image: quay.io/openshift-release-dev/ocp-release:4.21.11-multi
+--8<-- "content/cluster-installation/hosted-control-plane/tenant-network/NodePool.tenant-a.yaml"
 ```
 
 1. Attach NodePool VMs to the tenant segment using a user-defined network (UDN) `localnet` attachment (`default/cudn-localnet1-2003` in this lab).
