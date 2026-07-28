@@ -1,0 +1,69 @@
+apiVersion: hypershift.openshift.io/v1beta1
+kind: HostedCluster
+metadata:
+  name: 'tenant-a'
+  namespace: 'clusters'
+  labels:
+    "cluster.open-cluster-management.io/clusterset": 'default'
+spec:
+  controllerManager:
+    extraArgs:
+      controllers: ["-service"] # (6)
+  configuration:
+    ingress:
+      appsDomain: apps.tenant-a.coe.muc.redhat.com # (1)
+      domain: ''
+      loadBalancer:
+        platform:
+          type: ''
+  channel: fast-4.21
+  etcd:
+    managed:
+      storage:
+        persistentVolume:
+          size: 8Gi
+        type: PersistentVolume
+    managementType: Managed
+  release:
+    image: quay.io/openshift-release-dev/ocp-release:4.21.11-multi
+  pullSecret:
+    name: pullsecret-cluster-tenant-a
+  sshKey:
+    name: sshkey-cluster-tenant-a
+  networking:
+    clusterNetwork:
+      - cidr: 10.132.0.0/14
+    serviceNetwork:
+      - cidr: 172.31.0.0/16
+    networkType: OVNKubernetes
+  controllerAvailabilityPolicy: SingleReplica
+  infrastructureAvailabilityPolicy: SingleReplica
+  platform:
+    type: KubeVirt
+    kubevirt:
+      baseDomainPassthrough: false
+  infraID: 'tenant-a'
+  services:
+    - service: APIServer
+      servicePublishingStrategy:
+        type: LoadBalancer
+        loadBalancer:
+          hostname: api.tenant-a.coe.muc.redhat.com  # (2)
+    - service: OAuthServer
+      servicePublishingStrategy:
+        type: Route
+        route:
+          hostname: oauth.tenant-a.coe.muc.redhat.com  # (3)
+    - service: OIDC
+      servicePublishingStrategy:
+        type: Route
+    - service: Konnectivity
+      servicePublishingStrategy:
+        type: Route
+        route:
+          hostname: konnectivity.tenant-a.coe.muc.redhat.com  # (4)
+    - service: Ignition
+      servicePublishingStrategy:
+        type: Route
+        route:
+          hostname: ignition.tenant-a.coe.muc.redhat.com  # (5)

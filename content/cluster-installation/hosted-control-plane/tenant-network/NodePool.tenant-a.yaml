@@ -1,0 +1,27 @@
+apiVersion: hypershift.openshift.io/v1beta1
+kind: NodePool
+metadata:
+  name: 'tenant-a'
+  namespace: 'clusters'
+spec:
+  arch: amd64
+  clusterName: 'tenant-a'
+  replicas: 2
+  management:
+    autoRepair: false
+    upgradeType: Replace
+  platform:
+    type: KubeVirt
+    kubevirt:
+      compute:
+        cores: 2
+        memory: 8Gi
+      rootVolume:
+        type: Persistent
+        persistent:
+          size: 32Gi
+      additionalNetworks:
+      - name: default/cudn-localnet1-2003 # (1)
+      attachDefaultNetwork: false
+  release:
+    image: quay.io/openshift-release-dev/ocp-release:4.21.11-multi
