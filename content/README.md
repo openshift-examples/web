@@ -24,6 +24,7 @@ and benefit from the expertise shared in this repository.
 
 |Date|Headline|
 |---|---|
+|2026-07-30|[Audit Log Forwarding to Rsyslog](cluster-configuration/logging/forwarding-demo/)|
 |2026-07-22|[Hosted Control Plane and Proxy](cluster-installation/hosted-control-plane/proxy/)|
 |2026-07-18|[Gateway API examples and ingress sharding](networking/gateway-api/)|
 |2026-07-17|[Gatekeeper — Automatic SCC Assignment](cluster-configuration/gatekeeper-opa/automatic-scc-assignment/)|
