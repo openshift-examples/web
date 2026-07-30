@@ -6,7 +6,7 @@ rosetta
 .DS_Store
 share
 hooks/__pycache__/
-
+site/
 # wrangler files
 .wrangler
 .dev.vars*
