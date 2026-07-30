@@ -1,0 +1,116 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rsyslog-config
+data:
+  rsyslog.conf: |
+    global(workDirectory="/var/lib/rsyslog")
+
+    module(load="imtcp")
+    input(type="imtcp" port="24224")
+
+    template(name="RemoteLogFile" type="string"
+      string="/log/%HOSTNAME%/%PROGRAMNAME%.log")
+
+    *.* action(type="omfile" file="/log/all.log")
+    *.* action(type="omfile" dynaFile="RemoteLogFile")
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: rsyslog-log
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rsyslog
+spec:
+  selector:
+    matchLabels:
+      app: rsyslog
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: rsyslog
+    spec:
+      containers:
+        - name: rsyslog
+          image: registry.redhat.io/rhel9/rsyslog:9.8-1784815382
+          ports:
+            - containerPort: 24224
+          volumeMounts:
+            - mountPath: /log
+              name: rsyslog-log
+            - mountPath: /etc/rsyslog.conf
+              name: rsyslog-config
+              subPath: rsyslog.conf
+        - name: jq
+          image: registry.access.redhat.com/hi/jq:latest-builder
+          command:
+            - "/bin/sh"
+            - "-c"
+            - |
+              tail --quiet -f /log/*/kubeAPI.log |  cut -d']'   -f2- |   jq -r '
+                def pad(n): tostring | (n - length) as $p | (" " * ([0, $p] | max)) + .;
+                def to_epoch:
+                  split(".") |
+                  (.[0] + "Z" | strptime("%Y-%m-%dT%H:%M:%SZ") | mktime) as $secs |
+                  ("0." + (.[1] | rtrimstr("Z")) | tonumber) as $frac |
+                  $secs + $frac;
+                (.requestReceivedTimestamp | to_epoch) as $req |
+                (.stageTimestamp | to_epoch) as $stage |
+                ((($stage - $req) * 1000000 | round) / 1000) as $dur_ms |
+                (.requestReceivedTimestamp | split("T")[1] | split(".")[0]) as $time |
+                (.verb | ascii_upcase | pad(6)) as $verb |
+                ("\($dur_ms)ms" | pad(12)) as $dur |
+                "\($time) [\($verb)][\($dur)] [\(.responseStatus.code)] \(.requestURI) [\(.user.username)]"
+                '
+              sleep infinity
+          volumeMounts:
+            - mountPath: /log
+              name: rsyslog-log
+        - name: cdt
+          image: registry.access.redhat.com/hi/go:latest-builder
+          command:
+            - "/bin/sh"
+            - "-c"
+            - |
+              export HOME=/go/
+              git clone https://github.com/openshift/cluster-debug-tools.git
+              cd cluster-debug-tools/
+              make
+              ./kubectl-dev_tool -h
+              sleep infinity
+
+          volumeMounts:
+            - mountPath: /log
+              name: rsyslog-log
+      volumes:
+        - name: rsyslog-log
+          persistentVolumeClaim:
+            claimName: rsyslog-log
+        - name: rsyslog-config
+          configMap:
+            name: rsyslog-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rsyslog
+spec:
+  selector:
+    app: rsyslog
+  ports:
+    - protocol: TCP
+      port: 24224
+      targetPort: 24224
