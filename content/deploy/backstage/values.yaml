@@ -1,0 +1,51 @@
+global:
+  auth:
+    backend:
+      enabled: true
+  clusterRouterBase: apps.isar.coe.muc.redhat.com
+  dynamic:
+    includes:
+    - dynamic-plugins.default.yaml
+
+upstream:
+  appConfig:
+    auth:
+      environment: production
+      providers:
+        oauth2Proxy: {}
+  backstage:
+    extraContainers:
+      - args:
+        - --provider=oidc
+        - --email-domain=*
+        - --upstream=http://localhost:7007
+        - --http-address=0.0.0.0:4180
+        - --skip-provider-button
+        - --insecure-oidc-allow-unverified-email=true
+        env:
+        - name: OAUTH2_PROXY_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              key: CLIENT_ID
+              name: rh-developer-hub-sso
+        - name: OAUTH2_PROXY_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              key: CLIENT_SECRET
+              name: rh-developer-hub-sso
+        - name: OAUTH2_PROXY_COOKIE_SECRET
+          value: f1Xw225KFsCK90Wwf8fDyQ==
+        - name: OAUTH2_PROXY_OIDC_ISSUER_URL
+          value: https://sso.coe.muc.redhat.com/realms/coe-sso
+        - name: OAUTH2_PROXY_SSL_INSECURE_SKIP_VERIFY
+          value: "true"
+        image: quay.io/oauth2-proxy/oauth2-proxy:latest
+        imagePullPolicy: IfNotPresent
+        name: oauth2-proxy
+        ports:
+        - containerPort: 4180
+          name: oauth2-proxy
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
