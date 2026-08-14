@@ -178,9 +178,9 @@ oc create secret generic sshkey-cluster-tenant-a \
 --8<-- "content/cluster-installation/hosted-control-plane/tenant-network/NodePool.tenant-a.yaml"
 ```
 
-1. Attach NodePool VMs to the tenant segment using a user-defined network (UDN) `localnet` attachment (`default/cudn-localnet1-2003` in this lab).
+1. Attach NodePool VMs to the tenant segment using a user-defined network (UDN) `localnet` attachment (`cudn-localnet1-2003` in this lab).
 
-??? example "ClusterUserDefinedNetwork for `default/cudn-localnet1-2003`"
+??? example "ClusterUserDefinedNetwork for `cudn-localnet1-2003`"
 
     ```yaml
     --8<-- "content/cluster-installation/hosted-control-plane/tenant-network/cudn-localnet1-2003.yaml"
