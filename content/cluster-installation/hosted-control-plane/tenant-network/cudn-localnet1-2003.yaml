@@ -5,10 +5,8 @@ metadata:
 spec:
   namespaceSelector:
     matchExpressions:
-      - key: kubernetes.io/metadata.name
-        operator: In
-        values:
-          - default
+      - key: hypershift.openshift.io/hosted-control-plane
+        operator: Exists
   network:
     localnet:
       ipam:

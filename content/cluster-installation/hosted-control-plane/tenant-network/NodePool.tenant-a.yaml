@@ -21,7 +21,7 @@ spec:
         persistent:
           size: 32Gi
       additionalNetworks:
-      - name: default/cudn-localnet1-2003 # (1)
+      - name: cudn-localnet1-2003 # (1)
       attachDefaultNetwork: false
   release:
     image: quay.io/openshift-release-dev/ocp-release:4.21.11-multi
