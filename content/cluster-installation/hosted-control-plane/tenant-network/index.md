@@ -220,14 +220,6 @@ Add DNS record:
 * WebUI bug: ACM shows `https://console-openshift-console.apps.tenant-a.apps.ocp5.stormshift.coe.muc.redhat.com/` for the console, but the URL should be `https://console-openshift-console.apps.tenant-a.coe.muc.redhat.com/`.
 * Add custom endpoint publishing strategy
 * Find a solution for the NodePort chicken-and-egg problem of the external API load balancer
-* Improve ClusterUserDefinedNetwork with following selector:
-
-    ```yaml
-    namespaceSelector:
-      matchExpressions:
-      - key: hypershift.openshift.io/hosted-control-plane
-        operator: Exists
-    ```
 
 ## Verions
 
