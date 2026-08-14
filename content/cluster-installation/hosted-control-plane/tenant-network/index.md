@@ -69,8 +69,22 @@ Worker nodes (VM's) of the hosted cluster are straightforward: attach them to th
 
 ??? example "VyOS config commands"
 
+    Boot and install VyOS from ISO: <https://docs.vyos.io/en/rolling/installation/install.html#permanent-installation>
+
+    Don't forget to `commit` and `save` changes. With `compare` you can see your chages.
+
+    Configuration active after reboot is stored `/opt/vyatta/etc/config/config.boot` (recommened) or `/opt/vyatta/etc/config.boot.default` deppend on your settings during iso installation.
+
     ```shell
     --8<-- "content/cluster-installation/hosted-control-plane/tenant-network/vyos-router-2003.txt"
+    ```
+
+    FYI: `show dhcp server leases` shows you all dhcpd leases
+
+??? example "Tunneling the network via sshuttle"
+
+    ```shell
+    sshuttle -r vyos@<IP of VyOS VM> 192.168.203.0/24
     ```
 
 ### Deployment sequence (reference)
@@ -148,17 +162,11 @@ oc create secret generic sshkey-cluster-tenant-a \
 --8<-- "content/cluster-installation/hosted-control-plane/tenant-network/HostedCluster.tenant-a.yaml"
 ```
 
-OSDOCS-19432
-
-https://hypershift.pages.dev/contribute/add-a-capability/#background-openshift-capabilities
-=> 
-
 1. `appsDomain`: resolve names under `apps.tenant-a.coe.muc.redhat.com` to **`ingress-lb`** (hosted cluster ingress), not the hub shard.
 2. API server `loadBalancer.hostname`: resolve to **`api-lb`**, which forwards to the `APIServer` publishing target on the hub.
 3. OAuth `route.hostname`: resolve to **`ingress-shared-lb`** (hub dedicated shard).
 4. Konnectivity `route.hostname`: resolve to **`ingress-shared-lb`**.
 5. Ignition `route.hostname`: resolve to **`ingress-shared-lb`**.
-6. Explicitly exclude the service controller, to avoid Kubernetes Services type LoadBalancer requestes are forwarded from Hosted Cluster to Hub Cluster.
 
 ```yaml hl_lines="24-26" title="NodePool"
 --8<-- "content/cluster-installation/hosted-control-plane/tenant-network/NodePool.tenant-a.yaml"
