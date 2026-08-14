@@ -64,3 +64,12 @@ spec:
         type: Route
         route:
           hostname: ignition.tenant-a.coe.muc.redhat.com  # (5)
+
+  operatorConfiguration # (6)
+    ingressOperator:
+      endpointPublishingStrategy
+        type: HostNetwork
+        hostNetwork:
+          httpPort: 80
+          httpsPort: 443
+          protocol: TCP

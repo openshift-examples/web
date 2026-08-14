@@ -164,7 +164,7 @@ oc create secret generic sshkey-cluster-tenant-a \
 
 ### Apply `HostedCluster` and `NodePool`
 
-```yaml hl_lines="9-11 14 46-69" title="HostedCluster"
+```yaml hl_lines="11 48 53 61 66 68" title="HostedCluster"
 --8<-- "content/cluster-installation/hosted-control-plane/tenant-network/HostedCluster.tenant-a.yaml"
 ```
 
@@ -173,6 +173,7 @@ oc create secret generic sshkey-cluster-tenant-a \
 3. OAuth `route.hostname`: resolve to **`ingress-shared-lb`** (hub dedicated shard).
 4. Konnectivity `route.hostname`: resolve to **`ingress-shared-lb`**.
 5. Ignition `route.hostname`: resolve to **`ingress-shared-lb`**.
+6. Switch from Kubernetes Type LoadBalancer to just `HostNetwork` as `endpointPublishingStrategy`
 
 ```yaml hl_lines="24-26" title="NodePool"
 --8<-- "content/cluster-installation/hosted-control-plane/tenant-network/NodePool.tenant-a.yaml"
@@ -302,8 +303,6 @@ Any of these can watch the hub cluster for the relevant Services and automatical
 
 * WebUI bug: ACM shows `https://console-openshift-console.apps.tenant-a.apps.ocp5.stormshift.coe.muc.redhat.com/` for the console, but the URL should be `https://console-openshift-console.apps.tenant-a.coe.muc.redhat.com/`.
     <https://redhat.atlassian.net/browse/OCPBUGS-105612>
-
-* Add custom endpoint publishing strategy
 
 ## Verions
 
