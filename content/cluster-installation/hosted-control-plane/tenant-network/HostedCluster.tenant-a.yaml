@@ -6,9 +6,6 @@ metadata:
   labels:
     "cluster.open-cluster-management.io/clusterset": 'default'
 spec:
-  controllerManager:
-    extraArgs:
-      controllers: ["-service"] # (6)
   configuration:
     ingress:
       appsDomain: apps.tenant-a.coe.muc.redhat.com # (1)
