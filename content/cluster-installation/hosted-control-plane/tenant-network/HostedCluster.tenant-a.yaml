@@ -8,7 +8,7 @@ metadata:
 spec:
   configuration:
     ingress:
-      appsDomain: apps.tenant-a.coe.muc.redhat.com # (1)
+      appsDomain: apps.tenant-a.coe.muc.redhat.com  # (1)
       domain: ''
       loadBalancer:
         platform:
@@ -65,9 +65,9 @@ spec:
         route:
           hostname: ignition.tenant-a.coe.muc.redhat.com  # (5)
 
-  operatorConfiguration # (6)
+  operatorConfiguration:  # (6)
     ingressOperator:
-      endpointPublishingStrategy
+      endpointPublishingStrategy:
         type: HostNetwork
         hostNetwork:
           httpPort: 80
