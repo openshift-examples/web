@@ -225,9 +225,46 @@ Add DNS record:
 ## Open topics
 
 * Disable or constrain cloud provider integration so that Kubernetes `LoadBalancer` Service requests for the hosted cluster are not satisfied by the hub cluster cloud integration unless that is intentional.
+    <https://redhat.atlassian.net/browse/RFE-7742>
+
+    ??? example Deployment for an kubernetes service type loadbalancer"
+
+    ```shell
+    % oc project service-type-loadbalancer
+    % oc apply -k 'https://github.com/openshift-examples/kustomize.git/components/simple-https?ref=2026-07-20'
+    % oc apply -f - <<EOF
+    apiVersion: v1
+    kind: Service
+    metadata:
+    name: simple-https-lb
+    spec:
+    ports:
+    - name: http
+        port: 8080
+        protocol: TCP
+        targetPort: 8080
+    - name: https
+        port: 8443
+        protocol: TCP
+        targetPort: 8443
+    selector:
+        app: simple-https
+        deployment: simple-https
+    sessionAffinity: None
+    type: LoadBalancer
+    EOF
+    ```
+
 * WebUI bug: ACM shows `https://console-openshift-console.apps.tenant-a.apps.ocp5.stormshift.coe.muc.redhat.com/` for the console, but the URL should be `https://console-openshift-console.apps.tenant-a.coe.muc.redhat.com/`.
+    <https://redhat.atlassian.net/browse/OCPBUGS-105612>
 * Add custom endpoint publishing strategy
 * Find a solution for the NodePort chicken-and-egg problem of the external API load balancer
+    Potential solutions to expose into external networks:
+        * [F5 BIG-IP (Container Ingress Services - CIS)](https://clouddocs.f5.com/containers/latest/)
+        * NetScaler (formerly Citrix ADC)
+        * A10 Networks (Thunder ADC)
+        * Kemp (Progress) LoadMaster
+        * LoxiLB
 
 ## Verions
 
