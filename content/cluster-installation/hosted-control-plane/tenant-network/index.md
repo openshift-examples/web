@@ -299,10 +299,11 @@ An external load balancer that **integrates with Kubernetes** (i.e. watches Serv
 
 Any of these can watch the hub cluster for the relevant Services and automatically configure load balancing into the tenant network—without manual NodePort tracking or HAProxy reconfiguration.
 
-## Open topics
+## ACM console URL bug
 
-* WebUI bug: ACM shows `https://console-openshift-console.apps.tenant-a.apps.ocp5.stormshift.coe.muc.redhat.com/` for the console, but the URL should be `https://console-openshift-console.apps.tenant-a.coe.muc.redhat.com/`.
-    <https://redhat.atlassian.net/browse/OCPBUGS-105612>
+ACM displays an incorrect console URL for the hosted cluster. It shows `https://console-openshift-console.apps.tenant-a.apps.ocp5.stormshift.coe.muc.redhat.com/` instead of the correct `https://console-openshift-console.apps.tenant-a.coe.muc.redhat.com/`. The extra `.apps.ocp5.stormshift` segment comes from the hub's ingress domain being appended.
+
+Tracking: [OCPBUGS-105612](https://redhat.atlassian.net/browse/OCPBUGS-105612)
 
 ## Verions
 
