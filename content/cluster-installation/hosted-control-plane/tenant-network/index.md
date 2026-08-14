@@ -24,6 +24,12 @@ Challenge: running a hosted cluster in a different tenant network segment or VLA
 
     ![](overview.drawio){ page="Page-1" }
 
+!!! warning "LoadBalancer Services in hosted clusters get IPs from the hub"
+
+    There is currently **no supported way to disable or constrain this**. If the hub cluster supports Kubernetes Services of type `LoadBalancer` (e.g. via MetalLB, a cloud provider CCM, or any other implementation), any such Service created **inside the hosted cluster** will be fulfilled by the hub's load-balancer implementation. This means workloads in the tenant network can inadvertently obtain IP addresses from the hub's network.
+
+    Tracking: [RFE-7742](https://redhat.atlassian.net/browse/RFE-7742)
+
 An hosted cluster can devide into two parts: **control plane** and **data plan aka worker nodes**. For there parts there different technics to place it into a tenant network:
 
 ## Exposing hosted control plane into tenant network
@@ -222,12 +228,17 @@ Add DNS record:
 *.apps.tenant-a.coe.muc.redhat.com.       IN A 192.168.203.<IP of VM>
 ```
 
-## Open topics
+## LoadBalancer Services in hosted clusters get IPs from the hub
 
-* Disable or constrain cloud provider integration so that Kubernetes `LoadBalancer` Service requests for the hosted cluster are not satisfied by the hub cluster cloud integration unless that is intentional.
-    <https://redhat.atlassian.net/browse/RFE-7742>
+When the hub cluster supports Kubernetes Services of type `LoadBalancer` (e.g. via MetalLB, a cloud provider CCM, or any other implementation), any such Service created inside the hosted cluster is fulfilled by the **hub cluster's** load-balancer implementation. The hosted cluster's control plane runs on the hub and inherits its configuration.
 
-    ??? example Deployment for an kubernetes service type loadbalancer"
+This means a tenant workload can unintentionally allocate an IP address from the hub's infrastructure network simply by creating a `LoadBalancer` Service.
+
+**There is currently no supported way to disable this behaviour.** Tracking: [RFE-7742](https://redhat.atlassian.net/browse/RFE-7742)
+
+### Reproducing the problem
+
+??? example "Deployment for a Kubernetes Service type LoadBalancer"
 
     ```shell
     % oc project service-type-loadbalancer
@@ -236,28 +247,34 @@ Add DNS record:
     apiVersion: v1
     kind: Service
     metadata:
-    name: simple-https-lb
+      name: simple-https-lb
     spec:
-    ports:
-    - name: http
+      ports:
+      - name: http
         port: 8080
         protocol: TCP
         targetPort: 8080
-    - name: https
+      - name: https
         port: 8443
         protocol: TCP
         targetPort: 8443
-    selector:
+      selector:
         app: simple-https
         deployment: simple-https
-    sessionAffinity: None
-    type: LoadBalancer
+      sessionAffinity: None
+      type: LoadBalancer
     EOF
     ```
 
+    The Service will receive an `EXTERNAL-IP` from the hub's cloud provider—**not** from the tenant network.
+
+## Open topics
+
 * WebUI bug: ACM shows `https://console-openshift-console.apps.tenant-a.apps.ocp5.stormshift.coe.muc.redhat.com/` for the console, but the URL should be `https://console-openshift-console.apps.tenant-a.coe.muc.redhat.com/`.
     <https://redhat.atlassian.net/browse/OCPBUGS-105612>
+
 * Add custom endpoint publishing strategy
+
 * Find a solution for the NodePort chicken-and-egg problem of the external API load balancer
     Potential solutions to expose into external networks:
         * [F5 BIG-IP (Container Ingress Services - CIS)](https://clouddocs.f5.com/containers/latest/)
