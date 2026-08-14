@@ -188,6 +188,10 @@ oc create secret generic sshkey-cluster-tenant-a \
 
 ### Deploy external load balancer for the Hosted-Cluster API (`api-lb`)
 
+!!! info "NodePort ports are allocated randomly"
+
+    The HAProxy backends point to NodePort high ports that are assigned dynamically. If the Service is recreated, ports may change and HAProxy must be reconfigured. See [NodePort chicken-and-egg problem](#nodeport-chicken-and-egg-problem) for a discussion and potential solutions.
+
 Use an RHEL 9 virtual machine with HAProxy.
 
 * Install HAProxy: `dnf install haproxy`
@@ -268,20 +272,38 @@ This means a tenant workload can unintentionally allocate an IP address from the
 
     The Service will receive an `EXTERNAL-IP` from the hub's cloud provider—**not** from the tenant network.
 
+## NodePort chicken-and-egg problem
+
+The external HAProxy load balancers (`api-lb`, `ingress-shared-lb`, `ingress-lb`) in this setup forward traffic to Kubernetes Services of type `NodePort`. The problem: NodePort allocates a **random high port** (default range 30000–32767) that is only known after the Service is created. Every time the Service is recreated or the port changes, the HAProxy configuration must be updated manually.
+
+This creates a chicken-and-egg situation especially for the API load balancer: you need the NodePort to configure HAProxy, but the hosted cluster needs a working API endpoint to become healthy.
+
+### Why an external LoadBalancer controller would solve this
+
+An external load balancer that **integrates with Kubernetes** (i.e. watches Service objects and configures itself automatically) eliminates the manual NodePort tracking entirely. Such a controller:
+
+* Reacts to Service creation/updates and provisions the correct backend configuration automatically
+* Can expose Services into **separate network segments** (tenant networks) with its own VIP pool
+* Removes the need for static HAProxy configs that break when ports change
+
+### Potential solutions
+
+| Product | Notes |
+|---------|-------|
+| [F5 BIG-IP (Container Ingress Services - CIS)](https://clouddocs.f5.com/containers/latest/) | Watches Kubernetes Services, provisions VIPs and pool members on BIG-IP |
+| NetScaler (formerly Citrix ADC) | Kubernetes integration via Citrix Ingress Controller |
+| A10 Networks (Thunder ADC) | Thunder Kubernetes Connector |
+| Kemp (Progress) LoadMaster | Kubernetes integration available |
+| LoxiLB | Open-source, cloud-native LB with Kubernetes Service support |
+
+Any of these can watch the hub cluster for the relevant Services and automatically configure load balancing into the tenant network—without manual NodePort tracking or HAProxy reconfiguration.
+
 ## Open topics
 
 * WebUI bug: ACM shows `https://console-openshift-console.apps.tenant-a.apps.ocp5.stormshift.coe.muc.redhat.com/` for the console, but the URL should be `https://console-openshift-console.apps.tenant-a.coe.muc.redhat.com/`.
     <https://redhat.atlassian.net/browse/OCPBUGS-105612>
 
 * Add custom endpoint publishing strategy
-
-* Find a solution for the NodePort chicken-and-egg problem of the external API load balancer
-    Potential solutions to expose into external networks:
-        * [F5 BIG-IP (Container Ingress Services - CIS)](https://clouddocs.f5.com/containers/latest/)
-        * NetScaler (formerly Citrix ADC)
-        * A10 Networks (Thunder ADC)
-        * Kemp (Progress) LoadMaster
-        * LoxiLB
 
 ## Verions
 
