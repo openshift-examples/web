@@ -1,0 +1,124 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: ocp-node
+objects:
+  - apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      labels:
+        app: ff-${NAME}
+      name: ff-${NAME}
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          app: ff-${NAME}
+      strategy: {}
+      template:
+        metadata:
+          labels:
+            app: ff-${NAME}
+        spec:
+          automountServiceAccountToken: true
+          serviceAccountName: fakefish
+          containers:
+          - image: quay.io/rbohne/fakefish:kubevirt-20250519T133755
+            name: fakefish
+            resources: {}
+            args:
+            - "--remote-bmc"
+            - ${NAME}_${NAMESPACE}
+            - "--tls-mode"
+            - "disabled"
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      labels:
+        app: ff-${NAME}
+      name: ff-${NAME}
+    spec:
+      ports:
+      - name: http
+        port: 9000
+        protocol: TCP
+        targetPort: 9000
+      selector:
+        app: ff-${NAME}
+      type: ClusterIP
+
+  - apiVersion: route.openshift.io/v1
+    kind: Route
+    metadata:
+      name: ff-${NAME}
+    spec:
+      port:
+        targetPort: http
+      tls:
+        termination: edge
+      to:
+        kind: "Service"
+        name: ff-${NAME}
+        weight: null
+  - apiVersion: kubevirt.io/v1
+    kind: VirtualMachine
+    metadata:
+      annotations:
+      name: ${NAME}
+      namespace: ${NAMESPACE}
+    spec:
+      dataVolumeTemplates:
+      - metadata:
+          creationTimestamp: null
+          name: ${NAME}-root
+        spec:
+          source:
+            blank: {}
+          storage:
+            accessModes:
+            - ReadWriteMany
+            resources:
+              requests:
+                storage: 120Gi
+            storageClassName: ocs-storagecluster-ceph-rbd-virtualization
+      runStrategy: Manual
+      template:
+        spec:
+          architecture: amd64
+          domain:
+            cpu:
+              cores: 16
+            devices:
+              disks:
+              - disk:
+                  bus: virtio
+                name: root
+              interfaces:
+              - bridge: {}
+                model: virtio
+                name: coe
+            machine:
+              type: pc-q35-rhel9.4.0
+            memory:
+              guest: 32Gi
+            resources:
+              limits:
+                memory: 33188Mi
+              requests:
+                memory: 32Gi
+          networks:
+          - multus:
+              networkName: coe-bridge
+            name: coe
+          volumes:
+          - dataVolume:
+              name: ${NAME}-root
+            name: root
+parameters:
+- description: VM name
+  from: node-[a-z0-9]{6}
+  generate: expression
+  name: NAME
+- description: Namespace of the DataSource
+  name: NAMESPACE
+  required: true
