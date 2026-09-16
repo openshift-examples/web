@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: fakefish-single-vm
+  name: fakefish-single-vm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fakefish-single-vm
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: fakefish-single-vm
+    spec:
+      automountServiceAccountToken: true
+      serviceAccountName: fakefish
+      containers:
+      - image: quay.io/rbohne/fakefish:kubevirt-20250519T133755
+        name: fakefish
+        resources: {}
+        args:
+        - "--remote-bmc"
+        - "single-vm_rbohne-fakefish"
+        - "--tls-mode"
+        - "disabled"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: fakefish-single-vm
+  name: fakefish-single-vm
+spec:
+  ports:
+  - name: http
+    port: 9000
+    protocol: TCP
+    targetPort: 9000
+  selector:
+    app: fakefish-single-vm
+  type: ClusterIP
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: fakefish-single-vm
+spec:
+  port:
+    targetPort: http
+  tls:
+    termination: edge
+  to:
+    kind: "Service"
+    name: fakefish-single-vm
+    weight: null
