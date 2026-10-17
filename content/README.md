@@ -24,6 +24,7 @@ and benefit from the expertise shared in this repository.
 
 |Date|Headline|
 |---|---|
+|2026-10-16|[Added CUDN with BGP EVPN](networking/cudn-bgp-evpn/)|
 |2026-07-30|[OpenShift Virtualization Terraform example](kubevirt/terraform/)|
 |2026-07-30|[Update OpenShift Virtualization Ansible example](kubevirt/ansible/)|
 |2026-07-30|[Audit Log Forwarding to Rsyslog](cluster-configuration/logging/forwarding-demo/)|
