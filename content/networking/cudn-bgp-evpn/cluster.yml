@@ -1,0 +1,14 @@
+cluster_name: demo
+
+vn_subnet: "192.168.52.0"
+
+ip_families:
+  - IPv4
+
+master_count: 3
+master_special_cpu: "<cpu mode='host-passthrough'></cpu>"
+master_vcpu: 16
+master_memory_size: 32960
+masters_schedulable: true
+
+compute_count: 0

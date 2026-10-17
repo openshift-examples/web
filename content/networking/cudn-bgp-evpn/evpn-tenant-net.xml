@@ -1,0 +1,4 @@
+<network>
+  <name>evpn-tenant</name>
+  <bridge name="virbr-evpn" stp="on" delay="0"/>
+</network>
