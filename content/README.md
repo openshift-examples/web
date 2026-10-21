@@ -8,7 +8,8 @@ hide: ['toc']
 
 # [OpenShift Examples](https://examples.openshift.pub/)
 
-![](openshift-examples.png)
+![OpenShift Examples Logo](images/logo-black.png#only-light)
+![OpenShift Examples Logo](images/logo-white.png#only-dark)
 
 The OpenShift Examples is a personal collection of valuable information, code snippets, and practical demonstrations related to OpenShift and Kubernetes. It serves as a repository of Robert's own experiences & contributions, solutions, and best practices in managing and deploying applications on OpenShift.
 

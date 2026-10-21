@@ -19,17 +19,30 @@ theme:
   # logo: images/desk.png
   # favicon: images/favicon.png
   palette:
-    - primary: black
-      accent: red
-      toggle:
-        icon: material/lightbulb-outline
-        name: Switch to light mode
-    - scheme: slate
+    # Palette toggle for automatic mode
+    - media: "(prefers-color-scheme)"
       primary: black
       accent: red
       toggle:
-        icon: material/lightbulb
+        icon: material/brightness-auto
+        name: Switch to light mode
+
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      primary: black
+      accent: red
+      scheme: default 
+      toggle:
+        icon: material/brightness-7
         name: Switch to dark mode
+
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      primary: black
+      scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to system preference
   font:
     text: Overpass
     code: Overpass Mono
